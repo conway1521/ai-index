@@ -109,6 +109,10 @@ def build_outcomes(national: pd.DataFrame, bundles: pd.DataFrame) -> dict:
     out = outcomes.build(panel, list(bundles.columns))
     _write("outcomes_pay_series", out["pay"])
     _write("outcomes_quantity_series", out["quantity"])
+    # The paper's construction: occupations present in every year.
+    fixed = outcomes.build(outcomes.balanced(panel), list(bundles.columns))
+    _write("outcomes_pay_series_balanced", fixed["pay"])
+    _write("outcomes_quantity_series_balanced", fixed["quantity"])
     _write("outcomes_pay_changes", out["pay_changes"].reset_index().rename(columns={"index": "year"}))
     return out
 

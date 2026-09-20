@@ -1,0 +1,9 @@
+series,year,treated_transitions,transitions_available,bundles_beyond_two,largest_statistic,threshold_95,distance_to_detection,p_largest_consecutive,p_count_consecutive,consecutive_relabellings
+employment-weighted skill intensity,2018,"2016,2017,2018",6,13,7.802,7.802,1.0,0.5,0.5,4
+employment-weighted skill intensity,2019,"2017,2018,2019",7,9,3.899,6.675,0.584,0.6,0.4,5
+employment-weighted skill intensity,2020,"2018,2019,2020",8,11,5.349,5.143,1.04,0.167,0.333,6
+employment-weighted skill intensity,2021,"2019,2020,2021",9,15,6.16,5.946,1.036,0.143,0.286,7
+employment-weighted skill intensity,2022,"2020,2021,2022",10,3,5.437,6.065,0.896,0.25,0.625,8
+employment-weighted skill intensity,2023,"2021,2022,2023",11,2,3.803,5.418,0.702,0.444,0.667,9
+employment-weighted skill intensity,2024,"2022,2023,2024",12,3,2.98,4.976,0.599,0.8,0.6,10
+employment-weighted skill intensity,2025,"2023,2024,2025",13,7,8.231,6.735,1.222,0.091,0.364,11

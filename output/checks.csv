@@ -118,6 +118,13 @@ outcomes,"relative pay by skill bundle p-value in [0.0, 1.0]",True,0.0,"0 values
 outcomes,nonnegative employment-weighted skill intensity statistic,True,0.0,0 negative values in employment-weighted skill intensity statistic
 outcomes,nonnegative employment-weighted skill intensity threshold,True,0.0,0 negative values in employment-weighted skill intensity threshold
 outcomes,"employment-weighted skill intensity p-value in [0.0, 1.0]",True,0.0,"0 values of employment-weighted skill intensity p-value outside [0.0, 1.0]"
+outcomes,balanced panel,True,653.0,653 occupations present in all 14 years
+outcomes,nonnegative relative pay by skill bundle statistic,True,0.0,0 negative values in relative pay by skill bundle statistic
+outcomes,nonnegative relative pay by skill bundle threshold,True,0.0,0 negative values in relative pay by skill bundle threshold
+outcomes,"relative pay by skill bundle p-value in [0.0, 1.0]",True,0.0,"0 values of relative pay by skill bundle p-value outside [0.0, 1.0]"
+outcomes,nonnegative employment-weighted skill intensity statistic,True,0.0,0 negative values in employment-weighted skill intensity statistic
+outcomes,nonnegative employment-weighted skill intensity threshold,True,0.0,0 negative values in employment-weighted skill intensity threshold
+outcomes,"employment-weighted skill intensity p-value in [0.0, 1.0]",True,0.0,"0 values of employment-weighted skill intensity p-value outside [0.0, 1.0]"
 aei,task usage shares sum to one 2025-09-15 (2025-08-04) within 0% of expected,True,1.2212453270876722e-15,"actual 1 against expected 1, gap 0.00%"
 aei,usage on statements that match an O*NET task 2025-09-15 (2025-08-04) coverage at least 90%,True,0.9187273326739201,91.9% of usage on statements that match an O*NET task 2025-09-15 (2025-08-04) covered
 aei,task usage shares sum to one 2026-01-15 (2025-11-13) within 0% of expected,True,1.3322676295501878e-15,"actual 1 against expected 1, gap 0.00%"

@@ -1,0 +1,9 @@
+series,year,treated_transitions,transitions_available,bundles_beyond_two,largest_statistic,threshold_95,distance_to_detection,p_largest_consecutive,p_count_consecutive,consecutive_relabellings
+relative pay by skill bundle,2018,"2016,2017,2018",6,4,2.889,4.423,0.653,1.0,1.0,4
+relative pay by skill bundle,2019,"2017,2018,2019",7,7,6.985,6.416,1.089,0.2,0.2,5
+relative pay by skill bundle,2020,"2018,2019,2020",8,9,8.231,7.408,1.111,0.167,0.167,6
+relative pay by skill bundle,2021,"2019,2020,2021",9,4,4.579,5.279,0.867,0.286,0.714,7
+relative pay by skill bundle,2022,"2020,2021,2022",10,4,3.286,4.459,0.737,0.625,0.375,8
+relative pay by skill bundle,2023,"2021,2022,2023",11,4,3.635,4.429,0.821,0.333,0.444,9
+relative pay by skill bundle,2024,"2022,2023,2024",12,4,7.916,6.214,1.274,0.1,0.5,10
+relative pay by skill bundle,2025,"2023,2024,2025",13,6,2.833,6.119,0.463,0.818,0.182,11

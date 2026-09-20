@@ -99,6 +99,14 @@ def series(changes: pd.DataFrame, label: str, n_treated: int = N_TREATED) -> pd.
     return out
 
 
+def balanced(panel: pd.DataFrame) -> pd.DataFrame:
+    """Occupations present in every year, the paper's panel construction."""
+    counts = panel.groupby("soc_code")["vintage"].nunique()
+    keep = counts[counts == panel["vintage"].nunique()].index
+    checks.note(LAYER, "balanced panel", f"{len(keep)} occupations present in all {panel['vintage'].nunique()} years", len(keep))
+    return panel[panel["soc_code"].isin(keep)]
+
+
 def build(panel: pd.DataFrame, columns: list[str]) -> dict[str, pd.DataFrame]:
     """Both series, prices and quantities, from one national panel."""
     pay = pay_changes(panel, columns)

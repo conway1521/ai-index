@@ -63,15 +63,29 @@ Census codes without a SOC (2 of 570).
 ## Reconciliation with the paper
 
 The outcome series is the paper's permutation test run year by year on
-the same code. The 2025 reading here, largest standardised move 2.54
-against a threshold of 6.5, is not the paper's 3.01, and the difference
-has three known sources: the paper's 2019 to 2025 wages came from the
-project database's state files including a 2025 state file that is not
-mirrored, this build uses the national files for those years; the O*NET
-release here is 30.2 against the paper's 30.3; and the paper's balanced
-panel drops occupations missing in any year while this series uses each
-transition's common occupations. Reconciling the two is the first job on
-a network that reaches BLS.
+the same code. The paper reports, on a balanced panel of 693 occupations,
+five of 25 bundles moving beyond two of their own standard errors over the
+2023 to 2025 transitions, a largest statistic of 3.01, and p-values of
+0.112 on the count and 0.430 on the largest against all 286 relabellings.
+
+Rerun on the index's panel, the same statistic reads:
+
+| Panel | Occupations | Bundles beyond two | Largest | p count, all | p largest, all |
+|---|---|---|---|---|---|
+| common occupations per transition, national files | 751 | 4 | 2.54 | 0.213 | 0.720 |
+| balanced, national files | 653 | 6 | 2.83 | 0.035 | 0.563 |
+| balanced, state files summed | 654 | 7 | 2.88 | 0.028 | 0.503 |
+
+The largest statistic sits inside the relabelling distribution on every
+construction, which is the paper's reading. The count of bundles beyond
+two is one or two higher than the paper's and its p-value lower, and the
+two differences left are known: the O*NET release is 30.2 here against
+30.3, and the balanced panel holds about forty fewer occupations because
+the 2019 and 2020 OEWS files use hybrid codes that do not join the 2018
+SOC and are dropped rather than mapped. Mapping those hybrid codes from
+the BLS documentation is the next step on a network that reaches BLS, and
+the build writes both the common-occupation and the balanced series so
+the two constructions stay visible.
 
 ## A note on how the copies were found
 
