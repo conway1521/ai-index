@@ -75,6 +75,8 @@ def felten_by_occupation() -> pd.DataFrame:
 def table(anthropic: pd.Series | None = None) -> pd.DataFrame:
     """All measures side by side, one row per six-digit SOC, NaN where absent."""
     frame = pd.concat([eloundou_by_occupation(), felten_by_occupation()], axis=1)
+    if anthropic is None:
+        anthropic = anthropic_observed()
     if anthropic is not None:
         frame = frame.join(anthropic.rename("anthropic_observed"), how="outer")
     frame.index.name = "soc_code"
@@ -94,3 +96,26 @@ def terciles(measure: pd.Series, weights: pd.Series) -> pd.Series:
     tercile[cumulative > 1 / 3] = 2
     tercile[cumulative > 2 / 3] = 3
     return tercile.rename("tercile")
+
+
+ANTHROPIC_NAME = "job_exposure.csv"
+
+
+def anthropic_observed() -> pd.Series | None:
+    """Anthropic's observed exposure by six-digit SOC 2018, from the labor market tables."""
+    from . import sources
+    official, mirrors, note = sources.AEI_LABOR_MARKET[ANTHROPIC_NAME]
+    try:
+        path, _ = fetch.get(f"aei_labor:{ANTHROPIC_NAME}", f"aei_labor_market/{ANTHROPIC_NAME}", official,
+                            mirrors=mirrors, notes=note)
+    except ConnectionError:
+        return None
+    frame = pd.read_csv(path, dtype=str)
+    cols = {c.lower(): c for c in frame.columns}
+    code = next(cols[c] for c in cols if "occ" in c or "soc" in c)
+    score = next(cols[c] for c in cols if "exposure" in c)
+    out = pd.DataFrame({"soc_code": frame[code].str.strip().str.slice(0, 7),
+                        "anthropic_observed": pd.to_numeric(frame[score], errors="coerce")}).dropna()
+    out = out.groupby("soc_code")["anthropic_observed"].mean()
+    checks.within(out, 0.0, 1.0, LAYER, "anthropic observed exposure")
+    return out

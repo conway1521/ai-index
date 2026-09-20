@@ -19,7 +19,7 @@ from pathlib import Path
 import pandas as pd
 
 from . import (acs, btos, capacity, checks, config, cps, exposure, ipeds, onet_release,
-               outcomes, pipeline, spine, state, usage, wagebill)
+               openai, outcomes, pipeline, spine, state, usage, wagebill)
 from .manifest import MANIFEST
 
 sys.path.insert(0, str(config.REPO_ROOT))
@@ -90,6 +90,11 @@ def build_usage(national: pd.DataFrame, names: dict[str, str]) -> dict | None:
     latest = national[national["vintage"] == national["vintage"].max()].set_index("soc_code")["bill"]
     values = usage.task_values_table(latest)
     task_bundles = usage.task_bundle_matrix(build)
+    for rule in ("dollar", "equal"):
+        try:
+            tables.append(openai.usage_table(values, rule=rule))
+        except ConnectionError as error:
+            SKIPPED[f"openai {rule}"] = str(error)
     validated = pd.concat([usage.validate_usage(t) for t in tables], ignore_index=True)
     out = usage.readings(validated, values, task_bundles, names)
     _write("usage_reach", out["reach"])
@@ -111,10 +116,10 @@ def build_outcomes(national: pd.DataFrame, bundles: pd.DataFrame) -> dict:
 @_step("state")
 def build_state(states: pd.DataFrame, measures: pd.DataFrame) -> dict:
     panel = states[states["vintage"] >= 2019]
-    ex = state.exposure_by_state(panel, measures[[c for c in measures.columns if c in config.EXPOSURE_MEASURES or c in ("eloundou_beta", "felten_aioe")]])
+    ex = state.exposure_by_state(panel, measures[[c for c in ("eloundou_beta", "felten_aioe", "anthropic_observed") if c in measures.columns]])
     _write("state_exposure", ex)
     changes = []
-    for measure in ("eloundou_beta", "felten_aioe"):
+    for measure in ("eloundou_beta", "felten_aioe", "anthropic_observed"):
         if measure in measures.columns:
             years = sorted(panel["vintage"].unique())
             changes.append(state.realised_change(panel, measures, int(years[-3]), int(years[-1]), measure))
@@ -127,6 +132,20 @@ def build_state(states: pd.DataFrame, measures: pd.DataFrame) -> dict:
     annual["state_abbr"] = annual["state_fips"].map({v: k for k, v in state.STATE_FIPS.items()})
     _write("state_adoption_btos", annual)
     _write("state_adoption_btos_biweekly", adoption)
+    from . import aei
+    usage_states = []
+    for path in sorted(aei.AEI_DIR.rglob("aei_raw_claude_ai_*.csv")):
+        table = aei.state_usage(path)
+        if table is not None:
+            usage_states.append(table)
+    if usage_states:
+        usage_state = state.with_fips(pd.concat(usage_states, ignore_index=True))
+        latest = states[states["vintage"] == states["vintage"].max()]
+        employment_share = latest.groupby("state_fips")["employment"].sum()
+        employment_share = employment_share / employment_share.sum()
+        usage_state["employment_share"] = usage_state["state_fips"].map(employment_share)
+        usage_state["usage_per_worker_index"] = usage_state["usage_share"] / usage_state["employment_share"]
+        _write("state_usage_anthropic", usage_state)
     return {"exposure": ex, "change": change, "adoption": annual}
 
 

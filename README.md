@@ -41,11 +41,11 @@ regenerates the same files.
 |---|---|---|---|
 | Spine | `spine.py` | real files (copies) | O*NET-SOC, Census 2018, CIP 2020 and SOC 2010 crosswalks with coverage reported |
 | Wage bill | `wagebill.py` | OEWS 2012 to 2025 (copies) | state files to 2024, national 2025; 2012 to 2018 carried onto the 2018 SOC |
-| Exposure | `exposure.py` | Eloundou and Felten (authors' files) | Anthropic observed exposure joins when the release is in hand |
-| Usage | `usage.py`, `aei.py` | synthetic usage on real O*NET | the Anthropic adapter is written against the documented schemas; no release copy was reachable |
+| Exposure | `exposure.py` | Eloundou and Felten (authors' files), Anthropic observed exposure (copy, hash-verified) | three measures; state and pipeline tables are written once per measure |
+| Usage | `usage.py`, `aei.py`, `openai.py` | Anthropic releases of September 2025 to June 2026 and OpenAI Signals to June 2026 (copies) | three Anthropic raw tables, two monthly slices, OpenAI by activity under two allocation rules; WildChat not reachable |
 | Outcomes | `outcomes.py` | real panel | the paper's test as a series with a 95th percentile threshold |
 | CPS gauge | `cps.py` | real layouts, synthetic months | drop the Census monthly files into `data/raw/cps` and rerun |
-| State | `state.py`, `btos.py` | real (copies) | BTOS to December 2025; Anthropic state usage waits on the release |
+| State | `state.py`, `btos.py` | real (copies) | BTOS to December 2025; Anthropic state usage per worker for three releases |
 | Pipeline | `pipeline.py`, `ipeds.py`, `acs.py` | IPEDS 2023 and 2024, ACS one state, NCES crosswalk | Clearinghouse appendix is a fixture until fetched |
 | Capacity | `capacity.py` | fixture | the flows repository's matrix drops in on its schema |
 

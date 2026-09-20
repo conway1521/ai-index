@@ -80,3 +80,60 @@ ACS_PUMS_TEST = ("https://www2.census.gov/programs-surveys/acs/data/pums/2022/1-
                  (f"{LFS}/beeckcenter/climate-equity-workforce/main/raw_data/Minnesota%20-%20ACS%20PUMS%20-%20One-Year/psam_p27.csv",))
 
 INDEED = ("https://raw.githubusercontent.com/hiring-lab/ai-tracker/main/AI_posting.csv", ())
+
+# Anthropic Economic Index. The Hugging Face dataset is the source; the
+# copies are committed by other researchers, and the ones marked verified
+# match the sha256 that Hugging Face records for the file.
+AEI_OFFICIAL = "https://huggingface.co/datasets/Anthropic/EconomicIndex"
+AEI_FILES = {
+    # path under data/raw/aei : (official path on Hugging Face, mirrors, note)
+    "release_2025_09_15/aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv": (
+        f"{AEI_OFFICIAL}/resolve/main/release_2025_09_15/data/intermediate/aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv",
+        (f"{RAW}/IlanStrauss/anthropic-econ-critique/main/data/anthropic/release_2025_09_15/data/intermediate/aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv",
+         f"{LFS}/tkc88888888/EconomicIndex/main/release_2025_09_15/data/intermediate/aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv"),
+        "sha256 matches the Hugging Face pointer"),
+    "release_2025_09_15/onet_task_statements.csv": (
+        f"{AEI_OFFICIAL}/resolve/main/release_2025_09_15/data/intermediate/onet_task_statements.csv",
+        (f"{RAW}/dioandre3/UMICH-STAT507/main/Final%20Project/Final%20Project/aei_data/release_2025_09_15/data/intermediate/onet_task_statements.csv",
+         f"{LFS}/tkc88888888/EconomicIndex/main/release_2025_09_15/data/intermediate/onet_task_statements.csv"),
+        "sha256 matches the Hugging Face pointer; the task list the release classified against"),
+    "release_2026_01_15/aei_raw_claude_ai_2025-11-13_to_2025-11-20.csv": (
+        f"{AEI_OFFICIAL}/resolve/main/release_2026_01_15/data/intermediate/aei_raw_claude_ai_2025-11-13_to_2025-11-20.csv",
+        (f"{RAW}/IlanStrauss/anthropic-econ-critique/main/data/anthropic/release_2026_01_15/data/intermediate/aei_raw_claude_ai_2025-11-13_to_2025-11-20.csv",
+         f"{LFS}/tkc88888888/EconomicIndex/main/release_2026_01_15/data/intermediate/aei_raw_claude_ai_2025-11-13_to_2025-11-20.csv"),
+        "sha256 matches the Hugging Face pointer"),
+    "release_2026_03_24/aei_raw_claude_ai_2026-02-05_to_2026-02-12.csv": (
+        f"{AEI_OFFICIAL}/resolve/main/release_2026_03_24/data/intermediate/aei_raw_claude_ai_2026-02-05_to_2026-02-12.csv",
+        (f"{LFS}/Engineering-AI-Systems-Team-3/chatgpt-at-work/main/data/input/aei_raw_claude_ai_2026-02-05_to_2026-02-12.csv",
+         f"{RAW}/dioandre3/UMICH-STAT507/main/Final%20Project/Final%20Project/aei_raw_claude_ai_2026-02-05_to_2026-02-12.csv"),
+        "Anthropic republished this file; the copy is one of the earlier versions and is not hash-verified against the current one"),
+    "release_2026_06_26/task_pct_2026-04.csv": (
+        f"{AEI_OFFICIAL}/resolve/main/release_2026_06_26/data/aei_claude_ai_2026-06-26.csv",
+        (f"{RAW}/theodorewright11/ai-workforce-exposure-dataset-construction-public/main/data/task_pct_v6_1.csv",),
+        "a third party's slice of the 219 MB monthly file: global claude_ai task shares for April 2026, task text only"),
+    "release_2026_06_26/task_pct_2026-05.csv": (
+        f"{AEI_OFFICIAL}/resolve/main/release_2026_06_26/data/aei_claude_ai_2026-06-26.csv",
+        (f"{RAW}/theodorewright11/ai-workforce-exposure-dataset-construction-public/main/data/task_pct_v6_2.csv",),
+        "a third party's slice of the 219 MB monthly file: global claude_ai task shares for May 2026, task text only"),
+}
+AEI_LABOR_MARKET = {
+    "job_exposure.csv": (f"{AEI_OFFICIAL}/resolve/main/labor_market_impacts/job_exposure.csv",
+                         (f"{RAW}/tkc88888888/EconomicIndex/main/labor_market_impacts/job_exposure.csv",),
+                         "sha256 matches the Hugging Face file; observed exposure by six-digit SOC 2018"),
+    "task_penetration.csv": (f"{AEI_OFFICIAL}/resolve/main/labor_market_impacts/task_penetration.csv",
+                             (f"{RAW}/tkc88888888/EconomicIndex/main/labor_market_impacts/task_penetration.csv",),
+                             "sha256 matches the Hugging Face file; penetration by task text"),
+}
+
+# OpenAI Signals v2.0, July 2024 to June 2026, by intermediate work activity.
+OPENAI_OFFICIAL = "https://openai.com/signals/data-download/"
+OPENAI_FILES = {
+    "usa_share_of_work_related_messages_by_onet_iwa_month.csv": (
+        OPENAI_OFFICIAL,
+        (f"{RAW}/prashgarg/global-automation-atlas/main/outputs/source_data/openai_observed_use/usa_share_of_work_related_messages_by_onet_iwa_month.csv",),
+        "v2.0 download as committed by a third party"),
+    "usa_share_of_messages_by_onet_iwa_month.csv": (
+        OPENAI_OFFICIAL,
+        (f"{RAW}/prashgarg/global-automation-atlas/main/outputs/source_data/openai_observed_use/usa_share_of_messages_by_onet_iwa_month.csv",),
+        "v2.0 download as committed by a third party"),
+}

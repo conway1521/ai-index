@@ -39,13 +39,42 @@ def _normalise_text(text: pd.Series) -> pd.Series:
             .str.replace(r"\s+", " ", regex=True).str.strip())
 
 
-def _task_lookup() -> pd.DataFrame:
-    """Task statement text to task identifier, for the release in hand."""
+# Handa et al. (2025) group the collaboration modes: directive and feedback
+# loop are automation, validation, task iteration and learning are
+# augmentation. The remainder is unclassified and enters neither share.
+AUTOMATION_MODES = {"directive", "feedback loop"}
+AUGMENTATION_MODES = {"validation", "task iteration", "learning"}
+
+
+def _release_statements(path: Path) -> pd.DataFrame | None:
+    """The task statement list shipped with a release, which the classifier used."""
+    candidates = [path.parent / "onet_task_statements.csv",
+                  AEI_DIR / "release_2025_09_15" / "onet_task_statements.csv"]
+    for candidate in candidates:
+        if candidate.exists():
+            frame = pd.read_csv(candidate, dtype=str)
+            frame["key"] = _normalise_text(frame["Task"])
+            frame["task_id"] = pd.to_numeric(frame["Task ID"], errors="coerce").dropna().astype("int64").astype(str)
+            return frame.dropna(subset=["task_id"])[["key", "task_id"]].drop_duplicates("key")
+    return None
+
+
+def _task_lookup(path: Path | None = None) -> pd.DataFrame:
+    """Task statement text to task identifier.
+
+    The release's own statement list is preferred, because it is the list
+    the classifier chose from, and the O*NET release in hand is the
+    fallback. Identifiers are stable across O*NET releases.
+    """
+    shipped = _release_statements(path) if path is not None else None
     onet_release.activate()
     from src import onet
     tasks = onet.task_statements()
     tasks["key"] = _normalise_text(tasks["task_statement"])
-    return tasks[["key", "task_id"]].drop_duplicates("key")
+    current = tasks[["key", "task_id"]].drop_duplicates("key")
+    if shipped is None:
+        return current
+    return pd.concat([shipped, current[~current["key"].isin(shipped["key"])]], ignore_index=True)
 
 
 def _release_of(path: Path) -> str:
@@ -56,6 +85,17 @@ def _release_of(path: Path) -> str:
         if match:
             return match.group(1).replace("_", "-")
     return path.parent.name
+
+
+def _join_statements(table: pd.DataFrame, release: str, path: Path | None) -> pd.DataFrame:
+    table = table.copy()
+    table["key"] = _normalise_text(table["statement"])
+    joined = table.merge(_task_lookup(path), on="key", how="left")
+    matched = float(joined.loc[joined["task_id"].notna(), "usage_share"].sum() / joined["usage_share"].sum())
+    checks.coverage(matched, 1.0, LAYER, f"usage on statements that match an O*NET task {release}", 0.9)
+    joined = joined.dropna(subset=["task_id"])
+    joined["platform"], joined["release"] = PLATFORM, release
+    return joined[["platform", "release", "task_id", "usage_share", "automation_share", "augmentation_share"]]
 
 
 def _from_task_table(frame: pd.DataFrame, release: str) -> pd.DataFrame:
@@ -76,58 +116,90 @@ def _from_task_table(frame: pd.DataFrame, release: str) -> pd.DataFrame:
     return out
 
 
-def _from_long_table(frame: pd.DataFrame, release: str, geography: str = "GLOBAL") -> pd.DataFrame:
+def _from_text_table(frame: pd.DataFrame, release: str, path: Path) -> pd.DataFrame:
+    """A two-column slice, task text and share, as the monthly release is often redistributed."""
+    cols = {c.lower(): c for c in frame.columns}
+    text_col = next(cols[c] for c in cols if "task" in c)
+    share_col = next(cols[c] for c in cols if "pct" in c or "share" in c)
+    table = pd.DataFrame({"statement": frame[text_col].astype(str),
+                          "usage_share": pd.to_numeric(frame[share_col], errors="coerce"),
+                          "automation_share": float("nan"), "augmentation_share": float("nan")}).dropna(subset=["usage_share"])
+    # A monthly release is redistributed one month per file, so the month in
+    # the file name is part of the release label.
+    month = re.search(r"(20\d{2}-\d{2})(?!-\d{2})", path.stem)
+    if month and month.group(1) not in release:
+        release = f"{release} ({month.group(1)})"
+    return _join_statements(table, release, path)
+
+
+def _from_long_table(frame: pd.DataFrame, release: str, path: Path, geography: str = "GLOBAL") -> pd.DataFrame:
     """The long facet table of the September 2025 and later releases."""
     cols = {c.lower(): c for c in frame.columns}
     facet, variable, name, value = cols["facet"], cols["variable"], cols["cluster_name"], cols["value"]
-    block = frame[frame[facet].astype(str).str.lower().eq("onet_task")].copy()
-    if "geo_id" in cols:
-        geo = block[cols["geo_id"]].astype(str)
-        chosen = geography if geography in set(geo) else geo.iloc[0]
-        block = block[geo.eq(chosen)]
-        checks.note(LAYER, f"geography used {release}", f"rows for geo_id {chosen}", None)
+    block = frame[frame[cols["geo_id"]].astype(str).eq(geography)] if "geo_id" in cols else frame
     if "platform_and_product" in cols:
         products = block[cols["platform_and_product"]].astype(str)
-        consumer = products.str.contains("claude.ai", case=False) | products.str.contains("claude_ai", case=False)
+        consumer = products.str.contains("claude ai", case=False) | products.str.contains("claude_ai", case=False)
         if consumer.any():
             block = block[consumer]
     if "date_start" in cols:
         latest = block[cols["date_start"]].astype(str).max()
         block = block[block[cols["date_start"]].astype(str).eq(latest)]
-        release = f"{release} {latest}"
-    block["value"] = pd.to_numeric(block[value], errors="coerce")
-    block["var"] = block[variable].astype(str).str.lower()
-    usage = block[block["var"].str.contains("pct") & ~block["var"].str.contains("automation|augmentation|collaboration")]
-    usage = usage.groupby(name)["value"].sum()
-    auto = block[block["var"].str.contains("automation")].groupby(name)["value"].sum()
-    aug = block[block["var"].str.contains("augmentation")].groupby(name)["value"].sum()
-    table = pd.DataFrame({"usage_share": usage, "automation_share": auto / 100, "augmentation_share": aug / 100})
+        release = f"{release} ({latest})"
+    block = block.assign(value=pd.to_numeric(block[value], errors="coerce"))
+
+    usage = block[block[facet].eq("onet_task") & block[variable].eq("onet_task_pct")]
+    usage = usage.groupby(name)["value"].sum() / 100
+    modes = block[block[facet].eq("onet_task::collaboration") & block[variable].eq("onet_task_collaboration_pct")].copy()
+    split = modes[name].astype(str).str.rsplit("::", n=1, expand=True)
+    modes["statement"], modes["mode"] = split[0], split[1].str.strip().str.lower()
+    auto = modes[modes["mode"].isin(AUTOMATION_MODES)].groupby("statement")["value"].sum() / 100
+    aug = modes[modes["mode"].isin(AUGMENTATION_MODES)].groupby("statement")["value"].sum() / 100
+    table = pd.DataFrame({"usage_share": usage})
+    table["automation_share"] = auto.reindex(table.index)
+    table["augmentation_share"] = aug.reindex(table.index)
     table.index.name = "statement"
-    table = table.reset_index()
-    table["key"] = _normalise_text(table["statement"])
-    lookup = _task_lookup()
-    joined = table.merge(lookup, on="key", how="left")
-    matched = float(joined.loc[joined["task_id"].notna(), "usage_share"].sum() / joined["usage_share"].sum())
-    checks.coverage(matched, 1.0, LAYER, f"usage on statements that match an O*NET task {release}", 0.9)
-    joined = joined.dropna(subset=["task_id"])
-    joined["platform"], joined["release"] = PLATFORM, release
-    return joined[["platform", "release", "task_id", "usage_share", "automation_share", "augmentation_share"]]
+    checks.close(float(table["usage_share"].sum()), 1.0, 1e-6, LAYER, f"task usage shares sum to one {release}")
+    return _join_statements(table.reset_index(), release, path)
+
+
+def state_usage(path: Path) -> pd.DataFrame | None:
+    """Usage share by US state from a long-table release, where it carries one."""
+    frame = pd.read_csv(path, low_memory=False)
+    cols = {c.lower(): c for c in frame.columns}
+    if "facet" not in cols:
+        return None
+    block = frame[frame[cols["facet"]].isin(["state_us", "country-state", "country_state"])
+                  & frame[cols["variable"]].eq("usage_pct")].copy()
+    if block.empty:
+        return None
+    geo = block[cols["geo_id"]].astype(str)
+    block["state_abbr"] = geo.str.replace(r"^US[-_]", "", regex=True)
+    block = block[block["state_abbr"].str.fullmatch(r"[A-Z]{2}")]
+    block["usage_share"] = pd.to_numeric(block[cols["value"]], errors="coerce") / 100
+    out = block.groupby("state_abbr", as_index=False)["usage_share"].sum()
+    out["release"] = _release_of(path)
+    checks.close(float(out["usage_share"].sum()), 1.0, 0.02, LAYER, f"state usage shares sum to one {out['release'].iloc[0]}")
+    return out[["release", "state_abbr", "usage_share"]]
 
 
 def read_release_file(path: Path) -> pd.DataFrame | None:
     frame = pd.read_csv(path, low_memory=False)
     lowered = {c.lower() for c in frame.columns}
     release = _release_of(path)
-    if any("task_id" in c for c in lowered):
+    if any("task_id" in c or c == "task id" for c in lowered) and not {"facet", "variable"} <= lowered:
         return _from_task_table(frame, release)
     if {"facet", "variable", "cluster_name", "value"} <= lowered:
-        return _from_long_table(frame, release)
+        return _from_long_table(frame, release, path)
+    if any("task" in c for c in lowered) and any("pct" in c or "share" in c for c in lowered) and len(lowered) <= 3:
+        return _from_text_table(frame, release, path)
     return None
 
 
 def usage_tables() -> list[pd.DataFrame] | None:
     AEI_DIR.mkdir(parents=True, exist_ok=True)
-    files = sorted(p for p in AEI_DIR.rglob("*.csv") if not p.name.startswith("."))
+    files = sorted(p for p in AEI_DIR.rglob("*.csv")
+                   if not p.name.startswith(".") and "onet_task_statements" not in p.name)
     tables = []
     for path in files:
         table = read_release_file(path)

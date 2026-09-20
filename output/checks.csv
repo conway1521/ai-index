@@ -111,20 +111,75 @@ exposure,"eloundou beta in [0.0, 1.0]",True,0.0,"0 values of eloundou beta outsi
 exposure,"unique key ['task_id', 'onetsoc_code']",True,0.0,"0 duplicate rows on ['task_id', 'onetsoc_code']"
 exposure,"eloundou beta by occupation in [0.0, 1.0]",True,0.0,"0 values of eloundou beta by occupation outside [0.0, 1.0]"
 exposure,unique key ['soc_code'],True,0.0,0 duplicate rows on ['soc_code']
+exposure,"anthropic observed exposure in [0.0, 1.0]",True,0.0,"0 values of anthropic observed exposure outside [0.0, 1.0]"
 outcomes,nonnegative relative pay by skill bundle statistic,True,0.0,0 negative values in relative pay by skill bundle statistic
 outcomes,nonnegative relative pay by skill bundle threshold,True,0.0,0 negative values in relative pay by skill bundle threshold
 outcomes,"relative pay by skill bundle p-value in [0.0, 1.0]",True,0.0,"0 values of relative pay by skill bundle p-value outside [0.0, 1.0]"
 outcomes,nonnegative employment-weighted skill intensity statistic,True,0.0,0 negative values in employment-weighted skill intensity statistic
 outcomes,nonnegative employment-weighted skill intensity threshold,True,0.0,0 negative values in employment-weighted skill intensity threshold
 outcomes,"employment-weighted skill intensity p-value in [0.0, 1.0]",True,0.0,"0 values of employment-weighted skill intensity p-value outside [0.0, 1.0]"
+aei,task usage shares sum to one 2025-09-15 (2025-08-04) within 0% of expected,True,1.2212453270876722e-15,"actual 1 against expected 1, gap 0.00%"
+aei,usage on statements that match an O*NET task 2025-09-15 (2025-08-04) coverage at least 90%,True,0.9187273326739201,91.9% of usage on statements that match an O*NET task 2025-09-15 (2025-08-04) covered
+aei,task usage shares sum to one 2026-01-15 (2025-11-13) within 0% of expected,True,1.3322676295501878e-15,"actual 1 against expected 1, gap 0.00%"
+aei,usage on statements that match an O*NET task 2026-01-15 (2025-11-13) coverage at least 90%,True,0.935143892986623,93.5% of usage on statements that match an O*NET task 2026-01-15 (2025-11-13) covered
+aei,task usage shares sum to one 2026-03-24 (2026-02-05) within 0% of expected,True,4.440892098500626e-16,"actual 1 against expected 1, gap 0.00%"
+aei,usage on statements that match an O*NET task 2026-03-24 (2026-02-05) coverage at least 90%,True,0.9297139999999999,93.0% of usage on statements that match an O*NET task 2026-03-24 (2026-02-05) covered
+aei,usage on statements that match an O*NET task 2026-06-26 (2026-04) coverage at least 90%,True,1.0,100.0% of usage on statements that match an O*NET task 2026-06-26 (2026-04) covered
+aei,usage on statements that match an O*NET task 2026-06-26 (2026-05) coverage at least 90%,True,1.0,100.0% of usage on statements that match an O*NET task 2026-06-26 (2026-05) covered
+usage,share sums to one within ['soc_code'],True,1.1102230246251565e-16,largest deviation from one is 1.11e-16
+usage,wage bill with task shares coverage at least 85%,True,0.915244175225329,91.5% of wage bill with task shares covered
+usage,task values add to the joined wage bill within 0% of expected,True,0.0,"actual 9.9157e+12 against expected 9.9157e+12, gap 0.00%"
+usage,task bundle rows sum to one (min) within 0% of expected,True,4.440892098500626e-16,"actual 1 against expected 1, gap 0.00%"
+usage,task bundle rows sum to one (max) within 0% of expected,True,4.440892098500626e-16,"actual 1 against expected 1, gap 0.00%"
+openai,activity shares 2026-06,True,0.9999899999999999,"165 activities, raw total 1.000 before normalising"
+usage,activity shares with tasks to receive them coverage at least 90%,True,0.9748597485974859,97.5% of activity shares with tasks to receive them covered
+openai,activity shares 2026-06,True,0.9999899999999999,"165 activities, raw total 1.000 before normalising"
+usage,activity shares with tasks to receive them coverage at least 90%,True,0.9748597485974859,97.5% of activity shares with tasks to receive them covered
+usage,nonnegative usage share,True,0.0,0 negative values in usage share
+usage,"usage_share sums to one within ['platform', 'release']",True,0.0,largest deviation from one is 0.00e+00
+usage,"automation plus augmentation in [0.0, 1.01]",True,0.0,"0 values of automation plus augmentation outside [0.0, 1.01]"
+usage,nonnegative usage share,True,0.0,0 negative values in usage share
+usage,"usage_share sums to one within ['platform', 'release']",True,0.0,largest deviation from one is 0.00e+00
+usage,"automation plus augmentation in [0.0, 1.01]",True,0.0,"0 values of automation plus augmentation outside [0.0, 1.01]"
+usage,nonnegative usage share,True,0.0,0 negative values in usage share
+usage,"usage_share sums to one within ['platform', 'release']",True,0.0,largest deviation from one is 0.00e+00
+usage,"automation plus augmentation in [0.0, 1.01]",True,0.0,"0 values of automation plus augmentation outside [0.0, 1.01]"
+usage,nonnegative usage share,True,0.0,0 negative values in usage share
+usage,"usage_share sums to one within ['platform', 'release']",True,0.0,largest deviation from one is 0.00e+00
+usage,nonnegative usage share,True,0.0,0 negative values in usage share
+usage,"usage_share sums to one within ['platform', 'release']",True,0.0,largest deviation from one is 0.00e+00
+usage,nonnegative usage share,True,0.0,0 negative values in usage share
+usage,"usage_share sums to one within ['platform', 'release']",True,0.0,largest deviation from one is 0.00e+00
+usage,nonnegative usage share,True,0.0,0 negative values in usage share
+usage,"usage_share sums to one within ['platform', 'release']",True,0.0,largest deviation from one is 0.00e+00
+usage,task values with a gamma row coverage at least 95%,True,1.0,100.0% of task values with a gamma row covered
+usage,reach anthropic 2025-09-15 (2025-08-04) never exceeds its whole,True,0.0,0 rows where the part exceeds the whole
+usage,usage matched to a valued task anthropic 2025-09-15 (2025-08-04),True,0.7750203982137598,77.5% of usage share lands on tasks with a value
+usage,reach anthropic 2026-01-15 (2025-11-13) never exceeds its whole,True,0.0,0 rows where the part exceeds the whole
+usage,usage matched to a valued task anthropic 2026-01-15 (2025-11-13),True,0.7536274353574814,75.4% of usage share lands on tasks with a value
+usage,reach anthropic 2026-03-24 (2026-02-05) never exceeds its whole,True,0.0,0 rows where the part exceeds the whole
+usage,usage matched to a valued task anthropic 2026-03-24 (2026-02-05),True,0.7718803847204625,77.2% of usage share lands on tasks with a value
+usage,reach anthropic 2026-06-26 (2026-04) never exceeds its whole,True,0.0,0 rows where the part exceeds the whole
+usage,usage matched to a valued task anthropic 2026-06-26 (2026-04),True,0.8032958808017336,80.3% of usage share lands on tasks with a value
+usage,reach anthropic 2026-06-26 (2026-05) never exceeds its whole,True,0.0,0 rows where the part exceeds the whole
+usage,usage matched to a valued task anthropic 2026-06-26 (2026-05),True,0.808317148359889,80.8% of usage share lands on tasks with a value
+usage,reach openai 2026-06 (dollar allocation) never exceeds its whole,True,0.0,0 rows where the part exceeds the whole
+usage,usage matched to a valued task openai 2026-06 (dollar allocation),True,1.0,100.0% of usage share lands on tasks with a value
+usage,reach openai 2026-06 (equal allocation) never exceeds its whole,True,0.0,0 rows where the part exceeds the whole
+usage,usage matched to a valued task openai 2026-06 (equal allocation),True,0.893680759039464,89.4% of usage share lands on tasks with a value
+usage,"usage_share_on_bundle sums to one within ['platform', 'release']",True,1.1102230246251565e-16,largest deviation from one is 1.11e-16
+usage,"reach share of bundle bill in [0.0, 1.000000001]",True,0.0,"0 values of reach share of bundle bill outside [0.0, 1.000000001]"
 state,"share of bill exposed in [0.0, 1.0]",True,0.0,"0 values of share of bill exposed outside [0.0, 1.0]"
 state,"unique key ['vintage', 'state_fips', 'measure']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'measure']"
+state,"median state wage bill scored, anthropic_observed coverage at least 80%",True,0.9237160158896087,"92.4% of median state wage bill scored, anthropic_observed covered"
 state,"median state wage bill scored, eloundou_beta coverage at least 80%",True,0.9440985775607275,"94.4% of median state wage bill scored, eloundou_beta covered"
 state,"median state wage bill scored, felten_aioe coverage at least 80%",True,0.809569395264663,"81.0% of median state wage bill scored, felten_aioe covered"
 state,"unique key ['state_fips', 'start', 'end', 'measure']",True,0.0,"0 duplicate rows on ['state_fips', 'start', 'end', 'measure']"
 state,realised change cells 2022-2024 eloundou_beta,True,,"median exposed cells per state 173, median unexposed 422"
 state,"unique key ['state_fips', 'start', 'end', 'measure']",True,0.0,"0 duplicate rows on ['state_fips', 'start', 'end', 'measure']"
 state,realised change cells 2022-2024 felten_aioe,True,,"median exposed cells per state 163, median unexposed 363"
+state,"unique key ['state_fips', 'start', 'end', 'measure']",True,0.0,"0 duplicate rows on ['state_fips', 'start', 'end', 'measure']"
+state,realised change cells 2022-2024 anthropic_observed,True,,"median exposed cells per state 128, median unexposed 462"
 btos,"share using AI in [0.0, 100.0]",True,0.0,"0 values of share using AI outside [0.0, 100.0]"
 btos,cycles with a reference date coverage at least 99%,True,1.0,100.0% of cycles with a reference date covered
 btos,"unique key ['state', 'series', 'cycle']",True,0.0,"0 duplicate rows on ['state', 'series', 'cycle']"
@@ -133,6 +188,10 @@ state,"BTOS share using AI in [0.0, 100.0]",True,0.0,"0 values of BTOS share usi
 state,"unique key ['state_fips', 'year']",True,0.0,"0 duplicate rows on ['state_fips', 'year']"
 state,"BTOS share using AI in [0.0, 100.0]",True,0.0,"0 values of BTOS share using AI outside [0.0, 100.0]"
 state,"unique key ['state_fips', 'year']",True,0.0,"0 duplicate rows on ['state_fips', 'year']"
+aei,state usage shares sum to one 2025-09-15 within 2% of expected,True,9.606147934659859e-06,"actual 0.99999 against expected 1, gap 0.00%"
+aei,state usage shares sum to one 2026-01-15 within 2% of expected,True,0.0,"actual 1 against expected 1, gap 0.00%"
+aei,state usage shares sum to one 2026-03-24 within 2% of expected,True,0.0028420844350909302,"actual 1.00284 against expected 1, gap 0.28%"
+state,state abbreviations without a FIPS code,True,0.0,[]
 spine,CIP to SOC: source codes,True,2143.0,2143 distinct cip_code codes
 spine,CIP to SOC: one-to-many,True,1517.0,1517 cip_code codes map to several soc_code
 spine,"unique key ['cip_code', 'soc_code']",True,0.0,"0 duplicate rows on ['cip_code', 'soc_code']"

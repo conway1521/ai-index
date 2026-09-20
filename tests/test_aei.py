@@ -10,14 +10,17 @@ def test_long_table_joins_statements_to_task_ids(tmp_path):
     from src import onet
     tasks = onet.task_statements().head(40)
     rows = []
+    base = {"geo_id": "GLOBAL", "geography": "global", "date_start": "2026-05-01", "date_end": "2026-05-31",
+            "platform_and_product": "Claude AI (Free and Pro)", "level": 0}
     for _, task in tasks.iterrows():
-        for variable, value in (("onet_task_pct", 2.5), ("onet_task_automation_pct", 40.0),
-                                ("onet_task_augmentation_pct", 55.0)):
-            rows.append({"geo_id": "GLOBAL", "geography": "global", "date_start": "2026-05-01",
-                         "date_end": "2026-05-31", "platform_and_product": "Claude AI (Free and Pro)",
-                         "facet": "onet_task", "level": 0, "variable": variable,
-                         "cluster_name": task["task_statement"], "value": value})
-    rows.append({**rows[0], "cluster_name": "A statement that is not in O*NET", "value": 1.0})
+        statement = task["task_statement"].lower()
+        rows.append({**base, "facet": "onet_task", "variable": "onet_task_pct", "cluster_name": statement, "value": 2.475})
+        for mode, value in (("directive", 30.0), ("feedback loop", 10.0), ("validation", 25.0),
+                            ("task iteration", 20.0), ("learning", 10.0), ("not_classified", 5.0)):
+            rows.append({**base, "facet": "onet_task::collaboration", "variable": "onet_task_collaboration_pct",
+                         "cluster_name": f"{statement}::{mode}", "value": value})
+    rows.append({**base, "facet": "onet_task", "variable": "onet_task_pct",
+                 "cluster_name": "a statement that is not in o*net", "value": 1.0})
     path = tmp_path / "release_2026_06_26" / "aei_claude_ai_2026-05.csv"
     path.parent.mkdir()
     pd.DataFrame(rows).to_csv(path, index=False)

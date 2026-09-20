@@ -1,5 +1,5 @@
 {
-  "seconds": 79,
+  "seconds": 88,
   "onet_release": "30.2",
   "grades": {
     "onet_release": "mirror",
@@ -46,6 +46,13 @@
     "oews:state_M2024_dl.xlsx": "mirror",
     "eloundou_full_labelset": "real",
     "felten_aioe": "real",
+    "aei_labor:job_exposure.csv": "mirror",
+    "aei:release_2025_09_15/aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv": "mirror",
+    "aei:release_2026_01_15/aei_raw_claude_ai_2025-11-13_to_2025-11-20.csv": "mirror",
+    "aei:release_2026_03_24/aei_raw_claude_ai_2026-02-05_to_2026-02-12.csv": "mirror",
+    "aei:release_2026_06_26/task_pct_2026-04.csv": "mirror",
+    "aei:release_2026_06_26/task_pct_2026-05.csv": "mirror",
+    "openai:usa_share_of_work_related_messages_by_onet_iwa_month.csv": "mirror",
     "btos_State.xlsx": "mirror",
     "acs_pums_test_state": "mirror",
     "ipeds_HD2023.csv": "mirror",
@@ -64,11 +71,9 @@
     "cps_layout_2025": "mirror",
     "cps_layout_2022": "mirror"
   },
-  "skipped": {
-    "usage": "no Anthropic Economic Index release in data/raw/aei"
-  },
+  "skipped": {},
   "checks": {
-    "passed": 205,
-    "rows": 205
+    "passed": 264,
+    "rows": 264
   }
 }

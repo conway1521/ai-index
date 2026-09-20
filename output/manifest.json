@@ -1,5 +1,5 @@
 {
-  "written_at": "2026-09-20T05:35:03+00:00",
+  "written_at": "2026-09-20T05:50:52+00:00",
   "files": {
     "onet_release": {
       "path": "aiindex/data/raw/onet/onet_db_30_2_text.zip",
@@ -8,7 +8,7 @@
       "grade": "mirror",
       "bytes": 13444123,
       "sha256": "2608147c2d74f99f0e240debdc3486126c704ffce306a9457a4220c945f2a1b8",
-      "recorded_at": "2026-09-20T05:33:43+00:00",
+      "recorded_at": "2026-09-20T05:50:31+00:00",
       "notes": "O*NET release 30.2"
     },
     "crosswalk_onetsoc_2019_to_soc_2018": {
@@ -18,7 +18,7 @@
       "grade": "mirror",
       "bytes": 91732,
       "sha256": "506fff0a3ca0d26137b9389322413022a4348bead559c4dd24edeb2cea86aa89",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     },
     "crosswalk_census_2018_to_soc": {
@@ -28,7 +28,7 @@
       "grade": "mirror",
       "bytes": 171452,
       "sha256": "bc5176fd976363ffff7ec41ba3e2fc503b68d5f066fefdfbc43fcc6fafb1bcde",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     },
     "crosswalk_cip_2020_to_soc_2018": {
@@ -38,7 +38,7 @@
       "grade": "mirror",
       "bytes": 428756,
       "sha256": "6375c4c25a53fc97f2b178d6b9e919718772359c294b8880a5f351b8e1a77feb",
-      "recorded_at": "2026-09-20T05:34:54+00:00",
+      "recorded_at": "2026-09-20T05:50:44+00:00",
       "notes": ""
     },
     "oews_national_2019": {
@@ -48,7 +48,7 @@
       "grade": "mirror",
       "bytes": 249801,
       "sha256": "e49bae66ebe30db52125c3afe850e6a7a159bcdb97644c16fd7936e18c14c787",
-      "recorded_at": "2026-09-20T05:33:44+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_national_2021": {
@@ -58,7 +58,7 @@
       "grade": "mirror",
       "bytes": 289346,
       "sha256": "8cb0b63b69a2405206d1bcee55c09f96768e68dca7b77f0abcf1f5a44b951e02",
-      "recorded_at": "2026-09-20T05:33:44+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_national_2022": {
@@ -68,7 +68,7 @@
       "grade": "mirror",
       "bytes": 283496,
       "sha256": "19aadce804696b04d3df63215b89e112a9956c7ea3da7d5e23bd4ab1ad8d6a99",
-      "recorded_at": "2026-09-20T05:33:44+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_national_2023": {
@@ -78,7 +78,7 @@
       "grade": "mirror",
       "bytes": 285018,
       "sha256": "9200eb0423feece690c2f7e9a20c3817b0e494cd7071cb455b3ebae579536d5a",
-      "recorded_at": "2026-09-20T05:33:44+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_national_2024": {
@@ -88,7 +88,7 @@
       "grade": "mirror",
       "bytes": 291056,
       "sha256": "a9bad3093703e28d7490cedb765b6730f4eaa4b37a7c8f68e866814167761f11",
-      "recorded_at": "2026-09-20T05:33:44+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_national_2025": {
@@ -98,7 +98,7 @@
       "grade": "mirror",
       "bytes": 279525,
       "sha256": "b5855a37f3e03e779f6fbf173d3bbc94aeeff33426aef32fa95ce6d025bab1af",
-      "recorded_at": "2026-09-20T05:33:44+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2012": {
@@ -108,7 +108,7 @@
       "grade": "mirror",
       "bytes": 6137186,
       "sha256": "4a1b269e1cdd334913f0bbb677dac1607808fb305d6f90fb7758d4fc54d438e7",
-      "recorded_at": "2026-09-20T05:33:44+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2013": {
@@ -118,7 +118,7 @@
       "grade": "mirror",
       "bytes": 6150738,
       "sha256": "1337bdb1e563c4e573bc8e85edc3ede2d615c8be5e417966be401605604e92d5",
-      "recorded_at": "2026-09-20T05:33:44+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2014": {
@@ -128,7 +128,7 @@
       "grade": "mirror",
       "bytes": 6150861,
       "sha256": "d3d489ad475e19e12795f42aa39f6ec1bef5c2ef9ff44235b0385451258fa841",
-      "recorded_at": "2026-09-20T05:33:44+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2015": {
@@ -138,7 +138,7 @@
       "grade": "mirror",
       "bytes": 6139629,
       "sha256": "7f3f864d9ee84a571feccab6ae3f0f9fd8e075808388de3118b3e40366d5862f",
-      "recorded_at": "2026-09-20T05:33:44+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2016": {
@@ -148,7 +148,7 @@
       "grade": "mirror",
       "bytes": 6131463,
       "sha256": "62a2de4cd9fcc916543a34f0b79db83bd7ba6d105c35d0cf4abcdb1da0d61e3f",
-      "recorded_at": "2026-09-20T05:33:44+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2017": {
@@ -158,7 +158,7 @@
       "grade": "mirror",
       "bytes": 6037455,
       "sha256": "a0556f9048e1ce4dcf9bdc9d7360baec8e7dc7a8bd61718a061302ebbb353ec9",
-      "recorded_at": "2026-09-20T05:33:44+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2018": {
@@ -168,7 +168,7 @@
       "grade": "mirror",
       "bytes": 6026431,
       "sha256": "af5b01c16c8c7a9d4a34ba4b9b48e0d423f2ea0e9d90d98976b3d7726ee4fd35",
-      "recorded_at": "2026-09-20T05:33:45+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2019": {
@@ -178,7 +178,7 @@
       "grade": "mirror",
       "bytes": 6865479,
       "sha256": "cb3ec51766729bceb12ab39aebf490220a93bc5b5f8a385333a0084748341260",
-      "recorded_at": "2026-09-20T05:33:45+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2020": {
@@ -188,7 +188,7 @@
       "grade": "mirror",
       "bytes": 7191159,
       "sha256": "e0383294ca5eb0386ae4f29f7934cf2b9ba017ae06eff5ab8cd1053fbd9faa3e",
-      "recorded_at": "2026-09-20T05:33:45+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2021": {
@@ -198,7 +198,7 @@
       "grade": "mirror",
       "bytes": 7637487,
       "sha256": "11fde9789a6af027273c1767d0a497548562c6ffdcecca21cb0f83832a3687ba",
-      "recorded_at": "2026-09-20T05:33:45+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2022": {
@@ -208,7 +208,7 @@
       "grade": "mirror",
       "bytes": 7595871,
       "sha256": "e4546129234f3f86941b77884dc3e95e0bfc9d3af6595d57174181853e7e82bc",
-      "recorded_at": "2026-09-20T05:33:45+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2023": {
@@ -218,7 +218,7 @@
       "grade": "mirror",
       "bytes": 7628070,
       "sha256": "c2a0051146950d5afde33471b5a304e07b47a207baf5ae677e85761022a94fa7",
-      "recorded_at": "2026-09-20T05:33:45+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2024": {
@@ -228,7 +228,7 @@
       "grade": "mirror",
       "bytes": 7720116,
       "sha256": "904b7d452be92d354a8edae8d81a1883aba5a95b0f1535c3a426907644804650",
-      "recorded_at": "2026-09-20T05:33:45+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews:national_M2019_dl.xlsx": {
@@ -238,7 +238,7 @@
       "grade": "mirror",
       "bytes": 249801,
       "sha256": "e49bae66ebe30db52125c3afe850e6a7a159bcdb97644c16fd7936e18c14c787",
-      "recorded_at": "2026-09-20T05:33:45+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:national_M2021_dl.xlsx": {
@@ -248,7 +248,7 @@
       "grade": "mirror",
       "bytes": 289346,
       "sha256": "8cb0b63b69a2405206d1bcee55c09f96768e68dca7b77f0abcf1f5a44b951e02",
-      "recorded_at": "2026-09-20T05:33:45+00:00",
+      "recorded_at": "2026-09-20T05:49:26+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:national_M2022_dl.xlsx": {
@@ -258,7 +258,7 @@
       "grade": "mirror",
       "bytes": 283496,
       "sha256": "19aadce804696b04d3df63215b89e112a9956c7ea3da7d5e23bd4ab1ad8d6a99",
-      "recorded_at": "2026-09-20T05:33:45+00:00",
+      "recorded_at": "2026-09-20T05:49:27+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:national_M2023_dl.xlsx": {
@@ -268,7 +268,7 @@
       "grade": "mirror",
       "bytes": 285018,
       "sha256": "9200eb0423feece690c2f7e9a20c3817b0e494cd7071cb455b3ebae579536d5a",
-      "recorded_at": "2026-09-20T05:33:45+00:00",
+      "recorded_at": "2026-09-20T05:49:27+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:national_M2024_dl.xlsx": {
@@ -278,7 +278,7 @@
       "grade": "mirror",
       "bytes": 291056,
       "sha256": "a9bad3093703e28d7490cedb765b6730f4eaa4b37a7c8f68e866814167761f11",
-      "recorded_at": "2026-09-20T05:33:46+00:00",
+      "recorded_at": "2026-09-20T05:49:27+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:oesm25nat.zip": {
@@ -288,7 +288,7 @@
       "grade": "mirror",
       "bytes": 279525,
       "sha256": "b5855a37f3e03e779f6fbf173d3bbc94aeeff33426aef32fa95ce6d025bab1af",
-      "recorded_at": "2026-09-20T05:33:46+00:00",
+      "recorded_at": "2026-09-20T05:49:27+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2012_dl.xlsx": {
@@ -298,7 +298,7 @@
       "grade": "mirror",
       "bytes": 6137186,
       "sha256": "4a1b269e1cdd334913f0bbb677dac1607808fb305d6f90fb7758d4fc54d438e7",
-      "recorded_at": "2026-09-20T05:33:50+00:00",
+      "recorded_at": "2026-09-20T05:49:31+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2013_dl.xlsx": {
@@ -308,7 +308,7 @@
       "grade": "mirror",
       "bytes": 6150738,
       "sha256": "1337bdb1e563c4e573bc8e85edc3ede2d615c8be5e417966be401605604e92d5",
-      "recorded_at": "2026-09-20T05:33:54+00:00",
+      "recorded_at": "2026-09-20T05:49:35+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2014_dl.xlsx": {
@@ -318,7 +318,7 @@
       "grade": "mirror",
       "bytes": 6150861,
       "sha256": "d3d489ad475e19e12795f42aa39f6ec1bef5c2ef9ff44235b0385451258fa841",
-      "recorded_at": "2026-09-20T05:33:58+00:00",
+      "recorded_at": "2026-09-20T05:49:39+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2015_dl.xlsx": {
@@ -328,7 +328,7 @@
       "grade": "mirror",
       "bytes": 6139629,
       "sha256": "7f3f864d9ee84a571feccab6ae3f0f9fd8e075808388de3118b3e40366d5862f",
-      "recorded_at": "2026-09-20T05:34:02+00:00",
+      "recorded_at": "2026-09-20T05:49:43+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2016_dl.xlsx": {
@@ -338,7 +338,7 @@
       "grade": "mirror",
       "bytes": 6131463,
       "sha256": "62a2de4cd9fcc916543a34f0b79db83bd7ba6d105c35d0cf4abcdb1da0d61e3f",
-      "recorded_at": "2026-09-20T05:34:06+00:00",
+      "recorded_at": "2026-09-20T05:49:46+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2017_dl.xlsx": {
@@ -348,7 +348,7 @@
       "grade": "mirror",
       "bytes": 6037455,
       "sha256": "a0556f9048e1ce4dcf9bdc9d7360baec8e7dc7a8bd61718a061302ebbb353ec9",
-      "recorded_at": "2026-09-20T05:34:10+00:00",
+      "recorded_at": "2026-09-20T05:49:50+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2018_dl.xlsx": {
@@ -358,7 +358,7 @@
       "grade": "mirror",
       "bytes": 6026431,
       "sha256": "af5b01c16c8c7a9d4a34ba4b9b48e0d423f2ea0e9d90d98976b3d7726ee4fd35",
-      "recorded_at": "2026-09-20T05:34:14+00:00",
+      "recorded_at": "2026-09-20T05:49:54+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2019_dl.xlsx": {
@@ -368,7 +368,7 @@
       "grade": "mirror",
       "bytes": 6865479,
       "sha256": "cb3ec51766729bceb12ab39aebf490220a93bc5b5f8a385333a0084748341260",
-      "recorded_at": "2026-09-20T05:34:18+00:00",
+      "recorded_at": "2026-09-20T05:49:58+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2020_dl.xlsx": {
@@ -378,7 +378,7 @@
       "grade": "mirror",
       "bytes": 7191159,
       "sha256": "e0383294ca5eb0386ae4f29f7934cf2b9ba017ae06eff5ab8cd1053fbd9faa3e",
-      "recorded_at": "2026-09-20T05:34:23+00:00",
+      "recorded_at": "2026-09-20T05:50:03+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2021_dl.xlsx": {
@@ -388,7 +388,7 @@
       "grade": "mirror",
       "bytes": 7637487,
       "sha256": "11fde9789a6af027273c1767d0a497548562c6ffdcecca21cb0f83832a3687ba",
-      "recorded_at": "2026-09-20T05:34:28+00:00",
+      "recorded_at": "2026-09-20T05:50:08+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2022_dl.xlsx": {
@@ -398,7 +398,7 @@
       "grade": "mirror",
       "bytes": 7595871,
       "sha256": "e4546129234f3f86941b77884dc3e95e0bfc9d3af6595d57174181853e7e82bc",
-      "recorded_at": "2026-09-20T05:34:33+00:00",
+      "recorded_at": "2026-09-20T05:50:13+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2023_dl.xlsx": {
@@ -408,7 +408,7 @@
       "grade": "mirror",
       "bytes": 7628070,
       "sha256": "c2a0051146950d5afde33471b5a304e07b47a207baf5ae677e85761022a94fa7",
-      "recorded_at": "2026-09-20T05:34:39+00:00",
+      "recorded_at": "2026-09-20T05:50:18+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2024_dl.xlsx": {
@@ -418,7 +418,7 @@
       "grade": "mirror",
       "bytes": 7720116,
       "sha256": "904b7d452be92d354a8edae8d81a1883aba5a95b0f1535c3a426907644804650",
-      "recorded_at": "2026-09-20T05:34:44+00:00",
+      "recorded_at": "2026-09-20T05:50:23+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "eloundou_full_labelset": {
@@ -428,7 +428,7 @@
       "grade": "real",
       "bytes": 3893248,
       "sha256": "094378905e1f3349e50a9a83dc69643a2ef227954d611c8316a46da08cb3d8de",
-      "recorded_at": "2026-09-20T05:34:45+00:00",
+      "recorded_at": "2026-09-20T05:50:24+00:00",
       "notes": "published archive at https://github.com/openai/GPTs-are-GPTs/archive/refs/heads/main.zip"
     },
     "felten_aioe": {
@@ -438,8 +438,78 @@
       "grade": "real",
       "bytes": 170359,
       "sha256": "c123b4c64840aff3568ae6c97256678719b88a74d45b6362dbefb5af34667b95",
-      "recorded_at": "2026-09-20T05:34:45+00:00",
+      "recorded_at": "2026-09-20T05:50:24+00:00",
       "notes": "published archive at https://github.com/AIOE-Data/AIOE/archive/refs/heads/main.zip"
+    },
+    "aei_labor:job_exposure.csv": {
+      "path": "aiindex/data/raw/aei_labor_market/job_exposure.csv",
+      "official_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex/resolve/main/labor_market_impacts/job_exposure.csv",
+      "source_url": "https://raw.githubusercontent.com/tkc88888888/EconomicIndex/main/labor_market_impacts/job_exposure.csv",
+      "grade": "mirror",
+      "bytes": 37176,
+      "sha256": "4f0a3adf5feeb2ec5f5d02ab18cc5e851a2a4b8470bde84c0c9335017be12d68",
+      "recorded_at": "2026-09-20T05:50:24+00:00",
+      "notes": "sha256 matches the Hugging Face file; observed exposure by six-digit SOC 2018"
+    },
+    "aei:release_2025_09_15/aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv": {
+      "path": "aiindex/data/raw/aei/release_2025_09_15/aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv",
+      "official_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      "source_url": "https://raw.githubusercontent.com/IlanStrauss/anthropic-econ-critique/main/data/anthropic/release_2025_09_15/data/intermediate/aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv",
+      "grade": "mirror",
+      "bytes": 18894517,
+      "sha256": "c8ef9c5eee0c42febc73e358ecc7d2358e0a0ce3b50122c0c15ae8ec569aceff",
+      "recorded_at": "2026-09-20T05:50:28+00:00",
+      "notes": ""
+    },
+    "aei:release_2026_01_15/aei_raw_claude_ai_2025-11-13_to_2025-11-20.csv": {
+      "path": "aiindex/data/raw/aei/release_2026_01_15/aei_raw_claude_ai_2025-11-13_to_2025-11-20.csv",
+      "official_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      "source_url": "https://raw.githubusercontent.com/IlanStrauss/anthropic-econ-critique/main/data/anthropic/release_2026_01_15/data/intermediate/aei_raw_claude_ai_2025-11-13_to_2025-11-20.csv",
+      "grade": "mirror",
+      "bytes": 94086309,
+      "sha256": "70dc16780061b84d3f34ddf7fe5c978d65c99a5ef58afd78f9315f886a6a5873",
+      "recorded_at": "2026-09-20T05:50:30+00:00",
+      "notes": ""
+    },
+    "aei:release_2026_03_24/aei_raw_claude_ai_2026-02-05_to_2026-02-12.csv": {
+      "path": "aiindex/data/raw/aei/release_2026_03_24/aei_raw_claude_ai_2026-02-05_to_2026-02-12.csv",
+      "official_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      "source_url": "https://raw.githubusercontent.com/dioandre3/UMICH-STAT507/main/Final%20Project/Final%20Project/aei_raw_claude_ai_2026-02-05_to_2026-02-12.csv",
+      "grade": "mirror",
+      "bytes": 95592872,
+      "sha256": "98b290b43e0204fd2cd940bdec8d548e62f25fdf592505ffc251f9dfe53943c8",
+      "recorded_at": "2026-09-20T05:50:31+00:00",
+      "notes": ""
+    },
+    "aei:release_2026_06_26/task_pct_2026-04.csv": {
+      "path": "aiindex/data/raw/aei/release_2026_06_26/task_pct_2026-04.csv",
+      "official_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      "source_url": "https://raw.githubusercontent.com/theodorewright11/ai-workforce-exposure-dataset-construction-public/main/data/task_pct_v6_1.csv",
+      "grade": "mirror",
+      "bytes": 260746,
+      "sha256": "9d0040ad57fb26ba058d54cf40c110b881ecaabbb39eb264035fef764ec233e6",
+      "recorded_at": "2026-09-20T05:50:31+00:00",
+      "notes": ""
+    },
+    "aei:release_2026_06_26/task_pct_2026-05.csv": {
+      "path": "aiindex/data/raw/aei/release_2026_06_26/task_pct_2026-05.csv",
+      "official_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      "source_url": "https://raw.githubusercontent.com/theodorewright11/ai-workforce-exposure-dataset-construction-public/main/data/task_pct_v6_2.csv",
+      "grade": "mirror",
+      "bytes": 293587,
+      "sha256": "1a69518130bce8e4a575d9016828d4f6eca7d0dc894e072502de12cd379f0287",
+      "recorded_at": "2026-09-20T05:50:31+00:00",
+      "notes": ""
+    },
+    "openai:usa_share_of_work_related_messages_by_onet_iwa_month.csv": {
+      "path": "aiindex/data/raw/openai/usa_share_of_work_related_messages_by_onet_iwa_month.csv",
+      "official_url": "https://openai.com/signals/data-download/",
+      "source_url": "https://raw.githubusercontent.com/prashgarg/global-automation-atlas/main/outputs/source_data/openai_observed_use/usa_share_of_work_related_messages_by_onet_iwa_month.csv",
+      "grade": "mirror",
+      "bytes": 130620,
+      "sha256": "97c9a3b9b1bb14df3f8c7d8bcdb48004c822a3d3cdac7feb821a1cbb65c8080e",
+      "recorded_at": "2026-09-20T05:50:34+00:00",
+      "notes": "v2.0 download as committed by a third party"
     },
     "btos_State.xlsx": {
       "path": "aiindex/data/raw/btos/State.xlsx",
@@ -448,7 +518,7 @@
       "grade": "mirror",
       "bytes": 3415708,
       "sha256": "58244e715e2a0c70d814995b38ba0fc2b77a4c3e795a58430347d69c920d439e",
-      "recorded_at": "2026-09-20T05:34:52+00:00",
+      "recorded_at": "2026-09-20T05:50:40+00:00",
       "notes": "Census download workbook, biweekly cycles as columns"
     },
     "acs_pums_test_state": {
@@ -458,7 +528,7 @@
       "grade": "mirror",
       "bytes": 41063175,
       "sha256": "81815a814150b3defa560ca19121336d411ee76ae484263b7b01c69ecf8555d3",
-      "recorded_at": "2026-09-20T05:34:56+00:00",
+      "recorded_at": "2026-09-20T05:50:46+00:00",
       "notes": "one state's one-year person file, a test of the join"
     },
     "ipeds_HD2023.csv": {
@@ -468,7 +538,7 @@
       "grade": "mirror",
       "bytes": 4530883,
       "sha256": "fe6247797a4813dc9ade4ddb27043f6081382f4dad88d3b3d1b3e3610fa3525e",
-      "recorded_at": "2026-09-20T05:34:57+00:00",
+      "recorded_at": "2026-09-20T05:50:47+00:00",
       "notes": ""
     },
     "ipeds_C2023_A.csv": {
@@ -478,7 +548,7 @@
       "grade": "mirror",
       "bytes": 43050490,
       "sha256": "0fcdf4f03fb061da3bf68eceb6b633edfa69c3f8d52bea97902ad6d59d3867bf",
-      "recorded_at": "2026-09-20T05:34:57+00:00",
+      "recorded_at": "2026-09-20T05:50:47+00:00",
       "notes": ""
     },
     "ipeds_C2024_A.csv": {
@@ -488,7 +558,7 @@
       "grade": "mirror",
       "bytes": 43679279,
       "sha256": "07563c2975088b364b4a0c3a4edacfc9cdf101d8a0a8a9e1839ad6c5eb4a665a",
-      "recorded_at": "2026-09-20T05:35:00+00:00",
+      "recorded_at": "2026-09-20T05:50:50+00:00",
       "notes": ""
     },
     "nsc_major_field": {
@@ -498,7 +568,7 @@
       "grade": "fixture",
       "bytes": 879,
       "sha256": "98f1047512e7824542a11ff6c1b83212b3a73c0228bdec8f11d004283756e919",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     },
     "flows_transition_matrix": {
@@ -508,7 +578,7 @@
       "grade": "fixture",
       "bytes": 13041,
       "sha256": "4190cf96f2cf19ee5d97592488299c9d23b07e22185f0290d3149f9e04228d73",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": "year by age band by origin by destination"
     },
     "flows_arrivals": {
@@ -518,7 +588,7 @@
       "grade": "fixture",
       "bytes": 387,
       "sha256": "09a14daf466b69325e4046ecdfd64f12e57c494f6522d5e35b7ca79354b37dcd",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     },
     "cps:apr25pub.dat": {
@@ -528,7 +598,7 @@
       "grade": "fixture",
       "bytes": 2868000,
       "sha256": "70a55a65986b68f6cb22ac66d234a2fcd878200ad8f8aa0a2e8a7feba1acadd4",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     },
     "cps:feb25pub.dat": {
@@ -538,7 +608,7 @@
       "grade": "fixture",
       "bytes": 2868000,
       "sha256": "5a062626331aba4a68d2d20cf222b3ba563c1b418758d7a67644823d7e5df174",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     },
     "cps:jan25pub.dat": {
@@ -548,7 +618,7 @@
       "grade": "fixture",
       "bytes": 2868000,
       "sha256": "421f5e9d43434e1a7274ab86881d7449b00a1a90540eb51a43a9cf68d7f1f639",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     },
     "cps:mar25pub.dat": {
@@ -558,7 +628,7 @@
       "grade": "fixture",
       "bytes": 2868000,
       "sha256": "dfd943e1cc17cb535f5f89b8a30a6a6bcbcc58fdf1f3d9d4fd435d4f8025f37f",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     },
     "cps_layout_2023": {
@@ -568,7 +638,7 @@
       "grade": "mirror",
       "bytes": 166444,
       "sha256": "4895273cf2aa25db259a2f1432c130da3e10212dc92fad1aea96c728fc41d071",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     },
     "cps_layout_2024": {
@@ -578,7 +648,7 @@
       "grade": "mirror",
       "bytes": 167364,
       "sha256": "7065678e6e62562183c1076d6846efea74f3fdb7f323f42f50cdfd5250a49a9d",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     },
     "cps_layout_2026": {
@@ -588,7 +658,7 @@
       "grade": "mirror",
       "bytes": 167001,
       "sha256": "0c1acfbe3a669c204d32d36a458a12972c6a41c3311f02d4ff7b84e4b2885017",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     },
     "cps_layout_2025": {
@@ -598,7 +668,7 @@
       "grade": "mirror",
       "bytes": 167459,
       "sha256": "f846661ba077f89d5ccd5e28d385f78b22d8986a8cadcf73bfa7a70bac007470",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     },
     "cps_layout_2022": {
@@ -608,7 +678,7 @@
       "grade": "mirror",
       "bytes": 166305,
       "sha256": "ed98d01f7d301f32e750a2ba6c1e32756179c74f703a0703170997f1d514898f",
-      "recorded_at": "2026-09-20T05:35:02+00:00",
+      "recorded_at": "2026-09-20T05:50:52+00:00",
       "notes": ""
     }
   }

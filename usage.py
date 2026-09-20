@@ -54,17 +54,25 @@ def validate_usage(table: pd.DataFrame) -> pd.DataFrame:
         raise ValueError(f"usage table lacks {missing}; schema is {USAGE_COLUMNS}")
     out = table[USAGE_COLUMNS].copy()
     out["task_id"] = out["task_id"].astype(str)
-    out = out.groupby(["platform", "release", "task_id"], as_index=False).agg(
-        usage_share=("usage_share", "sum"),
-        automation_share=("automation_share", "mean"),
-        augmentation_share=("augmentation_share", "mean"))
+    # Two statements can carry one identifier when a statement was reworded
+    # between O*NET releases, so the modes are averaged with usage weights.
+    for column in ("automation_share", "augmentation_share"):
+        out[f"_{column}_w"] = out[column].notna() * out["usage_share"]
+        out[f"_{column}_x"] = out[column].fillna(0.0) * out["usage_share"]
+    grouped = out.groupby(["platform", "release", "task_id"], as_index=False).sum(numeric_only=True)
+    for column in ("automation_share", "augmentation_share"):
+        weight = grouped[f"_{column}_w"]
+        grouped[column] = (grouped[f"_{column}_x"] / weight.replace(0.0, np.nan))
+    out = grouped[["platform", "release", "task_id", "usage_share", "automation_share", "augmentation_share"]].copy()
     checks.nonnegative(out["usage_share"], LAYER, "usage share")
     totals = out.groupby(["platform", "release"])["usage_share"].transform("sum")
     out["usage_share"] = out["usage_share"] / totals
     checks.shares_sum_to_one(out, ["platform", "release"], "usage_share", LAYER)
     mode = out[["automation_share", "augmentation_share"]].dropna(how="all")
     if len(mode):
-        checks.within(mode.fillna(0.0).sum(axis=1), 0.0, 1.0 + 1e-6, LAYER,
+        # The source percentages are rounded, so the two modes can sum a
+        # hundredth over one; anything beyond that is a schema error.
+        checks.within(mode.fillna(0.0).sum(axis=1), 0.0, 1.0 + 1e-2, LAYER,
                       "automation plus augmentation")
     return out
 

@@ -19,18 +19,29 @@ from .manifest import MANIFEST
 TIMEOUT = 300
 
 
-def _download(url: str, target: Path) -> bool:
+def _download(url: str, target: Path, attempts: int = 3) -> bool:
+    """Stream the file to disk, retrying a transfer that is cut off part way."""
+    import http.client
+    import shutil
+    import tempfile
+
     request = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    try:
-        with urllib.request.urlopen(request, timeout=TIMEOUT) as response:
-            payload = response.read()
-    except (urllib.error.URLError, urllib.error.HTTPError, OSError):
-        return False
-    if not payload:
-        return False
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_bytes(payload)
-    return True
+    for _ in range(attempts):
+        try:
+            with urllib.request.urlopen(request, timeout=TIMEOUT) as response:
+                expected = response.headers.get("Content-Length")
+                target.parent.mkdir(parents=True, exist_ok=True)
+                with tempfile.NamedTemporaryFile(dir=target.parent, delete=False) as handle:
+                    shutil.copyfileobj(response, handle, length=1 << 20)
+                    temp = Path(handle.name)
+            if temp.stat().st_size == 0 or (expected and temp.stat().st_size != int(expected)):
+                temp.unlink(missing_ok=True)
+                continue
+            temp.replace(target)
+            return True
+        except (urllib.error.URLError, urllib.error.HTTPError, http.client.IncompleteRead, OSError):
+            continue
+    return False
 
 
 def get(name: str, filename: str, official_url: str, *,
