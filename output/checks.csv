@@ -1,0 +1,206 @@
+layer,check,ok,value,detail
+spine,O*NET-SOC prefix equals SOC within 0% of expected,True,0.0,"actual 1 against expected 1, gap 0.00%"
+spine,O*NET-SOC to SOC: source codes,True,1016.0,1016 distinct onetsoc_code codes
+spine,O*NET-SOC to SOC: one-to-many,True,0.0,0 onetsoc_code codes map to several soc_code
+spine,"unique key ['onetsoc_code', 'soc_code']",True,0.0,"0 duplicate rows on ['onetsoc_code', 'soc_code']"
+spine,O*NET-SOC prefix equals SOC within 0% of expected,True,0.0,"actual 1 against expected 1, gap 0.00%"
+spine,O*NET-SOC to SOC: source codes,True,1016.0,1016 distinct onetsoc_code codes
+spine,O*NET-SOC to SOC: one-to-many,True,0.0,0 onetsoc_code codes map to several soc_code
+spine,"unique key ['onetsoc_code', 'soc_code']",True,0.0,"0 duplicate rows on ['onetsoc_code', 'soc_code']"
+spine,Census to SOC: unmapped Census codes,True,2.0,"2 Census codes without a detailed SOC match: ['9830', '9920']"
+spine,Census codes mapped to SOC coverage at least 97%,True,0.9894736842105263,98.9% of Census codes mapped to SOC covered
+spine,Census to SOC: source codes,True,564.0,564 distinct census_code codes
+spine,Census to SOC: one-to-many,True,134.0,134 census_code codes map to several soc_code
+spine,"unique key ['census_code', 'soc_code']",True,0.0,"0 duplicate rows on ['census_code', 'soc_code']"
+spine,CIP to SOC: source codes,True,2143.0,2143 distinct cip_code codes
+spine,CIP to SOC: one-to-many,True,1517.0,1517 cip_code codes map to several soc_code
+spine,"unique key ['cip_code', 'soc_code']",True,0.0,"0 duplicate rows on ['cip_code', 'soc_code']"
+spine,SOC 2010 to 2018: source codes,True,463.0,463 distinct soc_2010 codes
+spine,SOC 2010 to 2018: one-to-many,True,44.0,44 soc_2010 codes map to several soc_2018
+spine,"unique key ['soc_2010', 'soc_2018']",True,0.0,"0 duplicate rows on ['soc_2010', 'soc_2018']"
+wagebill,nonnegative employment national_M2019_dl.xlsx,True,0.0,0 negative values in employment national_M2019_dl.xlsx
+wagebill,nonnegative wage national_M2019_dl.xlsx,True,0.0,0 negative values in wage national_M2019_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment national_M2021_dl.xlsx,True,0.0,0 negative values in employment national_M2021_dl.xlsx
+wagebill,nonnegative wage national_M2021_dl.xlsx,True,0.0,0 negative values in wage national_M2021_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment national_M2022_dl.xlsx,True,0.0,0 negative values in employment national_M2022_dl.xlsx
+wagebill,nonnegative wage national_M2022_dl.xlsx,True,0.0,0 negative values in wage national_M2022_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment national_M2023_dl.xlsx,True,0.0,0 negative values in employment national_M2023_dl.xlsx
+wagebill,nonnegative wage national_M2023_dl.xlsx,True,0.0,0 negative values in wage national_M2023_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment national_M2024_dl.xlsx,True,0.0,0 negative values in employment national_M2024_dl.xlsx
+wagebill,nonnegative wage national_M2024_dl.xlsx,True,0.0,0 negative values in wage national_M2024_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment oesm25nat.zip,True,0.0,0 negative values in employment oesm25nat.zip
+wagebill,nonnegative wage oesm25nat.zip,True,0.0,0 negative values in wage oesm25nat.zip
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2012_dl.xlsx,True,0.0,0 negative values in employment state_M2012_dl.xlsx
+wagebill,nonnegative wage state_M2012_dl.xlsx,True,0.0,0 negative values in wage state_M2012_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2013_dl.xlsx,True,0.0,0 negative values in employment state_M2013_dl.xlsx
+wagebill,nonnegative wage state_M2013_dl.xlsx,True,0.0,0 negative values in wage state_M2013_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2014_dl.xlsx,True,0.0,0 negative values in employment state_M2014_dl.xlsx
+wagebill,nonnegative wage state_M2014_dl.xlsx,True,0.0,0 negative values in wage state_M2014_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2015_dl.xlsx,True,0.0,0 negative values in employment state_M2015_dl.xlsx
+wagebill,nonnegative wage state_M2015_dl.xlsx,True,0.0,0 negative values in wage state_M2015_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2016_dl.xlsx,True,0.0,0 negative values in employment state_M2016_dl.xlsx
+wagebill,nonnegative wage state_M2016_dl.xlsx,True,0.0,0 negative values in wage state_M2016_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2017_dl.xlsx,True,0.0,0 negative values in employment state_M2017_dl.xlsx
+wagebill,nonnegative wage state_M2017_dl.xlsx,True,0.0,0 negative values in wage state_M2017_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2018_dl.xlsx,True,0.0,0 negative values in employment state_M2018_dl.xlsx
+wagebill,nonnegative wage state_M2018_dl.xlsx,True,0.0,0 negative values in wage state_M2018_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2019_dl.xlsx,True,0.0,0 negative values in employment state_M2019_dl.xlsx
+wagebill,nonnegative wage state_M2019_dl.xlsx,True,0.0,0 negative values in wage state_M2019_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2020_dl.xlsx,True,0.0,0 negative values in employment state_M2020_dl.xlsx
+wagebill,nonnegative wage state_M2020_dl.xlsx,True,0.0,0 negative values in wage state_M2020_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2021_dl.xlsx,True,0.0,0 negative values in employment state_M2021_dl.xlsx
+wagebill,nonnegative wage state_M2021_dl.xlsx,True,0.0,0 negative values in wage state_M2021_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2022_dl.xlsx,True,0.0,0 negative values in employment state_M2022_dl.xlsx
+wagebill,nonnegative wage state_M2022_dl.xlsx,True,0.0,0 negative values in wage state_M2022_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2023_dl.xlsx,True,0.0,0 negative values in employment state_M2023_dl.xlsx
+wagebill,nonnegative wage state_M2023_dl.xlsx,True,0.0,0 negative values in wage state_M2023_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2024_dl.xlsx,True,0.0,0 negative values in employment state_M2024_dl.xlsx
+wagebill,nonnegative wage state_M2024_dl.xlsx,True,0.0,0 negative values in wage state_M2024_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+spine,SOC 2010 to 2018: source codes,True,463.0,463 distinct soc_2010 codes
+spine,SOC 2010 to 2018: one-to-many,True,44.0,44 soc_2010 codes map to several soc_2018
+spine,"unique key ['soc_2010', 'soc_2018']",True,0.0,"0 duplicate rows on ['soc_2010', 'soc_2018']"
+wagebill,wage bill carried onto 2018 SOC 2012,True,0.8797997221558966,"88.0% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2013,True,0.8795932483346159,"88.0% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2014,True,0.8785581167457475,"87.9% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2015,True,0.877763455477494,"87.8% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2016,True,0.8763734037152299,"87.6% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2017,True,0.8816518681062514,"88.2% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2018,True,0.8813727871831991,"88.1% carried, the rest is codes that split"
+wagebill,state sum over national employment 2019,True,0.995384920448343,states cover 99.5% of national employment on common occupations
+wagebill,state sum over national employment 2021,True,0.9970008879945187,states cover 99.7% of national employment on common occupations
+wagebill,state sum over national employment 2022,True,0.9964489366908515,states cover 99.6% of national employment on common occupations
+wagebill,state sum over national employment 2023,True,0.9972880502448243,states cover 99.7% of national employment on common occupations
+wagebill,state sum over national employment 2024,True,0.997297607431414,states cover 99.7% of national employment on common occupations
+wagebill,"unique key ['vintage', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'soc_code']"
+wagebill,nonnegative national bill,True,0.0,0 negative values in national bill
+wagebill,national wage bill 2012,True,5216143229000.0,"5.216 trillion dollars over 727 occupations, 113.8 million jobs"
+wagebill,national wage bill 2013,True,5372679626400.0,"5.373 trillion dollars over 727 occupations, 115.7 million jobs"
+wagebill,national wage bill 2014,True,5545488759400.0,"5.545 trillion dollars over 726 occupations, 117.3 million jobs"
+wagebill,national wage bill 2015,True,5802926178100.0,"5.803 trillion dollars over 726 occupations, 120.2 million jobs"
+wagebill,national wage bill 2016,True,6048798176300.0,"6.049 trillion dollars over 727 occupations, 122.0 million jobs"
+wagebill,national wage bill 2017,True,6284473240400.0,"6.284 trillion dollars over 729 occupations, 124.5 million jobs"
+wagebill,national wage bill 2018,True,6541938931500.0,"6.542 trillion dollars over 729 occupations, 126.2 million jobs"
+wagebill,national wage bill 2019,True,7846316287600.0,"7.846 trillion dollars over 785 occupations, 146.8 million jobs"
+wagebill,national wage bill 2020,True,7719842801000.0,"7.720 trillion dollars over 782 occupations, 138.3 million jobs"
+wagebill,national wage bill 2021,True,8203133169600.0,"8.203 trillion dollars over 825 occupations, 140.8 million jobs"
+wagebill,national wage bill 2022,True,9144916394100.0,"9.145 trillion dollars over 825 occupations, 147.8 million jobs"
+wagebill,national wage bill 2023,True,9930995771100.0,"9.931 trillion dollars over 826 occupations, 151.7 million jobs"
+wagebill,national wage bill 2024,True,10463201687100.0,"10.463 trillion dollars over 826 occupations, 154.1 million jobs"
+wagebill,national wage bill 2025,True,10833939665400.0,"10.834 trillion dollars over 825 occupations, 155.4 million jobs"
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+exposure,"eloundou beta in [0.0, 1.0]",True,0.0,"0 values of eloundou beta outside [0.0, 1.0]"
+exposure,"unique key ['task_id', 'onetsoc_code']",True,0.0,"0 duplicate rows on ['task_id', 'onetsoc_code']"
+exposure,"eloundou beta by occupation in [0.0, 1.0]",True,0.0,"0 values of eloundou beta by occupation outside [0.0, 1.0]"
+exposure,unique key ['soc_code'],True,0.0,0 duplicate rows on ['soc_code']
+outcomes,nonnegative relative pay by skill bundle statistic,True,0.0,0 negative values in relative pay by skill bundle statistic
+outcomes,nonnegative relative pay by skill bundle threshold,True,0.0,0 negative values in relative pay by skill bundle threshold
+outcomes,"relative pay by skill bundle p-value in [0.0, 1.0]",True,0.0,"0 values of relative pay by skill bundle p-value outside [0.0, 1.0]"
+outcomes,nonnegative employment-weighted skill intensity statistic,True,0.0,0 negative values in employment-weighted skill intensity statistic
+outcomes,nonnegative employment-weighted skill intensity threshold,True,0.0,0 negative values in employment-weighted skill intensity threshold
+outcomes,"employment-weighted skill intensity p-value in [0.0, 1.0]",True,0.0,"0 values of employment-weighted skill intensity p-value outside [0.0, 1.0]"
+state,"share of bill exposed in [0.0, 1.0]",True,0.0,"0 values of share of bill exposed outside [0.0, 1.0]"
+state,"unique key ['vintage', 'state_fips', 'measure']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'measure']"
+state,"median state wage bill scored, eloundou_beta coverage at least 80%",True,0.9440985775607275,"94.4% of median state wage bill scored, eloundou_beta covered"
+state,"median state wage bill scored, felten_aioe coverage at least 80%",True,0.809569395264663,"81.0% of median state wage bill scored, felten_aioe covered"
+state,"unique key ['state_fips', 'start', 'end', 'measure']",True,0.0,"0 duplicate rows on ['state_fips', 'start', 'end', 'measure']"
+state,realised change cells 2022-2024 eloundou_beta,True,,"median exposed cells per state 173, median unexposed 422"
+state,"unique key ['state_fips', 'start', 'end', 'measure']",True,0.0,"0 duplicate rows on ['state_fips', 'start', 'end', 'measure']"
+state,realised change cells 2022-2024 felten_aioe,True,,"median exposed cells per state 163, median unexposed 363"
+btos,"share using AI in [0.0, 100.0]",True,0.0,"0 values of share using AI outside [0.0, 100.0]"
+btos,cycles with a reference date coverage at least 99%,True,1.0,100.0% of cycles with a reference date covered
+btos,"unique key ['state', 'series', 'cycle']",True,0.0,"0 duplicate rows on ['state', 'series', 'cycle']"
+state,state abbreviations without a FIPS code,True,1.0,['XX']
+state,"BTOS share using AI in [0.0, 100.0]",True,0.0,"0 values of BTOS share using AI outside [0.0, 100.0]"
+state,"unique key ['state_fips', 'year']",True,0.0,"0 duplicate rows on ['state_fips', 'year']"
+state,"BTOS share using AI in [0.0, 100.0]",True,0.0,"0 values of BTOS share using AI outside [0.0, 100.0]"
+state,"unique key ['state_fips', 'year']",True,0.0,"0 duplicate rows on ['state_fips', 'year']"
+spine,CIP to SOC: source codes,True,2143.0,2143 distinct cip_code codes
+spine,CIP to SOC: one-to-many,True,1517.0,1517 cip_code codes map to several soc_code
+spine,"unique key ['cip_code', 'soc_code']",True,0.0,"0 duplicate rows on ['cip_code', 'soc_code']"
+pipeline,unique key ['cip_code'],True,0.0,0 duplicate rows on ['cip_code']
+pipeline,CIP codes scored on eloundou_beta coverage at least 80%,True,0.8898740083994401,89.0% of CIP codes scored on eloundou_beta covered
+pipeline,CIP codes scored on felten_aioe coverage at least 80%,True,0.8688754083061129,86.9% of CIP codes scored on felten_aioe covered
+acs,nonnegative person weight,True,0.0,0 negative values in person weight
+acs,weighted persons,True,5717184.0,5.72 million in state 27
+spine,O*NET-SOC prefix equals SOC within 0% of expected,True,0.0,"actual 1 against expected 1, gap 0.00%"
+spine,O*NET-SOC to SOC: source codes,True,1016.0,1016 distinct onetsoc_code codes
+spine,O*NET-SOC to SOC: one-to-many,True,0.0,0 onetsoc_code codes map to several soc_code
+spine,"unique key ['onetsoc_code', 'soc_code']",True,0.0,"0 duplicate rows on ['onetsoc_code', 'soc_code']"
+spine,Census to SOC: unmapped Census codes,True,2.0,"2 Census codes without a detailed SOC match: ['9830', '9920']"
+spine,Census codes mapped to SOC coverage at least 97%,True,0.9894736842105263,98.9% of Census codes mapped to SOC covered
+spine,Census to SOC: source codes,True,564.0,564 distinct census_code codes
+spine,Census to SOC: one-to-many,True,134.0,134 census_code codes map to several soc_code
+spine,"unique key ['census_code', 'soc_code']",True,0.0,"0 duplicate rows on ['census_code', 'soc_code']"
+acs,graduates on an occupation that maps to SOC coverage at least 90%,True,0.981156169333606,98.1% of graduates on an occupation that maps to SOC covered
+acs,field families with a CIP family coverage at least 95%,True,1.0,100.0% of field families with a CIP family covered
+acs,link weights add to the graduates they came from within 0% of expected,True,0.0,"actual 1.21859e+06 against expected 1.21859e+06, gap 0.00%"
+pipeline,unique key ['fod_code'],True,0.0,0 duplicate rows on ['fod_code']
+ipeds,unique key ['unitid'],True,0.0,0 duplicate rows on ['unitid']
+ipeds,nonnegative awards 2023,True,0.0,0 negative values in awards 2023
+ipeds,"unique key ['unitid', 'cip_code', 'award_level']",True,0.0,"0 duplicate rows on ['unitid', 'cip_code', 'award_level']"
+ipeds,first-major awards 2023,True,5297774.0,"5,297,774 awards over 5960 institutions"
+ipeds,nonnegative awards 2024,True,0.0,0 negative values in awards 2024
+ipeds,"unique key ['unitid', 'cip_code', 'award_level']",True,0.0,"0 duplicate rows on ['unitid', 'cip_code', 'award_level']"
+ipeds,first-major awards 2024,True,5459862.0,"5,459,862 awards over 5869 institutions"
+pipeline,awards with an institution state coverage at least 98%,True,0.9997512292479019,100.0% of awards with an institution state covered
+pipeline,awards on a scored CIP coverage at least 80%,True,0.869505158940124,87.0% of awards on a scored CIP covered
+pipeline,"share of awards in exposed fields in [0.0, 1.0]",True,0.0,"0 values of share of awards in exposed fields outside [0.0, 1.0]"
+pipeline,nonnegative awards,True,0.0,0 negative values in awards
+pipeline,Clearinghouse fields without a CIP mapping,True,0.0,0 labels unmapped: []
+pipeline,nonnegative enrolment,True,0.0,0 negative values in enrolment
+pipeline,"share of enrolment in exposed fields in [0.0, 1.0]",True,0.0,"0 values of share of enrolment in exposed fields outside [0.0, 1.0]"
+capacity,nonnegative transition flow,True,0.0,0 negative values in transition flow
+capacity,nonnegative transition flow se,True,0.0,0 negative values in transition flow se
+capacity,"unique key ['year', 'age_band', 'origin', 'destination']",True,0.0,"0 duplicate rows on ['year', 'age_band', 'origin', 'destination']"
+capacity,outflow to destinations with an exposure score coverage at least 80%,True,1.0,100.0% of outflow to destinations with an exposure score covered
+capacity,"exit share in [0.0, 1.0]",True,0.0,"0 values of exit share outside [0.0, 1.0]"
+capacity,nonnegative from_education,True,0.0,0 negative values in from_education
+capacity,nonnegative from_other_occupations,True,0.0,0 negative values in from_other_occupations
+capacity,nonnegative from_outside_work,True,0.0,0 negative values in from_outside_work
+capacity,nonnegative stock,True,0.0,0 negative values in stock
+capacity,"unique key ['year', 'occupation']",True,0.0,"0 duplicate rows on ['year', 'occupation']"
+capacity,"education arrivals over stock in [0.0, 1.0]",True,0.0,"0 values of education arrivals over stock outside [0.0, 1.0]"
+spine,O*NET-SOC prefix equals SOC within 0% of expected,True,0.0,"actual 1 against expected 1, gap 0.00%"
+spine,O*NET-SOC to SOC: source codes,True,1016.0,1016 distinct onetsoc_code codes
+spine,O*NET-SOC to SOC: one-to-many,True,0.0,0 onetsoc_code codes map to several soc_code
+spine,"unique key ['onetsoc_code', 'soc_code']",True,0.0,"0 duplicate rows on ['onetsoc_code', 'soc_code']"
+spine,Census to SOC: unmapped Census codes,True,2.0,"2 Census codes without a detailed SOC match: ['9830', '9920']"
+spine,Census codes mapped to SOC coverage at least 97%,True,0.9894736842105263,98.9% of Census codes mapped to SOC covered
+spine,Census to SOC: source codes,True,564.0,564 distinct census_code codes
+spine,Census to SOC: one-to-many,True,134.0,134 census_code codes map to several soc_code
+spine,"unique key ['census_code', 'soc_code']",True,0.0,"0 duplicate rows on ['census_code', 'soc_code']"
+cps,census codes with an exposure score coverage at least 90%,True,0.9627659574468085,96.3% of census codes with an exposure score covered
+cps,"month in sample 2025-04 in [1, 8]",True,0.0,"0 values of month in sample 2025-04 outside [1, 8]"
+cps,"age 2025-04 in [0, 85]",True,0.0,"0 values of age 2025-04 outside [0, 85]"
+cps,weighted civilian population 16+ 2025-04,True,52456886.0,52.5 million; the published figure is between 265 and 275 million
+cps,"month in sample 2025-02 in [1, 8]",True,0.0,"0 values of month in sample 2025-02 outside [1, 8]"
+cps,"age 2025-02 in [0, 85]",True,0.0,"0 values of age 2025-02 outside [0, 85]"
+cps,weighted civilian population 16+ 2025-02,True,52249420.0,52.2 million; the published figure is between 265 and 275 million
+cps,"month in sample 2025-01 in [1, 8]",True,0.0,"0 values of month in sample 2025-01 outside [1, 8]"
+cps,"age 2025-01 in [0, 85]",True,0.0,"0 values of age 2025-01 outside [0, 85]"
+cps,weighted civilian population 16+ 2025-01,True,52239600.0,52.2 million; the published figure is between 265 and 275 million
+cps,"month in sample 2025-03 in [1, 8]",True,0.0,"0 values of month in sample 2025-03 outside [1, 8]"
+cps,"age 2025-03 in [0, 85]",True,0.0,"0 values of age 2025-03 outside [0, 85]"
+cps,weighted civilian population 16+ 2025-03,True,52480081.0,52.5 million; the published figure is between 265 and 275 million
+cps,employed persons on a scored occupation coverage at least 90%,True,1.0,100.0% of employed persons on a scored occupation covered
+cps,nonnegative cell employment,True,0.0,0 negative values in cell employment
+cps,nonnegative gauge,True,0.0,0 negative values in gauge

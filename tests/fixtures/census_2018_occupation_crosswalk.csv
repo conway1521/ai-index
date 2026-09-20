@@ -1,0 +1,101 @@
+title,census_code,soc_entry
+Chief executives,0010,11-1011
+General and operations managers,0020,11-1021
+Legislators,0030,11-1031
+Advertising and promotions managers,0040,11-2011
+Marketing managers,0051,11-2021
+Sales managers,0052,11-2022
+Public relations and fundraising managers,0060,11-2030
+Administrative services managers,0101,11-3012
+Facilities managers,0102,11-3013
+Computer and information systems managers,0110,11-3021
+Financial managers,0120,11-3031
+Compensation and benefits managers,0135,11-3111
+Human resources managers,0136,11-3121
+Training and development managers,0137,11-3131
+Industrial production managers,0140,11-3051
+Purchasing managers,0150,11-3061
+"Transportation, storage, and distribution managers",0160,11-3071
+"Farmers, ranchers, and other agricultural managers",0205,11-9013
+Construction managers,0220,11-9021
+Education and childcare administrators ,0230,11-9030
+Architectural and engineering managers,0300,11-9041
+Food service managers,0310,11-9051
+Funeral home managers,0325,11-9171
+Entertainment and recreation managers,0335,11-9070
+Lodging managers,0340,11-9081
+Medical and health services managers,0350,11-9111
+Natural sciences managers,0360,11-9121
+Postmasters and mail superintendents,0400,11-9131
+"Property, real estate, and community association managers",0410,11-9141
+Social and community service managers,0420,11-9151
+Emergency management directors,0425,11-9161
+"Personal service managers, all other",0426,11-9179
+"Managers, all other",0440,11-9199
+"Agents and business managers of artists, performers, and athletes",0500,13-1011
+"Buyers and purchasing agents, farm products",0510,13-1021
+"Wholesale and retail buyers, except farm products",0520,13-1022
+"Purchasing agents, except wholesale, retail, and farm products",0530,13-1023
+"Claims adjusters, appraisers, examiners, and investigators",0540,13-1030
+Compliance officers,0565,13-1041
+Cost estimators,0600,13-1051
+Human resources workers,0630,13-1070
+"Compensation, benefits, and job analysis specialists",0640,13-1141
+Training and development specialists,0650,13-1151
+Logisticians,0700,13-1081
+Project management specialists,0705,13-1082
+Management analysts,0710,13-1111
+"Meeting, convention, and event planners",0725,13-1121
+Fundraisers,0726,13-1131
+Market research analysts and marketing specialists,0735,13-1161
+"Business operations specialists, all other",0750,13-1199
+Accountants and auditors,0800,13-2011
+Property appraisers and assessors,0810,13-2020
+Budget analysts,0820,13-2031
+Credit analysts,0830,13-2041
+Financial and investment analysts,0845,13-2051
+Personal financial advisors,0850,13-2052
+Insurance underwriters,0860,13-2053
+Financial examiners,0900,13-2061
+Credit counselors and loan officers,0910,13-2070
+"Tax examiners and collectors, and revenue agents",0930,13-2081
+Tax preparers,0940,13-2082
+Other financial specialists,0960,13-20XX
+Computer and information research scientists,1005,15-1221
+Computer systems analysts,1006,15-1211
+Information security analysts,1007,15-1212
+Computer programmers,1010,15-1251
+Software developers,1021,15-1252
+Software quality assurance analysts and testers,1022,15-1253
+Web developers,1031,15-1254
+Web and digital interface designers,1032,15-1255
+Computer support specialists,1050,15-1230
+Database administrators and architects,1065,15-124X
+Network and computer systems administrators,1105,15-1244
+Computer network architects,1106,15-1241
+"Computer occupations, all other",1108,15-1299
+Actuaries,1200,15-2011
+Mathematicians,1210,15-2021
+Operations research analysts,1220,15-2031
+Statisticians,1230,15-2041
+Other mathematical science occupations,1240,15-20XX
+"Architects, except landscape and naval",1305,17-1011
+Landscape architects,1306,17-1012
+"Surveyors, cartographers, and photogrammetrists",1310,17-1020
+Aerospace engineers,1320,17-2011
+Agricultural engineers,1330,17-2021
+Bioengineers and biomedical engineers,1340,17-2031
+Chemical engineers,1350,17-2041
+Civil engineers,1360,17-2051
+Computer hardware engineers,1400,17-2061
+Electrical and electronics engineers,1410,17-2070
+Environmental engineers,1420,17-2081
+"Industrial engineers, including health and safety ",1430,17-2110
+Marine engineers and naval architects,1440,17-2121
+Materials engineers,1450,17-2131
+Mechanical engineers,1460,17-2141
+"Mining and geological engineers, including mining safety engineers",1500,17-2151
+Nuclear engineers,1510,17-2161
+Petroleum engineers,1520,17-2171
+"Engineers, all other",1530,17-2199
+Architectural and civil drafters,1541,17-3011

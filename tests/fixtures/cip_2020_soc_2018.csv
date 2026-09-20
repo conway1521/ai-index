@@ -1,0 +1,121 @@
+CIP2020Code,CIP2020Title,SOC2018Code,SOC2018Title
+01.0000,"Agriculture, General.",19-1011,Animal Scientists
+01.0000,"Agriculture, General.",19-1012,Food Scientists and Technologists
+01.0000,"Agriculture, General.",19-1013,Soil and Plant Scientists
+01.0000,"Agriculture, General.",19-4012,Agricultural Technicians
+01.0000,"Agriculture, General.",25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0101,"Agricultural Business and Management, General.",11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0101,"Agricultural Business and Management, General.",25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0101,"Agricultural Business and Management, General.",45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0102,Agribusiness/Agricultural Business Operations.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0102,Agribusiness/Agricultural Business Operations.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0103,Agricultural Economics.,19-3011,Economists
+01.0103,Agricultural Economics.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0103,Agricultural Economics.,25-1063,"Economics Teachers, Postsecondary"
+01.0104,Farm/Farm and Ranch Management.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0104,Farm/Farm and Ranch Management.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0104,Farm/Farm and Ranch Management.,25-9021,Farm and Home Management Educators
+01.0104,Farm/Farm and Ranch Management.,45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0105,Agricultural/Farm Supplies Retailing and Wholesaling.,13-1021,"Buyers and Purchasing Agents, Farm Products"
+01.0105,Agricultural/Farm Supplies Retailing and Wholesaling.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0105,Agricultural/Farm Supplies Retailing and Wholesaling.,41-4012,"Sales Representatives, Wholesale and Manufacturing, Except Technical and Scientific Products"
+01.0106,Agricultural Business Technology/Technician.,15-1232,Computer User Support Specialists
+01.0106,Agricultural Business Technology/Technician.,43-1011,First-Line Supervisors of Office and Administrative Support Workers
+01.0199,"Agricultural Business and Management, Other.",11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0199,"Agricultural Business and Management, Other.",25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0199,"Agricultural Business and Management, Other.",45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0201,"Agricultural Mechanization, General.",25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0201,"Agricultural Mechanization, General.",49-3041,Farm Equipment Mechanics and Service Technicians
+01.0204,Agricultural Power Machinery Operation.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0204,Agricultural Power Machinery Operation.,45-2091,Agricultural Equipment Operators
+01.0204,Agricultural Power Machinery Operation.,49-3041,Farm Equipment Mechanics and Service Technicians
+01.0205,Agricultural Mechanics and Equipment/Machine Technology/Technician.,49-3011,Aircraft Mechanics and Service Technicians
+01.0205,Agricultural Mechanics and Equipment/Machine Technology/Technician.,49-3041,Farm Equipment Mechanics and Service Technicians
+01.0205,Agricultural Mechanics and Equipment/Machine Technology/Technician.,49-3042,"Mobile Heavy Equipment Mechanics, Except Engines"
+01.0207,Irrigation Management Technology/Technician.,25-1194,"Career/Technical Education Teachers, Postsecondary"
+01.0207,Irrigation Management Technology/Technician.,49-3041,Farm Equipment Mechanics and Service Technicians
+01.0299,"Agricultural Mechanization, Other.",25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0299,"Agricultural Mechanization, Other.",49-3041,Farm Equipment Mechanics and Service Technicians
+01.0301,"Agricultural Production Operations, General.",11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0301,"Agricultural Production Operations, General.",25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0301,"Agricultural Production Operations, General.",45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0302,Animal/Livestock Husbandry and Production.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0302,Animal/Livestock Husbandry and Production.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0302,Animal/Livestock Husbandry and Production.,25-9021,Farm and Home Management Educators
+01.0302,Animal/Livestock Husbandry and Production.,45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0302,Animal/Livestock Husbandry and Production.,45-2021,Animal Breeders
+01.0303,Aquaculture.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0303,Aquaculture.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0303,Aquaculture.,45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0304,Crop Production.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0304,Crop Production.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0304,Crop Production.,25-9021,Farm and Home Management Educators
+01.0304,Crop Production.,45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0306,Dairy Husbandry and Production.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0306,Dairy Husbandry and Production.,25-9021,Farm and Home Management Educators
+01.0306,Dairy Husbandry and Production.,45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0307,Horse Husbandry/Equine Science and Management.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0307,Horse Husbandry/Equine Science and Management.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0307,Horse Husbandry/Equine Science and Management.,25-9021,Farm and Home Management Educators
+01.0307,Horse Husbandry/Equine Science and Management.,45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0307,Horse Husbandry/Equine Science and Management.,45-2021,Animal Breeders
+01.0308,Agroecology and Sustainable Agriculture.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0308,Agroecology and Sustainable Agriculture.,19-1013,Soil and Plant Scientists
+01.0308,Agroecology and Sustainable Agriculture.,19-1031,Conservation Scientists
+01.0308,Agroecology and Sustainable Agriculture.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0308,Agroecology and Sustainable Agriculture.,25-1043,"Forestry and Conservation Science Teachers, Postsecondary"
+01.0308,Agroecology and Sustainable Agriculture.,45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0310,Apiculture.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0310,Apiculture.,19-1011,Animal Scientists
+01.0310,Apiculture.,25-9021,Farm and Home Management Educators
+01.0310,Apiculture.,45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0310,Apiculture.,45-2021,Animal Breeders
+01.0310,Apiculture.,45-2093,"Farmworkers, Farm, Ranch, and Aquacultural Animals"
+01.0399,"Agricultural Production Operations, Other.",11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0399,"Agricultural Production Operations, Other.",25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0399,"Agricultural Production Operations, Other.",45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0401,Agricultural and Food Products Processing.,19-4013,Food Science Technicians
+01.0401,Agricultural and Food Products Processing.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0401,Agricultural and Food Products Processing.,45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0401,Agricultural and Food Products Processing.,45-2011,Agricultural Inspectors
+01.0504,Dog/Pet/Animal Grooming.,25-1194,"Career/Technical Education Teachers, Postsecondary"
+01.0504,Dog/Pet/Animal Grooming.,39-2021,Animal Caretakers
+01.0505,Animal Training.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0505,Animal Training.,39-2011,Animal Trainers
+01.0507,Equestrian/Equine Studies.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0507,Equestrian/Equine Studies.,39-2011,Animal Trainers
+01.0508,Taxidermy/Taxidermist.,99-9999,NO MATCH
+01.0509,Farrier Science.,25-1194,"Career/Technical Education Teachers, Postsecondary"
+01.0509,Farrier Science.,39-2021,Animal Caretakers
+01.0599,"Agricultural and Domestic Animal Services, Other.",99-9999,NO MATCH
+01.0601,"Applied Horticulture/Horticulture Operations, General.",11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0601,"Applied Horticulture/Horticulture Operations, General.",25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0601,"Applied Horticulture/Horticulture Operations, General.",25-9021,Farm and Home Management Educators
+01.0601,"Applied Horticulture/Horticulture Operations, General.",37-1012,"First-Line Supervisors of Landscaping, Lawn Service, and Groundskeeping Workers"
+01.0601,"Applied Horticulture/Horticulture Operations, General.",37-3011,Landscaping and Groundskeeping Workers
+01.0603,Ornamental Horticulture.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0603,Ornamental Horticulture.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0603,Ornamental Horticulture.,37-1012,"First-Line Supervisors of Landscaping, Lawn Service, and Groundskeeping Workers"
+01.0603,Ornamental Horticulture.,37-3011,Landscaping and Groundskeeping Workers
+01.0604,Greenhouse Operations and Management.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0604,Greenhouse Operations and Management.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0604,Greenhouse Operations and Management.,37-1012,"First-Line Supervisors of Landscaping, Lawn Service, and Groundskeeping Workers"
+01.0604,Greenhouse Operations and Management.,37-3011,Landscaping and Groundskeeping Workers
+01.0604,Greenhouse Operations and Management.,45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0605,Landscaping and Groundskeeping.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0605,Landscaping and Groundskeeping.,37-1012,"First-Line Supervisors of Landscaping, Lawn Service, and Groundskeeping Workers"
+01.0605,Landscaping and Groundskeeping.,37-3011,Landscaping and Groundskeeping Workers
+01.0605,Landscaping and Groundskeeping.,37-3012,"Pesticide Handlers, Sprayers, and Applicators, Vegetation"
+01.0606,Plant Nursery Operations and Management.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
+01.0606,Plant Nursery Operations and Management.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0606,Plant Nursery Operations and Management.,37-1012,"First-Line Supervisors of Landscaping, Lawn Service, and Groundskeeping Workers"
+01.0606,Plant Nursery Operations and Management.,37-3011,Landscaping and Groundskeeping Workers
+01.0606,Plant Nursery Operations and Management.,37-3012,"Pesticide Handlers, Sprayers, and Applicators, Vegetation"
+01.0606,Plant Nursery Operations and Management.,45-1011,"First-Line Supervisors of Farming, Fishing, and Forestry Workers"
+01.0606,Plant Nursery Operations and Management.,45-4011,Forest and Conservation Workers
+01.0607,Turf and Turfgrass Management.,25-1041,"Agricultural Sciences Teachers, Postsecondary"
+01.0607,Turf and Turfgrass Management.,37-1012,"First-Line Supervisors of Landscaping, Lawn Service, and Groundskeeping Workers"
+01.0607,Turf and Turfgrass Management.,37-3011,Landscaping and Groundskeeping Workers
+01.0607,Turf and Turfgrass Management.,37-3012,"Pesticide Handlers, Sprayers, and Applicators, Vegetation"
+01.0608,Floriculture/Floristry Operations and Management.,41-1011,First-Line Supervisors of Retail Sales Workers
+01.0609,Public Horticulture.,11-9013,"Farmers, Ranchers, and Other Agricultural Managers"
