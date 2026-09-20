@@ -49,8 +49,13 @@ def _task_lookup() -> pd.DataFrame:
 
 
 def _release_of(path: Path) -> str:
-    match = re.search(r"(20\d{2}[-_]\d{2}[-_]\d{2}|20\d{2}[-_]\d{2})", path.name + " " + path.parent.name)
-    return match.group(1).replace("_", "-") if match else path.parent.name
+    """The release directory's date when there is one, else a date in the file name."""
+    for text in (path.parent.name, path.name):
+        match = re.search(r"release[-_](20\d{2}[-_]\d{2}[-_]\d{2})", text) or \
+            re.search(r"(20\d{2}[-_]\d{2}[-_]\d{2}|20\d{2}[-_]\d{2})", text)
+        if match:
+            return match.group(1).replace("_", "-")
+    return path.parent.name
 
 
 def _from_task_table(frame: pd.DataFrame, release: str) -> pd.DataFrame:
