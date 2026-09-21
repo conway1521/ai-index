@@ -51,3 +51,20 @@ fog.
    every effect off. Build that page first; the lighthouse rises around it.
 3. The index needs its own name; "Lighthouse" is taken by a Google tool
    and stays the image only.
+
+## Decisions taken in the second pass, 21 September 2026
+
+- Turning is a pan across one drawn panorama, not a cut; the foreground
+  moves faster than the skyline.
+- The coin viewer rises into frame before the valley opens in its
+  eyepieces, and its slot is the control for the sources card.
+- Sources are drawn as kinds of institution, never as a company's
+  building: a civic dome, a campanile, glass blocks on the shore. Names go
+  in the text.
+- One splash of colour per view, as a watercolour mark over one building:
+  the bridge's orange, the dome's gold, the house over the green, the
+  Ferry Building's white, a grey on the tallest tower, sandstone on Hoover
+  Tower. No hover on any of them; they are there to be seen.
+- Weather has a vocabulary of eight states drawn from the observation, not
+  a forecast, so the sky is right in kind rather than in every detail.
+- The name is still open.
