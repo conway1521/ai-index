@@ -1,0 +1,162 @@
+name: build
+
+# Rebuilds the index from the publishers and commits what changed.
+#
+# The first thing it does is ask every publisher whether it will serve a
+# GitHub runner, because that answer decides whether this index can feed
+# itself or whether the OEWS files stay a yearly job by hand. The probe
+# reports into the run summary whatever the build then does.
+
+on:
+  schedule:
+    # Mondays, 11:00 UTC. The sources arrive on their own clocks, from
+    # biweekly to yearly, so a weekly pass catches each one soon after it lands.
+    - cron: "0 11 * * 1"
+  workflow_dispatch:
+  push:
+    paths:
+      - "aiindex/sources.py"
+      - ".github/workflows/build.yml"
+
+concurrency:
+  group: build
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    name: can the publishers be reached
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Ask each publisher, as a browser
+        run: |
+          python -m aiindex.probe_hosts --markdown | tee reachability.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Ask BLS again, as Python
+        # A host can refuse the client or refuse the address. Asking twice,
+        # identified two different ways, separates the two: if the browser
+        # request is served and this one is not, the block is on the client
+        # and a header fixes it; if neither is served, it is the address and
+        # no header will.
+        run: |
+          {
+            echo
+            echo "## Identified as Python rather than as a browser"
+            echo
+            echo '```'
+            python -m aiindex.probe_hosts --plain-agent || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep the report
+        uses: actions/upload-artifact@v4
+        with:
+          name: reachability
+          path: reachability.md
+
+  build:
+    name: rebuild the index
+    needs: probe
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch the paper's machinery
+        # The index imports the O*NET readers, gamma, the named bundles and
+        # the relabelling inference from the paper repository, so a number
+        # here is computed by the same code as the number in the paper.
+        # Without the token this step is skipped and the build with it; the
+        # probe above has already reported, which is the point of the run.
+        id: paper
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: conway1521/paper-skills-dna
+          path: paper-skills-dna
+          token: ${{ secrets.PAPER_REPO_TOKEN }}
+
+      - name: Is the machinery here
+        id: ready
+        run: |
+          if [ -d paper-skills-dna/src ]; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            echo "The paper repository was not checked out, so the build is skipped." >> "$GITHUB_STEP_SUMMARY"
+            echo "Add a PAPER_REPO_TOKEN secret with read access to it, or make it public." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.ready.outputs.ok == 'true'
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        if: steps.ready.outputs.ok == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Reuse the inputs already fetched
+        # 440 MB of government files that mostly do not change between runs.
+        # The key rolls forward each run and restores the most recent, so a
+        # new release is fetched and everything else is reused.
+        if: steps.ready.outputs.ok == 'true'
+        uses: actions/cache@v4
+        with:
+          path: aiindex/data/raw
+          key: raw-${{ hashFiles('aiindex/sources.py') }}-${{ github.run_id }}
+          restore-keys: |
+            raw-${{ hashFiles('aiindex/sources.py') }}-
+            raw-
+
+      - name: Build
+        if: steps.ready.outputs.ok == 'true'
+        env:
+          SKILLS_DNA_ROOT: ${{ github.workspace }}/paper-skills-dna
+        run: python -m aiindex.build
+
+      - name: Test
+        if: steps.ready.outputs.ok == 'true'
+        env:
+          SKILLS_DNA_ROOT: ${{ github.workspace }}/paper-skills-dna
+        run: python -m pytest aiindex/tests -q
+
+      - name: Report what the build read
+        if: steps.ready.outputs.ok == 'true'
+        run: |
+          {
+            echo "## What the build read"
+            echo
+            python - <<'PY'
+          import json, collections
+          report = json.load(open("aiindex/output/build_report.json"))
+          grades = collections.Counter(report["grades"].values())
+          print(f"- {report['checks']['passed']} of {report['checks']['rows']} checks passed")
+          print(f"- inputs: " + ", ".join(f"{n} {g}" for g, n in grades.items()))
+          print(f"- O*NET release {report['onet_release']}, {report['seconds']} seconds")
+          for layer, why in report.get("skipped", {}).items():
+              print(f"- skipped {layer}: {why}")
+          PY
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit what changed
+        if: steps.ready.outputs.ok == 'true' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git config user.name "Alessandro Conway"
+          git config user.email "48160659+conway1521@users.noreply.github.com"
+          git add aiindex/output site/data
+          if git diff --staged --quiet; then
+            echo "Nothing changed." >> "$GITHUB_STEP_SUMMARY"
+          else
+            git commit -m "Rebuild against the current releases, $(date -u +'%-d %B %Y')"
+            git push
+            echo "Committed the rebuilt tables and readings." >> "$GITHUB_STEP_SUMMARY"
+          fi

@@ -40,6 +40,36 @@ Inputs are not committed. The `.source` sidecar beside each input is,
 and records the grade and URL it was fetched from, so a clean checkout
 regenerates the same files.
 
+## Running on GitHub
+
+Three workflows, in `.github/workflows/`:
+
+- `build.yml` rebuilds the index weekly and on demand. It begins by asking
+  every publisher whether it will serve a GitHub runner, reports the answer
+  into the run summary, and then rebuilds, tests and commits whatever
+  changed in `aiindex/output` and `site/data`. The raw inputs are cached
+  between runs, so only a new release is fetched.
+- `tests.yml` runs the suite on every push.
+- `pages.yml` publishes `site/` and the mockup. GitHub serves Pages from a
+  private repository only on a paid plan; on the free plan this one fails
+  until the repository is public.
+
+Both `build.yml` and `tests.yml` check out `paper-skills-dna`, whose `src`
+holds the O*NET readers, gamma, the named bundles and the relabelling
+inference. While that repository is private they need a `PAPER_REPO_TOKEN`
+secret with read access to it; when it goes public, delete the token line.
+The build skips itself rather than failing if the checkout does not happen,
+so the reachability report still lands.
+
+The same probe runs anywhere:
+
+    python -m aiindex.probe_hosts
+    python -m aiindex.probe_hosts --plain-agent
+
+It needs no third-party packages. A publisher that refuses is recorded, not
+treated as an error: the build falls back to a committed copy and grades
+that input `mirror` in the manifest.
+
 ## Where each layer stands
 
 | Layer | Module | Ran on | Notes |
