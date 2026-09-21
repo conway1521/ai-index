@@ -68,3 +68,17 @@ fog.
 - Weather has a vocabulary of eight states drawn from the observation, not
   a forecast, so the sky is right in kind rather than in every detail.
 - The name is still open.
+
+## Third pass, 21 September 2026: the sky is the observation
+
+- No menu. The KSFO observation picks the preset, and wind and rain set
+  the two dials. The observation time is shown; a stale one says so.
+- Motion follows the wind by the heading of the view: a westerly moves
+  nothing sideways at the point, pours fog through the Gate at the bridge,
+  slides cloud across at the city. Calm defaults to the westerly.
+- The light follows San Francisco's clock, not the visitor's device: sun
+  by a solar formula at the headland, dawn and dusk as one warm band,
+  night as white ink on black with the lantern lit, the moon at its phase.
+- Three rules hold: nothing moves faster than a cloud; one wash per view
+  plus the sky's band at the two ends of the day; the numbers never change
+  with the weather.

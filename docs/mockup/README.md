@@ -19,11 +19,23 @@ What it does:
 - Colour: the bridge in its orange; the dome in gold, the house over the
   green in rose, the green itself; the Ferry Building off-white; one grey
   wash on the tallest tower; Hoover Tower's sandstone in the valley.
-- Weather is drawn from eight states, clear, light cloud, overcast, fog,
-  thick fog, rain, wind and storm, chosen from the latest observation at
-  KSFO in production (https://api.weather.gov/stations/KSFO/observations/latest);
-  the mockup draws a sample observation and offers the states in a menu.
-  "After dark" lights the lantern.
+- The sky is the latest observation at KSFO
+  (https://api.weather.gov/stations/KSFO/observations/latest), no menu:
+  the description and visibility pick one of eight presets, wind sets the
+  drift speed and direction of fog and cloud by the heading of the view
+  (the point looks east, the bridge south, the city north-east), rain
+  falls slanted by it, gulls lean in it. The page fetches on load and
+  every ten minutes, shows the observation time, and says "last
+  observation" when it is stale. The mockup cannot reach the host and
+  draws a sample observation, labelled as such.
+- The light follows San Francisco's clock: the sun's position from a
+  solar formula at the headland, rising over the city and setting past the
+  bridge; a warm band on the horizon at dawn and dusk; white ink on black
+  after dark with the lantern lit; the moon at its phase from lunar age.
+- For testing, the URL can force a sky and an hour:
+  `?sky=storm&hour=23&wind=270,40`. Presets: clear, light cloud, overcast,
+  fog, thick fog, rain, heavy rain, wind, storm.
 
-The captures are from a 1280-pixel window. The name on the page is a
+The captures are from a 1280-pixel window: dawn over the city, fog at
+the bridge with a westerly, night at the point, a storm. The name on the page is a
 placeholder.
