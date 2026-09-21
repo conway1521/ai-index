@@ -1,0 +1,19 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: conway1521/paper-skills-dna
+          path: paper-skills-dna
+          token: ${{ secrets.PAPER_REPO_TOKEN }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python -m pytest aiindex/tests -q
+        env:
+          SKILLS_DNA_ROOT: ${{ github.workspace }}/paper-skills-dna

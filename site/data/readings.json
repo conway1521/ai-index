@@ -1,0 +1,77 @@
+{
+  "built": "21 September 2026",
+  "views": {
+    "home": {
+      "f1": [
+        "21",
+        "% of wages",
+        "in tasks Claude users touch · 2026-06-26 (2026-05)",
+        "A fifth of the wage bill is paid for tasks that appear in the usage data at all; 6 percent for tasks handed over rather than worked through, on the 2026-03-24 (2026-02-05) release."
+      ],
+      "f2": [
+        "2.8",
+        "of 6.1",
+        "largest move in skill pay · lens set at 6.1 · 2025",
+        "No group of skills has moved beyond what its own history does. The lens says how large a move would show."
+      ]
+    },
+    "city": {
+      "f1": [
+        "2.8",
+        "of 6.1",
+        "pay · largest standardised move · 2025 release",
+        "6 of 25 skill groups moved beyond two of their own standard errors; the largest sits at 2.8 against a lens of 6.1."
+      ],
+      "f2": [
+        "8.2",
+        "of 6.7",
+        "jobs · employment-weighted skill mix · 2025",
+        "The quantity side against its own lens. Whether it holds is what the next release answers."
+      ]
+    },
+    "bridge": {
+      "f1": [
+        "41",
+        "% of bachelor's",
+        "awarded in fields that lead to exposed jobs · 2024",
+        "Fields are scored by where their graduates actually work, not by where the catalogue says they should."
+      ]
+    },
+    "valley": {
+      "f1": [
+        "21",
+        "% of wages",
+        "reach · Anthropic consumer usage · 2026-06-26 (2026-05)",
+        "18 percent in 2025-09-15 (2025-08-04) · 22 percent in 2026-01-15 (2025-11-13) · 23 percent in 2026-03-24 (2026-02-05) · 19 percent in 2026-06-26 (2026-04) · 21 percent in 2026-06-26 (2026-05). 6 percent delegated outright on the 2026-03-24 (2026-02-05) release."
+      ],
+      "f2": [
+        "2.4",
+        "×",
+        "concentration on systems skills",
+        "Usage lands on that skill group at 2.4 times its weight in pay."
+      ]
+    }
+  },
+  "releases": [
+    {
+      "date": "2025-09-15 (2025-08-04)",
+      "reach": 0.181
+    },
+    {
+      "date": "2026-01-15 (2025-11-13)",
+      "reach": 0.219
+    },
+    {
+      "date": "2026-03-24 (2026-02-05)",
+      "reach": 0.232
+    },
+    {
+      "date": "2026-06-26 (2026-04)",
+      "reach": 0.193
+    },
+    {
+      "date": "2026-06-26 (2026-05)",
+      "reach": 0.211
+    }
+  ]
+}

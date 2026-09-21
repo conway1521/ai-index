@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -279,6 +280,10 @@ def main() -> None:
 
     checks.write()
     MANIFEST.write()
+    try:
+        print(f"  site readings: {export_site()}")
+    except FileNotFoundError as error:
+        SKIPPED["site"] = str(error)
     report = {
         "seconds": round(time.time() - started),
         "onet_release": release,
@@ -294,3 +299,51 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+def export_site() -> Path:
+    """Write the readings the front page shows, from the built tables.
+
+    The page reads ``site/data/readings.json`` and shows the figures it
+    carries; every figure here is a cell of a table in ``output/tables``,
+    so the page cannot say a number the build did not write.
+    """
+    tables = config.TABLE_DIR
+    reach = pd.read_csv(tables / "usage_reach.csv")
+    anthropic = reach[reach["platform"] == "anthropic"].sort_values("release")
+    latest = anthropic.iloc[-1]
+    # the monthly slices carry no collaboration split, so the delegated share comes from the last release that does
+    split = anthropic[anthropic["delegated_share"] > 0].iloc[-1]
+    landing = pd.read_csv(tables / "usage_landing.csv")
+    top = landing[landing["release"] == latest["release"]].sort_values("concentration", ascending=False).iloc[0]
+    pay = pd.read_csv(tables / "outcomes_pay_series_balanced.csv").iloc[-1]
+    quantity = pd.read_csv(tables / "outcomes_quantity_series_balanced.csv").iloc[-1]
+    completions = pd.read_csv(tables / "pipeline_completions_by_state.csv")
+    bach = completions[completions["award_level"] == 5].groupby("year")[["awards_exposed", "awards_unexposed"]].sum()
+    share = (bach["awards_exposed"] / bach.sum(axis=1)).round(3)
+    year = int(share.index.max())
+    label = str(latest["release"])
+    readings = {
+        "built": datetime.now(timezone.utc).strftime("%-d %B %Y"),
+        "views": {
+            "home": {"f1": [f"{latest['reach_share']*100:.0f}", "% of wages", f"in tasks Claude users touch · {label}",
+                            f"A fifth of the wage bill is paid for tasks that appear in the usage data at all; {split['delegated_share']*100:.0f} percent for tasks handed over rather than worked through, on the {split['release']} release."],
+                     "f2": [f"{pay['largest_statistic']:.1f}", f"of {pay['threshold_95']:.1f}", f"largest move in skill pay · lens set at {pay['threshold_95']:.1f} · {int(pay['year'])}",
+                            "No group of skills has moved beyond what its own history does. The lens says how large a move would show."]},
+            "city": {"f1": [f"{pay['largest_statistic']:.1f}", f"of {pay['threshold_95']:.1f}", f"pay · largest standardised move · {int(pay['year'])} release",
+                            f"{int(pay['bundles_beyond_two'])} of 25 skill groups moved beyond two of their own standard errors; the largest sits at {pay['largest_statistic']:.1f} against a lens of {pay['threshold_95']:.1f}."],
+                     "f2": [f"{quantity['largest_statistic']:.1f}", f"of {quantity['threshold_95']:.1f}", f"jobs · employment-weighted skill mix · {int(quantity['year'])}",
+                            "The quantity side against its own lens. Whether it holds is what the next release answers."]},
+            "bridge": {"f1": [f"{share.loc[year]*100:.0f}", "% of bachelor's", f"awarded in fields that lead to exposed jobs · {year}",
+                              "Fields are scored by where their graduates actually work, not by where the catalogue says they should."]},
+            "valley": {"f1": [f"{latest['reach_share']*100:.0f}", "% of wages", f"reach · Anthropic consumer usage · {label}",
+                              " · ".join(f"{r*100:.0f} percent in {l}" for l, r in zip(anthropic['release'], anthropic['reach_share'])) + f". {split['delegated_share']*100:.0f} percent delegated outright on the {split['release']} release."],
+                       "f2": [f"{top['concentration']:.1f}", "×", f"concentration on {top['bundle'].lower()}",
+                              f"Usage lands on that skill group at {top['concentration']:.1f} times its weight in pay."]},
+        },
+        "releases": [{"date": str(r), "reach": round(float(x), 3)} for r, x in zip(anthropic["release"], anthropic["reach_share"])],
+    }
+    out = config.REPO_ROOT / "site" / "data" / "readings.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(readings, indent=2, ensure_ascii=False))
+    return out

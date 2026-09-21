@@ -321,7 +321,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   // middle third: the far city as seen from the point (x 1600..3200), faint
   (function farCity(g, ox){
     const s = el("g", {transform:`translate(${ox+1020},300) scale(.55)`, class:"thin"}, g);
-    skyline(s, 250, false); s.querySelectorAll("path").forEach(p=>p.classList.add("hair"));
+    skyline(s, 250, false); s.querySelectorAll("path").forEach(p=>{ p.classList.remove("hair"); p.classList.add("thin"); });
+    // the Gate's near tower and the fall of its cable, at the left edge of the point's view
+    el("path", {d:`M ${ox+40} 400 L ${ox+44} 150 L ${ox+62} 150 L ${ox+66} 400 M ${ox+40} 200 L ${ox+66} 200 M ${ox+42} 260 L ${ox+64} 260`, class:"thin"}, g);
+    el("path", {d:`M ${ox+53} 150 Q ${ox+190} 330 ${ox+330} 342 M ${ox+0} 344 L ${ox+340} 344`, class:"thin"}, g);
+    for (let x=ox+90; x<ox+320; x+=28){ const t=(x-ox-53)/277; el("path", {d:`M${x} ${150 + 192*(1-(1-t)**2)} L ${x} 344`, class:"hair"}, g); }
+    blob(washes, ox+36, 150, 34, 250, "var(--orange)", 12);
   })(far, HOME);
 
   // right third: the city, looking east (x 3200..4800)
@@ -483,6 +488,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
              left:["city","turn to the city"], right:["bridge","turn to the bridge"], pan:-HOME, fgx:0 },
   };
   const edgeL = $("#edge-left"), edgeR = $("#edge-right"), home = $("#btn-home");
+  // The real page reads readings.json written by the build; the mockup carries the same numbers embedded.
+  fetch("data/readings.json").then(r=>r.ok ? r.json() : null).then(j=>{ if (!j) return;
+    for (const view in j.views){ if (R[view]){ Object.assign(R[view], j.views[view]); } }
+    document.querySelector(".stamp").lastChild.textContent = `figures from the ${j.built} build`;
+    go(stage.dataset.view); }).catch(()=>{});
   function fill(f, id){ const n = $("#"+id); n.querySelector(".n").innerHTML = f[0] + "<small>" + f[1] + "</small>"; n.querySelector(".l").textContent = f[2]; n.querySelector(".s").textContent = f[3]; }
   let timer = null;
   function go(view){

@@ -1,0 +1,28 @@
+name: pages
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", "docs/mockup/**"]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p public
+          cp -r site/. public/
+          cp docs/mockup/index.html public/index.html
+          cp docs/mockup/index.html public/mockup.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - id: deployment
+        uses: actions/deploy-pages@v4
