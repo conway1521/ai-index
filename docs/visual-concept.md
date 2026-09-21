@@ -82,3 +82,12 @@ fog.
 - Three rules hold: nothing moves faster than a cloud; one wash per view
   plus the sky's band at the two ends of the day; the numbers never change
   with the weather.
+
+## Fourth pass, 21 September 2026: the toggles and the life
+
+- The toggles are Artificial Weather and Artificial Karl.
+- The bay is alive at the pace of a drawing: water sways, gulls cross, a
+  plane on the approach, a rocket out of the south, a ferry, a gust, and a
+  robotaxi that meets a hydrant on the waterfront. One at a time, every
+  fifteen to forty-five seconds, none of it branded, all of it off under
+  reduced motion.

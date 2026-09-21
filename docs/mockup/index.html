@@ -43,7 +43,14 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .pan{transition:transform 1.4s cubic-bezier(.6,0,.2,1)}
 .fg{transition:transform 1.4s cubic-bezier(.6,0,.2,1)}
 .fog{transition:opacity .6s}
-.stage[data-wx="off"] .fog,.stage[data-wx="off"] .sky,.stage[data-wx="off"] .dawn,.stage[data-wx="off"] .sunwash{opacity:0 !important}
+.stage[data-aw="off"] .sky .cloud,.stage[data-aw="off"] .sky .rain,.stage[data-aw="off"] .sky .hair,.stage[data-aw="off"] .dawn,.stage[data-aw="off"] .sunwash{opacity:0 !important}
+.stage[data-ak="off"] .fog{opacity:0 !important}
+.water{animation:sway 7s ease-in-out infinite alternate}
+.water.b{animation-duration:9s;animation-delay:-4s}
+@keyframes sway{from{transform:translateX(-5px)}to{transform:translateX(5px)}}
+.life{pointer-events:none}
+.gust .fogline{animation-duration:calc(var(--drift,60s)/3) !important}
+.gust .cloud{animation-duration:calc(var(--cdrift,240s)/4) !important}
 .fogline{animation:drift var(--drift,60s) linear infinite;animation-direction:var(--dir,normal)}
 .fogline.b{animation-duration:calc(var(--drift,60s)*1.4)}
 @keyframes drift{from{transform:translateX(0)}to{transform:translateX(-160px)}}
@@ -121,7 +128,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .src b{color:var(--ink);font-weight:500}
 .coin .close{margin-top:12px;font-family:var(--mono);font-size:12px;background:transparent;border:1px solid var(--ink);color:var(--ink);padding:5px 12px;cursor:pointer}
 
-@media (prefers-reduced-motion: reduce){.fogline,.cloud,.rain{animation:none}.pan,.fg,.viewer,.beam,.mask-in{transition:none}}
+@media (prefers-reduced-motion: reduce){.fogline,.cloud,.rain,.water{animation:none}.pan,.fg,.viewer,.beam,.mask-in{transition:none}}
 @media (max-width:820px){
   .reading{grid-template-columns:1fr}.series{grid-template-columns:1fr}.cad{white-space:normal}
   .stage svg{aspect-ratio:16/9}.scene text{font-size:16px}.scene .cap{font-size:26px}.vig{grid-template-columns:1fr}
@@ -133,11 +140,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     <div class="brand">[ name to come ] <small>MOCKUP</small></div>
     <div class="ctl">
       <span class="obs" id="obs"></span>
-      <label><input type="checkbox" id="tg-wx" checked> sky</label>
+      <label title="the sky from the airport's latest observation"><input type="checkbox" id="tg-aw" checked> Artificial Weather</label>
+      <label title="the fog, drawn"><input type="checkbox" id="tg-ak" checked> Artificial Karl</label>
     </div>
   </header>
 
-  <div class="stage" id="stage" data-view="home" data-wx="on">
+  <div class="stage" id="stage" data-view="home" data-aw="on" data-ak="on">
     <svg viewBox="0 0 1600 700" role="img" aria-label="An ink drawing of a lighthouse on a headland. Turn to the city or the bridge, or raise the coin telescope to look at the valley.">
       <defs>
         <filter id="wob" x="-2%" y="-2%" width="104%" height="104%">
@@ -196,6 +204,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         </g>
         <g class="viewer down" id="viewer-big"></g>
       </g>
+      <g id="life" class="life scene" filter="url(#wob)"></g>
     </svg>
 
     <div class="caption" id="caption"><h1 id="cap-h">The lens is set. This is what it shows today.</h1><p id="cap-p">hover a label to turn the beam · choose one to look with it</p></div>
@@ -230,7 +239,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     <div class="cad"><b>biweekly</b> firm adoption, Census<br><b>monthly</b> OpenAI Signals · CPS young-worker gauge<br><b>each release</b> Anthropic Economic Index<br><b>yearly</b> OEWS pay and jobs · IPEDS · ACS</div>
   </section>
 
-  <p class="foot">Ink on paper, one splash of colour in each view, and the sky drawn from the latest observation at the airport: the description and visibility pick one of eight presets, wind sets how fast the fog and cloud drift and which way, by the heading of the view you are looking along, and rain falls slanted by it. The light follows San Francisco's clock: the sun rises over the city and sets past the bridge, the drawing turns to white ink on black after dark, and the moon is drawn at its phase. Nothing in the drawing encodes a number from the index; those sit beneath it in their own units, with the file each came from.</p>
+  <p class="foot">Ink on paper, one splash of colour in each view, a little life now and then, a gull, a plane on the approach, a rocket out of the south, a robotaxi that meets a hydrant, a gust, and the sky drawn from the latest observation at the airport: the description and visibility pick one of eight presets, wind sets how fast the fog and cloud drift and which way, by the heading of the view you are looking along, and rain falls slanted by it. The light follows San Francisco's clock: the sun rises over the city and sets past the bridge, the drawing turns to white ink on black after dark, and the moon is drawn at its phase. Nothing in the drawing encodes a number from the index; those sit beneath it in their own units, with the file each came from.</p>
 </div>
 
 <script>
@@ -286,7 +295,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   /* ---------- the three thirds ---------- */
   const far = $("#far"), washes = $("#washes"), waterG = $("#water"), fogG = $("#fog");
   el("path", {d:`M 0 340 L ${W} 340`, class:"hair"}, waterG);
-  water(waterG, 0, W, 400, 690, 3, 22);
+  const waterA = el("g", {class:"water"}, waterG), waterB = el("g", {class:"water b"}, waterG);
+  water(waterA, 0, W, 400, 690, 3, 44); water(waterB, 0, W, 411, 690, 4, 44);
   fog(fogG, [[330, 5, 6],[400, 6, 7],[470, 5, 5]], 11);
 
   // left third: the bridge, looking back along the headlands (x 0..1600)
@@ -340,7 +350,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     }
   }
   skyline(far, 400, true, HOME*2);
-  water(waterG, HOME*2, W, 440, 690, 5, 20);
+  water(waterA, HOME*2, W, 440, 690, 5, 40); water(waterB, HOME*2, W, 450, 690, 6, 40);
 
   // the lighthouses: one in the foreground for the point, and the same tower drawn at the edges of the panorama
   lighthouse($("#lh"), 800, 585, 330);
@@ -613,7 +623,57 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   drawSky(OBS, "home");
   fetchObservation().then(o=>{ if (o){ OBS = o; drawSky(OBS, stage.dataset.view); } });
   setInterval(()=>{ fetchObservation().then(o=>{ if (o) OBS = o; drawSky(OBS, stage.dataset.view); }); }, 600e3);
-  $("#tg-wx").addEventListener("change", e=>{ stage.dataset.wx = e.target.checked ? "on":"off"; });
+  $("#tg-aw").addEventListener("change", e=>{ stage.dataset.aw = e.target.checked ? "on":"off"; });
+  $("#tg-ak").addEventListener("change", e=>{ stage.dataset.ak = e.target.checked ? "on":"off"; });
+
+  /* ---------- the life on the bay: one thing at a time, now and then ----------
+     Gulls cross any view. A plane on the approach crosses high. A rocket
+     climbs out of the south, which is behind the bridge and the valley.
+     A robotaxi runs the waterfront in the city view and meets a hydrant.
+     A gust hurries the fog and cloud for a few seconds. Each is small,
+     slow, and rare; the URL can force one for testing: ?event=robotaxi */
+  const life = $("#life");
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function tween(ms, step, done){ const t0 = performance.now(); (function f(t){ const k = Math.min(1, (t - t0)/ms); step(k); if (k < 1) requestAnimationFrame(f); else if (done) done(); })(t0); }
+  const EVENTS = {
+    gull(){ const g = el("g", {class:"thin"}, life); const y = 150 + Math.random()*120, ltr = Math.random() < .5, flap = ["M-10 0 q 10 -9 20 0 M10 0 q 10 -9 20 0", "M-10 0 q 10 -2 20 0 M10 0 q 10 -2 20 0"];
+      const w = el("path", {d:flap[0]}, g); let i = 0; const flapper = setInterval(()=>{ w.setAttribute("d", flap[i++ % 2]); }, 260);
+      tween(14000 + Math.random()*6000, k=>{ const x = ltr ? -40 + k*1700 : 1640 - k*1700; g.setAttribute("transform", `translate(${x},${y + Math.sin(k*9)*8})`); }, ()=>{ clearInterval(flapper); g.remove(); }); },
+    plane(){ const g = el("g", {class:"thin"}, life);
+      el("path", {d:"M-30 0 L 30 0 M-6 0 L -18 -12 M-6 0 L -18 12 M20 0 L 14 -9 M-28 0 L -33 -7 M-30 0 L 30 0 L 32 -2"}, g);
+      const light = el("circle", {cx:-30, cy:0, r:1.8, class:"solid"}, g); let on = false; const blink = setInterval(()=>{ on = !on; light.style.opacity = on ? 1 : 0; }, 700);
+      const y = 120 + Math.random()*40;
+      tween(32000, k=>{ g.setAttribute("transform", `translate(${1660 - k*1760},${y + k*18})`); }, ()=>{ clearInterval(blink); g.remove(); }); },
+    rocket(){ if (!["bridge","valley","home"].includes(stage.dataset.view)) return EVENTS.gull();
+      const g = el("g", {class:"thin"}, life); const x0 = stage.dataset.view === "home" ? 1320 : 1180;
+      el("path", {d:"M0 0 L 0 -26 L 4 -34 L 8 -26 L 8 0 Z M0 0 L -4 6 M8 0 L 12 6", transform:"translate(-4,0)"}, g);
+      const plume = el("g", {class:"hair"}, g);
+      tween(14000, k=>{ const y = 300 - k*k*520, x = x0 + k*k*140; g.setAttribute("transform", `translate(${x},${y}) rotate(${k*14})`);
+        if (plume.childElementCount < 40 && Math.random() < .6) el("path", {d:`M${(Math.random()-.5)*8} ${6 + Math.random()*10} l 0 ${6 + Math.random()*14}`}, plume);
+        plume.style.opacity = 1 - k*0.6; }, ()=>g.remove()); },
+    robotaxi(){ if (stage.dataset.view !== "city") return EVENTS.gull();
+      const g = el("g", {class:"thin"}, life); const y = 386;
+      // a small car with its sensor dome, running the waterfront toward the hydrant by the Ferry Building
+      el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-10 0 a 3 3 0 1 0 6 0 M4 0 a 3 3 0 1 0 6 0 M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14", class:"thin"}, g);
+      const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, g); let d = 0; const spin = setInterval(()=>{ dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
+      const hyd = el("g", {transform:`translate(1178,${y})`}, life); el("path", {d:"M-3 0 L -3 -12 Q 0 -16 3 -12 L 3 0 M-6 -8 L 6 -8", class:"thin"}, hyd);
+      const spout = el("g", {class:"hair"}, hyd); spout.style.opacity = 0;
+      for (let i=0;i<9;i++) el("path", {d:`M0 -14 q ${6 + i*2} ${-14 - i*3} ${14 + i*4} ${-2 + i*2}`}, spout);
+      const stop = 1178 - 22;
+      tween(9000, k=>{ const x = 700 + Math.min(k*1.15, 1)*(stop-700); const bump = k > .87 ? Math.sin((k-.87)*60)*2 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .87) spout.style.opacity = Math.min(1, (k-.87)*10); },
+        ()=>{ tween(3000, k=>{ g.setAttribute("transform", `translate(${stop - k*60},${y})`); spout.style.opacity = 1 - k; }, ()=>{ clearInterval(spin); g.remove(); hyd.remove(); }); }); },
+    gust(){ stage.classList.add("gust"); document.querySelectorAll(".gull").forEach(p=>{ p.style.transition = "transform .8s"; p.style.transform = "rotate(-22deg)"; });
+      setTimeout(()=>{ stage.classList.remove("gust"); drawSky(OBS, stage.dataset.view); }, 5000); },
+    ferry(){ if (stage.dataset.view !== "bridge") return EVENTS.gull();
+      const g = el("g", {class:"thin"}, life); el("path", {d:"M0 0 l -30 0 l 6 10 l 48 0 l 6 -10 z M-14 0 l 0 -10 l 22 0 l 0 10 M-4 -10 l 0 -9"}, g);
+      tween(40000, k=>{ g.setAttribute("transform", `translate(${-60 + k*1720},${470 + Math.sin(k*20)*1.5})`); }, ()=>g.remove()); },
+  };
+  const WEIGHTS = [["gull",5],["plane",2],["gust",2],["ferry",2],["rocket",1],["robotaxi",2]];
+  function pick(){ const total = WEIGHTS.reduce((a,[,w])=>a+w,0); let r = Math.random()*total; for (const [k,w] of WEIGHTS){ if ((r -= w) < 0) return k; } return "gull"; }
+  function schedule(){ if (reduced) return; setTimeout(()=>{ EVENTS[pick()](); schedule(); }, 15000 + Math.random()*30000); }
+  if (params.get("event")){ setTimeout(()=>EVENTS[params.get("event")] && EVENTS[params.get("event")](), 2000); }
+  else if (!reduced) setTimeout(()=>EVENTS.gull(), 4000);
+  schedule();
 
   /* ---------- the release strip ---------- */
   const rel = [["2025-08","AEI"],["2025-09","BTOS"],["2025-11","AEI"],["2026-02","AEI"],["2026-03","OEWS 2025"],["2026-05","AEI"],["2026-06","Signals"],["2026-09","build"],["next","next release"]];

@@ -32,6 +32,14 @@ What it does:
   solar formula at the headland, rising over the city and setting past the
   bridge; a warm band on the horizon at dawn and dusk; white ink on black
   after dark with the lantern lit; the moon at its phase from lunar age.
+- Two toggles: Artificial Weather, the sky from the observation, and
+  Artificial Karl, the fog.
+- The water sways. Now and then, one thing at a time and never faster
+  than a cloud: a gull crosses, a plane comes in on the approach with its
+  light blinking, a rocket climbs out of the south behind the bridge, a
+  ferry crosses the bridge view, a gust hurries the fog and cloud, and in
+  the city view a robotaxi runs the waterfront and meets the hydrant by
+  the Ferry Building. `?event=robotaxi` forces one for testing.
 - For testing, the URL can force a sky and an hour:
   `?sky=storm&hour=23&wind=270,40`. Presets: clear, light cloud, overcast,
   fog, thick fog, rain, heavy rain, wind, storm.
