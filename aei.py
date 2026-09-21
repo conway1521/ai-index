@@ -183,10 +183,53 @@ def state_usage(path: Path) -> pd.DataFrame | None:
     return out[["release", "state_abbr", "usage_share"]]
 
 
+MONTHLY_COLUMNS = {"date_start", "geo_id", "geo_level", "category_name", "hierarchy_level",
+                   "metric_id", "value", "node_external_id"}
+
+
+def _from_monthly_table(frame: pd.DataFrame, release: str, geography: str = "GLOBAL") -> pd.DataFrame:
+    """The calendar-month schema of the June 2026 release and after.
+
+    Rows whose category is the O*NET hierarchy at level zero carry the
+    numeric task identifier in node_external_id, so no text join is
+    needed. Each month in the file becomes its own release label. The
+    metric names are matched by content: a share of usage, and the
+    automation and augmentation buckets of the collaboration split.
+    """
+    cols = {c.lower(): c for c in frame.columns}
+    block = frame[frame[cols["category_name"]].astype(str).str.lower().eq("onet")
+                  & pd.to_numeric(frame[cols["hierarchy_level"]], errors="coerce").eq(0)].copy()
+    if "geo_id" in cols:
+        geo = block[cols["geo_id"]].astype(str).str.upper()
+        block = block[geo.eq(geography) | geo.eq("GLOBAL") | geo.eq("WORLD")] if geography == "GLOBAL" else block[geo.eq(geography)]
+    block["metric"] = block[cols["metric_id"]].astype(str).str.lower()
+    block["value"] = pd.to_numeric(block[cols["value"]], errors="coerce")
+    block["task_id"] = pd.to_numeric(block[cols["node_external_id"]], errors="coerce")
+    block = block.dropna(subset=["task_id"])
+    block["task_id"] = block["task_id"].astype("int64").astype(str)
+    block["month"] = block[cols["date_start"]].astype(str).str.slice(0, 7)
+    tables = []
+    for month, part in block.groupby("month"):
+        usage = part[part["metric"].isin(["pct", "usage_pct", "onet_task_pct"])].groupby("task_id")["value"].sum()
+        auto = part[part["metric"].str.contains("automation")].groupby("task_id")["value"].sum()
+        aug = part[part["metric"].str.contains("augmentation")].groupby("task_id")["value"].sum()
+        scale = 100.0 if usage.sum() > 1.5 else 1.0
+        table = pd.DataFrame({"usage_share": usage / scale})
+        table["automation_share"] = (auto / 100.0).reindex(table.index)
+        table["augmentation_share"] = (aug / 100.0).reindex(table.index)
+        table = table.reset_index()
+        table["platform"], table["release"] = PLATFORM, f"{release} ({month})"
+        checks.close(float(table["usage_share"].sum()), 1.0, 1e-2, LAYER, f"task usage shares sum to one {release} {month}")
+        tables.append(table[["platform", "release", "task_id", "usage_share", "automation_share", "augmentation_share"]])
+    return pd.concat(tables, ignore_index=True)
+
+
 def read_release_file(path: Path) -> pd.DataFrame | None:
     frame = pd.read_csv(path, low_memory=False)
     lowered = {c.lower() for c in frame.columns}
     release = _release_of(path)
+    if MONTHLY_COLUMNS <= lowered:
+        return _from_monthly_table(frame, release)
     if any("task_id" in c or c == "task id" for c in lowered) and not {"facet", "variable"} <= lowered:
         return _from_task_table(frame, release)
     if {"facet", "variable", "cluster_name", "value"} <= lowered:

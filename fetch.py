@@ -56,7 +56,10 @@ def get(name: str, filename: str, official_url: str, *,
     target = config.RAW_DIR / filename
     sidecar = target.with_suffix(target.suffix + ".source")
 
-    if target.exists() and not refresh and sidecar.exists():
+    if target.exists() and not refresh:
+        if not sidecar.exists():
+            # Placed by hand from the publisher's site: the release itself.
+            sidecar.write_text(f"real\n{official_url}")
         grade, source_url = sidecar.read_text().split("\n")[:2]
         MANIFEST.record(name, target, official_url=official_url, grade=grade,
                         source_url=source_url or None, notes=notes)

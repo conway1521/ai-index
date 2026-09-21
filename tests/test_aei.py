@@ -40,3 +40,25 @@ def test_task_table_shape_is_recognised(tmp_path):
     table = aei.read_release_file(path)
     assert list(table["task_id"]) == ["8823", "8831"]
     assert abs(table["automation_share"].iloc[1] - 0.6) < 1e-12
+
+
+def test_monthly_schema_reads_task_ids_directly(tmp_path):
+    rows = []
+    for month in ("2026-04-01", "2026-05-01"):
+        for task, pct in (("8823", 60.0), ("8831", 40.0)):
+            base = {"date_start": month, "date_end": month, "geo_id": "GLOBAL", "geo_level": "global",
+                    "category_name": "onet", "hierarchy_level": 0, "node_name": "x", "node_external_id": task}
+            rows.append({**base, "metric_id": "pct", "value": pct})
+            rows.append({**base, "metric_id": "collaboration_bucket_automation_pct", "value": 30.0})
+            rows.append({**base, "metric_id": "collaboration_bucket_augmentation_pct", "value": 50.0})
+        rows.append({"date_start": month, "date_end": month, "geo_id": "GLOBAL", "geo_level": "global",
+                     "category_name": "onet", "hierarchy_level": 1, "node_name": "dwa", "node_external_id": "4.A.1.a.1.I01.D01",
+                     "metric_id": "pct", "value": 100.0})
+    path = tmp_path / "release_2026_06_26" / "aei_claude_ai_2026-06-26.csv"
+    path.parent.mkdir()
+    pd.DataFrame(rows).to_csv(path, index=False)
+    table = aei.read_release_file(path)
+    assert set(table["release"]) == {"2026-06-26 (2026-04)", "2026-06-26 (2026-05)"}
+    april = table[table["release"].str.endswith("(2026-04)")].set_index("task_id")
+    assert abs(april.loc["8823", "usage_share"] - 0.6) < 1e-12
+    assert abs(april.loc["8831", "automation_share"] - 0.3) < 1e-12

@@ -35,17 +35,38 @@ FOD_FAMILY_TO_CIP2 = {
 }
 
 
+ACS_DIR = config.RAW_DIR / "acs"
+USECOLS = ["ST", "PWGTP", "AGEP", "SCHL", "FOD1P", "OCCP", "ESR"]
+
+
 def person_file(path=None) -> pd.DataFrame:
-    if path is None:
+    """Every ACS person file in data/raw/acs, or the one-state test file.
+
+    The national one-year file ships as several parts (psam_pusa.csv,
+    psam_pusb.csv and so on) and the state files as psam_p<fips>.csv; all
+    of them share the layout and are read and stacked.
+    """
+    ACS_DIR.mkdir(parents=True, exist_ok=True)
+    files = [path] if path is not None else sorted(ACS_DIR.glob("psam_p*.csv")) + sorted(ACS_DIR.glob("psam_p*.zip"))
+    if not files:
         official, mirrors = sources.ACS_PUMS_TEST
-        path, _ = fetch.get("acs_pums_test_state", "acs/psam_p27_2022_1yr.csv", official, mirrors=mirrors,
+        test, _ = fetch.get("acs_pums_test_state", "acs/psam_p27_2022_1yr.csv", official, mirrors=mirrors,
                             notes="one state's one-year person file, a test of the join")
-    usecols = ["ST", "PWGTP", "AGEP", "SCHL", "FOD1P", "OCCP", "ESR"]
-    raw = pd.read_csv(path, usecols=lambda c: c in usecols, dtype=str)
+        files = [test]
+    frames = []
+    for file in files:
+        if path is None:
+            sidecar = Path(file).with_suffix(Path(file).suffix + ".source")
+            grade, source = sidecar.read_text().split("\n")[:2] if sidecar.exists() else ("real", sources.ACS_PUMS_TEST[0])
+            from .manifest import MANIFEST
+            MANIFEST.record(f"acs:{Path(file).name}", Path(file), official_url=sources.ACS_PUMS_TEST[0], grade=grade, source_url=source)
+        frames.append(pd.read_csv(file, usecols=lambda c: c in USECOLS, dtype=str))
+    raw = pd.concat(frames, ignore_index=True)
     for c in ("PWGTP", "AGEP", "SCHL", "FOD1P", "OCCP", "ESR"):
         raw[c] = pd.to_numeric(raw[c], errors="coerce")
     checks.nonnegative(raw["PWGTP"], LAYER, "person weight")
-    checks.note(LAYER, "weighted persons", f"{raw['PWGTP'].sum() / 1e6:.2f} million in state {raw['ST'].iloc[0]}",
+    states = sorted(raw["ST"].dropna().unique())
+    checks.note(LAYER, "weighted persons", f"{raw['PWGTP'].sum() / 1e6:.2f} million over {len(states)} state codes",
                 float(raw["PWGTP"].sum()))
     return raw
 
