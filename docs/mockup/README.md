@@ -33,7 +33,15 @@ What it does:
   bridge; a warm band on the horizon at dawn and dusk; white ink on black
   after dark with the lantern lit; the moon at its phase from lunar age.
 - Two toggles: Artificial Weather, the sky from the observation, and
-  Artificial Karl, the fog.
+  Artificial Karl, the fog. The observation and San Francisco's clock sit
+  in the stamp at the foot of the drawing.
+- After dusk the city lights: the crown of the tallest tower carries a
+  few blocks of pale light that brighten and fade out of step, and City
+  Hall's dome is lit in a colour pair, the occasion's pair on a handful of
+  dates in a small table and otherwise a pair drawn for the date, the
+  same for every visitor that night. The city's own lighting calendar can
+  replace the table when there is a feed for it. The same lights show
+  small in the far city seen from the point.
 - The water sways. Now and then, one thing at a time and never faster
   than a cloud: a gull crosses, a plane comes in on the approach with its
   light blinking, a rocket climbs out of the south behind the bridge, a

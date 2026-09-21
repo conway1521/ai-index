@@ -91,3 +91,14 @@ fog.
   robotaxi that meets a hydrant on the waterfront. One at a time, every
   fifteen to forty-five seconds, none of it branded, all of it off under
   reduced motion.
+
+## Fifth pass, 21 September 2026: the city after dark
+
+- The observation moves to the stamp; the header keeps the name and the
+  two toggles.
+- From dusk, the tallest tower's crown breathes with blocks of pale light
+  and the dome takes the night's colour pair: a table of occasions, else a
+  pair drawn for the date. A feed from the city's lighting calendar can
+  replace the table.
+- The personal marks stay unlabelled: the green, the house over it, and
+  the lights are there to be seen, not read.
