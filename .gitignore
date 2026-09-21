@@ -1,9 +1,9 @@
-# Inputs are fetched by the build and recorded in output/manifest.json;
+# Inputs are fetched by the build and recorded in aiindex/output/manifest.json;
 # they are not committed. The provenance sidecars beside them are.
-data/raw/**
-!data/raw/**/
-!data/raw/**/*.source
-data/*.parquet
-output/tables/cps_cells.csv
+aiindex/data/raw/**
+!aiindex/data/raw/**/
+!aiindex/data/raw/**/*.source
+aiindex/data/*.parquet
+aiindex/output/tables/cps_cells.csv
 __pycache__/
 .pytest_cache/

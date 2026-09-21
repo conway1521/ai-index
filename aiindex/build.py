@@ -22,7 +22,7 @@ from . import (acs, btos, capacity, checks, config, cps, exposure, ipeds, onet_r
                openai, outcomes, pipeline, spine, state, usage, wagebill)
 from .manifest import MANIFEST
 
-sys.path.insert(0, str(config.REPO_ROOT))
+sys.path.insert(0, str(config.PAPER_ROOT))
 
 SKIPPED: dict[str, str] = {}
 

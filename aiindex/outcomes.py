@@ -31,7 +31,7 @@ import pandas as pd
 
 from . import checks, config
 
-sys.path.insert(0, str(config.REPO_ROOT))
+sys.path.insert(0, str(config.PAPER_ROOT))
 from src import permutation_test, regime_test  # noqa: E402
 
 LAYER = "outcomes"

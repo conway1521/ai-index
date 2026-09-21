@@ -20,7 +20,7 @@ from pathlib import Path
 from . import config
 from .manifest import MANIFEST
 
-sys.path.insert(0, str(config.REPO_ROOT))
+sys.path.insert(0, str(config.PAPER_ROOT))
 from src import onet  # noqa: E402
 
 ONET_DIR = config.RAW_DIR / "onet"

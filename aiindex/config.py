@@ -2,10 +2,18 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 PACKAGE_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = PACKAGE_ROOT.parent
+
+# The paper's machinery, imported as ``src``: the O*NET readers, the gamma
+# construction, the named bundles and the relabelling inference. It lives in
+# the paper-skills-dna repository, cloned beside this one or pointed to by
+# SKILLS_DNA_ROOT. The commit this index was last run against is recorded
+# in CLAUDE.md.
+PAPER_ROOT = Path(os.environ.get("SKILLS_DNA_ROOT", REPO_ROOT.parent / "paper-skills-dna")).resolve()
 RAW_DIR = PACKAGE_ROOT / "data" / "raw"
 FIXTURE_DIR = PACKAGE_ROOT / "tests" / "fixtures"
 OUTPUT_DIR = PACKAGE_ROOT / "output"

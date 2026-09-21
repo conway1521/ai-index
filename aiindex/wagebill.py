@@ -28,7 +28,7 @@ import pandas as pd
 from . import checks, config
 from .manifest import MANIFEST
 
-sys.path.insert(0, str(config.REPO_ROOT))
+sys.path.insert(0, str(config.PAPER_ROOT))
 from src import oews_history  # noqa: E402
 
 OEWS_DIR = config.RAW_DIR / "oews"

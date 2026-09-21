@@ -39,7 +39,7 @@ import pandas as pd
 
 from . import checks, config
 
-sys.path.insert(0, str(config.REPO_ROOT))
+sys.path.insert(0, str(config.PAPER_ROOT))
 from src import bundles as bundle_module, gamma as gamma_module, onet, task_values  # noqa: E402
 
 LAYER = "usage"
