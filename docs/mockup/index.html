@@ -72,8 +72,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 @keyframes nav{0%{opacity:1}55%{opacity:.12}}
 .strobe{opacity:0}.dusk .strobe,.night .strobe{animation:strobe 1.6s steps(1) infinite}
 @keyframes strobe{0%{opacity:1}8%{opacity:0}}
-.carlight{opacity:0;transition:opacity .3s}.dusk .carlight,.night .carlight{opacity:.8}
-.tail{opacity:0;transition:opacity .2s}.dusk .tail,.night .tail{opacity:.5}.braking .tail{opacity:1}
+.carlight{opacity:0;transition:opacity .3s}.night .carlight{opacity:1}
+.lamp{filter:url(#lamp)}.beamcone{filter:url(#lampwide)}
+.tail{opacity:0;transition:opacity .2s}.night .tail{opacity:.45}.braking .tail{opacity:1}.night .braking .tail{fill:#FF2A1F !important;filter:url(#lamp)}
+.star{animation:twinkle 8s ease-in-out infinite;opacity:.85}
+@keyframes twinkle{0%,70%,100%{opacity:.85}78%{opacity:.15}86%{opacity:.9}}
 .water{animation:swell 6s ease-in-out infinite alternate}
 .water.b{animation-name:swellb;animation-duration:8.5s;animation-delay:-3s}
 .water.c{animation-name:swellc;animation-duration:11s;animation-delay:-6s}
@@ -98,7 +101,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 /* while the view turns, the fog lifts and comes back once it settles: it is most of what the turn has to redraw */
 .stage.fogout .fog{opacity:0 !important}.stage.turning .fog{display:none}
 .beam{transition:opacity .7s}.beam.moving{opacity:0;transition:none}
-#beamlight{mix-blend-mode:var(--blend,multiply);filter:url(#beamblur);opacity:.35;transition:opacity 1.2s}.dusk #beamlight{opacity:.6}.night #beamlight{opacity:.85}
+#beamlight{mix-blend-mode:var(--blend,multiply);filter:url(#beamblur);opacity:0;transition:opacity 1.2s}.dusk #beamlight{opacity:.6}.night #beamlight{opacity:.85}
 .stage:not([data-view="home"]) .fg .hot,.stage[data-view="valley"] .beam{display:none}
 .stage:not([data-view="home"]) .beam path{opacity:.4}
 .halo{fill:var(--gold);stroke:none;opacity:0;transition:opacity .6s}
@@ -225,6 +228,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
           <feGaussianBlur in="d" stdDeviation="0.7"/>
         </filter>
         <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="6"/></filter>
+        <filter id="lamp" x="-400%" y="-400%" width="900%" height="900%"><feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="lampwide" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3.5"/></filter>
         <linearGradient id="skygrad" x1="0" y1="0" x2="0" y2="1"><stop id="sky-top" offset="0" stop-color="#BFD3E6" stop-opacity="0"/><stop id="sky-low" offset="1" stop-color="#F2B48C" stop-opacity="0"/></linearGradient>
         <mask id="fogmask"><rect x="0" y="0" width="1600" height="700" fill="white"/><polygon id="cone" points="0,0" fill="black"/></mask>
         <mask id="binoc"><rect x="0" y="0" width="1600" height="700" fill="black"/><circle cx="700" cy="290" r="210" fill="white"/><circle cx="900" cy="290" r="210" fill="white"/></mask>
@@ -456,12 +461,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   el("path", {d:"M 0 380 L 0 262 C 60 252, 150 256, 230 270 C 290 281, 332 304, 366 330 C 376 338, 384 343, 394 346 C 380 360, 330 372, 300 380 Z", style:"fill:var(--paper);stroke:none"}, headland);
   el("path", {d:"M 0 262 C 60 252, 150 256, 230 270 C 290 281, 332 304, 366 330 C 376 338, 384 343, 394 346"}, headland);
   { const cp = el("clipPath", {id:"behind-rock", clipPathUnits:"userSpaceOnUse"}, el("defs", {}, $("#L-water"))); el("rect", {x:-14, y:-40, width:28, height:42}, cp); }
-  const bear = el("g", {transform:"translate(214,272) scale(1.4)", "clip-path":"url(#behind-rock)"}, headland), bearHead = el("g", {transform:"translate(0,8)", id:"bearhead"}, bear);
+  const bear = el("g", {transform:"translate(154,294) scale(1.4)", "clip-path":"url(#behind-rock)"}, headland), bearHead = el("g", {transform:"translate(0,8)", id:"bearhead"}, bear);
   el("path", {d:"M -3.2 -5 a 1.4 1.4 0 1 1 0.1 0 M 3.2 -5 a 1.4 1.4 0 1 1 0.1 0", class:"thin", style:"fill:var(--paper)"}, bearHead);
   el("path", {d:"M -4.2 1 Q -4.8 -5.4 0 -5.8 Q 4.8 -5.4 4.4 -1.2 Q 7.4 -1.4 7.6 0.2 Q 7.2 1.6 4 1.4 L 4 1.8 Z", class:"thin", style:"fill:var(--paper)"}, bearHead);
   el("circle", {cx:2, cy:-2.6, r:.55, class:"solid"}, bearHead); el("circle", {cx:7.3, cy:-0.3, r:.6, class:"solid"}, bearHead);
-  el("path", {d:"M 199 276 L 202 268 L 208 263 L 216 261 L 223 263.5 L 227 269 L 229 276 Z", class:"thin", style:"fill:var(--paper)"}, headland);
-  el("path", {d:"M 212 262 L 214 268 L 211 272", class:"hair"}, headland);
+  el("path", {d:"M 139 298 L 142 290 L 148 285 L 156 283 L 163 285.5 L 167 291 L 169 298 Z", class:"thin", style:"fill:var(--paper)"}, headland);
+  el("path", {d:"M 152 284 L 154 290 L 151 294", class:"hair"}, headland);
   el("path", {d:"M 394 346 C 370 352, 340 356, 300 360", class:"hair"}, headland);
   el("path", {d:"M 20 318 C 100 300, 190 298, 280 312", class:"hair", "stroke-dasharray":"8 6"}, headland);
   fog(fogG, [[330, 5, 6],[400, 6, 7],[470, 5, 5]], 11);
@@ -561,6 +566,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     tint(L, domeHalf(hv, gy-44, 44, 24, -1), ca).classList.add("nightlight");
     tint(L, domeHalf(hv, gy-44, 44, 24, 1), cb).classList.add("nightlight");
     // the crown: a soft wash and a grid of blocks that breathe out of step
+    el("ellipse", {cx:hv, cy:gy-54, rx:30, ry:20, class:"nightlight", filter:"url(#glow)", style:`fill:${ca};stroke:none;opacity:.5`}, L);
+    el("ellipse", {cx:ox+1057, cy:baseY-276, rx:22, ry:16, class:"nightlight", filter:"url(#glow)", style:"fill:#9FB7C9;stroke:none"}, L);
     tintRect(L, ox+1041, baseY-290, 32, 30, "#9FB7C9").classList.add("nightlight");
     const grid = el("g", {class:"nightlight"}, L); const r = rng(59);
     for (let i=0;i<4;i++) for (let j=0;j<5;j++){ const b = el("rect", {x:ox+1044+i*7, y:baseY-286+j*6, width:5, height:4, class:"crownblock", style:`fill:#9FB7C9;stroke:none`}, grid); b.style.animationDelay = (-r()*9).toFixed(1) + "s"; }
@@ -589,7 +596,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     el("path", {d:"M-14 -134 L 14 -134 M 0 -142 L 0 -126", class:"thin"}, hood);                      // the slot
     el("path", {d:"M-64 -118 L 64 -118 L 64 -78 L -64 -78 Z", class:"thin"}, hood);                  // the plate
     const t = el("text", {x:0, y:-88, "text-anchor":"middle", class:"cap"}, hood); t.textContent = "25.5¢";
-    const t2 = el("text", {x:0, y:-46, "text-anchor":"middle"}, hood); t2.textContent = "PER MILLION TOKENS · SOURCES AND METHOD";
+    const t2 = el("text", {x:0, y:-46, "text-anchor":"middle"}, hood); t2.textContent = "PER MILLION TOKENS";
     el("circle", {cx:-236, cy:-112, r:20}, hood); el("path", {d:"M-236 -132 L -236 -92 M-256 -112 L -216 -112", class:"hair"}, hood);
     const k = el("text", {x:-236, y:-78, "text-anchor":"middle"}, hood); k.textContent = "FOCUS";
     const hot = el("g", {class:"hot", id:"hot-coin", tabindex:"0", role:"button", "aria-label":"Insert a coin for sources and method"}, hood);
@@ -605,18 +612,19 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const L = el("g", {"clip-path":"url(#eye-l)"}, g), R = el("g", {"clip-path":"url(#eye-r)"}, g);
     // left: the hills behind, the campus on its slope, its campanile over the trees, the bay in front
     // the hills behind: a ridge crowned with a ragged line of trees, a raised stand of them with a mast in it, then a sharp drop to the lower ridge
-    { const rr = rng(83);
+    { const rr = rng(83), Lm = el("g", {transform:"translate(1300,0) scale(-1,1)"}, L);   // mirrored: the crest and its trees to the right, the cut to the left
       let d = "M 480 400 L 480 304 C 500 300, 516 296, 530 292", x = 530;
       const crown = u => u < 668 ? 292 - (u-530)/138*54 : 238 + (u-668)*0.06;             // the canopy's line: rising to its crest, then nearly level
       while (x < 700){ const w = 5 + rr()*13, top = Math.min(crown(x), crown(x+w)) - 2 - rr()*7; d += ` Q ${(x+w*.5).toFixed(1)} ${top.toFixed(1)} ${(x+w).toFixed(1)} ${(crown(x+w) + rr()*2).toFixed(1)}`; x += w; }
       d += ` Q ${(x+3).toFixed(1)} 250 ${(x+2).toFixed(1)} 262 Q ${(x+4).toFixed(1)} 270 ${(x+9).toFixed(1)} 273`; x += 9;   // the steep cut where the trees end
       while (x < 820){ const w = 5 + rr()*9, y = 273 + (x-710)*0.05; d += ` Q ${(x+w/2).toFixed(1)} ${(y - 2 - rr()*4).toFixed(1)} ${(x+w).toFixed(1)} ${y.toFixed(1)}`; x += w; }
-      el("path", {d: d + " L 820 400 Z", class:"thin", style:"fill:var(--paper)"}, L);
+      el("path", {d: d + " L 820 400 Z", class:"thin", style:"fill:var(--paper)"}, Lm);
       // the grass below the trees: the hill's own shoulder, and a pale fold lower down
-      el("path", {d:"M 500 322 C 570 306, 640 298, 706 296 C 750 296, 790 300, 820 304", class:"hair"}, L);
-      el("path", {d:"M 540 342 C 600 332, 670 330, 740 336", class:"hair"}, L);
+      el("path", {d:"M 500 322 C 570 306, 640 298, 706 296 C 750 296, 790 300, 820 304", class:"hair"}, Lm);
+      el("path", {d:"M 540 342 C 600 332, 670 330, 740 336", class:"hair"}, Lm);
     }
     box(L, 616, 352, 56, 42, true); box(L, 706, 360, 70, 34, true); box(L, 530, 370, 30, 24, false);
+    el("path", {d:"M 579 394 L 579 244 L 576 244 L 590 222 L 604 244 L 601 244 L 601 394 Z", style:"fill:var(--paper);stroke:none"}, L);
     campanile(L, 590, 394, 150);
     tintRect(L, 579, 245, 22, 149, "var(--cream)");
     for (const x of [506, 684, 782]) el("path", {d:`M${x} 396 q 0 -16 10 -19 q 10 3 10 19 z`, class:"thin", style:"fill:var(--paper)"}, L);
@@ -627,7 +635,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     { const train = el("g", {class:"bart"}, L);
       for (let i=0;i<3;i++){ const x = i*58, nose = i === 2;
         el("path", {d: nose ? `M ${x} 417 L ${x} 405 L ${x+42} 405 Q ${x+54} 406 ${x+56} 417 Z` : `M ${x} 417 L ${x} 405 L ${x+56} 405 L ${x+56} 417 Z`, class:"thin", style:"fill:var(--paper)"}, train);
-        for (let j=0; j<5; j++) el("path", {d:`M ${x+5+j*9} 410 l 5 0`, class:"hair"}, train); } }
+        for (let j=0; j<5; j++){ el("path", {d:`M ${x+5+j*9} 410 l 5 0`, class:"hair"}, train); el("rect", {x:x+5+j*9, y:408.5, width:5, height:3, class:"carlight", style:"fill:#F8DC8C;stroke:none"}, train); }
+        if (nose){ el("path", {d:`M ${x+56} 413 L ${x+86} 407 L ${x+86} 419 Z`, class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.5"}, train); el("circle", {cx:x+55, cy:413, r:1.6, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, train); } } }
     for (let i=0;i<2;i++){ const y = 452 + i*14; el("path", {d:`M ${510 + i*10} ${y} q 40 -3 80 0 M ${660 - i*14} ${y+5} q 50 -3 100 0`, class:"hair"}, L); }
     // right: the foothills and the dish on them, the tower over the arcaded quad, palms along the front
     el("path", {d:"M 780 262 C 850 236, 930 230, 1000 244 C 1050 254, 1090 256, 1130 262 L 1130 400 L 780 400 Z", class:"thin", style:"fill:var(--paper)"}, R);
@@ -893,7 +902,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function moonPhase(d){ const age = ((d.getTime() - Date.UTC(2000,0,6,18,14))/86400e3) % 29.530588; return (age < 0 ? age + 29.530588 : age)/29.530588; }
   // the panorama's headings: the left edge looks a little west of south, the right edge a little north of east
   // the frame looks from a little north of east round to the south-east: the sun rises over the Gate and the bay
-  function xOfAzimuth(az){ return (az - 50)/110 * W; }
+  // drawn, not surveyed: the sky is widened so the whole day and night cross the frame, east at the left edge, west at the right
+  function xOfAzimuth(az){ const a = ((az % 360) + 360) % 360; return (Math.max(50, Math.min(310, a)) - 50)/260 * W; }
   function yOfAltitude(alt){ return 340 - Math.max(-12, Math.min(70, alt))*4.6; }
   const HEADING = { home:105, city:125, bridge:100, valley:150 };
 
@@ -919,7 +929,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     document.documentElement.style.setProperty("--dir", lateral < 0 ? "normal" : "reverse");
     document.documentElement.style.setProperty("--drift", Math.max(12, 160 / Math.max(Math.abs(lateral), 3)) + "s");
     // clouds cross the whole frame; their place is set by the clock, so redrawing the sky never moves them
-    const cross = 6*Math.max(60, 900 / Math.max(Math.abs(lateral), 3));
+    const cross = 20*Math.max(60, 900 / Math.max(Math.abs(lateral), 3));
     document.documentElement.style.setProperty("--cdrift", cross + "s");
     document.documentElement.style.setProperty("--rfall", (o.wind_kmh > 40 ? .7 : 1.1) + "s");
     document.querySelectorAll(".fog").forEach(g=>{ g.style.opacity = w.fog; });
@@ -929,7 +939,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     for (let i=0;i<w.clouds*3;i++){ const y = 110 + r()*90, wd = 80 + r()*140, front = !w.streak && i % 4 === 3;
       const d = w.streak ? `M0 ${y} q ${wd*.5} -6 ${wd} 0 M20 ${y+8} q ${wd*.3} -4 ${wd*.6} 0` : `M0 ${y} q ${wd*.2} -18 ${wd*.45} -6 q ${wd*.15} -16 ${wd*.35} -2 q ${wd*.2} -4 ${wd*.2} 8 Z`;
       const c = el("path", {d, class:"cloud"}, front ? skyFront : sky); if (!w.streak) c.style.fill = "var(--paper)";
-      c.style.animationDelay = (-(((clock/cross) + r()) % 1)*cross).toFixed(1) + "s"; }
+      const own = cross*(.8 + r()*.4); c.style.animationDuration = own.toFixed(0) + "s"; c.style.animationDelay = (-(((clock/own) + r()) % 1)*own).toFixed(1) + "s"; }
     if (w.band) for (let y=96; y<140; y+=18) el("path", {d:`M 0 ${y} L ${W} ${y}`, class:"hair"}, sky);
     const rainN = [0, 220, 560][Math.max(w.rain, rainLevel)];
     if (rainN){ const slant = -lateral * 0.35; const g = el("g", {class:"rain"}, sky);
@@ -948,8 +958,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       el("path", {d:`M ${x} ${y} m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0 M ${x} ${y-34} l 0 -10 M ${x} ${y+34} l 0 10 M ${x-34} ${y} l -10 0 M ${x+34} ${y} l 10 0`, class:"thin sun"}, sky);
       if (key === "clear") tint($("#washes"), `M ${x-24} ${y} a 24 24 0 1 0 48 0 a 24 24 0 1 0 -48 0 Z`, "var(--gold)").classList.add("sunwash");
     }
+    if (night){ const rs = rng(Math.floor(Date.now()/86400e3)); const n = 4 + Math.floor(rs()*2);
+      for (let i=0;i<n;i++){ const x = 480 + rs()*1080, y = 40 + rs()*120, sz = 2 + rs()*1.6;
+        const st = el("path", {d:`M ${x} ${y-sz*2} L ${x+sz*.45} ${y-sz*.45} L ${x+sz*2} ${y} L ${x+sz*.45} ${y+sz*.45} L ${x} ${y+sz*2} L ${x-sz*.45} ${y+sz*.45} L ${x-sz*2} ${y} L ${x-sz*.45} ${y-sz*.45} Z`, class:"star", style:"fill:var(--ink);stroke:none"}, sky);
+        st.style.animationDuration = (5 + rs()*7).toFixed(1) + "s"; st.style.animationDelay = (-rs()*10).toFixed(1) + "s"; } }
     // the moon is drawn at its phase and where it is; on a night it has set, the drawing keeps it low over the horizon anyway
-    if ((moon.alt > 0 || night) && (night || sun.alt < 4) && w.fog < .9 && !w.band){
+    if ((moon.alt > 0 || night) && (night || sun.alt < 4) && w.fog < .9){
       const x = xOfAzimuth(moon.alt > 0 ? moon.az : (moon.az + 180) % 360), y = yOfAltitude(Math.max(moon.alt, night ? 16 : 0)), g = el("g", {class:"moon thin"}, sky);
       // the lit side: a lens between the limb and the terminator, phase 0 new, .5 full. After dark the lit
       // side is drawn in ink, which is white then; by day the disc is shaded and the lit side is left paper.
@@ -987,7 +1001,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function tween(ms, step, done){ const t0 = performance.now(); (function f(t){ const k = Math.min(1, (t - t0)/ms); step(k); if (k < 1) requestAnimationFrame(f); else if (done) done(); })(t0); }
   let taxiUntil = 0, bearUp = false;        // one robotaxi on the road at a time; one bear
   const EVENTS = {
-    gull(){ // one to three, each its own size, pace, bob and wingbeat
+    gull(){ if (stage.classList.contains("night")) return; // one to three, each its own size, pace, bob and wingbeat
       const n = 1 + Math.floor(Math.random()*Math.random()*3), ltr = Math.random() < .5, y0 = 130 + Math.random()*140, dur = 12000 + Math.random()*10000;
       for (let j=0;j<n;j++){ const g = el("g", {class:"thin"}, life), sc = .75 + Math.random()*.5, amp = 4 + Math.random()*7, fq = 6 + Math.random()*7, ph = Math.random()*6, dx = j*(28 + Math.random()*20), dy = (Math.random()-.5)*30;
         const flap = ["M-10 0 q 10 -9 20 0 M10 0 q 10 -9 20 0", "M-10 0 q 10 -2 20 0 M10 0 q 10 -2 20 0"];
@@ -1014,9 +1028,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       gear.style.opacity = (kind === "landing" || kind === "takeoff") ? 1 : 0;
       // after dusk: red at the near wingtip, green showing past the fuselage, a white strobe on the fin
       const tip = kind === "jet" ? [-10, 5.5] : [-15, 8];
-      const red = el("circle", {cx:tip[0], cy:tip[1], r:2.4, class:"navlight", style:"fill:#E0443A;stroke:none"}, ship);
-      const green = el("circle", {cx:-6, cy:-3.6, r:2.2, class:"navlight", style:"fill:#46C271;stroke:none"}, ship);
-      const strobe = el("circle", {cx: kind === "jet" ? -24 : -35, cy: kind === "jet" ? -12 : -16, r:2, class:"strobe", style:"fill:#FFFFFF;stroke:none"}, ship);
+      const red = el("circle", {cx:tip[0], cy:tip[1], r:2.4, class:"navlight lamp", style:"fill:#FF3B30;stroke:none"}, ship);
+      const green = el("circle", {cx:-6, cy:-3.6, r:2.2, class:"navlight lamp", style:"fill:#4DDB7E;stroke:none"}, ship);
+      const strobe = el("circle", {cx: kind === "jet" ? -24 : -35, cy: kind === "jet" ? -12 : -16, r:2, class:"strobe lamp", style:"fill:#FFFFFF;stroke:none"}, ship);
+      const nose = kind === "jet" ? [24, 0] : [35.5, 0];
+      el("path", {d:`M ${nose[0]} ${nose[1]} L ${nose[0]+34} ${nose[1]-7} L ${nose[0]+34} ${nose[1]+9} Z`, class:"carlight beamcone", style:"fill:#F6E7B0;stroke:none;fill-opacity:.45"}, ship);
+      el("circle", {cx:nose[0], cy:nose[1], r:2, class:"carlight lamp", style:"fill:#FFF8DC;stroke:none"}, ship);
       const beat = (.9 + Math.random()*.9).toFixed(2) + "s"; red.style.setProperty("--nav", beat); green.style.setProperty("--nav", beat); green.style.animationDelay = "-" + (Math.random()).toFixed(2) + "s";
       // where it rises from, or sinks behind: the city, which sits differently in each view
       const behind = { home:[1010, 262], city:[780, 300], bridge:[1250, 300], valley:[800, 300] }[view];
@@ -1075,9 +1092,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const car = el("g", {transform:`scale(${S})`}, g);
       el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 Z", class:"thin", style:"fill:var(--paper)"}, car);
       el("path", {d:"M-10 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M4 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M-8 -14 L -6 -8 M 10 -14 L 8 -8", class:"thin", style:"fill:var(--paper)"}, car);
-      el("path", {d:"M -16 -6 L -40 -11 L -40 -1 Z", class:"carlight", style:"fill:#F4D98A;stroke:none;opacity:.8"}, car);
-      el("circle", {cx:-15.5, cy:-5.5, r:1.3, class:"carlight", style:"fill:#FFF3C4;stroke:none"}, car);
-      el("rect", {x:14, y:-8, width:2.2, height:3.2, class:"tail", style:"fill:#E0443A;stroke:none"}, car);
+      el("path", {d:"M -16 -6 L -46 -13 L -46 0 Z", class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.55"}, car);
+      el("circle", {cx:-15.5, cy:-5.5, r:1.5, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, car);
+      el("rect", {x:14, y:-8.2, width:2.4, height:3.6, class:"tail", style:"fill:#D8352B;stroke:none"}, car);
       const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, car); let d = 0; const spin = setInterval(()=>{ dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
       // the water, from the drawn hydrant's cap, pouring toward the car
       const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${-k},${k})`}, life); spout.style.opacity = 0;
@@ -1088,14 +1105,18 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     bear(){ if (stage.dataset.view !== "bridge" || bearUp) return EVENTS.gull(); bearUp = true;
       // up over the rock, a look one way and the other, and down again
       const h = $("#bearhead"); const at = (y, fx) => h.setAttribute("transform", `translate(0,${y.toFixed(2)}) scale(${fx},1)`);
-      tween(1800, k=>at(8 - 17.5*(1-(1-k)**2), 1), ()=>{ setTimeout(()=>{ at(-9.5, -1); setTimeout(()=>{ at(-9.5, 1);
-        setTimeout(()=>tween(1400, k=>at(-9.5 + 17.5*k*k, 1), ()=>{ bearUp = false; }), 1600); }, 1400); }, 1500); }); },
+      tween(1800, k=>at(8 - 15*(1-(1-k)**2), 1), ()=>{ setTimeout(()=>{ at(-7, -1); setTimeout(()=>{ at(-7, 1);
+        setTimeout(()=>tween(1400, k=>at(-7 + 15*k*k, 1), ()=>{ bearUp = false; }), 1600); }, 1400); }, 1500); }); },
     gust(){ stage.classList.add("gust"); document.querySelectorAll(".gull").forEach(p=>{ p.style.transition = "transform .8s"; p.style.transform = "rotate(-22deg)"; });
       setTimeout(()=>{ stage.classList.remove("gust"); }, 5000); },
     ferry(){ if (stage.dataset.view !== "bridge") return EVENTS.gull();
-      const g = el("g", {class:"thin"}, life); el("path", {d:"M0 0 l -30 0 l 6 10 l 48 0 l 6 -10 z M-14 0 l 0 -10 l 22 0 l 0 10 M-4 -10 l 0 -9"}, g);
-      const y = 530 + Math.random()*50, dur = 28000 + Math.random()*14000, bob = 1 + Math.random()*1.5;
-      tween(dur, k=>{ g.setAttribute("transform", `translate(${700 + k*1000},${y + Math.sin(k*20)*bob})`); }, ()=>g.remove()); },
+      const g = el("g", {class:"thin"}, life); el("path", {d:"M0 0 l -30 0 l 6 10 l 48 0 l 6 -10 z M-14 0 l 0 -10 l 22 0 l 0 10 M-4 -10 l 0 -9"}, g, ).style.fill = "var(--paper)";
+      for (let i=0;i<3;i++) el("rect", {x:-11 + i*6, y:-7, width:3, height:3, class:"carlight lamp", style:"fill:#F8DC8C;stroke:none"}, g);
+      el("circle", {cx:-4, cy:-19, r:1.4, class:"carlight lamp", style:"fill:#FFFFFF;stroke:none"}, g);
+      el("path", {d:"M 24 3 L 52 -3 L 52 9 Z", class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.4"}, g);
+      el("circle", {cx:23, cy:3, r:1.4, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, g);
+      const y = 530 + Math.random()*50, dur = 44000 + Math.random()*16000, bob = 1 + Math.random()*1.5;
+      tween(dur, k=>{ g.setAttribute("transform", `translate(${-80 + k*1780},${y + Math.sin(k*28)*bob})`); }, ()=>g.remove()); },
   };
   const WEIGHTS = [["gull",6],["plane",4],["gust",2],["ferry",1],["rocket",2],["robotaxi",1],["bear",2]];
   const PLANE_KIND = params.get("plane");
