@@ -93,6 +93,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 @keyframes cdrift{from{transform:translateX(1900px)}to{transform:translateX(-500px)}}
 .cloud{animation:cdrift var(--cdrift,1440s) linear infinite;animation-direction:var(--dir,normal)}
 .rain{animation:fall var(--rfall,1.1s) linear infinite}
+.rain.near{animation-duration:calc(var(--rfall,1.1s)*.7)}
 @keyframes fall{from{transform:translateY(-40px)}to{transform:translateY(40px)}}
 .sunwash,.dawn{pointer-events:none}
 .skywash{mix-blend-mode:var(--blend,multiply)}
@@ -223,6 +224,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 
   <div class="frame">
   <div class="stage" id="stage" data-view="home" data-aw="on" data-ak="on">
+    <!-- The depth order. Nothing may cover what is nearer than itself.
+         1 sky: its colour; the sun, moon and stars; far cloud and far rain, which stop at the horizon; planes and launches
+         2 land: headland, bridge, city and hills, all solid, hiding whatever is behind them
+         3 near air and water: the water, the fog, near cloud and near rain, which fall in front of the land
+         4 life on the water and the shore: boats, whales, the car, gulls, a falling rocket once it has come forward
+         5 the lighthouse and the point, nearest of all; its light stops at the first solid thing it reaches -->
     <svg class="pan" id="L-sky" viewBox="0 0 1600 700" aria-hidden="true">
       <defs>
         <filter id="wc" x="-10%" y="-10%" width="120%" height="120%">
@@ -237,9 +244,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         <mask id="fogmask"><rect x="0" y="0" width="1600" height="700" fill="white"/><polygon id="cone" points="0,0" fill="black"/></mask>
         <mask id="binoc"><rect x="0" y="0" width="1600" height="700" fill="black"/><circle cx="700" cy="290" r="210" fill="white"/><circle cx="900" cy="290" r="210" fill="white"/></mask>
       </defs>
-      <g class="zoom"><g id="skyall"><rect class="skywash" x="0" y="0" width="1600" height="342" fill="url(#skygrad)"/>
-      <g id="sky" class="scene sky thin"></g></g></g>
+      <g class="zoom"><g id="skywashg"><rect class="skywash" x="0" y="0" width="1600" height="342" fill="url(#skygrad)"/></g></g>
       <g id="celes" class="scene sky thin"></g>
+      <g class="zoom"><g id="skyall"><g id="sky" class="scene sky thin"></g></g></g>
       <g id="lifeback" class="life scene"></g>
     </svg>
     <!-- ================= the one scene from the point, painted once; the colour lies over the ink ================= -->
@@ -488,6 +495,10 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   el("path", {d:"M -3.2 -5 a 1.4 1.4 0 1 1 0.1 0 M 3.2 -5 a 1.4 1.4 0 1 1 0.1 0", class:"thin", style:"fill:var(--paper)"}, bearHead);
   el("path", {d:"M -4.2 1 Q -4.8 -5.4 0 -5.8 Q 4.8 -5.4 4.4 -1.2 Q 7.4 -1.4 7.6 0.2 Q 7.2 1.6 4 1.4 L 4 1.8 Z", class:"thin", style:"fill:var(--paper)"}, bearHead);
   el("circle", {cx:2, cy:-2.6, r:.55, class:"solid"}, bearHead); el("circle", {cx:7.3, cy:-0.3, r:.6, class:"solid"}, bearHead);
+  { const u = el("g", {id:"brolly", style:"display:none"}, bearHead);
+    el("path", {d:"M 1 -6 L 1 -15", class:"hair"}, u);
+    el("path", {d:"M -9 -14 Q 1 -24 11 -14 Q 8.5 -16 6 -14 Q 3.5 -16 1 -14 Q -1.5 -16 -4 -14 Q -6.5 -16 -9 -14 Z", class:"thin", style:"fill:var(--paper)"}, u);
+    el("path", {d:"M 1 -21.5 L 1 -23", class:"hair"}, u); }
   el("path", {d:"M 143 297 Q 142 290 147 287 Q 153 284 159 285.5 Q 165 287 166 292 Q 167 296 165 297 Z", class:"thin", style:"fill:var(--paper)"}, headland);
   el("path", {d:"M 394 346 C 370 352, 340 356, 300 360", class:"hair"}, headland);
   el("path", {d:"M 20 318 C 100 300, 190 298, 280 312", class:"hair", "stroke-dasharray":"8 6"}, headland);
@@ -711,12 +722,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     let far;
     if (!zoomed){
       // from the point, two sight lines to the ends of the place, and the light between them
-      far = target.ends.map(([x, y]) => [lantern[0] + (x-lantern[0])*1.25, lantern[1] + (y-lantern[1])*1.25]);
+      far = target.ends.map(([x, y]) => [x, y]);
       beamPath.setAttribute("d", far.map(([x, y]) => `M${LANTERN[0]} ${LANTERN[1]} L ${x.toFixed(1)} ${y.toFixed(1)}`).join(" "));
     } else {
       // turned, a single narrow beam from the lantern to the middle of the place, widening a little with distance
       const [a1, b1] = target.base.map(([x, y]) => toScreen(view, x, y)), c = [(a1[0]+b1[0])/2, (a1[1]+b1[1])/2];
-      const dx = c[0]-lantern[0], dy = c[1]-lantern[1], len = Math.hypot(dx, dy), nx = -dy/len, ny = dx/len, w = len*0.11, ext = 1.35;
+      const dx = c[0]-lantern[0], dy = c[1]-lantern[1], len = Math.hypot(dx, dy), nx = -dy/len, ny = dx/len, w = len*0.11, ext = .78;   // the drawn light stops short of the shore, where the first solid thing stands
       const f = [lantern[0] + dx*ext, lantern[1] + dy*ext];
       far = [[f[0] + nx*w*ext, f[1] + ny*w*ext], [f[0] - nx*w*ext, f[1] - ny*w*ext]];
     }
@@ -817,7 +828,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     hold(); light(null);
     if (lastView !== null && lastView !== view){ $("#celes").style.opacity = 0; clearTimeout(celesTimer); celesTimer = setTimeout(()=>{ $("#celes").style.opacity = 1; }, 1450); }
     lastView = view;
-    for (const id of ["life", "skyall", "lifeback", "celes"]){ if (view === "valley") $("#"+id).setAttribute("mask", "url(#binoc)"); else $("#"+id).removeAttribute("mask"); }
+    for (const id of ["life", "skyall", "lifeback", "celes", "skywashg"]){ if (view === "valley") $("#"+id).setAttribute("mask", "url(#binoc)"); else $("#"+id).removeAttribute("mask"); }
     const r = R[view];
     // the one drawing scales about the place turned to; the lighthouse in front shrinks to the base of the frame
     const {c, s: zs} = ZOOM[view];
@@ -952,7 +963,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   // the frame looks from a little north of east round to the south-east: the sun rises over the Gate and the bay
   // drawn, not surveyed: the sky is widened so the whole day and night cross the frame, east at the left edge, west at the right
   function xOfAzimuth(az){ const a = ((az % 360) + 360) % 360; return (Math.max(50, Math.min(310, a)) - 50)/260 * W; }
-  function yOfAltitude(alt){ return 340 - Math.max(-12, Math.min(70, alt))*4.6; }
+  function yOfAltitude(alt){ return 330 - Math.max(-12, Math.min(60, alt))*5.4; }
   const HEADING = { home:105, city:125, bridge:100, valley:150 };
 
   const sky = $("#sky"), skyFront = $("#skyfront"), celes = $("#celes"); let celesTimer = null, lastView = null;
@@ -960,7 +971,14 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function inFrame(view, x, y, r){
     let [sx, sy] = (view === "home" || view === "valley") ? [x, y] : toScreen(view, x, y);
     if (view === "home" || view === "valley") sx = Math.max(r + 20, Math.min(1600 - r - 20, sx));
-    return (sx - r < 10 || sx + r > 1590 || sy - r < 10) ? null : [sx, sy]; }
+    // at the point, never over a label: lift above it, or failing that set it below
+    if (view === "home") for (const [x1, y1, x2, y2] of LABELS) if (sx + r > x1 && sx - r < x2 && sy + r > y1 && sy - r < y2){
+      if (sy < (y1 + y2)/2 || y2 + r + 4 > 332) sy = Math.max(r + 4, y1 - r - 2);                 // above the label, as high as the frame allows
+      else sy = y2 + r + 4;                                                                         // or below it, if it was already low
+      if (sy + r > y1 && sy - r < y2) sx = (sx < (x1 + x2)/2) ? x1 - r - 6 : x2 + r + 6; }         // and if it still would not clear, beside it
+    for (const [x1, y1, x2, y2] of [[0, 0, 440, 104]]) if (sx + r > x1 && sx - r < x2 && sy + r > y1 && sy - r < y2) sx = x2 + r + 10;   // the title, in every view
+    return (sx - r < 4 || sx + r > 1596 || sy - r < 2) ? null : [sx, sy]; }
+  const LABELS = [[90, 100, 600, 222], [990, 100, 1570, 222]];
   // The sky's own colour: the faintest wash, blue by day, warm at the horizon around dawn and dusk, a deep
   // blue at night. Each is a pair of stops keyed to the sun's altitude and blended between the keys.
   const SKYKEYS = [[-18, ["#1B2238", .3, "#1B2238", .12]], [-7, ["#7A7CA6", .2, "#E9A27A", .16]], [-1, ["#C4BEDD", .2, "#F2B48C", .22]],
@@ -989,14 +1007,17 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     sky.innerHTML = ""; skyFront.innerHTML = ""; celes.innerHTML = "";
     const r = rng(w.clouds*13+7), clock = Date.now()/1000;
     // most cloud is behind the land and the bridge; one in four passes in front of them
-    for (let i=0;i<w.clouds*3;i++){ const y = 110 + r()*90, wd = 80 + r()*140, front = !w.streak && i % 4 === 3;
+    // cloud keeps to two bands: high, above the labels, and low, along the horizon behind the land
+    for (let i=0;i<w.clouds*3;i++){ const y = i % 3 === 2 ? 236 + r()*52 : 66 + r()*24, wd = 80 + r()*140, front = !w.streak && i % 4 === 3;
       const d = w.streak ? `M0 ${y} q ${wd*.5} -6 ${wd} 0 M20 ${y+8} q ${wd*.3} -4 ${wd*.6} 0` : `M0 ${y} q ${wd*.2} -18 ${wd*.45} -6 q ${wd*.15} -16 ${wd*.35} -2 q ${wd*.2} -4 ${wd*.2} 8 Z`;
       const c = el("path", {d, class:"cloud"}, front ? skyFront : sky); if (!w.streak) c.style.fill = "var(--paper)";
       const own = cross*(.8 + r()*.4); c.style.animationDuration = own.toFixed(0) + "s"; c.style.animationDelay = (-(((clock/own) + r()) % 1)*own).toFixed(1) + "s"; }
-    if (w.band) for (let y=96; y<140; y+=18) el("path", {d:`M 0 ${y} L ${W} ${y}`, class:"hair"}, sky);
+    if (w.band) for (let y=90; y<104; y+=10) el("path", {d:`M 0 ${y} L ${W} ${y}`, class:"hair"}, sky);
     const rainN = [0, 220, 560][Math.max(w.rain, rainLevel)];
-    if (rainN){ const slant = -lateral * 0.35; const g = el("g", {class:"rain"}, sky);
-      for (let i=0;i<rainN;i++){ const x = r()*W, y = 130 + r()*420; el("path", {d:`M${x} ${y} l ${slant} 9`, class:"hair"}, g); } }
+    if (rainN){ const slant = -lateral * 0.35;
+      const far = el("g", {class:"rain"}, sky), near = el("g", {class:"rain near"}, skyFront);
+      for (let i=0;i<rainN;i++){ const x = r()*W, y = 60 + r()*272; el("path", {d:`M${x} ${y} l ${slant*.7} 7`, class:"hair"}, far); }        // above the horizon only
+      for (let i=0;i<rainN*.35;i++){ const x = r()*W, y = 40 + r()*640; el("path", {d:`M${x} ${y} l ${slant*1.3} 13`, class:"hair"}, near); } }
     document.querySelectorAll(".gull").forEach(p=>{ p.style.transform = `rotate(${lateral > 20 ? 14 : lateral < -20 ? -14 : 0}deg)`; p.style.transformOrigin = "center"; });
     // the day's light
     const now = sfNow(), sun = sunPosition(now), phase = moonPhase(now), moon = sunPosition(now, phase*360, Math.cos(phase*2*Math.PI));
@@ -1011,7 +1032,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       el("path", {d:`M ${x} ${y} m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0 M ${x} ${y-34} l 0 -10 M ${x} ${y+34} l 0 10 M ${x-34} ${y} l -10 0 M ${x+34} ${y} l 10 0`, class:"thin sun", style:"fill:var(--paper)"}, celes);
     }
     if (night){ const rs = rng(Math.floor(Date.now()/86400e3)); const n = 4 + Math.floor(rs()*2);
-      for (let i=0;i<n;i++){ const x = 480 + rs()*1080, y = 40 + rs()*120, sz = 2 + rs()*1.6;
+      for (let i=0;i<n;i++){ const x = 480 + rs()*1080, y = 30 + rs()*62, sz = 2 + rs()*1.6;
         const st = el("path", {d:`M ${x} ${y-sz*2} L ${x+sz*.45} ${y-sz*.45} L ${x+sz*2} ${y} L ${x+sz*.45} ${y+sz*.45} L ${x} ${y+sz*2} L ${x-sz*.45} ${y+sz*.45} L ${x-sz*2} ${y} L ${x-sz*.45} ${y-sz*.45} Z`, class:"star", style:"fill:var(--ink);stroke:none"}, celes);
         st.style.animationDuration = (5 + rs()*7).toFixed(1) + "s"; st.style.animationDelay = (-rs()*10).toFixed(1) + "s"; } }
     // the moon is drawn at its phase and where it is; on a night it has set, the drawing keeps it low over the horizon anyway
@@ -1052,7 +1073,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const life = $("#life");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   function tween(ms, step, done){ const t0 = performance.now(); (function f(t){ const k = Math.min(1, (t - t0)/ms); step(k); if (k < 1) requestAnimationFrame(f); else if (done) done(); })(t0); }
-  let taxiUntil = 0, bearUp = false, rocketUntil = 0, whaleUp = false;        // one robotaxi on the road at a time; one bear
+  let taxiUntil = 0, bearUp = false, rocketUntil = 0, whaleUp = 0, lastPad = 0, ferryUntil = 0;        // one robotaxi on the road at a time; one bear
   const EVENTS = {
     gull(){ if (stage.classList.contains("night")) return; // one to three, each its own size, pace, bob and wingbeat
       const n = 1 + Math.floor(Math.random()*Math.random()*3), ltr = Math.random() < .5, y0 = 130 + Math.random()*140, dur = 12000 + Math.random()*10000;
@@ -1061,7 +1082,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         const w = el("path", {d:flap[0]}, g); let i = 0; const flapper = setInterval(()=>{ w.setAttribute("d", flap[i++ % 2]); }, 200 + Math.random()*140);
         tween(dur*(.95 + Math.random()*.1), k=>{ const x = ltr ? -40 - dx + k*1740 : 1640 + dx - k*1740; g.setAttribute("transform", `translate(${x},${y0 + dy + Math.sin(k*fq + ph)*amp}) scale(${sc})`); }, ()=>{ clearInterval(flapper); g.remove(); }); } },
     plane(){ // several kinds, several paths: across high, in to land, up from behind the city, across and away, round and down behind the skyline, a small jet
-      const view = stage.dataset.view, kinds = ["cruise","landing","takeoff","away","turn","jet"], kind = PLANE_KIND || kinds[Math.floor(Math.random()*kinds.length)];
+      const view = stage.dataset.view, kinds = ["cruise", "takeoff", "away", "jet", "cruise"], kind = PLANE_KIND || kinds[Math.floor(Math.random()*kinds.length)];
       const g = el("g", {}, $("#lifeback")), ship = el("g", {class:"thin"}, g), P = "fill:var(--paper)";
       if (kind === "jet"){
         el("path", {d:"M-22 -3 L 15 -2.6 Q 23 -2.2 24 0 Q 22 2 15 2 L -16 2 Q -20 1.4 -22 -3 Z", style:P}, ship);
@@ -1089,22 +1110,23 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       el("circle", {cx:nose[0], cy:nose[1], r:2, class:"carlight lamp", style:"fill:#FFF8DC;stroke:none"}, ship);
       const beat = (.9 + Math.random()*.9).toFixed(2) + "s"; red.style.setProperty("--nav", beat); green.style.setProperty("--nav", beat); green.style.animationDelay = "-" + (Math.random()).toFixed(2) + "s";
       // where it rises from, or sinks behind: the city, which sits differently in each view
-      const behind = { home:[1010, 262], city:[780, 300], bridge:[1250, 300], valley:[800, 300] }[view];
+      // a take-off starts below the ridge of the southern hills, so the land hides it until it climbs out; where those hills are off the frame, it is a crossing instead
+      const hill = view === "home" ? [1480 + Math.random()*90, 333] : view === "city" ? toScreen("city", 1500, 333) : null;
+      const behind = hill;
       const L2R = Math.random() < .5, sx = L2R ? -90 : 1690, ex = L2R ? 1690 : -90;
       const bez = (p0, p1, p2, p3, t) => { const u = 1-t; return [0,1].map(i => u*u*u*p0[i] + 3*u*u*t*p1[i] + 3*u*t*t*p2[i] + t*t*t*p3[i]); };
-      const hi = 80 + Math.random()*60;
+      const ceiling = { home:[80, 140], city:[22, 52], bridge:[22, 70], valley:[80, 140] }[view], hi = ceiling[0] + Math.random()*(ceiling[1] - ceiling[0]);   // above the tallest thing in the view
       const path = {
         cruise:  { dur: 34000 + Math.random()*12000, s:[.42, .42], at: t => [sx + (ex-sx)*t, hi + Math.sin(t*4)*2] },
         jet:     { dur: 13000 + Math.random()*5000,  s:[.36, .36], at: t => [sx + (ex-sx)*t, hi - 10 + t*(Math.random()<.5?1:-1)*0] },
-        landing: { dur: 24000 + Math.random()*6000,  s:[.5, .78], at: t => bez([sx, 110], [sx + (ex-sx)*.35, 140], [sx + (ex-sx)*.7, 250], [ex, 300 + Math.random()*0], t) },
-        takeoff: { dur: 20000 + Math.random()*6000,  s:[.3, .6], at: t => bez(behind, [behind[0] + (L2R?1:-1)*120, behind[1] - 40], [behind[0] + (L2R?1:-1)*500, 120], [behind[0] + (L2R?1:-1)*1100, 20], t), gearUp:true },
-        away:    { dur: 26000 + Math.random()*8000,  s:[.45, .08], at: t => bez([sx, 170], [800, 175], [L2R ? 1100 : 500, 110], [L2R ? 1150 : 450, 30], t), fade:true },
-        turn:    { dur: 26000 + Math.random()*8000,  s:[.42, .12], at: t => bez([ex, 120], [L2R ? 1100 : 500, 140], [behind[0] + (L2R?160:-160), behind[1] - 70], [behind[0], behind[1] + 10], t) },
-      }[kind];
+        takeoff: behind ? { dur: 24000 + Math.random()*6000, s:[.34, .6], at: t => bez(behind, [behind[0] - 30, behind[1] - 100], [behind[0] - 120, behind[1] - 260], [behind[0] - 800, behind[1] - 400], t), gearUp:true } : null,
+        away:    { dur: 26000 + Math.random()*8000,  s:[.45, .08], at: t => bez([sx, hi + 20], [800, hi + 24], [L2R ? 1100 : 500, hi - 20], [L2R ? 1150 : 450, Math.max(4, hi - 60)], t), fade:true },
+      }[kind] || { dur: 34000 + Math.random()*12000, s:[.42, .42], at: t => [sx + (ex-sx)*t, hi + Math.sin(t*4)*2] };
       let prev = path.at(0);
       tween(path.dur, k=>{
         const [x, y] = path.at(k), [nx, ny] = path.at(Math.min(1, k + .004)), dx = nx - x, dy = ny - y;
-        const dir = dx >= 0 ? 1 : -1; let rot = Math.atan2(dy, Math.abs(dx))*180/Math.PI * dir; rot = Math.max(-30, Math.min(30, rot));
+        // pitch follows the path, nose up in a climb and a little more than the path itself, as a wing needs
+        const dir = dx >= 0 ? 1 : -1; let rot = Math.atan2(dy, Math.abs(dx))*180/Math.PI * dir; rot = Math.max(-25, Math.min(25, rot*1.15));
         const sc = path.s[0] + (path.s[1] - path.s[0])*k;
         if (path.gearUp) gear.style.opacity = Math.max(0, 1 - (k-.2)*6);
         if (path.fade) g.style.opacity = Math.min(1, (1-k)*6);
@@ -1113,40 +1135,49 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       }, ()=>g.remove()); },
     rocket(){ const view = stage.dataset.view; if (view !== "home" && view !== "valley") return 0;
       if (performance.now() < rocketUntil) return 0;
-      // from behind the land, straight up, slow at first and gathering speed, its plume left hanging in the air behind it;
-      // one in three loses its engine, coasts, hangs, wobbles, and falls back into the bay
-      const valley = view === "valley", clip = valley ? "url(#behind-foothills)" : "url(#behind-hills)";
-      const pickX = () => { if (!valley) return 1420 + Math.random()*120; let x; do { x = 830 + Math.random()*270; } while (Math.abs(x - 930) < 40); return x; };
-      const x0 = pickX(), y0 = valley ? 300 : 380, waterY = valley ? 430 : 372 + Math.random()*30;
-      // the clip sits on a still wrapper: on the moving rocket itself it would move with it
-      const holder = el("g", {"clip-path":clip}, life), g = el("g", {class:"thin"}, holder), trail = el("g", {class:"hair"}, life); trail.setAttribute("clip-path", clip);
+      // it rises from behind the land in the far layer, so the land hides the pad and the first seconds of the climb;
+      // slow off the pad, gathering speed, leaving a plume that spreads and thins; one in three loses its engine,
+      // coasts, hangs, wobbles, and falls forward into the bay, crossing into the near layer as it comes
+      const valley = view === "valley", far = $("#lifeback");
+      let x0; do { x0 = valley ? 830 + Math.random()*270 : 1350 + Math.random()*230; } while ((valley && Math.abs(x0 - 930) < 40) || Math.abs(x0 - lastPad) < 60);
+      lastPad = x0;
+      const y0 = valley ? 300 : 352, waterY = valley ? 430 : 372 + Math.random()*30;
+      const plume = el("path", {d:"", style:"fill:var(--ink);fill-opacity:.1;stroke:none"}, far), core = el("path", {d:"", class:"hair"}, far);
+      const g = el("g", {class:"thin"}, far);
       el("path", {d:"M-3 0 L -3 -20 Q 0 -30 3 -20 L 3 0 Z M-3 -5 L -7 2 L -3 0 M 3 -5 L 7 2 L 3 0", style:"fill:var(--paper)"}, g);
       const flame = el("path", {d:"M -2 1 L 0 9 L 2 1", class:"thin"}, g);
-      const fails = FORCE_FAIL || Math.random() < 1/3, lean = (valley ? (Math.random() < .5 ? 1 : -1) : 1)*(.35 + Math.random()*.55);   // from the point they turn out over the ocean, into the frame
-      const cut = 3.6 + Math.random()*1.2;                                            // seconds of burn, for the one that fails
-      let t = 0, x = x0, y = y0, vx = 0, vy = -8, ang = 0, spin = 0, phase = "burn", last = performance.now(), lastPuff = 0, splash = null, hangT = 0;
+      const fails = FORCE_FAIL || Math.random() < 1/3, lean = (valley ? (Math.random() < .5 ? 1 : -1) : 1)*(.35 + Math.random()*.55);
+      const cutoff = 3.8 + Math.random()*1.2;
+      let t = 0, x = x0, y = y0, vx = 0, vy = -8, ang = 0, spin = 0, phase = "burn", last = performance.now(), hangT = 0, splash = null;
+      const pts = [];                                                               // the plume: where the nozzle has been, and when
       rocketUntil = performance.now() + 60000;
-      const puff = (px, py, speed) => { const len = 4 + speed*.12, l = el("path", {d:`M ${px.toFixed(1)} ${py.toFixed(1)} l ${((Math.random()-.5)*3).toFixed(1)} ${len.toFixed(1)}`}, trail);
-        l.style.transition = "opacity 3.2s linear"; requestAnimationFrame(()=>requestAnimationFrame(()=>{ l.style.opacity = 0; })); setTimeout(()=>l.remove(), 3400); };
-      const done = () => { holder.remove(); setTimeout(()=>{ trail.remove(); if (splash) splash.remove(); }, 3500); rocketUntil = performance.now() + 4000; };
+      const drawPlume = () => {
+        const now = t; while (pts.length && now - pts[0][2] > 7) pts.shift();
+        if (pts.length < 2){ plume.setAttribute("d", ""); core.setAttribute("d", ""); return; }
+        const L = [], R = []; let c = "";
+        pts.forEach(([px, py, pt], i) => { const age = now - pt, w = .8 + age*2.6 + Math.sin(i*1.7)*age*.5;
+          L.push(`${(px - w).toFixed(1)} ${py.toFixed(1)}`); R.unshift(`${(px + w).toFixed(1)} ${py.toFixed(1)}`); c += `${i ? "L" : "M"} ${px.toFixed(1)} ${py.toFixed(1)} `; });
+        plume.setAttribute("d", `M ${L.join(" L ")} L ${R.join(" L ")} Z`); core.setAttribute("d", c); };
+      const done = () => { g.remove(); const fade = setInterval(()=>{ t += .1; drawPlume(); if (pts.length < 2){ clearInterval(fade); plume.remove(); core.remove(); } }, 100); rocketUntil = performance.now() + 4000; };
       (function step(now){
-        if (!g.isConnected) return done();
-        const dt = Math.min(.05, (now - last)/1000); last = now; t += dt;
-        if (phase === "burn"){ vy = -(8 + 9*t); vx = -lean*.5*t*t; if (fails && t > cut) phase = "coast"; }
+        if (!g.isConnected) return;
+        const dt = Math.min(.034, (now - last)/1000); last = now; t += dt;
+        if (phase === "burn"){ vy = -(6 + 8*t); vx = -lean*.45*t*t; if (fails && t > cutoff) phase = "coast"; }
         else if (phase === "coast"){ vy += 13*dt; vx *= (1 - .6*dt); if (vy >= 0){ phase = "hang"; hangT = 0; } }
-        else if (phase === "hang"){ hangT += dt; vy = 2*hangT; spin = Math.sin(hangT*9)*(8 + hangT*30); if (hangT > 1.4){ phase = "fall"; holder.removeAttribute("clip-path"); } }
+        else if (phase === "hang"){ hangT += dt; vy = 2*hangT; spin = Math.sin(hangT*9)*(8 + hangT*30); if (hangT > 1.4){ phase = "fall"; life.appendChild(g); } }
         else if (phase === "fall"){ vy += 16*dt; vx = -lean*10; spin += 260*dt*lean; }
         x += vx*dt; y += vy*dt;
-        ang = phase === "burn" || phase === "coast" ? Math.atan2(vx, -vy)*180/Math.PI : ang;
-        g.setAttribute("transform", `translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${(ang + spin).toFixed(1)})`);
+        if (phase === "burn" || phase === "coast") ang = Math.atan2(vx, -vy)*180/Math.PI;
+        g.setAttribute("transform", `translate(${x.toFixed(2)},${y.toFixed(2)}) rotate(${(ang + spin).toFixed(2)})`);
         const burning = phase === "burn"; flame.style.opacity = burning ? (.6 + Math.random()*.4) : 0;
-        if (burning && now - lastPuff > 45){ lastPuff = now; const r = ang*Math.PI/180; puff(x - Math.sin(r)*-2, y + Math.cos(r)*6, Math.abs(vy)); }
+        if (burning){ const r = ang*Math.PI/180; pts.push([x - Math.sin(r)*4, y + Math.cos(r)*4, t]); }
+        drawPlume();
         if (phase === "fall" && y >= waterY){
-          g.style.opacity = 0; splash = el("g", {class:"thin"}, life);
+          g.remove(); splash = el("g", {class:"thin"}, life);
           for (let i=0;i<7;i++){ const a = (-150 + i*20)*Math.PI/180; el("path", {d:`M${x} ${waterY} l ${Math.cos(a)*8} ${Math.sin(a)*8} l ${Math.cos(a)*10} ${Math.sin(a)*14}`}, splash); }
           el("path", {d:`M${x-30} ${waterY+6} q 30 -5 60 0 M${x-48} ${waterY+14} q 48 -6 96 0`, class:"hair"}, splash);
-          splash.style.transition = "opacity 2.5s"; requestAnimationFrame(()=>requestAnimationFrame(()=>{ splash.style.opacity = 0; })); return done(); }
-        if (y < -80) return done();
+          splash.style.transition = "opacity 2.5s"; requestAnimationFrame(()=>requestAnimationFrame(()=>{ splash.style.opacity = 0; })); setTimeout(()=>splash.remove(), 2700); return done(); }
+        if (y < -120) return done();
         requestAnimationFrame(step); })(last);
       return fails ? 14000 : 16000; },
     robotaxi(){ if (stage.dataset.view !== "city" || performance.now() < taxiUntil) return 0; taxiUntil = performance.now() + 21000;
@@ -1174,6 +1205,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     bear(){ if (stage.dataset.view !== "bridge" || bearUp) return 0; bearUp = true;
       // up over the rock, a look one way and the other, and down again
       const h = $("#bearhead"); const at = (y, fx) => h.setAttribute("transform", `translate(0,${y.toFixed(2)}) scale(${fx},1)`);
+      const wet = (PRESETS[current.preset] || {}).rain > 0 || current.rainLevel > 0; $("#brolly").style.display = wet ? "" : "none";   // in the rain, it brings an umbrella
       tween(1800, k=>at(8 - 17*(1-(1-k)**2), 1), ()=>{ setTimeout(()=>{ at(-9, -1); setTimeout(()=>{ at(-9, 1);
         setTimeout(()=>tween(1400, k=>at(-9 + 17*k*k, 1), ()=>{ bearUp = false; }), 1600); }, 1400); }, 1500); });
       return 7800; },
@@ -1187,17 +1219,23 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       el("path", {d:"M -1.5 -38 L -1.5 -4 L -17 -4 Z", style:P}, boat);
       el("circle", {cx:0, cy:-45, r:1.3, class:"carlight lamp", style:"fill:#FFFFFF;stroke:none"}, boat);
       el("circle", {cx:-20, cy:2, r:1.3, class:"carlight lamp", style:"fill:#FF3B30;stroke:none"}, boat);
-      const y = 500 + Math.random()*70, dur = 60000 + Math.random()*20000, heel = 3 + Math.random()*4, sc = .8 + Math.random()*.3;
+      const y = 535 + Math.random()*45, dur = 60000 + Math.random()*20000, heel = 3 + Math.random()*4, sc = .55 + Math.random()*.15;
       tween(dur, k=>{ g.setAttribute("transform", `translate(${-60 + k*1760},${y + Math.sin(k*34)*1.6}) scale(${sc}) rotate(${-heel + Math.sin(k*23)*1.5})`); }, ()=>g.remove()); },
-    whale(){ const view = stage.dataset.view; if ((view !== "bridge" && view !== "home") || whaleUp) return 0; whaleUp = true;
+    whale(){ const view = stage.dataset.view; if ((view !== "bridge" && view !== "home") || whaleUp) return 0;
+      // one, or now and then a pair surfacing together
+      const pair = Math.random() < .35; let dur = EVENTS.fluke(null); if (pair){ const lead = WHALE_AT; setTimeout(()=>EVENTS.fluke(lead), 1100 + Math.random()*900); dur += 2000; }
+      return dur; },
+    fluke(near){ const view = stage.dataset.view; whaleUp++;
       // where: open water, clear of the headland, the lighthouse and the point; further off is smaller
       let x, y;
-      if (view === "bridge"){ x = 640 + Math.random()*360; y = 420 + Math.random()*90; }
-      else { do { x = 330 + Math.random()*1150; y = 350 + Math.random()*120; } while (x > 540 && x < 740); }
-      const sc = view === "bridge" ? 1.4 + Math.random()*.4 : .35 + (y - 350)/120*.45, P = "fill:var(--paper)";
-      const defs = $("#L-life defs"); $("#whaleclip")?.remove();
-      const cp = el("clipPath", {id:"whaleclip", clipPathUnits:"userSpaceOnUse"}, defs); el("rect", {x:0, y:0, width:1600, height:y}, cp);
-      const g = el("g", {class:"thin"}, life), under = el("g", {"clip-path":"url(#whaleclip)"}, g);
+      if (near){ x = near[0] + (Math.random() < .5 ? -1 : 1)*(40 + Math.random()*30)*near[2]; y = near[1] + (Math.random() - .5)*12; }
+      else if (view === "bridge"){ x = 640 + Math.random()*360; y = 420 + Math.random()*90; }
+      else { do { x = 430 + Math.random()*1050; y = 360 + Math.random()*120; } while (x > 540 && x < 760); }
+      const sc = near ? near[2]*(.8 + Math.random()*.2) : view === "bridge" ? 1.4 + Math.random()*.4 : .7 + (y - 360)/120*.5, P = "fill:var(--paper)";
+      WHALE_AT = [x, y, sc]; const cid = "whaleclip" + whaleUp;
+      const defs = $("#L-life defs"); document.getElementById(cid)?.remove();
+      const cp = el("clipPath", {id:cid, clipPathUnits:"userSpaceOnUse"}, defs); el("rect", {x:0, y:0, width:1600, height:y}, cp);
+      const g = el("g", {class:"thin"}, life), under = el("g", {"clip-path":`url(#${cid})`}, g);
       const back = el("path", {d:"", style:P}, under);
       const tail = el("g", {}, under);
       el("path", {d:"M -3.4 6 L -2.2 -16 Q -12 -19 -24 -28 Q -12 -27 0 -22 Q 12 -27 24 -28 Q 12 -19 2.2 -16 L 3.4 6 Z", style:P}, tail);
@@ -1220,23 +1258,67 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         drips.setAttribute("d", dr);
         // and once it is under, a ring spreading where it went
         const rk = Math.max(0, (k - .9)/.1); ring.setAttribute("d", rk > 0 ? `M ${x - 30*sc*(1 + rk)} ${y + 2} q ${30*sc*(1 + rk)} ${-5*sc} ${60*sc*(1 + rk)} 0` : ""); ring.style.opacity = 1 - rk*.7;
-      }, ()=>{ g.remove(); cp.remove(); whaleUp = false; });
+      }, ()=>{ g.remove(); cp.remove(); whaleUp = Math.max(0, whaleUp - 1); });
       return dur; },
-    boat(){ if (stage.dataset.view !== "bridge") return 0; (Math.random() < .5 ? EVENTS.sail : EVENTS.ferry)(); return 9000; },
+    boat(){ if (stage.dataset.view !== "bridge") return 0; (Math.random() < .5 && !stage.classList.contains("night") ? EVENTS.sail : EVENTS.cargo)(); return 9000; },
     bart(){ if (stage.dataset.view !== "valley") return 0;
       const t = $("#bart"), dur = 10500 + Math.random()*3000;
       tween(dur, k=>{ t.setAttribute("transform", `translate(${(300 + k*540).toFixed(1)},0)`); }, ()=>t.setAttribute("transform", "translate(-400,0)"));
       return dur; },
-    ferry(){ if (stage.dataset.view !== "bridge") return 0;
-      const g = el("g", {class:"thin"}, life); el("path", {d:"M0 0 l -30 0 l 6 10 l 48 0 l 6 -10 z M-14 0 l 0 -10 l 22 0 l 0 10 M-4 -10 l 0 -9"}, g, ).style.fill = "var(--paper)";
-      for (let i=0;i<3;i++) el("rect", {x:-11 + i*6, y:-7, width:3, height:3, class:"carlight lamp", style:"fill:#F8DC8C;stroke:none"}, g);
-      el("circle", {cx:-4, cy:-19, r:1.4, class:"carlight lamp", style:"fill:#FFFFFF;stroke:none"}, g);
-      el("path", {d:"M 24 3 L 52 -3 L 52 9 Z", class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.4"}, g);
-      el("circle", {cx:23, cy:3, r:1.4, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, g);
-      const y = 530 + Math.random()*50, dur = 44000 + Math.random()*16000, bob = 1 + Math.random()*1.5;
-      tween(dur, k=>{ g.setAttribute("transform", `translate(${-80 + k*1780},${y + Math.sin(k*28)*bob})`); }, ()=>g.remove()); },
+    cargo(){ if (stage.dataset.view !== "bridge") return 0;
+      // a container ship, long and low, stacked with boxes, the house and funnel aft
+      const g = el("g", {class:"thin"}, life), P = "fill:var(--paper)";
+      el("path", {d:"M -62 0 L 60 0 L 70 -6 L 70 2 L 60 11 L -58 11 Z", style:P}, g);
+      el("path", {d:"M -58 5 L 64 5", class:"hair"}, g);
+      el("path", {d:"M -56 0 L -56 -18 L -40 -18 L -40 0 Z", style:P}, g);
+      el("path", {d:"M -54 -13 l 12 0 M -54 -8 l 12 0", class:"hair"}, g);
+      el("path", {d:"M -51 -18 L -51 -25 L -45 -25 L -45 -18 Z", style:P}, g);
+      const tones = ["var(--orange)", "var(--glass)", "var(--sky)", "var(--rose)", "var(--green)"], boxes = [];
+      for (let tier=0; tier<2; tier++) for (let i=0; i<9; i++){
+        const bx = -34 + i*10, by = -5 - tier*5, box = el("g", {}, g);
+        el("rect", {x:bx, y:by, width:9.4, height:4.6, class:"hair", style:P}, box);
+        el("rect", {x:bx, y:by, width:9.4, height:4.6, style:`fill:${tones[(i*3 + tier*2) % tones.length]};stroke:none;opacity:.35`}, box);
+        if (tier === 1) boxes.push([box, bx, by]); }
+      el("rect", {x:-49, y:-22, width:2.4, height:2, class:"carlight lamp", style:"fill:#F8DC8C;stroke:none"}, g);
+      el("circle", {cx:-48, cy:-27, r:1.3, class:"carlight lamp", style:"fill:#FFFFFF;stroke:none"}, g);
+      el("circle", {cx:69, cy:-6, r:1.3, class:"carlight lamp", style:"fill:#46C271;stroke:none"}, g);
+      const y = 550 + Math.random()*35, dur = 70000 + Math.random()*20000, sc = 1.25 + Math.random()*.25;
+      const drops = params.get("crate") === "1" || Math.random() < 1/3, at = params.get("crate") === "1" ? .28 : .35 + Math.random()*.3; let dropped = false;
+      tween(dur, k=>{
+        const x = -120 + k*1880; g.setAttribute("transform", `translate(${x.toFixed(1)},${(y + Math.sin(k*18)*1.2).toFixed(1)}) scale(${sc})`);
+        if (drops && !dropped && k > at){ dropped = true;
+          // one box on the top tier slides over the side, drops, lands with a splash, bobs, and slips under
+          const [box, bx, by] = boxes[2 + Math.floor(Math.random()*5)]; box.remove();
+          const c = el("g", {class:"thin"}, life); el("rect", {x:-4.7, y:-2.3, width:9.4, height:4.6, style:P}, c);
+          const wx = x + (bx + 4.7)*sc, wy0 = y + (by + 2.3)*sc, wy = y + 16*sc; let splash = null;
+          tween(9000, u=>{
+            const fall = Math.min(1, u/.12), cy = wy0 + (wy - wy0)*fall*fall, rot = fall*28 + (u > .12 ? Math.sin(u*40)*6 : 0), sink = u > .6 ? (u - .6)/.4 : 0;
+            c.setAttribute("transform", `translate(${(wx - u*14).toFixed(1)},${(cy + sink*5*sc).toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(sc*(1 - sink*.5)).toFixed(2)})`); c.style.opacity = 1 - sink;
+            if (u > .12 && !splash){ splash = el("g", {class:"hair"}, life); for (let i=0;i<6;i++){ const a = (-150 + i*24)*Math.PI/180; el("path", {d:`M${wx} ${wy} l ${Math.cos(a)*7*sc} ${Math.sin(a)*9*sc}`}, splash); }
+              el("path", {d:`M ${wx - 14*sc} ${wy + 3} q ${14*sc} -3 ${28*sc} 0`}, splash); }
+            if (splash) splash.style.opacity = Math.max(0, 1 - (u - .12)*3);
+          }, ()=>{ c.remove(); splash?.remove(); }); }
+      }, ()=>g.remove()); },
+    cityferry(){ if (stage.dataset.view !== "city" || performance.now() < ferryUntil) return 0;
+      // a ferry leaves the Ferry Building and comes across the bay toward the point, growing as it nears, its wake opening behind it
+      const [px, py] = toScreen("city", cityX(1240), CITY.y + 6), endX = 620 + Math.random()*260, dur = 26000 + Math.random()*6000;
+      ferryUntil = performance.now() + dur;
+      const g = el("g", {class:"thin"}, life), ship = el("g", {}, g), wake = el("path", {d:"", class:"hair"}, g), P = "fill:var(--paper)";
+      el("path", {d:"M -15 0 L 15 0 L 11 8 L -11 8 Z", style:P}, ship);
+      el("path", {d:"M -12 0 L -12 -8 L 12 -8 L 12 0 Z", style:P}, ship);
+      el("path", {d:"M -7 -8 L -7 -13 L 7 -13 L 7 -8 Z", style:P}, ship);
+      el("path", {d:"M -10 -4.5 L 10 -4.5", class:"hair"}, ship);
+      for (let i=0;i<5;i++) el("rect", {x:-10 + i*4.2, y:-6.5, width:2.6, height:2, class:"carlight", style:"fill:#F8DC8C;stroke:none"}, ship);
+      el("circle", {cx:-6, cy:4, r:1.3, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, ship); el("circle", {cx:6, cy:4, r:1.3, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, ship);
+      el("circle", {cx:0, cy:-15, r:1.1, class:"carlight lamp", style:"fill:#FFFFFF;stroke:none"}, ship);
+      tween(dur, k=>{
+        const near = Math.pow(k, 1.6), sc = .35 + near*2.6, x = px + (endX - px)*near, y = py + near*(760 - py);
+        ship.setAttribute("transform", `translate(${x.toFixed(1)},${y.toFixed(1)}) scale(${sc.toFixed(3)})`);
+        const w = 11*sc, len = 20 + near*90; wake.setAttribute("d", `M ${x - w} ${y + 8*sc} L ${x - w - len*.5} ${y + 8*sc - len*.35} M ${x + w} ${y + 8*sc} L ${x + w + len*.5} ${y + 8*sc - len*.35}`);
+      }, ()=>g.remove());
+      return dur; },
   };
-  const PLANE_KIND = params.get("plane");
+  const PLANE_KIND = params.get("plane"); let WHALE_AT = null;
   const FORCE_FAIL = params.get("rocket") === "fail";
   /* The director. Each view has its first act, a set of features and its ambient life. Only one feature
      plays at a time, a quiet gap follows it, and every feature in the view's set plays once before any plays
@@ -1245,7 +1327,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
      event is caught so the others carry on. */
   const PLAY = {
     home:   { first:[["rocket", 9000]],                                   features:["whale", "rocket"],          gap:[12000, 22000], ambient:[["gull", [18000, 34000]], ["plane", [26000, 48000]]] },
-    city:   { first:[["robotaxi", 6000]],                                 features:["robotaxi"],                 gap:[26000, 40000], ambient:[["gull", [20000, 36000]], ["plane", [28000, 50000]]] },
+    city:   { first:[["robotaxi", 6000], ["cityferry", 24000]],          features:["robotaxi", "cityferry"],    gap:[14000, 24000], ambient:[["gull", [20000, 36000]], ["plane", [28000, 50000]]] },
     bridge: { first:[["boat", 2500], ["bear", 15000], ["whale", 30000]],  features:["bear", "whale", "boat"],     gap:[12000, 22000], ambient:[["gull", [18000, 34000]], ["plane", [30000, 55000]]] },
     valley: { first:[["bart", 1500], ["rocket", 13000]],                  features:["bart", "rocket", "bart"],   gap:[5000, 11000],  ambient:[] },
   };
