@@ -225,7 +225,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       <g class="zoom" id="fgzoom"><g id="fg" class="scene">
         <path d="M560 700 C 600 620, 690 590, 760 585 C 830 580, 880 600, 930 610 C 980 620, 1040 660, 1060 700 Z" style="fill:var(--paper)"/>
         <path d="M600 660 C 650 640, 700 645, 740 630 M850 640 C 900 630, 950 650, 1000 670" class="thin"/>
-        <g class="beam" id="beam" style="--bx:800px;--by:300px"><path d="M800 300 L 3200 -156 M800 300 L 3200 756" class="hair" stroke-dasharray="6 6"/></g>
+        <g class="beam" id="beam"><path d="" class="hair" stroke-dasharray="6 6"/></g>
         <g id="lh"></g>
         <path d="M640 604 L 960 604 M640 604 L 640 630 M720 604 L 720 632 M800 604 L 800 632 M880 604 L 880 630 M960 604 L 960 628" class="thin"/>
         <g class="hot" id="hot-tele" tabindex="0" role="button" aria-label="The telescope: where usage lands">
@@ -416,7 +416,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
      this one drawing about that place, so what you were looking at grows and nothing new arrives. The
      lighthouse in front is fixed, and shrinks to the base of the frame when the view has turned. */
   // c is the point of the scene brought to the middle of the frame (800, 300); s is how far the view leans in
-  const ZOOM = { home:{c:[800,300], s:1}, city:{c:[1177,300], s:2.4}, bridge:{c:[570,290], s:2.2}, valley:{c:[800,300], s:1} };
+  const ZOOM = { home:{c:[800,300], s:1}, city:{c:[1100,300], s:2.3}, bridge:{c:[460,290], s:2.4}, valley:{c:[800,300], s:1} };
   const toScreen = (view, x, y) => { const {c, s} = ZOOM[view]; return [800 + s*(x-c[0]), 300 + s*(y-c[1])]; };
   const toScene  = (view, x, y) => { const {c, s} = ZOOM[view]; return [c[0] + (x-800)/s, c[1] + (y-300)/s]; };
   const far = $("#far"), washes = $("#washes"), waterG = $("#water"), fogG = $("#fog");
@@ -428,18 +428,19 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   (function crests(){ const r = rng(19); for (let i=0;i<12;i++){ const x = r()*W, y = 360 + r()*320; const c = el("path", {d:`M${x} ${y} q 6 -3 12 0 M${x+3} ${y-2} l 2 -2`, class:"crest thin"}, waterG); c.style.animationDelay = (-r()*4).toFixed(2) + "s"; c.style.animationDuration = (3 + r()*3).toFixed(2) + "s"; } })();
   // the Marin headland, near, drawn over the water so the bay ends at its foot; the road out to the point on it
   const headland = el("g", {}, waterG);
-  el("path", {d:"M 0 480 L 0 330 C 60 250, 140 235, 200 262 C 260 290, 300 330, 330 350 C 250 400, 120 440, 0 480 Z", style:"fill:var(--paper)"}, headland);
-  el("path", {d:"M 20 372 C 90 340, 170 322, 250 330", class:"hair", "stroke-dasharray":"8 6"}, headland);
-  el("path", {d:"M 40 420 C 110 400, 180 380, 240 372", class:"hair"}, headland);
+  // a ridge that falls from the left edge to the water, the Gate's north end on its shoulder
+  el("path", {d:"M 0 430 L 0 246 C 50 250, 110 262, 160 282 C 205 300, 240 322, 272 342 C 190 370, 95 400, 0 430 Z", style:"fill:var(--paper)"}, headland);
+  el("path", {d:"M 0 300 C 60 304, 120 318, 180 336", class:"hair"}, headland);
+  el("path", {d:"M 0 372 C 70 360, 150 346, 230 340", class:"hair", "stroke-dasharray":"8 6"}, headland);
   fog(fogG, [[330, 5, 6],[400, 6, 7],[470, 5, 5]], 11);
 
   // the Presidio's low shore at the Gate's south end, running on to the city
-  el("path", {d:"M 700 356 C 740 334, 820 322, 900 330 C 940 334, 980 338, 1000 340 L 1000 356 Z", style:"fill:var(--paper)", class:"hair"}, far);
+  el("path", {d:"M 600 356 C 660 334, 760 324, 860 330 C 920 334, 970 338, 1000 340 L 1000 356 Z", style:"fill:var(--paper)", class:"hair"}, far);
   // the Gate, across the middle distance
-  suspension(far, 400, 740, 322, 130, 85);
-  tintRect(washes, 250, 320, 640, 10, "var(--orange)");                                              // the deck
-  tintRect(washes, 392, 192, 16, 170, "var(--orange)"); tintRect(washes, 732, 192, 16, 170, "var(--orange)");   // the towers
-  tint(washes, "M 400 192 Q 570 277 740 192 l 0 5 Q 570 282 400 197 Z", "var(--orange)");            // the cable
+  suspension(far, 300, 620, 322, 105, 70);
+  tintRect(washes, 150, 320, 620, 10, "var(--orange)");                                              // the deck
+  tintRect(washes, 292, 217, 16, 145, "var(--orange)"); tintRect(washes, 612, 217, 16, 145, "var(--orange)");   // the towers
+  tint(washes, "M 300 217 Q 460 287 620 217 l 0 5 Q 460 292 300 222 Z", "var(--orange)");            // the cable
 
   // the city, small on the horizon, drawn once at the size it has from here; turning to it scales this
   const CITY = { x:900, y:340, k:0.42 };
@@ -450,12 +451,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     // the hills behind the city, filled, so the sky stays behind them
     el("path", {d:`M ${ox+30} ${baseY-6} C ${ox+200} ${baseY-30}, ${ox+400} ${baseY-40}, ${ox+700} ${baseY-24} C ${ox+900} ${baseY-14}, ${ox+1100} ${baseY-20}, ${ox+1580} ${baseY-8} L ${ox+30} ${baseY-8} Z`, class:"thin", style:"fill:var(--paper)"}, g);
     el("path", {d:`M ${ox+520} ${baseY-60} C ${ox+640} ${baseY-120}, ${ox+760} ${baseY-118}, ${ox+880} ${baseY-70} L ${ox+880} ${baseY-8} L ${ox+520} ${baseY-8} Z`, class:"hair", style:"fill:var(--paper)"}, g);
-    const sx = ox+700, sy = baseY-118;
+    const sx = ox+700, sy = baseY-103;
     // Sutro: three masts, the outer pair upright at the top, pinched to a waist, splayed to the feet, tied by struts
     const H = 100;
-    el("path", {d:`M${sx-10} ${sy-H} L ${sx-10} ${sy-H*0.55} L ${sx-6} ${sy-H*0.45} L ${sx-27} ${sy} M${sx} ${sy-H-8} L ${sx} ${sy} M${sx+10} ${sy-H} L ${sx+10} ${sy-H*0.55} L ${sx+6} ${sy-H*0.45} L ${sx+27} ${sy}`, class:"thin"}, g);
-    for (const [f, hw] of [[0.94, 10], [0.72, 10], [0.5, 6], [0.22, 17]]) el("path", {d:`M${sx-hw} ${sy-H*f} L ${sx+hw} ${sy-H*f}`, class:"hair"}, g);
-    el("path", {d:`M ${ox+560} ${baseY-30} L ${ox+600} ${baseY-44} L ${ox+640} ${baseY-30} Z M ${ox+596} ${baseY-44} L ${ox+596} ${baseY-60} L ${ox+606} ${baseY-60} L ${ox+606} ${baseY-44}`, class:"thin", style:"fill:var(--paper)"}, g);
+    el("path", {d:`M${sx-26} ${sy} L ${sx-7} ${sy-H*0.5} L ${sx-16} ${sy-H*0.62} L ${sx-16} ${sy-H} M${sx} ${sy-H-8} L ${sx} ${sy} M${sx+26} ${sy} L ${sx+7} ${sy-H*0.5} L ${sx+16} ${sy-H*0.62} L ${sx+16} ${sy-H}`, class:"thin"}, g);
+    for (const [f, hw] of [[0.12, 22], [0.3, 15], [0.5, 7], [0.62, 16], [0.84, 16]]) el("path", {d:`M${sx-hw} ${sy-H*f} L ${sx+hw} ${sy-H*f}`, class:"hair"}, g);
     const towers = [[860,110,26,1],[892,150,24,1],[920,80,20,0],[946,200,30,1],[982,260,34,1],[1022,180,26,1],[1054,150,22,1],[1082,120,28,0],[1116,96,22,1],[1144,140,26,1],[1176,70,20,0]];
     for (const [x,h,w_,win] of towers) box(g, ox+x, baseY-h-8, w_, h, win);
     el("path", {d:`M ${ox+900} ${baseY-8} L ${ox+914} ${baseY-236} L ${ox+928} ${baseY-8} Z`, style:"fill:var(--paper)"}, g);
@@ -465,7 +465,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     el("path", {d:`M ${hv-96} ${gy} L ${hv-96} ${gy-16} L ${hv-56} ${gy-16} L ${hv-56} ${gy} Z`, class:"thin", style:"fill:var(--paper)"}, g);
     for (let r=0; r<2; r++) for (let c=0; c<6; c++) el("path", {d:`M${hv-93+c*6.4} ${gy-12+r*6.5} l 3.4 0`, class:"hair"}, g);
     cityhall(g, hv, gy);
-    for (const x of [hv-104, hv-90, hv-76]) el("path", {d:`M${x} ${gy} q 0 -12 7 -14 q 7 2 7 14 z M${x+7} ${gy} l 0 3`, class:"thin", style:"fill:var(--paper)"}, g);
+    for (const x of [hv-130, hv-116]) el("path", {d:`M${x} ${gy} q 0 -12 7 -14 q 7 2 7 14 z M${x+7} ${gy} l 0 3`, class:"thin", style:"fill:var(--paper)"}, g);
     // the hydrant on the Embarcadero, in front of the towers, where the robotaxi meets it
     el("path", {d:`M ${ox+HYD-3} ${gy} L ${ox+HYD-3} ${gy-14} Q ${ox+HYD} ${gy-18} ${ox+HYD+3} ${gy-14} L ${ox+HYD+3} ${gy} M ${ox+HYD-6} ${gy-9} L ${ox+HYD+6} ${gy-9} M ${ox+HYD-3} ${gy-5} L ${ox+HYD+3} ${gy-5}`, class:"thin"}, g);
     // Ferry Building on the waterfront
@@ -568,16 +568,26 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 
   /* ---------- the beam and the pan ---------- */
   const beam = $("#beam"), cone = $("#cone"), pans = document.querySelectorAll("svg.pan"), fgSvg = $("#L-fg"), fg = $("#fg"), stage = $("#stage");
-  const angle = { home:0, city:0, bridge:180, tele:90 };
-  function setCone(t){
-    const a = {city:[-14, 14], bridge:[166, 194], tele:[70, 110]}[t];
-    if (!a){ cone.setAttribute("points", "0,0"); return; }
-    // the lantern in scene units: at the point, or, once the view has turned and the lighthouse has shrunk to the base, where its lantern falls in the scaled scene
-    const view = stage.dataset.view, [ox, oy] = view === "home" ? [800, 300] : toScene(view, 800, 480), L = 1400/ZOOM[view].s, p=[[ox,oy]];
-    for (let d=a[0]; d<=a[1]; d+=4){ const r=d*Math.PI/180; p.push([ox+L*Math.cos(r), oy+L*Math.sin(r)]); }
-    cone.setAttribute("points", p.map(q=>q.join(",")).join(" "));
+  // what each view is, in the scene: the two ends the beam reaches for. The telescope is in front, on the rail.
+  // from the point the beam reaches for the whole of the place; once turned, it skims the water to the place's feet
+  const TARGET = { city:{ ends:[[930, 230], [1560, 336]], base:[[930, 340], [1560, 340]] }, bridge:{ ends:[[160, 240], [760, 330]], base:[[160, 336], [760, 336]] }, tele:{ ends:[[660, 600], [940, 600]] } };
+  const beamPath = $("#beam path");
+  function aim(t){
+    const view = stage.dataset.view, target = TARGET[t];
+    if (!target){ beamPath.setAttribute("d", ""); cone.setAttribute("points", "0,0"); return; }
+    // the lantern and the target on screen: at the point when home, else the small lighthouse at the base and the scaled scene
+    const zoomed = view !== "home", lantern = zoomed ? [800, 480] : [800, 300], ends = zoomed && target.base ? target.base : target.ends;
+    const onScreen = t === "tele" ? ends : ends.map(([x, y]) => { if (!zoomed) return [x, y]; const [sx, sy] = toScreen(view, x, y); return [Math.max(40, Math.min(1560, sx)), sy]; });
+    // the beam is drawn in the lighthouse's own space, which is scaled to the base when the view has turned
+    const toFg = ([x, y]) => zoomed ? [800 + (x-800)/0.55, 700 + (y-700)/0.55] : [x, y];
+    const past = ([x, y]) => [lantern[0] + (x-lantern[0])*1.25, lantern[1] + (y-lantern[1])*1.25];
+    beamPath.setAttribute("d", onScreen.map(e => { const [x, y] = toFg(past(e)); return `M800 300 L ${x.toFixed(1)} ${y.toFixed(1)}`; }).join(" "));
+    // the fog opens between the same two lines, in scene units
+    const [ox, oy] = zoomed ? toScene(view, ...lantern) : lantern, L = 1400/ZOOM[view].s;
+    const ang = onScreen.map(([x, y]) => Math.atan2(y-lantern[1], x-lantern[0])); let [a0, a1] = ang; if (a1 < a0) [a0, a1] = [a1, a0]; if (a1 - a0 > Math.PI){ [a0, a1] = [a1, a0 + 2*Math.PI]; }
+    const p = [[ox, oy]]; for (let d=a0; d<=a1+1e-6; d+=(a1-a0)/8) p.push([ox+L*Math.cos(d), oy+L*Math.sin(d)]);
+    cone.setAttribute("points", p.map(q=>q.map(v=>v.toFixed(1)).join(",")).join(" "));
   }
-  function aim(t){ beam.style.transform = `rotate(${angle[t]||0}deg)`; setCone(t); }
   function light(t){ document.querySelectorAll(".hot").forEach(h=>h.classList.toggle("lit", h.id === "hot-"+t)); }
   // left alone on the point, the beam turns to each view in its own time and holds it lit
   const SWEEP = ["city", "tele", "bridge"]; let sweepTimer = null, sweepAt = 0;
@@ -902,17 +912,18 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     robotaxi(){ if (stage.dataset.view !== "city") return EVENTS.gull();
       // the city's own units on screen, and the drawn hydrant's place on the shore; it comes in from the west along the front
       const k = ZOOM.city.s*CITY.k, [hx, hy] = toScreen("city", CITY.x + HYD*CITY.k, CITY.y);
-      const g = el("g", {class:"thin"}, life); const S = 1.05*k; const y = hy - 3*S; const x0 = -80;
+      const g = el("g", {class:"thin"}, life); const S = 1.05*k; const y = hy - 3*S; const x0 = 1700;
       // a small car with its sensor dome, running the waterfront toward the hydrant by the Ferry Building
       const car = el("g", {transform:`scale(${S})`}, g);
-      el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-10 0 a 3 3 0 1 0 6 0 M4 0 a 3 3 0 1 0 6 0 M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 M-8 -14 L -6 -8 M 10 -14 L 8 -8", class:"thin"}, car);
+      el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 Z", class:"thin", style:"fill:var(--paper)"}, car);
+      el("path", {d:"M-10 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M4 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M-8 -14 L -6 -8 M 10 -14 L 8 -8", class:"thin", style:"fill:var(--paper)"}, car);
       const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, car); let d = 0; const spin = setInterval(()=>{ dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
       // the water, from the drawn hydrant's cap, pouring toward the car
-      const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${-k},${k})`}, life); spout.style.opacity = 0;
+      const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${k})`}, life); spout.style.opacity = 0;
       for (let i=0;i<9;i++) el("path", {d:`M0 -17 q ${6 + i*2} ${-14 - i*3} ${14 + i*4} ${-2 + i*2} M${14 + i*4} ${-2 + i*2} l 1 3`}, spout);
-      const stop = hx - 20*S;
-      tween(6000, k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*2.5 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .89) spout.style.opacity = Math.min(1, (k-.89)*12); },
-        ()=>{ tween(2200, k=>{ spout.style.opacity = 1; }, ()=>{ tween(900, k=>{ car.setAttribute("transform", `scale(${S*(1 - 2*k)}, ${S})`); }, ()=>{ tween(3200, k=>{ g.setAttribute("transform", `translate(${stop - k*k*(stop+80)},${y})`); spout.style.opacity = 1 - k; }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); }); }); }); }); },
+      const stop = hx + 20*S;
+      tween(11000, k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*2.5 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .89) spout.style.opacity = Math.min(1, (k-.89)*12); },
+        ()=>{ tween(2200, k=>{ spout.style.opacity = 1; }, ()=>{ tween(900, k=>{ car.setAttribute("transform", `scale(${S*(1 - 2*k)}, ${S})`); }, ()=>{ tween(6000, k=>{ g.setAttribute("transform", `translate(${stop + k*k*(1700-stop)},${y})`); spout.style.opacity = 1 - k; }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); }); }); }); }); },
     gust(){ stage.classList.add("gust"); document.querySelectorAll(".gull").forEach(p=>{ p.style.transition = "transform .8s"; p.style.transform = "rotate(-22deg)"; });
       setTimeout(()=>{ stage.classList.remove("gust"); drawSky(OBS, stage.dataset.view); }, 5000); },
     ferry(){ if (stage.dataset.view !== "bridge") return EVENTS.gull();
@@ -922,7 +933,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const WEIGHTS = [["gull",6],["plane",1],["gust",2],["ferry",1],["rocket",1],["robotaxi",1]];
   const WELCOME = { city:"robotaxi", bridge:"ferry", home:"gull", valley:"gull" };
   let welcomeTimer = null;
-  function welcome(view){ clearTimeout(welcomeTimer); if (reduced || params.get("event")) return; welcomeTimer = setTimeout(()=>{ if (stage.dataset.view === view) EVENTS[WELCOME[view]](); }, 2600); }
+  function welcome(view){ clearTimeout(welcomeTimer); if (reduced || params.get("event")) return; welcomeTimer = setTimeout(()=>{ if (stage.dataset.view === view) EVENTS[WELCOME[view]](); }, view === "city" ? 6000 : 2600); }
   function pick(){ const total = WEIGHTS.reduce((a,[,w])=>a+w,0); let r = Math.random()*total; for (const [k,w] of WEIGHTS){ if ((r -= w) < 0) return k; } return "gull"; }
   function schedule(){ if (reduced) return; setTimeout(()=>{ EVENTS[pick()](); schedule(); }, 25000 + Math.random()*40000); }
   if (params.get("event")){ setTimeout(()=>EVENTS[params.get("event")] && EVENTS[params.get("event")](), 2000); }
