@@ -1,3 +1,6 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Index Mockup</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Libre+Franklin:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -28,10 +31,18 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .ctl input[type=checkbox]:checked::after{transform:translateX(14px);opacity:1}
 .ctl input:focus-visible,.ctl select:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .obs{color:var(--ink-3)}
+.ctl a{color:var(--ink);text-decoration:underline dotted;text-decoration-color:var(--ink-3);text-underline-offset:4px}
+.ctl a:hover{text-decoration-color:var(--ink)}
+.strap{font-size:14px;color:var(--ink-2);margin:12px 0 0;max-width:100ch;line-height:1.5}
 .obs b{color:var(--ink-2);font-weight:500}
 
-.stage{position:relative;margin-top:14px;border:1px solid var(--ink);background:var(--paper);overflow:hidden}
-.stage svg{display:block;width:100%;height:auto;aspect-ratio:16/7;max-width:100%}
+.stage{position:relative;margin-top:14px;border:1px solid var(--ink);background:var(--paper);overflow:hidden;aspect-ratio:16/7}
+/* Each layer is its own drawing surface, so the line work with its filters is painted once and only the
+   water, the fog and the sky repaint; turning to a view moves the surfaces, which repaints nothing. */
+.stage>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;will-change:transform;pointer-events:none}
+.stage>svg.pan{transform-origin:50% 25%;transition:transform 1.4s cubic-bezier(.6,0,.2,1),opacity .8s}
+.stage>svg.fg{transform-origin:50% 100%;transition:transform 1.4s cubic-bezier(.6,0,.2,1)}
+.stage[data-view="valley"]>svg.pan{opacity:0}
 .scene{stroke:var(--ink);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .scene .thin{stroke-width:1}
 .scene .hair{stroke-width:.7;opacity:.75}
@@ -39,9 +50,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .scene text{font-family:var(--mono);font-size:12px;fill:var(--ink-2);stroke:none;letter-spacing:.04em}
 .scene .cap{font-family:var(--display);font-size:20px;fill:var(--ink);letter-spacing:0}
 .scene .cap.strong{font-weight:600}
+.scene .mark{font-family:var(--mono);font-size:15px;fill:var(--ink);letter-spacing:.02em}
 .wc{stroke:none;opacity:var(--wash-a);filter:url(#wc);mix-blend-mode:var(--blend,multiply)}
-.pan{transition:transform 1.4s cubic-bezier(.6,0,.2,1)}
-.fg{transition:transform 1.4s cubic-bezier(.6,0,.2,1)}
 .fog{transition:opacity .6s}
 .stage[data-aw="off"] .sky .cloud,.stage[data-aw="off"] .sky .rain,.stage[data-aw="off"] .sky .hair,.stage[data-aw="off"] .dawn,.stage[data-aw="off"] .sunwash{opacity:0 !important}
 .stage[data-ak="off"] .fog{opacity:0 !important}
@@ -75,7 +85,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .night .halo{opacity:.55;filter:url(#glow)}
 
 .hot{cursor:pointer}
-.hot,.hot *{outline:none}
+.hot,.hot *{outline:none;pointer-events:auto}
 .hot rect{fill:transparent;stroke:none}
 .hot .cap{text-decoration:underline dotted;text-decoration-color:var(--ink-3);text-underline-offset:6px}
 .hot:hover .cap,.hot:focus-visible .cap{text-decoration:underline solid;text-decoration-color:var(--ink)}
@@ -98,11 +108,19 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .stamp .obs{font-size:12px}
 .home{position:absolute;right:14px;top:10px;font-family:var(--mono);font-size:12px;background:var(--paper);border:1px solid var(--ink);color:var(--ink);padding:4px 10px;cursor:pointer}
 .home:hover{background:var(--wash)}
-.caption{position:absolute;left:0;right:0;top:16px;text-align:center;pointer-events:none}
+.caption{position:absolute;left:14px;top:12px;max-width:min(48ch,62%);text-align:left;pointer-events:none;background:var(--paper);padding:4px 10px 7px 0}
 .caption h1{font-family:var(--display);font-size:20px;font-weight:600;margin:0;color:var(--ink)}
-.caption p{font-family:var(--mono);font-size:12px;color:var(--ink-2);margin:4px 0 0;letter-spacing:.04em}
+.caption p{font-family:var(--mono);font-size:12px;color:var(--ink-2);margin:3px 0 0;letter-spacing:.04em;line-height:1.5}
 
-.reading{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:28px;padding-block:22px;border-bottom:1px solid var(--hair)}
+.reading{display:grid;grid-template-columns:1.2fr 2fr;gap:28px;padding-block:22px;border-bottom:1px solid var(--hair)}
+.figures{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
+.reading.three .figures{grid-template-columns:repeat(3,1fr)}
+.figure[hidden]{display:none}
+.figure[data-go]{cursor:pointer}
+.figure[data-go]:hover .l,.figure[data-go]:focus-visible .l{text-decoration:underline;text-underline-offset:3px}
+.figure[data-go]:focus-visible{outline:2px solid var(--ink);outline-offset:6px}
+.from{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin:12px 0 0;letter-spacing:.03em;line-height:1.7}
+.from a{color:inherit}
 .reading h2{font-family:var(--display);font-weight:600;font-size:26px;margin:0 0 6px;line-height:1.15;text-wrap:balance}
 .reading .lens{color:var(--ink-2);margin:0;max-width:60ch}
 .figure{border-top:1px solid var(--ink);padding-top:10px}
@@ -122,6 +140,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .cad{font-family:var(--mono);font-size:12px;color:var(--ink-3);line-height:1.7;white-space:nowrap}
 .cad b{color:var(--ink-2);font-weight:500}
 .foot{margin-top:18px;font-size:13px;color:var(--ink-3);max-width:80ch}
+.tables{margin-top:26px;border-top:1px solid var(--ink);padding-top:14px}
+.tables h3{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin:0 0 8px}
+.tables p{margin:0 0 10px;color:var(--ink-2);max-width:80ch;font-size:14px}
+.tables dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0;font-size:13px}
+.tables dt{font-family:var(--display);color:var(--ink)}
+.tables dd{margin:0;font-family:var(--mono);font-size:12px;color:var(--ink-2);line-height:1.7}
+.tables dd a{color:inherit}
 
 /* the coin card */
 .coin{position:absolute;inset:0;background:var(--paper);display:grid;place-items:center;padding:20px}
@@ -140,10 +165,16 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .src b{color:var(--ink);font-weight:500}
 .coin .close{margin-top:12px;font-family:var(--mono);font-size:12px;background:transparent;border:1px solid var(--ink);color:var(--ink);padding:5px 12px;cursor:pointer}
 
-@media (prefers-reduced-motion: reduce){.fogline,.cloud,.rain,.water,.crest,.crownblock{animation:none}.pan,.fg,.viewer,.beam,.mask-in{transition:none}}
+@media (prefers-reduced-motion: reduce){.fogline,.cloud,.rain,.water,.crest,.crownblock{animation:none}.stage>svg,.viewer,.beam,.mask-in{transition:none}}
 @media (max-width:820px){
-  .reading{grid-template-columns:1fr}.series{grid-template-columns:1fr}.cad{white-space:normal}
-  .stage svg{aspect-ratio:16/9}.scene text{font-size:16px}.scene .cap{font-size:26px}.vig{grid-template-columns:1fr}
+  /* On a phone the drawing is a picture and the figures beneath it are the way in: the labels in the
+     drawing go, the filters go, and the three views become three cards to tap. */
+  .reading{grid-template-columns:1fr}.figures,.reading.three .figures{grid-template-columns:1fr}.series{grid-template-columns:1fr}.cad{white-space:normal}
+  .stage{aspect-ratio:4/3}.scene .cap,.scene .mark,.scene .detail{display:none}   /* the drawing sits in the middle band; the card above it, the stamp below */
+  .stamp{font-size:10px;right:14px;line-height:1.5}.stamp .obs{font-size:10px}
+  .wc{filter:none}
+  .caption h1{font-size:16px}.caption p{display:none}.edge{width:44px}.edge span{font-size:11px}
+  .vig{grid-template-columns:1fr}.strap{font-size:13px}.tables dl{grid-template-columns:1fr}
 }
 </style>
 
@@ -153,16 +184,14 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     <div class="ctl">
       <label title="the sky from the airport's latest observation"><input type="checkbox" id="tg-aw" checked> Artificial Weather</label>
       <label title="the fog, drawn"><input type="checkbox" id="tg-ak" checked> Artificial Karl</label>
+      <a href="#tables">the tables</a>
     </div>
   </header>
+  <p class="strap">The bridge, on the left, shows the pipeline: who is training for exposed work. The city, on the right, shows what has moved in pay and jobs. The telescope on the rail, aimed down the bay, shows where usage lands in the wage bill.</p>
 
   <div class="stage" id="stage" data-view="home" data-aw="on" data-ak="on">
-    <svg viewBox="0 0 1600 700" role="img" aria-label="An ink drawing of a lighthouse on a headland. Turn to the city or the bridge, or raise the coin telescope to look at the valley.">
+    <svg class="pan" id="L-sky" viewBox="0 0 1600 700" aria-hidden="true">
       <defs>
-        <filter id="wob" x="-2%" y="-2%" width="104%" height="104%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="7" result="n"/>
-          <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
         <filter id="wc" x="-10%" y="-10%" width="120%" height="120%">
           <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="3" result="n"/>
           <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" result="d"/>
@@ -172,54 +201,56 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         <mask id="fogmask"><rect x="0" y="0" width="4800" height="700" fill="white"/><polygon id="cone" points="0,0" fill="black"/></mask>
         <mask id="binoc"><rect x="0" y="0" width="1600" height="700" fill="black"/><circle cx="700" cy="290" r="210" fill="white"/><circle cx="900" cy="290" r="210" fill="white"/></mask>
       </defs>
-
-      <!-- ================= the panorama: bridge | point | city ================= -->
-      <g id="pan" class="pan scene" style="transform:translateX(-1600px)">
-        <g id="sky" class="sky thin"></g>
-        <g id="washes"></g>
-        <g id="far" filter="url(#wob)"></g>
-        <g id="lights"></g>
-        <g id="water" class="hair"></g>
-        <g id="fog" class="fog" mask="url(#fogmask)"></g>
-      </g>
-      <!-- foreground: the point, the lighthouse, the railing, the viewer at rest -->
-      <g id="fg" class="fg scene">
+      <g id="sky" class="scene sky thin"></g>
+    </svg>
+    <!-- ================= the panorama: bridge | point | city, painted once ================= -->
+    <svg class="pan" id="L-static" viewBox="0 0 1600 700" aria-hidden="true"><g class="scene"><g id="washes"></g><g id="far"></g></g></svg>
+    <svg class="pan" id="L-lights" viewBox="0 0 1600 700" aria-hidden="true"><g id="lights" class="scene"></g></svg>
+    <svg class="pan" id="L-water" viewBox="0 0 1600 700" aria-hidden="true"><g class="scene"><g id="water" class="hair"></g><g id="fog" class="fog" mask="url(#fogmask)"></g></g></svg>
+    <!-- foreground: the point, the lighthouse, the railing, the viewer at rest -->
+    <svg class="fg" id="L-fg" viewBox="0 0 1600 700" role="group" aria-label="An ink drawing of a lighthouse on a headland. Turn to the city or the bridge, or raise the coin telescope to look at the valley.">
+      <g id="fg" class="scene">
         <path d="M560 700 C 600 620, 690 590, 760 585 C 830 580, 880 600, 930 610 C 980 620, 1040 660, 1060 700 Z" style="fill:var(--paper)"/>
         <path d="M600 660 C 650 640, 700 645, 740 630 M850 640 C 900 630, 950 650, 1000 670" class="thin"/>
         <g class="beam" id="beam" style="--bx:800px;--by:300px"><path d="M800 300 L 1590 150 M800 300 L 1590 450" class="hair" stroke-dasharray="6 6"/></g>
-        <g id="lh" filter="url(#wob)"></g>
+        <g id="lh"></g>
         <path d="M640 604 L 960 604 M640 604 L 640 630 M720 604 L 720 632 M800 604 L 800 632 M880 604 L 880 630 M960 604 L 960 628" class="thin"/>
         <g class="hot" id="hot-tele" tabindex="0" role="button" aria-label="The telescope: where usage lands">
-          <rect x="690" y="560" width="220" height="140"/>
+          <rect x="690" y="520" width="220" height="180"/>
           <g transform="translate(800,655)" id="viewer-small"></g>
-          <text x="800" y="695" text-anchor="middle" class="cap">The telescope</text>
-          <g class="detail"><text x="800" y="548" text-anchor="middle">where usage lands · look south, to the valley</text></g>
+          <text x="828" y="568" class="cap">The telescope</text>
+          <text x="828" y="542" class="mark" id="mark-valley"></text>
+          <g class="detail"><text x="828" y="518">where usage lands · look south, to the valley</text></g>
         </g>
         <g class="hot" id="hot-city" tabindex="0" role="button" aria-label="The city: what has moved">
           <rect x="1000" y="120" width="560" height="200"/>
           <text x="1540" y="160" text-anchor="end" class="cap">The city</text>
-          <g class="detail"><text x="1540" y="184" text-anchor="end">what has moved · pay and jobs, tested against their own history</text><text x="1540" y="204" text-anchor="end">the lens is set at 6.1 · the largest move so far is 2.8</text></g>
+          <text x="1540" y="188" text-anchor="end" class="mark" id="mark-city"></text>
+          <g class="detail"><text x="1540" y="210" text-anchor="end">what has moved · pay and jobs, tested against their own history</text></g>
         </g>
         <g class="hot" id="hot-bridge" tabindex="0" role="button" aria-label="The bridge: the pipeline">
           <rect x="40" y="120" width="560" height="200"/>
-          <text x="60" y="160" class="cap">The bridge</text>
-          <g class="detail"><text x="60" y="184">the pipeline · who arrives into exposed work, and from where</text><text x="60" y="204">graduates 41 percent in exposed fields · lateral moves outnumber them 4 to 12 times</text></g>
+          <text x="110" y="160" class="cap">The bridge</text>
+          <text x="110" y="188" class="mark" id="mark-bridge"></text>
+          <g class="detail"><text x="110" y="210">the pipeline · who is training for exposed work</text></g>
         </g>
       </g>
+    </svg>
 
-      <!-- ================= the valley, through the viewer ================= -->
+    <!-- ================= the valley, through the viewer ================= -->
+    <svg id="L-valley" viewBox="0 0 1600 700">
       <g id="valley" class="scene off">
         <g class="mask-in off" id="valley-view">
-          <g mask="url(#binoc)"><g id="valley-scene" filter="url(#wob)"></g><g id="fog-valley" class="fog"></g></g>
+          <g mask="url(#binoc)"><g id="valley-scene"></g><g id="fog-valley" class="fog"></g></g>
           <circle cx="700" cy="290" r="210" class="thin"/><circle cx="900" cy="290" r="210" class="thin"/>
           <path d="M800 80 L 800 500 M490 290 L 1110 290" class="hair" stroke-dasharray="3 5"/>
         </g>
-        <g class="viewer down" id="viewer-big" filter="url(#wob)"></g>
+        <g class="viewer down" id="viewer-big"></g>
       </g>
-      <g id="life" class="life scene"></g>
     </svg>
+    <svg id="L-life" viewBox="0 0 1600 700" aria-hidden="true"><g id="life" class="life scene"></g></svg>
 
-    <div class="caption" id="caption"><h1 id="cap-h">The lens is set. This is what it shows today.</h1><p id="cap-p">hover a label to turn the beam · choose one to look with it</p></div>
+    <div class="caption" id="caption"><h1 id="cap-h">Three views from one point</h1><p id="cap-p">choose a view · the beam turns to it</p></div>
     <button class="edge left" id="edge-left" hidden><span></span></button>
     <button class="edge right" id="edge-right" hidden><span></span></button>
     <button class="home" id="btn-home" hidden>back to the point</button>
@@ -236,10 +267,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     </div>
   </div>
 
-  <section class="reading">
-    <div><h2 id="r-title"></h2><p class="lens" id="r-lens"></p></div>
-    <div class="figure" id="f1"><div class="n"></div><div class="l"></div><div class="s"></div></div>
-    <div class="figure" id="f2"><div class="n"></div><div class="l"></div><div class="s"></div></div>
+  <section class="reading three" id="reading">
+    <div><h2 id="r-title"></h2><p class="lens" id="r-lens"></p><p class="from" id="r-from"></p></div>
+    <div class="figures">
+      <div class="figure" id="f1" tabindex="-1"><div class="n"></div><div class="l"></div><div class="s"></div></div>
+      <div class="figure" id="f2" tabindex="-1"><div class="n"></div><div class="l"></div><div class="s"></div></div>
+      <div class="figure" id="f3" tabindex="-1" hidden><div class="n"></div><div class="l"></div><div class="s"></div></div>
+    </div>
   </section>
 
   <section class="series">
@@ -249,6 +283,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       <svg class="strip" viewBox="0 0 900 96" role="img" aria-label="Releases on a timeline"><line x1="20" y1="60" x2="880" y2="60" class="axis"/><g id="ticks"></g></svg>
     </div>
     <div class="cad"><b>biweekly</b> firm adoption, Census<br><b>monthly</b> OpenAI Signals · CPS young-worker gauge<br><b>each release</b> Anthropic Economic Index<br><b>yearly</b> OEWS pay and jobs · IPEDS · ACS</div>
+  </section>
+
+  <section class="tables" id="tables">
+    <h3>The tables</h3>
+    <p>Every figure on this page is a cell in one of these files, written by the build from the publishers' releases and never edited by hand. Each view names the tables it reads; the checks file records what each table was tested for and the value it measured.</p>
+    <dl id="table-list"></dl>
   </section>
 
   <p class="foot">Ink on paper, one splash of colour in each view, a little life now and then, a gull, a plane on the approach, a rocket out of the south, a robotaxi that meets a hydrant, a gust, and the sky drawn from the latest observation at the airport: the description and visibility pick one of eight presets, wind sets how fast the fog and cloud drift and which way, by the heading of the view you are looking along, and rain falls slanted by it. The light follows San Francisco's clock: the sun rises over the city and sets past the bridge, the drawing turns to white ink on black after dark, and the moon is drawn at its phase. Nothing in the drawing encodes a number from the index; those sit beneath it in their own units, with the file each came from.</p>
@@ -266,7 +306,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function water(g, x0, x1, y0, y1, seed, dens){
     const r = rng(seed);
     for (let y = y0; y < y1; y += dens){
-      for (let x = x0 + r()*200; x < x1; x += 220 + r()*300){ const l = 40 + r()*200; el("path", {d:`M${x} ${y + (r()-.5)*4} q ${l/2} 3 ${l} 0`}, g); }
+      for (let x = x0 + r()*300; x < x1; x += 340 + r()*420){ const l = 40 + r()*200; el("path", {d:`M${x} ${y + (r()-.5)*4} q ${l/2} 3 ${l} 0`}, g); }
     }
   }
   function fog(g, bands, seed){
@@ -306,13 +346,44 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function dome(g, x, baseY, w, cls){ el("path", {d:`M ${x-w/2} ${baseY} L ${x-w/2} ${baseY-20} L ${x+w/2} ${baseY-20} L ${x+w/2} ${baseY}`, class:cls}, g); el("path", {d:`M ${x-w*0.33} ${baseY-20} C ${x-w*0.33} ${baseY-20-w*0.6}, ${x+w*0.33} ${baseY-20-w*0.6}, ${x+w*0.33} ${baseY-20} M ${x-4} ${baseY-20-w*0.46} L ${x+4} ${baseY-20-w*0.46} L ${x} ${baseY-20-w*0.62} Z`, class:cls}, g); }
   function campanile(g, x, baseY, h){ el("path", {d:`M ${x-11} ${baseY} L ${x-11} ${baseY-h} L ${x+11} ${baseY-h} L ${x+11} ${baseY} M ${x-14} ${baseY-h} L ${x+14} ${baseY-h} L ${x} ${baseY-h-22} Z M ${x-6} ${baseY-h+10} L ${x-6} ${baseY-h+30} M ${x+6} ${baseY-h+10} L ${x+6} ${baseY-h+30} M ${x-4} ${baseY-h+50} L ${x+4} ${baseY-h+50}`}, g); }
 
+  /* ---------- the hand in the line ----------
+     A pen does not draw a straight line. This used to be a displacement filter over the line work, which
+     every browser re-rendered on every frame the water moved; now it is drawn into the geometry once:
+     every path is made absolute, long straight runs are cut into short steps, and each point is moved by
+     a slow noise of about a unit, so the wobble costs nothing after load. */
+  function wobble(root, seed=1, amp=1.0){
+    const N = (x,y,k) => amp*(Math.sin(x*0.11 + y*0.05 + k) + 0.5*Math.sin(x*0.23 - y*0.09 + k*2) + 0.3*Math.sin(y*0.17 + x*0.04 + k*3))/1.8;
+    const dx = (x,y) => N(x,y,seed), dy = (x,y) => N(x,y,seed+2.1), f = v => Math.round(v*100)/100;
+    root.querySelectorAll("path").forEach(p => {
+      const d = p.getAttribute("d"); if (!d) return;
+      const tok = d.match(/[MLHVCSQTAZmlhvcsqtaz]|-?\d*\.?\d+/g); if (!tok) return;
+      let i = 0, cmd = "L", cx = 0, cy = 0, sx = 0, sy = 0; const out = [];
+      const pt = (x,y) => `${f(x+dx(x,y))} ${f(y+dy(x,y))}`;
+      const line = (x1,y1,x2,y2) => { const n = Math.max(1, Math.ceil(Math.hypot(x2-x1, y2-y1)/12)); for (let k=1;k<=n;k++){ const t=k/n; out.push("L " + pt(x1+(x2-x1)*t, y1+(y2-y1)*t)); } };
+      const num = () => parseFloat(tok[i++]);
+      while (i < tok.length){
+        if (/[a-zA-Z]/.test(tok[i])){ cmd = tok[i++]; if (/z/i.test(cmd)){ out.push("Z"); cx = sx; cy = sy; continue; } }
+        const rel = cmd === cmd.toLowerCase(), C = cmd.toUpperCase();
+        if (C === "M"){ let x = num(), y = num(); if (rel){ x += cx; y += cy; } out.push("M " + pt(x,y)); cx = sx = x; cy = sy = y; cmd = rel ? "l" : "L"; }
+        else if (C === "L"){ let x = num(), y = num(); if (rel){ x += cx; y += cy; } line(cx,cy,x,y); cx = x; cy = y; }
+        else if (C === "H"){ let x = num(); if (rel) x += cx; line(cx,cy,x,cy); cx = x; }
+        else if (C === "V"){ let y = num(); if (rel) y += cy; line(cx,cy,cx,y); cy = y; }
+        else if (C === "C"){ let a=num(),b=num(),c=num(),e=num(),x=num(),y=num(); if (rel){ a+=cx;b+=cy;c+=cx;e+=cy;x+=cx;y+=cy; } out.push(`C ${pt(a,b)} ${pt(c,e)} ${pt(x,y)}`); cx=x; cy=y; }
+        else if (C === "Q"){ let a=num(),b=num(),x=num(),y=num(); if (rel){ a+=cx;b+=cy;x+=cx;y+=cy; } out.push(`Q ${pt(a,b)} ${pt(x,y)}`); cx=x; cy=y; }
+        else if (C === "A"){ const rx=num(), ry=num(), rot=num(), la=num(), sw=num(); let x=num(), y=num(); if (rel){ x+=cx; y+=cy; } out.push(`A ${rx} ${ry} ${rot} ${la} ${sw} ${pt(x,y)}`); cx=x; cy=y; }
+        else { const n = C === "S" ? 4 : 2; const v = []; for (let k=0;k<n;k++) v.push(num()); let x=v[n-2], y=v[n-1]; if (rel){ x+=cx; y+=cy; } line(cx,cy,x,y); cx=x; cy=y; }
+      }
+      p.setAttribute("d", out.join(" "));
+    });
+  }
+
   /* ---------- the three thirds ---------- */
   const far = $("#far"), washes = $("#washes"), waterG = $("#water"), fogG = $("#fog");
   el("path", {d:`M 0 340 L ${W} 340`, class:"hair"}, waterG);
   const waterA = el("g", {class:"water"}, waterG), waterB = el("g", {class:"water b"}, waterG), waterC = el("g", {class:"water c"}, waterG);
-  water(waterA, 0, W, 400, 690, 3, 48); water(waterB, 0, W, 416, 690, 4, 48); water(waterC, 0, W, 432, 690, 8, 48);
+  water(waterA, 0, W, 400, 690, 3, 58); water(waterB, 0, W, 416, 690, 4, 58); water(waterC, 0, W, 432, 690, 8, 58);
   // crests: short marks that surface and go, out of step with each other
-  (function crests(){ const r = rng(19); for (let i=0;i<70;i++){ const x = r()*W, y = 380 + r()*300; const c = el("path", {d:`M${x} ${y} q 6 -3 12 0 M${x+3} ${y-2} l 2 -2`, class:"crest thin"}, waterG); c.style.animationDelay = (-r()*4).toFixed(2) + "s"; c.style.animationDuration = (3 + r()*3).toFixed(2) + "s"; } })();
+  (function crests(){ const r = rng(19); for (let i=0;i<14;i++){ const x = r()*W, y = 380 + r()*300; const c = el("path", {d:`M${x} ${y} q 6 -3 12 0 M${x+3} ${y-2} l 2 -2`, class:"crest thin"}, waterG); c.style.animationDelay = (-r()*4).toFixed(2) + "s"; c.style.animationDuration = (3 + r()*3).toFixed(2) + "s"; } })();
   fog(fogG, [[330, 5, 6],[400, 6, 7],[470, 5, 5]], 11);
 
   // left third: the bridge, looking back along the headlands (x 0..1600)
@@ -362,7 +433,6 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     for (let x=ox+1198; x<ox+1290; x+=9) el("path", {d:`M${x} ${baseY-26} L ${x} ${baseY-12}`, class:"hair"}, g);
     el("path", {d:`M ${ox+1232} ${baseY-30} L ${ox+1232} ${baseY-96} L ${ox+1248} ${baseY-96} L ${ox+1248} ${baseY-30} M ${ox+1229} ${baseY-96} L ${ox+1251} ${baseY-96} L ${ox+1240} ${baseY-110} Z`}, g);
     el("circle", {cx:ox+1240, cy:baseY-84, r:5, class:"thin"}, g);
-    suspension(g, ox+1300, ox+1500, baseY-26, 100, 70);
     if (colour){
       tint(washes, `M ${ox+1073} ${baseY-80} C ${ox+1073} ${baseY-128}, ${ox+1127} ${baseY-128}, ${ox+1127} ${baseY-80} Z`, "var(--gold)");   // the dome
       tintRect(washes, ox+1041, baseY-91, 16, 31, "var(--rose)");                                                                 // the house over the green
@@ -373,10 +443,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     }
   }
   skyline(far, 400, true, HOME*2);
-  water(waterA, HOME*2, W, 440, 690, 5, 44); water(waterB, HOME*2, W, 456, 690, 6, 44); water(waterC, HOME*2, W, 472, 690, 9, 44);
+  water(waterA, HOME*2, W, 440, 690, 5, 54); water(waterB, HOME*2, W, 456, 690, 6, 54); water(waterC, HOME*2, W, 472, 690, 9, 54);
 
   // the lighthouses: one in the foreground for the point, and the same tower drawn at the edges of the panorama
   lighthouse($("#lh"), 800, 585, 330);
+  wobble(far, 1); wobble($("#lh"), 2);
 
   /* ---------- the city after dark ----------
      The crown of the tallest tower carries its slow picture of light, drawn
@@ -456,10 +527,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     for (let i=0;i<5;i++){ const y = 500 + i*16; el("path", {d:`M ${520 - i*40} ${y} L ${1080 + i*40} ${y}`, class:"hair", "stroke-dasharray":"2 7"}, g); }
     for (const x of [470, 505, 1130, 1165]) el("path", {d:`M${x} 500 q 0 -18 12 -22 q 12 4 12 22 z M${x+12} 500 l 0 12`, class:"thin"}, g);
   })($("#valley-scene"));
+  wobble($("#valley-scene"), 3); wobble($("#viewer-big"), 4);
   fog($("#fog-valley"), [[290, 6, 5],[345, 5, 5]], 41);
 
   /* ---------- the beam and the pan ---------- */
-  const beam = $("#beam"), cone = $("#cone"), pan = $("#pan"), fg = $("#fg"), stage = $("#stage");
+  const beam = $("#beam"), cone = $("#cone"), pans = document.querySelectorAll("svg.pan"), fgSvg = $("#L-fg"), fg = $("#fg"), stage = $("#stage");
   const angle = { home:0, city:0, bridge:180, tele:90 };
   function setCone(t){
     const a = {city:[-14, 14], bridge:[166, 194], tele:[70, 110]}[t];
@@ -477,44 +549,75 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     h.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(t==="tele"?"valley":t);} });
   }
 
+  // One reading per view. cap is the line on the drawing; lens is the sentence beneath it, in three parts:
+  // what is measured, why it is the right instrument now, and what would move it. z is how far the view
+  // leans in; tables are the files the figures are cells of. The build's readings.json overwrites the figures.
   const R = {
-    home:  { cap:["The lens is set. This is what it shows today.", "hover a label to turn the beam · choose one to look with it"],
-             title:"Three views from one point", lens:"Every AI tracker asks whether people are using it. This one asks what that use has reached: the money paid for the tasks, the pay and jobs behind them, and the people training to do them. Each view is a measurement with its own units, never a score.",
-             f1:["23","% of wages","in tasks Claude users touch · Feb 2026","A fifth of the wage bill is paid for tasks that appear in the usage data at all; six percent for tasks handed over rather than worked through."],
-             f2:["2.8","of 6.1","largest move in skill pay · lens set at 6.1 · 2025","No group of skills has moved beyond what its own history does. The lens says how large a move would show."],
-             left:null, right:null, pan:-HOME, fgx:0 },
-    city:  { cap:["The city · what has moved", "looking east from the point · the bridges, the towers, City Hall, the Ferry Building"],
-             title:"What has moved", lens:"Pay and employment by occupation, folded into 25 named skill groups and tested each year against that group's own year-to-year swing. The lens is set in advance: it says how large a move would have to be to count. This is the right instrument even when the reading is small, because it is the one that will notice.",
+    home:  { cap:["Three views from one point", "choose a view · the beam turns to it"],
+             title:"Three views from one point", lens:"Every AI tracker asks whether people are using it. This one asks what that use has reached: the people training for exposed work, the pay and jobs behind it, and the money paid for the tasks it touches. Each view is a measurement in its own units, never a score, and each says how large a move would have to be to count.",
+             left:null, right:null, pan:-HOME, fgx:0, z:1, tables:[] },
+    city:  { cap:["The city · what has moved", "pay and jobs by skill group, each tested against its own history · a move counts when it passes the lens"],
+             title:"What has moved", lens:"Pay and employment by occupation, folded into 25 named skill groups and tested each year against that group's own year-to-year swing. The lens is set in advance at the size a move would have to reach to stand out from that history, which is why a small reading is still the right reading: this is the instrument that will notice. It changes once a year, with each spring release of the wage tables.",
              f1:["2.8","of 6.1","pay · largest standardised move · 2025 release","Six of 25 skill groups moved beyond two of their own standard errors; the largest sits at 2.8 against a lens of 6.1."],
              f2:["4.4","of 4.0","jobs · employment-weighted skill mix · 2025","The quantity side touched its lens this year. Whether it holds is what the next release answers."],
-             left:["bridge","turn to the bridge"], right:["valley","raise the telescope"], pan:-HOME*2, fgx:-720 },
-    bridge:{ cap:["The bridge · the pipeline", "looking back along the headlands · the road in, the ferries, the bridge deck"],
-             title:"The pipeline", lens:"Who arrives into exposed work, and from where. Degrees are the channel policy counts; the flow account shows most arrivals come from other jobs, at every age. Both are measured here, the small channel beside the large one, so a state can see what actually refills an occupation.",
+             left:["bridge","turn to the bridge"], right:["valley","raise the telescope"], pan:-HOME*2, fgx:-720, z:1.25,
+             tables:["outcomes_pay_series_balanced.csv","outcomes_quantity_series_balanced.csv","outcomes_pay_changes.csv"] },
+    bridge:{ cap:["The bridge · the pipeline", "who is training for exposed work · degrees are the channel the counts can see"],
+             title:"The pipeline", lens:"Bachelor's degrees awarded in fields whose graduates go on to exposed occupations, with each field scored by where its graduates actually work. This is the channel policy can count and the one that answers slowly, so a shift here is an early sign rather than a result. It changes once a year with the completions file, and the lateral channel, people arriving from other jobs, joins it when the flows matrix is released.",
              f1:["41","% of bachelor's","awarded in fields that lead to exposed jobs · 2024","Up from 40 percent the year before. Fields are scored by where their graduates actually work, not by where the catalogue says they should."],
              f2:["4 to 12","×","lateral arrivals over graduates, by occupation","From the flow account. The lateral matrix itself is the next file to arrive; until then this column carries the education channel only."],
-             left:["valley","raise the telescope"], right:["city","turn to the city"], pan:0, fgx:720 },
-    valley:{ cap:["The telescope · where usage lands", "forty miles south · the valley the models come from, and what people ask them to do"],
-             title:"Where usage lands", lens:"What people ask the models to do, mapped through eighteen thousand tasks onto the dollars paid for them, then onto the skills those tasks use. Three platforms are shown side by side because each sees only its own users.",
+             left:["valley","raise the telescope"], right:["city","turn to the city"], pan:0, fgx:720, z:1.25,
+             tables:["pipeline_completions_by_state.csv","pipeline_enrolment_by_exposure.csv","pipeline_field_exposure_crosswalk.csv","capacity_education_channel.csv"] },
+    valley:{ cap:["The telescope · where usage lands", "what people ask the models to do, priced by the tasks it touches · reach in the wage bill"],
+             title:"Where usage lands", lens:"What people ask the models to do, mapped through eighteen thousand tasks onto the dollars paid for them, then onto the skills those tasks use. Usage is where a change starts, so this is the view that moves first and most often, and it says nothing yet about pay. It changes with each platform release, every few months, and three platforms are shown side by side because each sees only its own users.",
              f1:["23","% of wages","reach · Anthropic consumer usage · Feb 2026","18 percent in August 2025, 22 in November, 23 in February. Six percent delegated outright."],
              f2:["2.5","×","concentration on complex problem solving","Usage lands on that skill group at two and a half times its weight in pay; physical and psychomotor work at a third."],
-             left:["city","turn to the city"], right:["bridge","turn to the bridge"], pan:-HOME, fgx:0 },
+             left:["city","turn to the city"], right:["bridge","turn to the bridge"], pan:-HOME, fgx:0, z:1,
+             tables:["usage_reach.csv","usage_landing.csv","usage_by_occupation.csv"] },
   };
+  // the same figures, as one line each on the drawing
+  const MARK = {
+    bridge: f => `${f[0]}% of new degrees in exposed fields`,
+    city:   f => `pay moved ${f[0]} of the ${f[1].replace("of ","")} that would show`,
+    valley: f => `${f[0]}% of wages in tasks users bring`,
+  };
+  const TABLE_DIR = "data/tables/";
+  const COMMON = ["wagebill_national.csv","exposure_by_occupation.csv","state_exposure.csv","state_adoption_btos.csv","cps_young_worker_gauge.csv"];
+  function marks(){ for (const v in MARK) $("#mark-"+v).textContent = MARK[v](R[v].f1); }
+  function tableLinks(list){ return list.map(t => `<a href="${TABLE_DIR}${t}">${t}</a>`).join(" · "); }
+  (function tableList(){
+    const dl = $("#table-list");
+    for (const [name, view] of [["The bridge","bridge"],["The city","city"],["The telescope","valley"]]){
+      dl.insertAdjacentHTML("beforeend", `<dt>${name}</dt><dd>${tableLinks(R[view].tables)}</dd>`); }
+    dl.insertAdjacentHTML("beforeend", `<dt>Beneath all three</dt><dd>${tableLinks(COMMON)}</dd>`);
+    dl.insertAdjacentHTML("beforeend", `<dt>The checks</dt><dd><a href="data/checks.csv">checks.csv</a> · <a href="data/manifest.json">manifest.json</a></dd>`);
+  })();
   const edgeL = $("#edge-left"), edgeR = $("#edge-right"), home = $("#btn-home");
   // The real page reads readings.json written by the build; the mockup carries the same numbers embedded.
   fetch("data/readings.json").then(r=>r.ok ? r.json() : null).then(j=>{ if (!j) return;
-    for (const view in j.views){ if (R[view]){ Object.assign(R[view], j.views[view]); } }
+    for (const view in j.views){ if (R[view] && view !== "home"){ Object.assign(R[view], j.views[view]); } }
     document.querySelector(".stamp").lastChild.textContent = `figures from the ${j.built} build`;
     go(stage.dataset.view); }).catch(()=>{});
-  function fill(f, id){ const n = $("#"+id); n.querySelector(".n").innerHTML = f[0] + "<small>" + f[1] + "</small>"; n.querySelector(".l").textContent = f[2]; n.querySelector(".s").textContent = f[3]; }
+  function fill(f, id, goTo){ const n = $("#"+id); n.hidden = !f; if (!f) return;
+    n.querySelector(".n").innerHTML = f[0] + "<small>" + f[1] + "</small>"; n.querySelector(".l").textContent = f[2]; n.querySelector(".s").textContent = f[3];
+    if (goTo){ n.dataset.go = goTo; n.tabIndex = 0; n.onclick = ()=>go(goTo); n.onkeydown = e=>{ if (e.key==="Enter"||e.key===" "){ e.preventDefault(); go(goTo); } }; }
+    else { delete n.dataset.go; n.tabIndex = -1; n.onclick = null; n.onkeydown = null; } }
   let timer = null;
   function go(view){
     clearTimeout(timer);
     stage.dataset.view = view;
+    $("#life").replaceChildren();                                              // whatever was crossing the last view stays there
     const r = R[view];
-    pan.style.transform = `translateX(${r.pan}px)`;
-    fg.style.transform = `translateX(${r.fgx}px)`;
+    // the surfaces slide and lean in together; a percent of the surface width is a panorama unit over 1600
+    pans.forEach(p => { p.style.transform = `translateX(${(r.pan*r.z/16).toFixed(3)}%) scale(${r.z})`; });
+    const fz = r.z > 1 ? 1.15 : 1;
+    fgSvg.style.transform = `translateX(${(r.fgx*fz/16).toFixed(3)}%) scale(${fz})`;
     $("#cap-h").textContent = r.cap[0]; $("#cap-p").textContent = r.cap[1];
-    $("#r-title").textContent = r.title; $("#r-lens").textContent = r.lens; fill(r.f1,"f1"); fill(r.f2,"f2");
+    $("#r-title").textContent = r.title; $("#r-lens").textContent = r.lens;
+    marks();
+    if (view === "home"){ fill(R.bridge.f1,"f1","bridge"); fill(R.city.f1,"f2","city"); fill(R.valley.f1,"f3","valley"); $("#r-from").innerHTML = "each figure is a cell of a table listed <a href=\"#tables\">below</a>"; }
+    else { fill(r.f1,"f1"); fill(r.f2,"f2"); fill(null,"f3"); $("#r-from").innerHTML = "from " + tableLinks(r.tables); }
+    $("#reading").classList.toggle("three", view === "home");
     edgeL.hidden = !r.left; edgeR.hidden = !r.right; home.hidden = (view==="home");
     if (r.left){ edgeL.querySelector("span").textContent = r.left[1]; edgeL.onclick = ()=>go(r.left[0]); }
     if (r.right){ edgeR.querySelector("span").textContent = r.right[1]; edgeR.onclick = ()=>go(r.right[0]); }
@@ -546,7 +649,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const vig = $("#vig"), src = $("#src");
   for (const s of SOURCES){
     const b = document.createElement("button"); b.setAttribute("aria-expanded","false");
-    const svg = el("svg", {viewBox:"0 0 120 96", class:"scene", filter:"url(#wob)"}); s.draw(svg); b.appendChild(svg);
+    const svg = el("svg", {viewBox:"0 0 120 96", class:"scene"}); s.draw(svg); wobble(svg, 5 + SOURCES.indexOf(s)); b.appendChild(svg);
     const t = document.createElement("div"); t.className = "t"; t.textContent = s.name; b.appendChild(t);
     const u = document.createElement("div"); u.className = "u"; u.textContent = s.unit; b.appendChild(u);
     b.addEventListener("click", ()=>{ vig.querySelectorAll("button").forEach(x=>x.setAttribute("aria-expanded","false")); b.setAttribute("aria-expanded","true"); src.innerHTML = s.text; });
@@ -650,7 +753,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     document.querySelectorAll(".fog").forEach(g=>{ g.style.opacity = w.fog; });
     sky.innerHTML = "";
     const r = rng(w.clouds*13+7);
-    for (let i=0;i<w.clouds*3;i++){ const x = r()*W, y = 80 + r()*90, wd = 80 + r()*140;
+    for (let i=0;i<w.clouds*3;i++){ const x = r()*W, y = 150 + r()*60, wd = 80 + r()*140;
       const d = w.streak ? `M${x} ${y} q ${wd*.5} -6 ${wd} 0 M${x+20} ${y+8} q ${wd*.3} -4 ${wd*.6} 0` : `M${x} ${y} q ${wd*.2} -18 ${wd*.45} -6 q ${wd*.15} -16 ${wd*.35} -2 q ${wd*.2} -4 ${wd*.2} 8 Z`;
       const c = el("path", {d, class:"cloud"}, sky); c.style.animationDelay = (-r()*240).toFixed(0) + "s"; }
     if (w.band) for (let y=70; y<130; y+=12) el("path", {d:`M 0 ${y} L ${W} ${y}`, class:"hair"}, sky);
@@ -668,11 +771,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     if (sun.alt > -2 && !w.band && w.fog < .9){
       const x = xOfAzimuth(sun.az), y = yOfAltitude(sun.alt);
       el("path", {d:`M ${x} ${y} m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0 M ${x} ${y-34} l 0 -10 M ${x} ${y+34} l 0 10 M ${x-34} ${y} l -10 0 M ${x+34} ${y} l 10 0`, class:"thin sun"}, sky);
-      if (key === "clear") blob($("#washes"), x-26, y-26, 52, 52, "var(--gold)", 31).classList.add("sunwash");
+      if (key === "clear") tint($("#washes"), `M ${x-24} ${y} a 24 24 0 1 0 48 0 a 24 24 0 1 0 -48 0 Z`, "var(--gold)").classList.add("sunwash");
     }
     if (sun.alt > -8 && sun.alt < 8){                                            // dawn or dusk: one warm band on the horizon, where the sun is
       const x = xOfAzimuth(sun.az); const morning = sun.az < 180;
-      blob($("#washes"), x-700, 300, 1400, 44, morning ? "#F2B48C" : "#E07A3F", 33).classList.add("dawn");
+      tint($("#washes"), `M ${x-700} 306 Q ${x} 296 ${x+700} 306 L ${x+700} 340 L ${x-700} 340 Z`, morning ? "#F2B48C" : "#E07A3F").classList.add("dawn");
     }
     if (moon.alt > 0 && (night || sun.alt < 4) && w.fog < .9 && !w.band){
       const x = xOfAzimuth(moon.az), y = yOfAltitude(moon.alt), g = el("g", {class:"moon thin"}, sky);
@@ -718,16 +821,17 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         if (plume.childElementCount < 40 && Math.random() < .6) el("path", {d:`M${(Math.random()-.5)*8} ${6 + Math.random()*10} l 0 ${6 + Math.random()*14}`}, plume);
         plume.style.opacity = 1 - k*0.6; }, ()=>g.remove()); },
     robotaxi(){ if (stage.dataset.view !== "city") return EVENTS.gull();
-      const g = el("g", {class:"thin"}, life); const y = 386; const S = 1.8;
+      const z = R.city.z, vx = x => 800 + z*(x-800), vy = y => 380 + z*(y-380);   // the city leans in, so the shore does too
+      const g = el("g", {class:"thin"}, life); const y = vy(396); const S = 1.8*z; const hx = vx(1178), x0 = vx(640);
       // a small car with its sensor dome, running the waterfront toward the hydrant by the Ferry Building
       const car = el("g", {transform:`scale(${S})`}, g);
       el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-10 0 a 3 3 0 1 0 6 0 M4 0 a 3 3 0 1 0 6 0 M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 M-8 -14 L -6 -8 M 10 -14 L 8 -8", class:"thin"}, car);
       const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, car); let d = 0; const spin = setInterval(()=>{ dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
-      const hyd = el("g", {transform:`translate(1178,${y}) scale(${S})`}, life); el("path", {d:"M-3 0 L -3 -12 Q 0 -16 3 -12 L 3 0 M-6 -8 L 6 -8 M-3 -4 L 3 -4", class:"thin"}, hyd);
+      const hyd = el("g", {transform:`translate(${hx},${y}) scale(${S})`}, life); el("path", {d:"M-3 0 L -3 -12 Q 0 -16 3 -12 L 3 0 M-6 -8 L 6 -8 M-3 -4 L 3 -4", class:"thin"}, hyd);
       const spout = el("g", {class:"thin"}, hyd); spout.style.opacity = 0;
       for (let i=0;i<11;i++) el("path", {d:`M0 -14 q ${7 + i*2} ${-16 - i*3} ${16 + i*4} ${-2 + i*2} M${16 + i*4} ${-2 + i*2} l 1 3`}, spout);
-      const stop = 1178 - 24*S;
-      tween(8000, k=>{ const x = 640 + Math.min(k*1.12, 1)*(stop-640); const bump = k > .89 ? Math.sin((k-.89)*70)*3 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .89) spout.style.opacity = Math.min(1, (k-.89)*12); },
+      const stop = hx - 24*S;
+      tween(8000, k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*3 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .89) spout.style.opacity = Math.min(1, (k-.89)*12); },
         ()=>{ tween(2600, k=>{ spout.style.opacity = 1; }, ()=>{ tween(2400, k=>{ g.setAttribute("transform", `translate(${stop - k*90},${y})`); spout.style.opacity = 1 - k; }, ()=>{ clearInterval(spin); g.remove(); hyd.remove(); }); }); }); },
     gust(){ stage.classList.add("gust"); document.querySelectorAll(".gull").forEach(p=>{ p.style.transition = "transform .8s"; p.style.transform = "rotate(-22deg)"; });
       setTimeout(()=>{ stage.classList.remove("gust"); drawSky(OBS, stage.dataset.view); }, 5000); },
@@ -735,12 +839,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const g = el("g", {class:"thin"}, life); el("path", {d:"M0 0 l -30 0 l 6 10 l 48 0 l 6 -10 z M-14 0 l 0 -10 l 22 0 l 0 10 M-4 -10 l 0 -9"}, g);
       tween(40000, k=>{ g.setAttribute("transform", `translate(${-60 + k*1720},${470 + Math.sin(k*20)*1.5})`); }, ()=>g.remove()); },
   };
-  const WEIGHTS = [["gull",4],["plane",2],["gust",2],["ferry",2],["rocket",2],["robotaxi",4]];
+  const WEIGHTS = [["gull",6],["plane",1],["gust",2],["ferry",1],["rocket",1],["robotaxi",1]];
   const WELCOME = { city:"robotaxi", bridge:"ferry", home:"gull", valley:"gull" };
   let welcomeTimer = null;
   function welcome(view){ clearTimeout(welcomeTimer); if (reduced || params.get("event")) return; welcomeTimer = setTimeout(()=>{ if (stage.dataset.view === view) EVENTS[WELCOME[view]](); }, 2600); }
   function pick(){ const total = WEIGHTS.reduce((a,[,w])=>a+w,0); let r = Math.random()*total; for (const [k,w] of WEIGHTS){ if ((r -= w) < 0) return k; } return "gull"; }
-  function schedule(){ if (reduced) return; setTimeout(()=>{ EVENTS[pick()](); schedule(); }, 15000 + Math.random()*30000); }
+  function schedule(){ if (reduced) return; setTimeout(()=>{ EVENTS[pick()](); schedule(); }, 25000 + Math.random()*40000); }
   if (params.get("event")){ setTimeout(()=>EVENTS[params.get("event")] && EVENTS[params.get("event")](), 2000); }
   schedule();
 

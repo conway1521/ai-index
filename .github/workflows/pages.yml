@@ -2,7 +2,7 @@ name: pages
 on:
   push:
     branches: [main]
-    paths: ["site/**", "docs/mockup/**"]
+    paths: ["site/**", "docs/mockup/**", "aiindex/output/**"]
   workflow_dispatch:
 permissions:
   contents: read
@@ -19,6 +19,10 @@ jobs:
       - run: |
           mkdir -p public
           cp -r site/. public/
+          # the tables the figures are cells of, and the checks each one passed, beside the page
+          mkdir -p public/data/tables
+          cp aiindex/output/tables/*.csv public/data/tables/
+          cp aiindex/output/checks.csv aiindex/output/manifest.json public/data/
           cp docs/mockup/index.html public/index.html
           cp docs/mockup/index.html public/mockup.html
       - uses: actions/upload-pages-artifact@v3

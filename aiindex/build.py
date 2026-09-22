@@ -306,7 +306,9 @@ def export_site() -> Path:
 
     The page reads ``site/data/readings.json`` and shows the figures it
     carries; every figure here is a cell of a table in ``output/tables``,
-    so the page cannot say a number the build did not write.
+    so the page cannot say a number the build did not write. The Pages
+    workflow publishes those tables beside the page, under ``data/tables``,
+    which is where the page's links point.
     """
     tables = config.TABLE_DIR
     reach = pd.read_csv(tables / "usage_reach.csv")
@@ -326,10 +328,7 @@ def export_site() -> Path:
     readings = {
         "built": datetime.now(timezone.utc).strftime("%-d %B %Y"),
         "views": {
-            "home": {"f1": [f"{latest['reach_share']*100:.0f}", "% of wages", f"in tasks Claude users touch · {label}",
-                            f"A fifth of the wage bill is paid for tasks that appear in the usage data at all; {split['delegated_share']*100:.0f} percent for tasks handed over rather than worked through, on the {split['release']} release."],
-                     "f2": [f"{pay['largest_statistic']:.1f}", f"of {pay['threshold_95']:.1f}", f"largest move in skill pay · lens set at {pay['threshold_95']:.1f} · {int(pay['year'])}",
-                            "No group of skills has moved beyond what its own history does. The lens says how large a move would show."]},
+            # the first screen shows the first figure of each of the three views, so home carries none of its own
             "city": {"f1": [f"{pay['largest_statistic']:.1f}", f"of {pay['threshold_95']:.1f}", f"pay · largest standardised move · {int(pay['year'])} release",
                             f"{int(pay['bundles_beyond_two'])} of 25 skill groups moved beyond two of their own standard errors; the largest sits at {pay['largest_statistic']:.1f} against a lens of {pay['threshold_95']:.1f}."],
                      "f2": [f"{quantity['largest_statistic']:.1f}", f"of {quantity['threshold_95']:.1f}", f"jobs · employment-weighted skill mix · {int(quantity['year'])}",
