@@ -40,7 +40,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .stage{position:relative;margin-top:14px;border:1px solid var(--ink);background:var(--paper);overflow:hidden;aspect-ratio:16/7}
 /* Each layer is its own drawing surface, so the line work with its filters is painted once and only the
    water, the fog and the sky repaint; turning to a view moves the surfaces, which repaints nothing. */
-.stage>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;will-change:transform;pointer-events:none}
+.stage>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .stage>svg.pan{transition:opacity .8s}
 /* Turning to a view is a scale of the one drawing about that place, on a group inside each surface, so the
    ink keeps its weight: strokes are set in screen pixels and do not thicken with the zoom. */
@@ -105,6 +105,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .stage:not([data-view="home"]) .fg .hot,.stage[data-view="valley"] .beam{display:none}
 .stage:not([data-view="home"]) .beam path{opacity:.4}
 .halo{fill:var(--gold);stroke:none;opacity:0;transition:opacity .6s}
+.lens{fill:var(--paper)}.dusk .lens{fill:#FBE9B5}.night .lens{fill:#FFF2C2;filter:url(#lamp)}
 .nightlight{opacity:0;transition:opacity 1.2s}
 .dusk .nightlight{opacity:.45}
 .night .nightlight{opacity:.85}
@@ -252,8 +253,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         <g class="beam" id="beam"><polygon id="beamlight" points="0,0" fill="url(#beamgrad)" style="stroke:none"/><path d="" class="hair" stroke-dasharray="6 6"/></g>
         <g id="lh"></g>
         <!-- a small platform off the gallery, and the coin telescope on it, turned south -->
-        <path d="M825 283 L 888 283 L 888 288 L 825 288 Z M 886 283 L 886 270 M 866 288 L 830 304" class="thin" style="fill:var(--paper)"/>
-        <g transform="translate(870,283)" id="viewer-small"></g>
+        <g transform="translate(866,285)" id="viewer-small"></g>
         <path d="M640 604 L 960 604 M640 604 L 640 630 M720 604 L 720 632 M800 604 L 800 632 M880 604 L 880 630 M960 604 L 960 628" class="thin"/>
         <g class="hot" id="hot-city" tabindex="0" role="button" aria-label="The city: what has moved">
           <path class="hit" d="M800 300 L1600 120 L1600 480 Z"/><path class="hit" d="M1000 120 h560 v200 h-560 Z"/>
@@ -347,7 +347,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const el = (tag, attrs={}, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; };
   function rng(seed){ let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
   const W = 1600;                         // the frame is the scene: the view from the point
-  const CH = 780, HYD = 870;              // in the city's own units: City Hall's x, and the hydrant's on the shore
+  const CH = 756, HYD = 838;              // in the city's own units: City Hall's x, and the hydrant's on the shore
 
   /* ---------- line work ---------- */
   function water(g, x0, x1, y0, y1, seed, dens){
@@ -366,16 +366,32 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     }
   }
   function lighthouse(g, x, y, h){
-    const w = 34, top = y - h;
-    el("path", {d:`M${x-w/2-6} ${y} L ${x-w/2} ${top+40} L ${x+w/2} ${top+40} L ${x+w/2+6} ${y} Z`, style:"fill:var(--paper)"}, g);
-    for (let i=1;i<5;i++){ const yy = top+40 + (y-top-40)*i/5; el("path", {d:`M${x-w/2-1} ${yy} L ${x+w/2+1} ${yy}`, class:"hair"}, g); }
-    el("path", {d:`M${x-w/2-4} ${top+40} L ${x+w/2+4} ${top+40} L ${x+w/2+4} ${top+28} L ${x-w/2-4} ${top+28} Z`, style:"fill:var(--paper)"}, g);
-    el("path", {d:`M${x-w/2+2} ${top+28} L ${x-w/2+2} ${top-8} L ${x+w/2-2} ${top-8} L ${x+w/2-2} ${top+28}`, style:"fill:var(--paper)"}, g);
-    el("path", {d:`M${x-8} ${top-8} L ${x-8} ${top+28} M${x} ${top-8} L ${x} ${top+28} M${x+8} ${top-8} L ${x+8} ${top+28}`, class:"hair"}, g);
-    el("path", {d:`M${x-w/2-2} ${top-8} L ${x+w/2+2} ${top-8} L ${x} ${top-32} Z`, style:"fill:var(--paper)"}, g);
-    el("path", {d:`M${x} ${top-32} L ${x} ${top-44}`}, g);
-    el("circle", {cx:x, cy:top+10, r:26, class:"halo"}, g);
-    el("circle", {cx:x, cy:top+10, r:7, class:"solid lantern"}, g);
+    const w = 34, top = y - h, P = "fill:var(--paper)";
+    el("path", {d:`M${x-w/2-6} ${y} L ${x-w/2} ${top+34} L ${x+w/2} ${top+34} L ${x+w/2+6} ${y} Z`, style:P}, g);
+    for (let i=1;i<5;i++){ const yy = top+34 + (y-top-34)*i/5; el("path", {d:`M${x-w/2-1} ${yy} L ${x+w/2+1} ${yy}`, class:"hair"}, g); }
+    el("path", {d:`M${x-3} ${top+120} L ${x-3} ${top+110} Q ${x} ${top+106} ${x+3} ${top+110} L ${x+3} ${top+120} Z M${x-3} ${top+200} L ${x-3} ${top+190} Q ${x} ${top+186} ${x+3} ${top+190} L ${x+3} ${top+200} Z`, class:"hair"}, g);
+    // the corbels under the gallery, and the gallery deck, which runs out on the south side to carry the viewer
+    for (const d of [-1, 1]) el("path", {d:`M${x+d*(w/2)} ${top+44} L ${x+d*(w/2+7)} ${top+34} M${x+d*(w/2-7)} ${top+44} L ${x+d*(w/2-2)} ${top+34}`, class:"hair"}, g);
+    el("path", {d:`M${x-w/2-8} ${top+30} L ${x+w/2+48} ${top+30} L ${x+w/2+48} ${top+34} L ${x-w/2-8} ${top+34} Z`, style:P}, g);
+    el("path", {d:`M${x+w/2+46} ${top+34} L ${x+w/2} ${top+62}`, class:"thin"}, g);
+    // the lantern room: glass between mullions, on a low parapet
+    el("path", {d:`M${x-13} ${top+30} L ${x-13} ${top-6} L ${x+13} ${top-6} L ${x+13} ${top+30} Z`, style:P}, g);
+    el("path", {d:`M${x-13} ${top+22} L ${x+13} ${top+22} M${x-6.5} ${top-6} L ${x-6.5} ${top+22} M${x+6.5} ${top-6} L ${x+6.5} ${top+22} M${x-13} ${top+8} L ${x+13} ${top+8}`, class:"hair"}, g);
+    // the roof: a shallow dome, its eave, the ventilator ball and the rod
+    el("path", {d:`M${x-15} ${top-6} L ${x+15} ${top-6} M${x-13} ${top-6} Q ${x-13} ${top-20} ${x} ${top-21} Q ${x+13} ${top-20} ${x+13} ${top-6} Z`, style:P}, g);
+    el("circle", {cx:x, cy:top-24, r:3, style:P}, g); el("path", {d:`M${x} ${top-27} L ${x} ${top-37}`, class:"thin"}, g);
+    el("circle", {cx:x, cy:top+8, r:22, class:"halo", id:"halo"}, g);
+    // the lamp: a drum on its yoke and a short barrel ending in the lens; it pokes out of the glass on the side it faces
+    const lamp = el("g", {id:"lamp", transform:`translate(${x},${top+8})`}, g);
+    el("path", {d:"M -1.5 5 L -1.5 14 M 1.5 5 L 1.5 14", class:"hair"}, lamp);
+    el("path", {d:"M -6 -5 L 6 -5 L 6 5 L -6 5 Z", class:"thin", style:P}, lamp);
+    el("path", {d:"M 6 -5 L 19 -7 L 19 7 L 6 5 Z", class:"thin", style:P}, lamp);
+    el("ellipse", {cx:19, cy:0, rx:2.4, ry:7, class:"thin lens"}, lamp);
+    el("ellipse", {cx:19, cy:0, rx:1.2, ry:3.8, class:"hair"}, lamp);
+    // the gallery railing, in front of the glass and the lamp
+    let rail = `M${x-w/2-8} ${top+22} L ${x+w/2+48} ${top+22}`;
+    for (let px = x-w/2-8; px <= x+w/2+48; px += 6) rail += ` M${px} ${top+22} L ${px} ${top+30}`;
+    el("path", {d:rail, class:"hair"}, g);
   }
   function suspension(g, x1, x2, deckY, towerH, sag){
     const mid = (x1+x2)/2;
@@ -461,12 +477,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   el("path", {d:"M 0 380 L 0 262 C 60 252, 150 256, 230 270 C 290 281, 332 304, 366 330 C 376 338, 384 343, 394 346 C 380 360, 330 372, 300 380 Z", style:"fill:var(--paper);stroke:none"}, headland);
   el("path", {d:"M 0 262 C 60 252, 150 256, 230 270 C 290 281, 332 304, 366 330 C 376 338, 384 343, 394 346"}, headland);
   { const cp = el("clipPath", {id:"behind-rock", clipPathUnits:"userSpaceOnUse"}, el("defs", {}, $("#L-water"))); el("rect", {x:-14, y:-40, width:28, height:42}, cp); }
-  const bear = el("g", {transform:"translate(154,294) scale(1.4)", "clip-path":"url(#behind-rock)"}, headland), bearHead = el("g", {transform:"translate(0,8)", id:"bearhead"}, bear);
+  const bear = el("g", {transform:"translate(154,295) scale(1.1)", "clip-path":"url(#behind-rock)"}, headland), bearHead = el("g", {transform:"translate(0,8)", id:"bearhead"}, bear);
   el("path", {d:"M -3.2 -5 a 1.4 1.4 0 1 1 0.1 0 M 3.2 -5 a 1.4 1.4 0 1 1 0.1 0", class:"thin", style:"fill:var(--paper)"}, bearHead);
   el("path", {d:"M -4.2 1 Q -4.8 -5.4 0 -5.8 Q 4.8 -5.4 4.4 -1.2 Q 7.4 -1.4 7.6 0.2 Q 7.2 1.6 4 1.4 L 4 1.8 Z", class:"thin", style:"fill:var(--paper)"}, bearHead);
   el("circle", {cx:2, cy:-2.6, r:.55, class:"solid"}, bearHead); el("circle", {cx:7.3, cy:-0.3, r:.6, class:"solid"}, bearHead);
-  el("path", {d:"M 139 298 L 142 290 L 148 285 L 156 283 L 163 285.5 L 167 291 L 169 298 Z", class:"thin", style:"fill:var(--paper)"}, headland);
-  el("path", {d:"M 152 284 L 154 290 L 151 294", class:"hair"}, headland);
+  el("path", {d:"M 143 297 Q 142 290 147 287 Q 153 284 159 285.5 Q 165 287 166 292 Q 167 296 165 297 Z", class:"thin", style:"fill:var(--paper)"}, headland);
   el("path", {d:"M 394 346 C 370 352, 340 356, 300 360", class:"hair"}, headland);
   el("path", {d:"M 20 318 C 100 300, 190 298, 280 312", class:"hair", "stroke-dasharray":"8 6"}, headland);
   fog(fogG, [[330, 5, 6],[400, 6, 7],[470, 5, 5]], 11);
@@ -495,21 +510,29 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const ridge = [[-40,-24],[120,-32],[260,-46],[420,-58],[520,-66],[630,-86]];
     const ridgeY = u => { for (let i=1;i<ridge.length;i++) if (u <= ridge[i][0]){ const [a, ya] = ridge[i-1], [b, yb] = ridge[i]; return ya + (yb-ya)*(u-a)/(b-a); } return -86; };
     { const rh = rng(97);
-      for (let u = 0; u < 590; u += 26 + rh()*30){
-        const depth = 8 + rh()*34, base = b0 + ridgeY(u) + depth; if (base > b0 - 4) continue;
-        const w_ = 9 + rh()*9, h_ = 5 + rh()*5, x = ox + u + rh()*8;
-        // a small house: a box with a pitched or a flat roof, a window now and then
-        const roof = rh() < .6 ? `L ${x+w_/2} ${base-h_-4}` : "";
-        el("path", {d:`M${x} ${base} L ${x} ${base-h_} ${roof} L ${x+w_} ${base-h_} L ${x+w_} ${base} Z`, class:"hair", style:"fill:var(--paper)"}, g);
-        if (rh() < .5) el("path", {d:`M${x+w_*.35} ${base-h_*.55} l 3 0`, class:"hair"}, g); } }
+      const tree = (x, base, r) => el("path", {d:`M${x-r} ${base} q 0 ${-r*1.6} ${r} ${-r*1.9} q ${r} ${r*.3} ${r} ${r*1.9} z M${x} ${base} l 0 2`, class:"hair", style:"fill:var(--paper)"}, g);
+      // three rows, the highest first so the lower ones stand in front of it
+      for (const depth of [9, 21, 33]){
+        let u = 4 + rh()*10;
+        while (u < 600){
+          const base = b0 + ridgeY(u) + depth; if (base > b0 - 4){ u += 12; continue; }
+          if (rh() < .2){ tree(ox+u+5, base, 4 + rh()*2.5); u += 12 + rh()*10; continue; }          // a tree, or a gap in the row
+          if (rh() < .07){ u += 10 + rh()*14; continue; }
+          const w_ = 7 + rh()*4, h_ = 5 + rh()*3, pitched = rh() < .25, x = ox + u;
+          el("path", {d:`M${x} ${base} L ${x} ${base-h_} ${pitched ? `L ${x+w_/2} ${base-h_-3}` : ""} L ${x+w_} ${base-h_} L ${x+w_} ${base} Z`, class:"hair", style:"fill:var(--paper)"}, g);
+          if (rh() < .55) el("path", {d:`M${x+2} ${base-h_*.5} l 2.4 0`, class:"hair"}, g);
+          u += w_ - .2; } } }
     const sx = ox+700, sy = baseY-104;
     // Sutro: three masts, the outer pair upright at the top, pinched to a waist, splayed to the feet, tied by struts
     const H = 100;
     el("path", {d:`M${sx-15} ${sy} L ${sx-4} ${sy-H*0.52} L ${sx-8} ${sy-H*0.62} L ${sx-8} ${sy-H} M${sx} ${sy-H-8} L ${sx} ${sy} M${sx+15} ${sy} L ${sx+4} ${sy-H*0.52} L ${sx+8} ${sy-H*0.62} L ${sx+8} ${sy-H}`, class:"thin"}, g);
     for (const [f, hw] of [[0.12, 13], [0.3, 9], [0.5, 4], [0.62, 8], [0.84, 8]]) el("path", {d:`M${sx-hw} ${sy-H*f} L ${sx+hw} ${sy-H*f}`, class:"hair"}, g);
-    const towers = [[860,110,26,1],[892,150,24,1],[920,80,20,0],[946,200,30,1],[982,260,34,1],[1022,180,26,1],[1054,150,22,1],[1082,120,28,0],[1116,96,22,1],[1144,140,26,1],[1176,70,20,0]];
-    for (const [x,h,w_,win] of towers) box(g, ox + 2056 - x - w_, baseY-h-8, w_, h, win);
-    el("path", {d:`M ${ox+1128} ${baseY-8} L ${ox+1142} ${baseY-236} L ${ox+1156} ${baseY-8} Z`, style:"fill:var(--paper)"}, g);
+    // each tower: x, height, width, windows, and how far forward it stands (0 behind, 2 in front)
+    const towers = [[852,104,28,1,1],[874,146,26,1,0],[894,78,22,0,2],[912,196,30,1,0],[938,150,26,1,1],[960,120,22,1,2],[982,260,34,1,1],[1008,184,28,1,0],
+                    [1030,128,24,1,2],[1046,152,24,1,1],[1066,112,28,0,0],[1086,142,24,1,1],[1106,94,22,1,2],[1124,166,24,1,0],[1148,122,26,1,1],[1170,76,22,0,2],[1188,104,20,1,0]];
+    for (const depth of [0, 1, 2]){
+      for (const [x,h,w_,win,dp] of towers) if (dp === depth) box(g, ox + 2056 - x - w_, baseY-h-8, w_, h, win);
+      if (depth === 1) el("path", {d:`M ${ox+1128} ${baseY-8} L ${ox+1142} ${baseY-236} L ${ox+1156} ${baseY-8} Z`, style:"fill:var(--paper)"}, g); }
     el("path", {d:`M ${ox+1040} ${baseY-268} Q ${ox+1057} ${baseY-290} ${ox+1074} ${baseY-268}`}, g);
     // City Hall and Hayes Valley west of the towers, under Sutro: the house a little behind, the trees in front of it
     const hv = ox+CH, gy = baseY-8;
@@ -566,7 +589,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     tint(L, domeHalf(hv, gy-44, 44, 24, -1), ca).classList.add("nightlight");
     tint(L, domeHalf(hv, gy-44, 44, 24, 1), cb).classList.add("nightlight");
     // the crown: a soft wash and a grid of blocks that breathe out of step
-    el("ellipse", {cx:hv, cy:gy-54, rx:30, ry:20, class:"nightlight", filter:"url(#glow)", style:`fill:${ca};stroke:none;opacity:.5`}, L);
+    el("ellipse", {cx:hv, cy:gy-54, rx:30, ry:20, class:"nightlight", filter:"url(#glow)", style:`fill:${ca};stroke:none;fill-opacity:.5`}, L);
     el("ellipse", {cx:ox+1057, cy:baseY-276, rx:22, ry:16, class:"nightlight", filter:"url(#glow)", style:"fill:#9FB7C9;stroke:none"}, L);
     tintRect(L, ox+1041, baseY-290, 32, 30, "#9FB7C9").classList.add("nightlight");
     const grid = el("g", {class:"nightlight"}, L); const r = rng(59);
@@ -583,7 +606,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     el("path", {d:`M${-21*s} ${-66*s} L ${-34*s} ${-68*s} M${21*s} ${-66*s} L ${34*s} ${-68*s}`, class:"thin"}, g);
     el("path", {d:`M${-6*s} ${-52*s} L ${6*s} ${-52*s} M 0 ${-56*s} L 0 ${-48*s}`, class:"thin"}, g);   // the coin slot, a cross
   }
-  viewer($("#viewer-small"), .3);
+  (function towerViewer(g){
+    el("path", {d:"M -5 0 L 5 0 M 0 0 L 0 -10 M -2 -10 L 2 -10", class:"thin"}, g);
+    el("path", {d:"M -7 -10 Q -8.5 -22 0 -23 Q 8.5 -22 7 -10 Z", class:"thin", style:"fill:var(--paper)"}, g);
+    el("path", {d:"M -7.6 -18 Q 0 -21.5 7.6 -18", class:"hair"}, g);
+    el("circle", {cx:-3, cy:-15.5, r:1.9, class:"thin", style:"fill:var(--paper)"}, g); el("circle", {cx:3, cy:-15.5, r:1.9, class:"thin", style:"fill:var(--paper)"}, g);
+    el("path", {d:"M -1 -12 L 1 -12", class:"hair"}, g);
+  })($("#viewer-small"));
   (function big(){
     const g = $("#viewer-big");
     const hood = el("g", {transform:"translate(800,700)"}, g);
@@ -594,9 +623,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     el("path", {d:"M-150 -206 a 34 22 0 1 0 68 0 a 34 22 0 1 0 -68 0 M 82 -206 a 34 22 0 1 0 68 0 a 34 22 0 1 0 -68 0", class:"thin"}, hood);
     el("path", {d:"M-300 -60 L 300 -60", class:"hair"}, hood);
     el("path", {d:"M-14 -134 L 14 -134 M 0 -142 L 0 -126", class:"thin"}, hood);                      // the slot
-    el("path", {d:"M-64 -118 L 64 -118 L 64 -78 L -64 -78 Z", class:"thin"}, hood);                  // the plate
-    const t = el("text", {x:0, y:-88, "text-anchor":"middle", class:"cap"}, hood); t.textContent = "25.5¢";
-    const t2 = el("text", {x:0, y:-46, "text-anchor":"middle"}, hood); t2.textContent = "PER MILLION TOKENS";
+    el("path", {d:"M-70 -126 L 70 -126 L 70 -74 L -70 -74 Z", class:"thin"}, hood);                  // the plate
+    const t = el("text", {x:0, y:-100, "text-anchor":"middle", class:"cap"}, hood); t.textContent = "25.5¢";
+    const t2 = el("text", {x:0, y:-82, "text-anchor":"middle"}, hood); t2.textContent = "PER MILLION TOKENS";
     el("circle", {cx:-236, cy:-112, r:20}, hood); el("path", {d:"M-236 -132 L -236 -92 M-256 -112 L -216 -112", class:"hair"}, hood);
     const k = el("text", {x:-236, y:-78, "text-anchor":"middle"}, hood); k.textContent = "FOCUS";
     const hot = el("g", {class:"hot", id:"hot-coin", tabindex:"0", role:"button", "aria-label":"Insert a coin for sources and method"}, hood);
@@ -614,10 +643,10 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     // the hills behind: a ridge crowned with a ragged line of trees, a raised stand of them with a mast in it, then a sharp drop to the lower ridge
     { const rr = rng(83), Lm = el("g", {transform:"translate(1300,0) scale(-1,1)"}, L);   // mirrored: the crest and its trees to the right, the cut to the left
       let d = "M 480 400 L 480 304 C 500 300, 516 296, 530 292", x = 530;
-      const crown = u => u < 668 ? 292 - (u-530)/138*54 : 238 + (u-668)*0.06;             // the canopy's line: rising to its crest, then nearly level
-      while (x < 700){ const w = 5 + rr()*13, top = Math.min(crown(x), crown(x+w)) - 2 - rr()*7; d += ` Q ${(x+w*.5).toFixed(1)} ${top.toFixed(1)} ${(x+w).toFixed(1)} ${(crown(x+w) + rr()*2).toFixed(1)}`; x += w; }
-      d += ` Q ${(x+3).toFixed(1)} 250 ${(x+2).toFixed(1)} 262 Q ${(x+4).toFixed(1)} 270 ${(x+9).toFixed(1)} 273`; x += 9;   // the steep cut where the trees end
-      while (x < 820){ const w = 5 + rr()*9, y = 273 + (x-710)*0.05; d += ` Q ${(x+w/2).toFixed(1)} ${(y - 2 - rr()*4).toFixed(1)} ${(x+w).toFixed(1)} ${y.toFixed(1)}`; x += w; }
+      const crown = u => u < 596 ? 292 - (u-530)/66*50 : 242 + (u-596)*0.08;              // the canopy's line: rising to its crest, then nearly level
+      while (x < 612){ const w = 5 + rr()*13, top = Math.min(crown(x), crown(x+w)) - 2 - rr()*7; d += ` Q ${(x+w*.5).toFixed(1)} ${top.toFixed(1)} ${(x+w).toFixed(1)} ${(crown(x+w) + rr()*2).toFixed(1)}`; x += w; }
+      d += ` Q ${(x+3).toFixed(1)} 254 ${(x+2).toFixed(1)} 264 Q ${(x+4).toFixed(1)} 272 ${(x+9).toFixed(1)} 275`; x += 9;   // the steep cut where the trees end
+      while (x < 820){ const w = 5 + rr()*9, y = 275 + (x-621)*0.04; d += ` Q ${(x+w/2).toFixed(1)} ${(y - 2 - rr()*4).toFixed(1)} ${(x+w).toFixed(1)} ${y.toFixed(1)}`; x += w; }
       el("path", {d: d + " L 820 400 Z", class:"thin", style:"fill:var(--paper)"}, Lm);
       // the grass below the trees: the hill's own shoulder, and a pale fold lower down
       el("path", {d:"M 500 322 C 570 306, 640 298, 706 296 C 750 296, 790 300, 820 304", class:"hair"}, Lm);
@@ -661,7 +690,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const TARGET = { city:{ ends:[[1000, 230], [1450, 336]], base:[[1020, 250], [1450, 338]] }, bridge:{ ends:[[160, 240], [760, 330]], base:[[300, 215], [560, 338]] }, tele:{ ends:[[1470, 334], [1600, 346]] } };
   const beamPath = $("#beam path"); let beamTimer = null; const fogTimers = [];
   // where the lighthouse stands in each view: whole at the point; turned, only its lantern shows, large, at the side you turned from
-  const LANTERN = [800, 265];
+  const LANTERN = [800, 263];
   const fgAt = (x, y, s) => ({ s, t:[x - s*LANTERN[0], y - s*LANTERN[1]] });
   const FG = { home:{ s:1, t:[0,0] }, city:fgAt(165, 430, 1.7), bridge:fgAt(1435, 430, 1.7), valley:{ s:1, t:[0,0] } };
   const fgToScreen = (view, [x, y]) => { const f = FG[view] || FG.home; return [f.t[0] + f.s*x, f.t[1] + f.s*y]; };
@@ -684,9 +713,16 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       beamPath.setAttribute("d", "");
     }
     const farFg = far.map(e => screenToFg(view, e));
-    $("#beamlight").setAttribute("points", [LANTERN, ...farFg].map(q => q.map(v => v.toFixed(1)).join(",")).join(" "));
-    const g = $("#beamgrad"), mid = [(farFg[0][0]+farFg[1][0])/2, (farFg[0][1]+farFg[1][1])/2];
-    g.setAttribute("x1", LANTERN[0]); g.setAttribute("y1", LANTERN[1]); g.setAttribute("x2", mid[0].toFixed(1)); g.setAttribute("y2", mid[1].toFixed(1));
+    const mid = [(farFg[0][0]+farFg[1][0])/2, (farFg[0][1]+farFg[1][1])/2];
+    // turn the lamp to face the middle of what it lights; the light leaves from its lens
+    const ddx = mid[0]-LANTERN[0], ddy = mid[1]-LANTERN[1], dir = ddx >= 0 ? 1 : -1, tilt = Math.max(-.5, Math.min(.5, Math.atan2(ddy, Math.abs(ddx))));
+    $("#lamp").setAttribute("transform", `translate(${LANTERN[0]},${LANTERN[1]}) scale(${dir},1) rotate(${(tilt*180/Math.PI).toFixed(1)})`);
+    const lens = [LANTERN[0] + dir*19*Math.cos(tilt), LANTERN[1] + 19*Math.sin(tilt)];
+    $("#halo").setAttribute("cx", lens[0].toFixed(1)); $("#halo").setAttribute("cy", lens[1].toFixed(1));
+    if (!zoomed) beamPath.setAttribute("d", farFg.map(([x, y]) => `M${lens[0].toFixed(1)} ${lens[1].toFixed(1)} L ${x.toFixed(1)} ${y.toFixed(1)}`).join(" "));
+    $("#beamlight").setAttribute("points", [lens, ...farFg].map(q => q.map(v => v.toFixed(1)).join(",")).join(" "));
+    const g = $("#beamgrad");
+    g.setAttribute("x1", lens[0].toFixed(1)); g.setAttribute("y1", lens[1].toFixed(1)); g.setAttribute("x2", mid[0].toFixed(1)); g.setAttribute("y2", mid[1].toFixed(1));
     // the fog opens between the same two edges, in scene units
     const [ox, oy] = zoomed ? toScene(view, ...lantern) : lantern, L = 1600/ZOOM[view].s;
     const ang = far.map(([x, y]) => Math.atan2(y-lantern[1], x-lantern[0])); let [a0, a1] = ang; if (a1 < a0) [a0, a1] = [a1, a0]; if (a1 - a0 > Math.PI){ [a0, a1] = [a1, a0 + 2*Math.PI]; }
@@ -932,7 +968,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const cross = 20*Math.max(60, 900 / Math.max(Math.abs(lateral), 3));
     document.documentElement.style.setProperty("--cdrift", cross + "s");
     document.documentElement.style.setProperty("--rfall", (o.wind_kmh > 40 ? .7 : 1.1) + "s");
-    document.querySelectorAll(".fog").forEach(g=>{ g.style.opacity = w.fog; });
+    document.querySelectorAll(".fog").forEach(g=>{ g.style.opacity = Math.max(w.fog, .4); });
     sky.innerHTML = ""; skyFront.innerHTML = "";
     const r = rng(w.clouds*13+7), clock = Date.now()/1000;
     // most cloud is behind the land and the bridge; one in four passes in front of them
@@ -956,7 +992,6 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     if (sun.alt > -2 && !w.band && w.fog < .9){
       const x = xOfAzimuth(sun.az), y = yOfAltitude(sun.alt);
       el("path", {d:`M ${x} ${y} m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0 M ${x} ${y-34} l 0 -10 M ${x} ${y+34} l 0 10 M ${x-34} ${y} l -10 0 M ${x+34} ${y} l 10 0`, class:"thin sun"}, sky);
-      if (key === "clear") tint($("#washes"), `M ${x-24} ${y} a 24 24 0 1 0 48 0 a 24 24 0 1 0 -48 0 Z`, "var(--gold)").classList.add("sunwash");
     }
     if (night){ const rs = rng(Math.floor(Date.now()/86400e3)); const n = 4 + Math.floor(rs()*2);
       for (let i=0;i<n;i++){ const x = 480 + rs()*1080, y = 40 + rs()*120, sz = 2 + rs()*1.6;
@@ -1041,12 +1076,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const bez = (p0, p1, p2, p3, t) => { const u = 1-t; return [0,1].map(i => u*u*u*p0[i] + 3*u*u*t*p1[i] + 3*u*t*t*p2[i] + t*t*t*p3[i]); };
       const hi = 80 + Math.random()*60;
       const path = {
-        cruise:  { dur: 34000 + Math.random()*12000, s:[.62, .62], at: t => [sx + (ex-sx)*t, hi + Math.sin(t*4)*2] },
-        jet:     { dur: 13000 + Math.random()*5000,  s:[.6, .6], at: t => [sx + (ex-sx)*t, hi - 10 + t*(Math.random()<.5?1:-1)*0] },
-        landing: { dur: 24000 + Math.random()*6000,  s:[.7, 1], at: t => bez([sx, 110], [sx + (ex-sx)*.35, 140], [sx + (ex-sx)*.7, 250], [ex, 300 + Math.random()*0], t) },
-        takeoff: { dur: 20000 + Math.random()*6000,  s:[.45, .8], at: t => bez(behind, [behind[0] + (L2R?1:-1)*120, behind[1] - 40], [behind[0] + (L2R?1:-1)*500, 120], [behind[0] + (L2R?1:-1)*1100, 20], t), gearUp:true },
-        away:    { dur: 26000 + Math.random()*8000,  s:[.6, .12], at: t => bez([sx, 170], [800, 175], [L2R ? 1100 : 500, 110], [L2R ? 1150 : 450, 30], t), fade:true },
-        turn:    { dur: 26000 + Math.random()*8000,  s:[.55, .16], at: t => bez([ex, 120], [L2R ? 1100 : 500, 140], [behind[0] + (L2R?160:-160), behind[1] - 70], [behind[0], behind[1] + 10], t) },
+        cruise:  { dur: 34000 + Math.random()*12000, s:[.42, .42], at: t => [sx + (ex-sx)*t, hi + Math.sin(t*4)*2] },
+        jet:     { dur: 13000 + Math.random()*5000,  s:[.36, .36], at: t => [sx + (ex-sx)*t, hi - 10 + t*(Math.random()<.5?1:-1)*0] },
+        landing: { dur: 24000 + Math.random()*6000,  s:[.5, .78], at: t => bez([sx, 110], [sx + (ex-sx)*.35, 140], [sx + (ex-sx)*.7, 250], [ex, 300 + Math.random()*0], t) },
+        takeoff: { dur: 20000 + Math.random()*6000,  s:[.3, .6], at: t => bez(behind, [behind[0] + (L2R?1:-1)*120, behind[1] - 40], [behind[0] + (L2R?1:-1)*500, 120], [behind[0] + (L2R?1:-1)*1100, 20], t), gearUp:true },
+        away:    { dur: 26000 + Math.random()*8000,  s:[.45, .08], at: t => bez([sx, 170], [800, 175], [L2R ? 1100 : 500, 110], [L2R ? 1150 : 450, 30], t), fade:true },
+        turn:    { dur: 26000 + Math.random()*8000,  s:[.42, .12], at: t => bez([ex, 120], [L2R ? 1100 : 500, 140], [behind[0] + (L2R?160:-160), behind[1] - 70], [behind[0], behind[1] + 10], t) },
       }[kind];
       let prev = path.at(0);
       tween(path.dur, k=>{
@@ -1102,11 +1137,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const stop = hx + 20*S;
       tween(11000*(.85 + Math.random()*.3), k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*2.5*(1-k)/.11 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .86) car.classList.add("braking"); if (k > .89) spout.style.opacity = Math.min(1, (k-.89)*12); },
         ()=>{ tween(2200, k=>{ spout.style.opacity = 1; }, ()=>{ tween(900, k=>{ car.setAttribute("transform", `scale(${S*(1 - 2*k)}, ${S})`); }, ()=>{ car.classList.remove("braking"); tween(6000, k=>{ g.setAttribute("transform", `translate(${stop + k*k*(1700-stop)},${y})`); spout.style.opacity = 1 - k; }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); }); }); }); }); },
-    bear(){ if (stage.dataset.view !== "bridge" || bearUp) return EVENTS.gull(); bearUp = true;
+    bear(){ if (stage.dataset.view !== "bridge" || bearUp) return stage.dataset.view === "bridge" ? undefined : EVENTS.ferry(); bearUp = true;
       // up over the rock, a look one way and the other, and down again
       const h = $("#bearhead"); const at = (y, fx) => h.setAttribute("transform", `translate(0,${y.toFixed(2)}) scale(${fx},1)`);
-      tween(1800, k=>at(8 - 15*(1-(1-k)**2), 1), ()=>{ setTimeout(()=>{ at(-7, -1); setTimeout(()=>{ at(-7, 1);
-        setTimeout(()=>tween(1400, k=>at(-7 + 15*k*k, 1), ()=>{ bearUp = false; }), 1600); }, 1400); }, 1500); }); },
+      tween(1800, k=>at(8 - 17*(1-(1-k)**2), 1), ()=>{ setTimeout(()=>{ at(-9, -1); setTimeout(()=>{ at(-9, 1);
+        setTimeout(()=>tween(1400, k=>at(-9 + 17*k*k, 1), ()=>{ bearUp = false; }), 1600); }, 1400); }, 1500); }); },
     gust(){ stage.classList.add("gust"); document.querySelectorAll(".gull").forEach(p=>{ p.style.transition = "transform .8s"; p.style.transform = "rotate(-22deg)"; });
       setTimeout(()=>{ stage.classList.remove("gust"); }, 5000); },
     ferry(){ if (stage.dataset.view !== "bridge") return EVENTS.gull();
@@ -1118,16 +1153,16 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const y = 530 + Math.random()*50, dur = 44000 + Math.random()*16000, bob = 1 + Math.random()*1.5;
       tween(dur, k=>{ g.setAttribute("transform", `translate(${-80 + k*1780},${y + Math.sin(k*28)*bob})`); }, ()=>g.remove()); },
   };
-  const WEIGHTS = [["gull",6],["plane",4],["gust",2],["ferry",1],["rocket",2],["robotaxi",1],["bear",2]];
+  const WEIGHTS = [["gull",5],["plane",4],["gust",1],["ferry",2],["rocket",4],["robotaxi",1],["bear",3]];
   const PLANE_KIND = params.get("plane");
   const FORCE_FAIL = params.get("rocket") === "fail";
-  const WELCOME = { city:"robotaxi", bridge:"ferry", home:"gull", valley:"gull" };
+  const WELCOME = { city:"robotaxi", bridge:"bear", home:"gull", valley:"rocket" };
   let welcomeTimer = null;
   function welcome(view){ clearTimeout(welcomeTimer); if (reduced || params.get("event")) return; welcomeTimer = setTimeout(()=>{ if (stage.dataset.view === view) EVENTS[WELCOME[view]](); }, view === "city" ? 6000 : 2600); }
   function pick(){ const total = WEIGHTS.reduce((a,[,w])=>a+w,0); let r = Math.random()*total; for (const [k,w] of WEIGHTS){ if ((r -= w) < 0) return k; } return "gull"; }
   // the first thing to happen on the bay, a little after arriving, is a launch; after that, whatever comes
   let firstEvent = true;
-  function schedule(){ if (reduced) return; const wait = firstEvent ? 14000 + Math.random()*6000 : 25000 + Math.random()*40000;
+  function schedule(){ if (reduced) return; const wait = firstEvent ? 12000 + Math.random()*5000 : 18000 + Math.random()*22000;
     setTimeout(()=>{ EVENTS[firstEvent ? "rocket" : pick()](); firstEvent = false; schedule(); }, wait); }
   if (params.get("event")){ setTimeout(()=>EVENTS[params.get("event")] && EVENTS[params.get("event")](), 2000); }
   schedule();
