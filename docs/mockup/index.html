@@ -75,6 +75,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .carlight{opacity:0;transition:opacity .3s}.night .carlight{opacity:1}
 .lamp{filter:url(#lamp)}.beamcone{filter:url(#lampwide)}
 .tail{opacity:0;transition:opacity .2s}.night .tail{opacity:.45}.braking .tail{opacity:1}.night .braking .tail{fill:#FF2A1F !important;filter:url(#lamp)}
+#celes{transition:opacity .8s}
 .star{animation:twinkle 8s ease-in-out infinite;opacity:.85}
 @keyframes twinkle{0%,70%,100%{opacity:.85}78%{opacity:.15}86%{opacity:.9}}
 .water{animation:swell 6s ease-in-out infinite alternate}
@@ -237,6 +238,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       </defs>
       <g class="zoom"><g id="skyall"><rect class="skywash" x="0" y="0" width="1600" height="342" fill="url(#skygrad)"/>
       <g id="sky" class="scene sky thin"></g></g></g>
+      <g id="celes" class="scene sky thin"></g>
       <g id="lifeback" class="life scene"></g>
     </svg>
     <!-- ================= the one scene from the point, painted once; the colour lies over the ink ================= -->
@@ -376,13 +378,15 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     el("path", {d:`M${x+w/2+46} ${top+34} L ${x+w/2} ${top+62}`, class:"thin"}, g);
     // the lantern room: glass between mullions, on a low parapet
     el("path", {d:`M${x-13} ${top+30} L ${x-13} ${top-6} L ${x+13} ${top-6} L ${x+13} ${top+30} Z`, style:P}, g);
-    el("path", {d:`M${x-13} ${top+22} L ${x+13} ${top+22} M${x-6.5} ${top-6} L ${x-6.5} ${top+22} M${x+6.5} ${top-6} L ${x+6.5} ${top+22} M${x-13} ${top+8} L ${x+13} ${top+8}`, class:"hair"}, g);
+    const lampAt = el("g", {}, g);                                              // the lamp goes here, inside the room, behind the glass
+    el("path", {d:`M${x-13} ${top+30} L ${x-13} ${top-6} L ${x+13} ${top-6} L ${x+13} ${top+30} Z`, style:"fill:var(--paper);fill-opacity:.5;stroke:none"}, g);
+    el("path", {d:`M${x-13} ${top+22} L ${x+13} ${top+22} M${x-6.5} ${top-6} L ${x-6.5} ${top+22} M${x+6.5} ${top-6} L ${x+6.5} ${top+22} M${x-13} ${top+8} L ${x+13} ${top+8} M${x-13} ${top-6} L ${x-13} ${top+30} M${x+13} ${top-6} L ${x+13} ${top+30}`, class:"hair"}, g);
     // the roof: a shallow dome, its eave, the ventilator ball and the rod
     el("path", {d:`M${x-15} ${top-6} L ${x+15} ${top-6} M${x-13} ${top-6} Q ${x-13} ${top-20} ${x} ${top-21} Q ${x+13} ${top-20} ${x+13} ${top-6} Z`, style:P}, g);
     el("circle", {cx:x, cy:top-24, r:3, style:P}, g); el("path", {d:`M${x} ${top-27} L ${x} ${top-37}`, class:"thin"}, g);
     el("circle", {cx:x, cy:top+8, r:22, class:"halo", id:"halo"}, g);
     // the lamp: a drum on its yoke and a short barrel ending in the lens; it pokes out of the glass on the side it faces
-    const lamp = el("g", {id:"lamp", transform:`translate(${x},${top+8})`}, g);
+    const lamp = el("g", {id:"lamphead", transform:`translate(${x},${top+8})`}, lampAt);
     el("path", {d:"M -1.5 5 L -1.5 14 M 1.5 5 L 1.5 14", class:"hair"}, lamp);
     el("path", {d:"M -6 -5 L 6 -5 L 6 5 L -6 5 Z", class:"thin", style:P}, lamp);
     el("path", {d:"M 6 -5 L 19 -7 L 19 7 L 6 5 Z", class:"thin", style:P}, lamp);
@@ -511,17 +515,20 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const ridgeY = u => { for (let i=1;i<ridge.length;i++) if (u <= ridge[i][0]){ const [a, ya] = ridge[i-1], [b, yb] = ridge[i]; return ya + (yb-ya)*(u-a)/(b-a); } return -86; };
     { const rh = rng(97);
       const tree = (x, base, r) => el("path", {d:`M${x-r} ${base} q 0 ${-r*1.6} ${r} ${-r*1.9} q ${r} ${r*.3} ${r} ${r*1.9} z M${x} ${base} l 0 2`, class:"hair", style:"fill:var(--paper)"}, g);
-      // three rows, the highest first so the lower ones stand in front of it
-      for (const depth of [9, 21, 33]){
-        let u = 4 + rh()*10;
+      const house = (x, base, w_, h_) => {
+        el("path", {d:`M${x} ${base} L ${x} ${base-h_} L ${x+w_} ${base-h_} L ${x+w_} ${base} Z M${x-.5} ${base-h_} L ${x+w_+.5} ${base-h_}`, class:"hair", style:"fill:var(--paper)"}, g);
+        // a bay window above, a garage door below, as on the avenues
+        el("path", {d:`M${x+1.3} ${base-h_+1.6} L ${x+1.3} ${base-h_*.5} L ${x+w_-1.3} ${base-h_*.5} L ${x+w_-1.3} ${base-h_+1.6} M${x+1.6} ${base} L ${x+1.6} ${base-2.4} L ${x+w_-1.6} ${base-2.4} L ${x+w_-1.6} ${base}`, class:"hair"}, g); };
+      // two long rows along the contours, each broken by cross streets; the upper row first, so the lower stands in front
+      for (const depth of [15, 36]){
+        let u = 6 + rh()*10, run = 0, runLen = 6 + Math.floor(rh()*6);
         while (u < 600){
-          const base = b0 + ridgeY(u) + depth; if (base > b0 - 4){ u += 12; continue; }
-          if (rh() < .2){ tree(ox+u+5, base, 4 + rh()*2.5); u += 12 + rh()*10; continue; }          // a tree, or a gap in the row
-          if (rh() < .07){ u += 10 + rh()*14; continue; }
-          const w_ = 7 + rh()*4, h_ = 5 + rh()*3, pitched = rh() < .25, x = ox + u;
-          el("path", {d:`M${x} ${base} L ${x} ${base-h_} ${pitched ? `L ${x+w_/2} ${base-h_-3}` : ""} L ${x+w_} ${base-h_} L ${x+w_} ${base} Z`, class:"hair", style:"fill:var(--paper)"}, g);
-          if (rh() < .55) el("path", {d:`M${x+2} ${base-h_*.5} l 2.4 0`, class:"hair"}, g);
-          u += w_ - .2; } } }
+          const base = b0 + ridgeY(u) + depth; if (base > b0 - 5){ u += 10; continue; }
+          if (run >= runLen){ if (rh() < .5) tree(ox+u+8, base, 4 + rh()*2); u += 18 + rh()*10; run = 0; runLen = 6 + Math.floor(rh()*6); continue; }
+          const w_ = 9.5 + rh()*2.5, h_ = (rh() < .7 ? 11.5 : 15) + rh()*1.5;
+          house(ox + u, base, w_, h_); u += w_; run++; } }
+      // and trees along the top of the slope, above the houses
+      for (let u = 20; u < 590; u += 38 + rh()*40){ const base = b0 + ridgeY(u) + 3; if (base < b0 - 5) tree(ox + u, base, 3.5 + rh()*2); } }
     const sx = ox+700, sy = baseY-104;
     // Sutro: three masts, the outer pair upright at the top, pinched to a waist, splayed to the feet, tied by struts
     const H = 100;
@@ -586,8 +593,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const L = el("g", {transform:cityTransform}, LIGHTS), ox = 0, baseY = 8, [ca, cb] = nightPair(d);
     // the dome, split by the pair
     const hv = ox+CH, gy = baseY-8;
-    tint(L, domeHalf(hv, gy-44, 44, 24, -1), ca).classList.add("nightlight");
-    tint(L, domeHalf(hv, gy-44, 44, 24, 1), cb).classList.add("nightlight");
+    if (!$("#domeclip")){ const cp = el("clipPath", {id:"domeclip", clipPathUnits:"userSpaceOnUse"}, el("defs", {}, $("#L-lights"))); el("path", {d:domePath(hv, gy-44, 44, 24)}, cp); }
+    const stripes = el("g", {class:"nightlight", "clip-path":"url(#domeclip)"}, L);
+    for (let i=0;i<7;i++) el("rect", {x:hv-22 + i*44/7, y:gy-70, width:44/7 + .3, height:28, style:`fill:${i % 2 ? cb : ca};stroke:none;opacity:.85`}, stripes);
     // the crown: a soft wash and a grid of blocks that breathe out of step
     el("ellipse", {cx:hv, cy:gy-54, rx:30, ry:20, class:"nightlight", filter:"url(#glow)", style:`fill:${ca};stroke:none;fill-opacity:.5`}, L);
     el("ellipse", {cx:ox+1057, cy:baseY-276, rx:22, ry:16, class:"nightlight", filter:"url(#glow)", style:"fill:#9FB7C9;stroke:none"}, L);
@@ -641,16 +649,15 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const L = el("g", {"clip-path":"url(#eye-l)"}, g), R = el("g", {"clip-path":"url(#eye-r)"}, g);
     // left: the hills behind, the campus on its slope, its campanile over the trees, the bay in front
     // the hills behind: a ridge crowned with a ragged line of trees, a raised stand of them with a mast in it, then a sharp drop to the lower ridge
-    { const rr = rng(83), Lm = el("g", {transform:"translate(1300,0) scale(-1,1)"}, L);   // mirrored: the crest and its trees to the right, the cut to the left
-      let d = "M 480 400 L 480 304 C 500 300, 516 296, 530 292", x = 530;
-      const crown = u => u < 596 ? 292 - (u-530)/66*50 : 242 + (u-596)*0.08;              // the canopy's line: rising to its crest, then nearly level
-      while (x < 612){ const w = 5 + rr()*13, top = Math.min(crown(x), crown(x+w)) - 2 - rr()*7; d += ` Q ${(x+w*.5).toFixed(1)} ${top.toFixed(1)} ${(x+w).toFixed(1)} ${(crown(x+w) + rr()*2).toFixed(1)}`; x += w; }
-      d += ` Q ${(x+3).toFixed(1)} 254 ${(x+2).toFixed(1)} 264 Q ${(x+4).toFixed(1)} 272 ${(x+9).toFixed(1)} 275`; x += 9;   // the steep cut where the trees end
-      while (x < 820){ const w = 5 + rr()*9, y = 275 + (x-621)*0.04; d += ` Q ${(x+w/2).toFixed(1)} ${(y - 2 - rr()*4).toFixed(1)} ${(x+w).toFixed(1)} ${y.toFixed(1)}`; x += w; }
-      el("path", {d: d + " L 820 400 Z", class:"thin", style:"fill:var(--paper)"}, Lm);
+    { const rr = rng(83);
+      const crown = u => u < 598 ? 280 - (u-480)*0.03 : u < 664 ? 276 - (u-598)/66*40 : u < 740 ? 236 - Math.sin((u-664)/76*Math.PI)*3 : 236 + (u-740)*0.2;
+      const bump = u => (u > 598 && u < 760) ? 3 + rr()*6 : 1.5 + rr()*3.5;           // the raised trees on the mane, lower ones elsewhere
+      let d = `M 480 400 L 480 ${crown(480).toFixed(1)}`, x = 480;
+      while (x < 820){ const w = (x > 598 && x < 760 ? 6 : 5) + rr()*9; d += ` Q ${(x+w*.5).toFixed(1)} ${(Math.min(crown(x), crown(x+w)) - bump(x)).toFixed(1)} ${(x+w).toFixed(1)} ${(crown(x+w) + rr()*1.5).toFixed(1)}`; x += w; }
+      el("path", {d: d + " L 820 400 Z", class:"thin", style:"fill:var(--paper)"}, L);
       // the grass below the trees: the hill's own shoulder, and a pale fold lower down
-      el("path", {d:"M 500 322 C 570 306, 640 298, 706 296 C 750 296, 790 300, 820 304", class:"hair"}, Lm);
-      el("path", {d:"M 540 342 C 600 332, 670 330, 740 336", class:"hair"}, Lm);
+      el("path", {d:"M 480 312 C 560 304, 640 294, 700 288 C 760 284, 800 290, 820 294", class:"hair"}, L);
+      el("path", {d:"M 520 336 C 600 326, 680 322, 760 328", class:"hair"}, L);
     }
     box(L, 616, 352, 56, 42, true); box(L, 706, 360, 70, 34, true); box(L, 530, 370, 30, 24, false);
     el("path", {d:"M 579 394 L 579 244 L 576 244 L 590 222 L 604 244 L 601 244 L 601 394 Z", style:"fill:var(--paper);stroke:none"}, L);
@@ -669,7 +676,6 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     for (let i=0;i<2;i++){ const y = 452 + i*14; el("path", {d:`M ${510 + i*10} ${y} q 40 -3 80 0 M ${660 - i*14} ${y+5} q 50 -3 100 0`, class:"hair"}, L); }
     // right: the foothills and the dish on them, the tower over the arcaded quad, palms along the front
     el("path", {d:"M 780 262 C 850 236, 930 230, 1000 244 C 1050 254, 1090 256, 1130 262 L 1130 400 L 780 400 Z", class:"thin", style:"fill:var(--paper)"}, R);
-    el("path", {d:"M 1012 248 a 12 7 0 0 1 24 0 Z M 1024 248 L 1024 238", class:"thin"}, R);
     const tx = 930;
     el("path", {d:`M ${tx-10} 372 L ${tx-10} 252 L ${tx+10} 252 L ${tx+10} 372 Z M ${tx-12} 252 L ${tx+12} 252 L ${tx+12} 236 L ${tx-12} 236 Z M ${tx-8} 236 C ${tx-8} 224, ${tx+8} 224, ${tx+8} 236 M ${tx} 224 L ${tx} 216 M ${tx-4} 244 L ${tx+4} 244 M ${tx-4} 270 L ${tx+4} 270 M ${tx-4} 300 L ${tx+4} 300`, style:"fill:var(--paper)"}, R);
     tintRect(R, tx-9, 237, 18, 135, "var(--sandstone)");
@@ -710,16 +716,15 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const dx = c[0]-lantern[0], dy = c[1]-lantern[1], len = Math.hypot(dx, dy), nx = -dy/len, ny = dx/len, w = len*0.11, ext = 1.35;
       const f = [lantern[0] + dx*ext, lantern[1] + dy*ext];
       far = [[f[0] + nx*w*ext, f[1] + ny*w*ext], [f[0] - nx*w*ext, f[1] - ny*w*ext]];
-      beamPath.setAttribute("d", "");
     }
     const farFg = far.map(e => screenToFg(view, e));
     const mid = [(farFg[0][0]+farFg[1][0])/2, (farFg[0][1]+farFg[1][1])/2];
     // turn the lamp to face the middle of what it lights; the light leaves from its lens
     const ddx = mid[0]-LANTERN[0], ddy = mid[1]-LANTERN[1], dir = ddx >= 0 ? 1 : -1, tilt = Math.max(-.5, Math.min(.5, Math.atan2(ddy, Math.abs(ddx))));
-    $("#lamp").setAttribute("transform", `translate(${LANTERN[0]},${LANTERN[1]}) scale(${dir},1) rotate(${(tilt*180/Math.PI).toFixed(1)})`);
+    $("#lamphead").setAttribute("transform", `translate(${LANTERN[0]},${LANTERN[1]}) scale(${dir},1) rotate(${(tilt*180/Math.PI).toFixed(1)})`);
     const lens = [LANTERN[0] + dir*19*Math.cos(tilt), LANTERN[1] + 19*Math.sin(tilt)];
     $("#halo").setAttribute("cx", lens[0].toFixed(1)); $("#halo").setAttribute("cy", lens[1].toFixed(1));
-    if (!zoomed) beamPath.setAttribute("d", farFg.map(([x, y]) => `M${lens[0].toFixed(1)} ${lens[1].toFixed(1)} L ${x.toFixed(1)} ${y.toFixed(1)}`).join(" "));
+    beamPath.setAttribute("d", farFg.map(([x, y]) => `M${lens[0].toFixed(1)} ${lens[1].toFixed(1)} L ${x.toFixed(1)} ${y.toFixed(1)}`).join(" "));
     $("#beamlight").setAttribute("points", [lens, ...farFg].map(q => q.map(v => v.toFixed(1)).join(",")).join(" "));
     const g = $("#beamgrad");
     g.setAttribute("x1", lens[0].toFixed(1)); g.setAttribute("y1", lens[1].toFixed(1)); g.setAttribute("x2", mid[0].toFixed(1)); g.setAttribute("y2", mid[1].toFixed(1));
@@ -805,7 +810,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     fogTimers[0] = setTimeout(()=>stage.classList.add("turning"), 260);
     fogTimers[1] = setTimeout(()=>{ stage.classList.remove("turning"); requestAnimationFrame(()=>requestAnimationFrame(()=>stage.classList.remove("fogout"))); }, 1450);
     hold(); light(null);
-    for (const id of ["life", "skyall", "lifeback"]){ if (view === "valley") $("#"+id).setAttribute("mask", "url(#binoc)"); else $("#"+id).removeAttribute("mask"); }
+    if (lastView !== null && lastView !== view){ $("#celes").style.opacity = 0; clearTimeout(celesTimer); celesTimer = setTimeout(()=>{ $("#celes").style.opacity = 1; }, 1450); }
+    lastView = view;
+    for (const id of ["life", "skyall", "lifeback", "celes"]){ if (view === "valley") $("#"+id).setAttribute("mask", "url(#binoc)"); else $("#"+id).removeAttribute("mask"); }
     const r = R[view];
     // the one drawing scales about the place turned to; the lighthouse in front shrinks to the base of the frame
     const {c, s: zs} = ZOOM[view];
@@ -943,7 +950,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function yOfAltitude(alt){ return 340 - Math.max(-12, Math.min(70, alt))*4.6; }
   const HEADING = { home:105, city:125, bridge:100, valley:150 };
 
-  const sky = $("#sky"), skyFront = $("#skyfront");
+  const sky = $("#sky"), skyFront = $("#skyfront"), celes = $("#celes"); let celesTimer = null, lastView = null;
+  // where a body in the sky sits on the screen for this view, or null if it would not be wholly in the frame
+  function inFrame(view, x, y, r){
+    let [sx, sy] = (view === "home" || view === "valley") ? [x, y] : toScreen(view, x, y);
+    if (view === "home" || view === "valley") sx = Math.max(r + 20, Math.min(1600 - r - 20, sx));
+    return (sx - r < 10 || sx + r > 1590 || sy - r < 10) ? null : [sx, sy]; }
   // The sky's own colour: the faintest wash, blue by day, warm at the horizon around dawn and dusk, a deep
   // blue at night. Each is a pair of stops keyed to the sun's altitude and blended between the keys.
   const SKYKEYS = [[-18, ["#1B2238", .3, "#1B2238", .12]], [-7, ["#7A7CA6", .2, "#E9A27A", .16]], [-1, ["#C4BEDD", .2, "#F2B48C", .22]],
@@ -969,7 +981,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     document.documentElement.style.setProperty("--cdrift", cross + "s");
     document.documentElement.style.setProperty("--rfall", (o.wind_kmh > 40 ? .7 : 1.1) + "s");
     document.querySelectorAll(".fog").forEach(g=>{ g.style.opacity = Math.max(w.fog, .4); });
-    sky.innerHTML = ""; skyFront.innerHTML = "";
+    sky.innerHTML = ""; skyFront.innerHTML = ""; celes.innerHTML = "";
     const r = rng(w.clouds*13+7), clock = Date.now()/1000;
     // most cloud is behind the land and the bridge; one in four passes in front of them
     for (let i=0;i<w.clouds*3;i++){ const y = 110 + r()*90, wd = 80 + r()*140, front = !w.streak && i % 4 === 3;
@@ -989,17 +1001,18 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     document.documentElement.dataset.theme = night ? "dark" : "light";
     stage.classList.toggle("night", night); stage.classList.toggle("dusk", dusk);
     drawLights(now);
-    if (sun.alt > -2 && !w.band && w.fog < .9){
-      const x = xOfAzimuth(sun.az), y = yOfAltitude(sun.alt);
-      el("path", {d:`M ${x} ${y} m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0 M ${x} ${y-34} l 0 -10 M ${x} ${y+34} l 0 10 M ${x-34} ${y} l -10 0 M ${x+34} ${y} l 10 0`, class:"thin sun"}, sky);
+    const sunAt = (sun.alt > -2 && !w.band && w.fog < .9) ? inFrame(view, xOfAzimuth(sun.az), yOfAltitude(sun.alt), 46) : null;
+    if (sunAt){ const [x, y] = sunAt;
+      el("path", {d:`M ${x} ${y} m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0 M ${x} ${y-34} l 0 -10 M ${x} ${y+34} l 0 10 M ${x-34} ${y} l -10 0 M ${x+34} ${y} l 10 0`, class:"thin sun", style:"fill:var(--paper)"}, celes);
     }
     if (night){ const rs = rng(Math.floor(Date.now()/86400e3)); const n = 4 + Math.floor(rs()*2);
       for (let i=0;i<n;i++){ const x = 480 + rs()*1080, y = 40 + rs()*120, sz = 2 + rs()*1.6;
-        const st = el("path", {d:`M ${x} ${y-sz*2} L ${x+sz*.45} ${y-sz*.45} L ${x+sz*2} ${y} L ${x+sz*.45} ${y+sz*.45} L ${x} ${y+sz*2} L ${x-sz*.45} ${y+sz*.45} L ${x-sz*2} ${y} L ${x-sz*.45} ${y-sz*.45} Z`, class:"star", style:"fill:var(--ink);stroke:none"}, sky);
+        const st = el("path", {d:`M ${x} ${y-sz*2} L ${x+sz*.45} ${y-sz*.45} L ${x+sz*2} ${y} L ${x+sz*.45} ${y+sz*.45} L ${x} ${y+sz*2} L ${x-sz*.45} ${y+sz*.45} L ${x-sz*2} ${y} L ${x-sz*.45} ${y-sz*.45} Z`, class:"star", style:"fill:var(--ink);stroke:none"}, celes);
         st.style.animationDuration = (5 + rs()*7).toFixed(1) + "s"; st.style.animationDelay = (-rs()*10).toFixed(1) + "s"; } }
     // the moon is drawn at its phase and where it is; on a night it has set, the drawing keeps it low over the horizon anyway
-    if ((moon.alt > 0 || night) && (night || sun.alt < 4) && w.fog < .9){
-      const x = xOfAzimuth(moon.alt > 0 ? moon.az : (moon.az + 180) % 360), y = yOfAltitude(Math.max(moon.alt, night ? 16 : 0)), g = el("g", {class:"moon thin"}, sky);
+    const moonAt = ((moon.alt > 0 || night) && (night || sun.alt < 4) && w.fog < .9) ? inFrame(view, xOfAzimuth(moon.alt > 0 ? moon.az : (moon.az + 180) % 360), yOfAltitude(Math.max(moon.alt, night ? 16 : 0)), 20) : null;
+    if (moonAt){
+      const [x, y] = moonAt, g = el("g", {class:"moon thin"}, celes);
       // the lit side: a lens between the limb and the terminator, phase 0 new, .5 full. After dark the lit
       // side is drawn in ink, which is white then; by day the disc is shaded and the lit side is left paper.
       const k = Math.cos(phase*2*Math.PI), sweep = phase < .5 ? 1 : 0;
@@ -1034,7 +1047,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const life = $("#life");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   function tween(ms, step, done){ const t0 = performance.now(); (function f(t){ const k = Math.min(1, (t - t0)/ms); step(k); if (k < 1) requestAnimationFrame(f); else if (done) done(); })(t0); }
-  let taxiUntil = 0, bearUp = false;        // one robotaxi on the road at a time; one bear
+  let taxiUntil = 0, bearUp = false, rocketUntil = 0, whaleUp = false;        // one robotaxi on the road at a time; one bear
   const EVENTS = {
     gull(){ if (stage.classList.contains("night")) return; // one to three, each its own size, pace, bob and wingbeat
       const n = 1 + Math.floor(Math.random()*Math.random()*3), ltr = Math.random() < .5, y0 = 130 + Math.random()*140, dur = 12000 + Math.random()*10000;
@@ -1093,9 +1106,10 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         g.setAttribute("transform", `translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(dir*sc).toFixed(3)},${sc.toFixed(3)})`);
         prev = [x, y];
       }, ()=>g.remove()); },
-    rocket(){ const view = stage.dataset.view; if (view === "city") return EVENTS.gull();
-      // it lifts from behind the hills south of the city, or, through the eyepieces, from the south bay's campus
-      const [x0, y0] = view === "valley" ? [930, 262] : view === "home" ? [1540, 344] : [1480, toScreen("bridge", 0, 338)[1]];
+    rocket(){ const view = stage.dataset.view; if (view === "city") return EVENTS.gull(); if (performance.now() < rocketUntil) return; rocketUntil = performance.now() + 16000;
+      // it lifts from behind the hills south of the city, or, through the eyepieces, from somewhere in the south bay, never the same spot twice running
+      const vx = () => { let x; do { x = 830 + Math.random()*270; } while (Math.abs(x - 930) < 40); return x; };
+      const [x0, y0] = view === "valley" ? [vx(), 268] : view === "home" ? [1440 + Math.random()*140, 344] : [1370 + Math.random()*190, toScreen("bridge", 0, 338)[1]];
       const g = el("g", {class:"thin"}, life); if (view === "home") g.setAttribute("clip-path", "url(#behind-hills)");
       el("path", {d:"M-3 0 L -3 -20 Q 0 -30 3 -20 L 3 0 Z M-3 -5 L -7 2 L -3 0 M 3 -5 L 7 2 L 3 0", style:"fill:var(--paper)"}, g);
       const plume = el("g", {class:"hair"}, g);
@@ -1133,7 +1147,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, car); let d = 0; const spin = setInterval(()=>{ dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
       // the water, from the drawn hydrant's cap, pouring toward the car
       const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${-k},${k})`}, life); spout.style.opacity = 0;
-      for (let i=0;i<9;i++) el("path", {d:`M0 -17 q ${6 + i*2} ${-14 - i*3} ${14 + i*4} ${-2 + i*2} M${14 + i*4} ${-2 + i*2} l 1 3`}, spout);
+      const sprayD = i => { const j = .85 + Math.random()*.3, h = (14 + i*3)*j, r = (14 + i*4)*(.9 + Math.random()*.2); return `M0 -17 q ${(r*.45).toFixed(1)} ${(-h).toFixed(1)} ${r.toFixed(1)} ${(-2 + i*2).toFixed(1)} M${(r + Math.random()*2).toFixed(1)} ${(-1 + i*2 + Math.random()*3).toFixed(1)} l ${(Math.random()*1.5).toFixed(1)} ${(2 + Math.random()*2).toFixed(1)}`; };
+      const arcs = []; for (let i=0;i<9;i++) arcs.push(el("path", {d:sprayD(i)}, spout));
+      const spray = setInterval(()=>{ if (!spout.isConnected) return clearInterval(spray); arcs.forEach((a, i) => a.setAttribute("d", sprayD(i))); }, 110);
       const stop = hx + 20*S;
       tween(11000*(.85 + Math.random()*.3), k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*2.5*(1-k)/.11 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .86) car.classList.add("braking"); if (k > .89) spout.style.opacity = Math.min(1, (k-.89)*12); },
         ()=>{ tween(2200, k=>{ spout.style.opacity = 1; }, ()=>{ tween(900, k=>{ car.setAttribute("transform", `scale(${S*(1 - 2*k)}, ${S})`); }, ()=>{ car.classList.remove("braking"); tween(6000, k=>{ g.setAttribute("transform", `translate(${stop + k*k*(1700-stop)},${y})`); spout.style.opacity = 1 - k; }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); }); }); }); }); },
@@ -1144,7 +1160,33 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         setTimeout(()=>tween(1400, k=>at(-9 + 17*k*k, 1), ()=>{ bearUp = false; }), 1600); }, 1400); }, 1500); }); },
     gust(){ stage.classList.add("gust"); document.querySelectorAll(".gull").forEach(p=>{ p.style.transition = "transform .8s"; p.style.transform = "rotate(-22deg)"; });
       setTimeout(()=>{ stage.classList.remove("gust"); }, 5000); },
-    ferry(){ if (stage.dataset.view !== "bridge") return EVENTS.gull();
+    sail(){ if (stage.dataset.view !== "bridge") return EVENTS.gull();
+      const g = el("g", {class:"thin"}, life), boat = el("g", {}, g), P = "fill:var(--paper)";
+      el("path", {d:"M -22 0 L 24 0 L 17 7 L -16 7 Z", style:P}, boat);
+      el("path", {d:"M 0 0 L 0 -44", class:"thin"}, boat);
+      el("path", {d:"M 1.5 -42 Q 14 -24 21 -3 L 1.5 -3 Z", style:P}, boat);
+      el("path", {d:"M -1.5 -38 L -1.5 -4 L -17 -4 Z", style:P}, boat);
+      el("circle", {cx:0, cy:-45, r:1.3, class:"carlight lamp", style:"fill:#FFFFFF;stroke:none"}, boat);
+      el("circle", {cx:-20, cy:2, r:1.3, class:"carlight lamp", style:"fill:#FF3B30;stroke:none"}, boat);
+      const y = 500 + Math.random()*70, dur = 60000 + Math.random()*20000, heel = 3 + Math.random()*4, sc = .8 + Math.random()*.3;
+      tween(dur, k=>{ g.setAttribute("transform", `translate(${-60 + k*1760},${y + Math.sin(k*34)*1.6}) scale(${sc}) rotate(${-heel + Math.sin(k*23)*1.5})`); }, ()=>g.remove()); },
+    whale(){ if (stage.dataset.view !== "bridge" || whaleUp) return; whaleUp = true;
+      // a back breaks the water, then the tail lifts, sheds its water, and slides back under
+      const x = 640 + Math.random()*360, y = 420 + Math.random()*90, sc = 1.5 + Math.random()*.5, P = "fill:var(--paper)";
+      const defs = $("#L-life defs"); $("#whaleclip")?.remove();
+      const cp = el("clipPath", {id:"whaleclip", clipPathUnits:"userSpaceOnUse"}, defs); el("rect", {x:0, y:0, width:1600, height:y}, cp);
+      const g = el("g", {class:"thin"}, life), clip = el("g", {"clip-path":"url(#whaleclip)"}, g);
+      const back = el("path", {d:`M ${x-46*sc} ${y+10} Q ${x-20*sc} ${y-14*sc} ${x+6*sc} ${y+10} Z`, style:P}, clip);
+      const tail = el("g", {}, clip), flukes = el("g", {}, tail);
+      el("path", {d:"M -3 0 L -2.2 -16 Q -12 -19 -24 -28 Q -12 -27 0 -22 Q 12 -27 24 -28 Q 12 -19 2.2 -16 L 3 0 Z", style:P}, flukes);
+      const drips = el("g", {class:"hair"}, tail); for (let i=0;i<6;i++) el("path", {d:`M ${-22 + i*8.8} -24 l 0 ${4 + Math.random()*6}`}, drips); drips.style.opacity = 0;
+      const ring = el("path", {d:`M ${x-40*sc} ${y+3} q ${40*sc} -6 ${80*sc} 0`, class:"hair"}, g); ring.style.opacity = 0;
+      const at = (dy, rot) => tail.setAttribute("transform", `translate(${x},${y + dy}) scale(${sc}) rotate(${rot})`); at(40, 0);
+      tween(2200, k=>{ back.setAttribute("transform", `translate(0,${(k < .5 ? 1 - k*2 : (k-.5)*2)*18})`); }, ()=>{ back.remove();
+        tween(1800, k=>{ at(40 - k*44, -8 + k*10); }, ()=>{ drips.style.opacity = 1;
+          tween(1600, k=>{ at(-4 + Math.sin(k*6)*1.2, 2 - k*4); drips.setAttribute("transform", `translate(0,${k*10})`); drips.style.opacity = 1 - k; }, ()=>{
+            ring.style.opacity = 1; tween(2000, k=>{ at(-4 + k*48, -2 - k*14); ring.style.opacity = 1 - k*.8; ring.setAttribute("transform", `translate(${x} ${y}) scale(${1 + k*.6},1) translate(${-x} ${-y})`); }, ()=>{ g.remove(); cp.remove(); whaleUp = false; }); }); }); }); },
+    ferry(){ if (stage.dataset.view !== "bridge") return EVENTS.gull(); if (Math.random() < .5) return EVENTS.sail();
       const g = el("g", {class:"thin"}, life); el("path", {d:"M0 0 l -30 0 l 6 10 l 48 0 l 6 -10 z M-14 0 l 0 -10 l 22 0 l 0 10 M-4 -10 l 0 -9"}, g, ).style.fill = "var(--paper)";
       for (let i=0;i<3;i++) el("rect", {x:-11 + i*6, y:-7, width:3, height:3, class:"carlight lamp", style:"fill:#F8DC8C;stroke:none"}, g);
       el("circle", {cx:-4, cy:-19, r:1.4, class:"carlight lamp", style:"fill:#FFFFFF;stroke:none"}, g);
@@ -1153,12 +1195,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const y = 530 + Math.random()*50, dur = 44000 + Math.random()*16000, bob = 1 + Math.random()*1.5;
       tween(dur, k=>{ g.setAttribute("transform", `translate(${-80 + k*1780},${y + Math.sin(k*28)*bob})`); }, ()=>g.remove()); },
   };
-  const WEIGHTS = [["gull",5],["plane",4],["gust",1],["ferry",2],["rocket",4],["robotaxi",1],["bear",3]];
+  const WEIGHTS = [["gull",5],["plane",4],["gust",1],["ferry",2],["rocket",4],["robotaxi",1],["bear",3],["whale",3]];
   const PLANE_KIND = params.get("plane");
   const FORCE_FAIL = params.get("rocket") === "fail";
-  const WELCOME = { city:"robotaxi", bridge:"bear", home:"gull", valley:"rocket" };
+  const WELCOME = { city:[["robotaxi", 6000]], bridge:[["ferry", 2600], ["bear", 15000], ["whale", 30000]], home:[["gull", 2600]], valley:[["rocket", 2600]] };
   let welcomeTimer = null;
-  function welcome(view){ clearTimeout(welcomeTimer); if (reduced || params.get("event")) return; welcomeTimer = setTimeout(()=>{ if (stage.dataset.view === view) EVENTS[WELCOME[view]](); }, view === "city" ? 6000 : 2600); }
+  function welcome(view){ (welcomeTimer || []).forEach(clearTimeout); if (reduced || params.get("event")) return;
+    welcomeTimer = WELCOME[view].map(([e, ms]) => setTimeout(()=>{ if (stage.dataset.view === view) EVENTS[e](); }, ms)); }
   function pick(){ const total = WEIGHTS.reduce((a,[,w])=>a+w,0); let r = Math.random()*total; for (const [k,w] of WEIGHTS){ if ((r -= w) < 0) return k; } return "gull"; }
   // the first thing to happen on the bay, a little after arriving, is a launch; after that, whatever comes
   let firstEvent = true;
