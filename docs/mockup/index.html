@@ -1163,12 +1163,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       if (!fails){
         tween(15000/pace, k=>{ const y = y0 - k*k*(y0 + 90), x = x0 - k*k*70*lean;
           g.setAttribute("transform", `translate(${x.toFixed(2)},${y.toFixed(2)}) rotate(${(-k*9*lean).toFixed(2)})`);
-          puff(); plume.setAttribute("transform", `scale(1,${(1 + k*2.2).toFixed(2)})`); plume.style.opacity = 1 - k*.5; }, end);
+          puff(); plume.style.opacity = 1 - k*.6; }, end);
         return 16000; }
       const lift = 190, coast = 28, top = y0 - lift - coast, waterY = valley ? 430 : 372 + Math.random()*30; let splash = null, fx = x0;
       tween(13000/pace, k=>{
         if (k < .36){ const t = k/.36; g.setAttribute("transform", `translate(${(x0 - t*t*18*lean).toFixed(2)},${(y0 - t*t*lift).toFixed(2)}) rotate(${(-t*5*lean).toFixed(2)})`);
-          puff(); plume.setAttribute("transform", `scale(1,${(1 + t*1.6).toFixed(2)})`); }
+          puff(); }
         else if (k < .5){ const t = (k-.36)/.14; plume.style.opacity = Math.max(0, 1 - t*4);                                   // the engine cuts: the trail goes, it coasts up and slows
           g.setAttribute("transform", `translate(${(x0 - 18*lean - t*4*lean).toFixed(2)},${(y0 - lift - (1-(1-t)*(1-t))*coast).toFixed(2)}) rotate(${(-5*lean - t*3*lean).toFixed(2)})`); }
         else if (k < .6){ const t = (k-.5)/.1;                                                                                      // it hangs and wobbles
@@ -1263,8 +1263,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       return dur; },
     boat(){ const view = stage.dataset.view; if (view !== "bridge" && view !== "home") return 0; (Math.random() < .5 && !stage.classList.contains("night") ? EVENTS.sail : EVENTS.cargo)(); return 9000; },
     bart(){ if (stage.dataset.view !== "valley") return 0;
-      const t = $("#bart"), dur = 10500 + Math.random()*3000;
-      tween(dur, k=>{ t.setAttribute("transform", `translate(${(300 + k*540).toFixed(1)},0)`); }, ()=>t.setAttribute("transform", "translate(-400,0)"));
+      // half the trains run left to right, half right to left, nose first either way
+      const t = $("#bart"), dur = 10500 + Math.random()*3000, east = Math.random() < .5;
+      tween(dur, k=>{ t.setAttribute("transform", east ? `translate(${(300 + k*540).toFixed(1)},0)` : `translate(${(1014 - k*540).toFixed(1)},0) scale(-1,1)`); }, ()=>t.setAttribute("transform", "translate(-400,0)"));
       return dur; },
     cargo(){ const view = stage.dataset.view; if (view !== "bridge" && view !== "home") return 0;
       // a container ship, long and low, stacked with boxes, the house and funnel aft
