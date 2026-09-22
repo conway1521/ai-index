@@ -85,7 +85,10 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .sunwash,.dawn{pointer-events:none}
 .skywash{mix-blend-mode:var(--blend,multiply)}
 .stage.stale .obs{color:var(--ink-3)}
-.beam{transform-origin:var(--bx) var(--by);transition:transform .8s cubic-bezier(.65,0,.25,1)}
+/* while the view turns, the fog lifts and comes back once it settles: it is most of what the turn has to redraw */
+.stage.fogout .fog{opacity:0 !important}.stage.turning .fog{display:none}
+.beam{transition:opacity .7s}.beam.moving{opacity:0;transition:none}
+#beamlight{mix-blend-mode:var(--blend,multiply)}
 .stage:not([data-view="home"]) .fg .hot,.stage[data-view="valley"] .beam{display:none}
 .stage:not([data-view="home"]) .beam path{opacity:.4}
 .halo{fill:var(--gold);stroke:none;opacity:0;transition:opacity .6s}
@@ -224,16 +227,17 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     <svg class="pan" id="L-lights" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom"><g id="lights" class="scene"></g></g></svg>
     <svg class="pan" id="L-water" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom scene"><g id="water" class="hair"></g><g id="fog" class="fog" mask="url(#fogmask)"></g></g></svg>
     <!-- foreground: the point, the lighthouse, the railing, the viewer at rest -->
-    <svg id="L-life" viewBox="0 0 1600 700" aria-hidden="true"><g id="life" class="life scene"></g></svg>
+    <svg id="L-life" viewBox="0 0 1600 700" aria-hidden="true"><defs><clipPath id="behind-hills"><path clip-rule="evenodd" d="M0 0 H1600 V700 H0 Z M 1452 341 C 1490 326, 1535 316, 1575 318 C 1590 319, 1598 322, 1600 324 L 1600 341 Z"/></clipPath></defs><g id="life" class="life scene"></g></svg>
     <svg class="fg" id="L-fg" viewBox="0 0 1600 700" role="group" aria-label="An ink drawing of a lighthouse on a headland. Turn to the city or the bridge, or raise the coin telescope to look at the valley.">
       <g class="zoom" id="fgzoom"><g id="fg" class="scene">
         <path d="M560 700 C 600 620, 690 590, 760 585 C 830 580, 880 600, 930 610 C 980 620, 1040 660, 1060 700 Z" style="fill:var(--paper)"/>
         <path d="M600 660 C 650 640, 700 645, 740 630 M850 640 C 900 630, 950 650, 1000 670" class="thin"/>
-        <g class="beam" id="beam"><path d="" class="hair" stroke-dasharray="6 6"/></g>
+        <defs><linearGradient id="beamgrad" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E8C35A" stop-opacity=".55"/><stop offset="1" stop-color="#E8C35A" stop-opacity="0"/></linearGradient></defs>
+        <g class="beam" id="beam"><polygon id="beamlight" points="0,0" fill="url(#beamgrad)" style="stroke:none"/><path d="" class="hair" stroke-dasharray="6 6"/></g>
         <g id="lh"></g>
         <!-- a small platform off the gallery, and the coin telescope on it, turned south -->
-        <path d="M825 283 L 858 283 L 858 288 L 825 288 M 856 283 L 856 270 M 846 288 L 828 300" class="thin" style="fill:var(--paper)"/>
-        <g transform="translate(842,283)" id="viewer-small"></g>
+        <path d="M825 283 L 888 283 L 888 288 L 825 288 Z M 886 283 L 886 270 M 866 288 L 830 304" class="thin" style="fill:var(--paper)"/>
+        <g transform="translate(870,283)" id="viewer-small"></g>
         <path d="M640 604 L 960 604 M640 604 L 640 630 M720 604 L 720 632 M800 604 L 800 632 M880 604 L 880 630 M960 604 L 960 628" class="thin"/>
         <g class="hot" id="hot-city" tabindex="0" role="button" aria-label="The city: what has moved">
           <path class="hit" d="M800 300 L1600 120 L1600 480 Z"/><path class="hit" d="M1000 120 h560 v200 h-560 Z"/>
@@ -248,7 +252,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
           <g class="detail"><text x="110" y="210">the pipeline · who is training for exposed work</text></g>
         </g>
         <g class="hot" id="hot-tele" tabindex="0" role="button" aria-label="The telescope: where usage lands">
-          <path class="hit" d="M760 200 h110 v400 h-110 Z"/><path class="hit" d="M860 400 h290 v84 h-290 Z"/>
+          <path class="hit" d="M760 200 h140 v400 h-140 Z"/><path class="hit" d="M860 400 h290 v84 h-290 Z"/>
           <text x="872" y="424" class="cap">The telescope</text>
           <text x="872" y="446" class="mark" id="mark-valley"></text>
           <g class="detail"><text x="872" y="466">where usage lands · looking south, down the bay</text></g>
@@ -422,7 +426,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
      this one drawing about that place, so what you were looking at grows and nothing new arrives. The
      lighthouse in front is fixed, and shrinks to the base of the frame when the view has turned. */
   // c is the point of the scene brought to the middle of the frame (800, 300); s is how far the view leans in
-  const ZOOM = { home:{c:[800,300], s:1}, city:{c:[1170,300], s:2.3}, bridge:{c:[430,290], s:2.4}, valley:{c:[800,300], s:1} };
+  const ZOOM = { home:{c:[800,300], s:1}, city:{c:[1140,300], s:2.3}, bridge:{c:[430,290], s:2.4}, valley:{c:[800,300], s:1} };
   const toScreen = (view, x, y) => { const {c, s} = ZOOM[view]; return [800 + s*(x-c[0]), 300 + s*(y-c[1])]; };
   const toScene  = (view, x, y) => { const {c, s} = ZOOM[view]; return [c[0] + (x-800)/s, c[1] + (y-300)/s]; };
   const far = $("#far"), washes = $("#washes"), waterG = $("#water"), fogG = $("#fog");
@@ -433,11 +437,14 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   water(waterA, 0, W, 352, 690, 3, 40); water(waterB, 0, W, 366, 690, 4, 40); water(waterC, 0, W, 380, 690, 8, 40);
   (function crests(){ const r = rng(19); for (let i=0;i<12;i++){ const x = r()*W, y = 360 + r()*320; const c = el("path", {d:`M${x} ${y} q 6 -3 12 0 M${x+3} ${y-2} l 2 -2`, class:"crest thin"}, waterG); c.style.animationDelay = (-r()*4).toFixed(2) + "s"; c.style.animationDuration = (3 + r()*3).toFixed(2) + "s"; } })();
   // the Marin headland, near, drawn over the water so the bay ends at its foot; the road out to the point on it
-  const headland = el("g", {}, waterG);
+  const headland = el("g", {}); waterG.parentNode.insertBefore(headland, fogG);
   // a ridge that falls from the left edge to the water, the Gate's north end on its shoulder
   // the Marin headland: a low rounded shoulder falling to the water at the Gate's north end
-  el("path", {d:"M 0 346 L 0 292 C 50 284, 115 286, 170 300 C 220 313, 262 330, 300 342 L 300 346 Z", style:"fill:var(--paper)"}, headland);
-  el("path", {d:"M 20 330 C 80 322, 150 324, 220 334", class:"hair", "stroke-dasharray":"8 6"}, headland);
+  // filled down into the water so the Gate's north tower stands out of it; only its skyline is inked
+  el("path", {d:"M 0 380 L 0 262 C 60 252, 150 256, 230 270 C 290 281, 332 304, 366 330 C 376 338, 384 343, 394 346 C 380 360, 330 372, 300 380 Z", style:"fill:var(--paper);stroke:none"}, headland);
+  el("path", {d:"M 0 262 C 60 252, 150 256, 230 270 C 290 281, 332 304, 366 330 C 376 338, 384 343, 394 346"}, headland);
+  el("path", {d:"M 394 346 C 370 352, 340 356, 300 360", class:"hair"}, headland);
+  el("path", {d:"M 20 318 C 100 300, 190 298, 280 312", class:"hair", "stroke-dasharray":"8 6"}, headland);
   fog(fogG, [[330, 5, 6],[400, 6, 7],[470, 5, 5]], 11);
 
   // the Presidio's low shore at the Gate's south end, running on to the city
@@ -449,8 +456,10 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   tint(washes, "M 300 217 Q 460 287 620 217 l 0 5 Q 460 292 300 222 Z", "var(--orange)");            // the cable
 
   // the city, small on the horizon, drawn once at the size it has from here; turning to it scales this
-  const CITY = { x:900, y:340, k:0.42 };
-  const cityTransform = `translate(${CITY.x},${CITY.y}) scale(${CITY.k})`;
+  // drawn in its own units and mirrored into the scene, since from Point Bonita the waterfront is the north end, on the left, and Sutro the south, on the right
+  const CITY = { x:900, y:340, k:0.42, w:1580 };
+  const cityX = u => CITY.x + (CITY.w - u)*CITY.k;
+  const cityTransform = `translate(${CITY.x + CITY.w*CITY.k},${CITY.y}) scale(${-CITY.k},${CITY.k})`;
   const cityG = el("g", {transform:cityTransform, class:"city"}, far), cityW = el("g", {transform:cityTransform}, washes);
 
   function skyline(g, w, baseY, colour, ox=0){
@@ -461,8 +470,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const sx = ox+700, sy = baseY-104;
     // Sutro: three masts, the outer pair upright at the top, pinched to a waist, splayed to the feet, tied by struts
     const H = 100;
-    el("path", {d:`M${sx-26} ${sy} L ${sx-7} ${sy-H*0.5} L ${sx-16} ${sy-H*0.62} L ${sx-16} ${sy-H} M${sx} ${sy-H-8} L ${sx} ${sy} M${sx+26} ${sy} L ${sx+7} ${sy-H*0.5} L ${sx+16} ${sy-H*0.62} L ${sx+16} ${sy-H}`, class:"thin"}, g);
-    for (const [f, hw] of [[0.12, 22], [0.3, 15], [0.5, 7], [0.62, 16], [0.84, 16]]) el("path", {d:`M${sx-hw} ${sy-H*f} L ${sx+hw} ${sy-H*f}`, class:"hair"}, g);
+    el("path", {d:`M${sx-19} ${sy} L ${sx-5} ${sy-H*0.5} L ${sx-11} ${sy-H*0.62} L ${sx-11} ${sy-H} M${sx} ${sy-H-8} L ${sx} ${sy} M${sx+19} ${sy} L ${sx+5} ${sy-H*0.5} L ${sx+11} ${sy-H*0.62} L ${sx+11} ${sy-H}`, class:"thin"}, g);
+    for (const [f, hw] of [[0.12, 16], [0.3, 11], [0.5, 5], [0.62, 11], [0.84, 11]]) el("path", {d:`M${sx-hw} ${sy-H*f} L ${sx+hw} ${sy-H*f}`, class:"hair"}, g);
     const towers = [[860,110,26,1],[892,150,24,1],[920,80,20,0],[946,200,30,1],[982,260,34,1],[1022,180,26,1],[1054,150,22,1],[1082,120,28,0],[1116,96,22,1],[1144,140,26,1],[1176,70,20,0]];
     for (const [x,h,w_,win] of towers) box(g, ox+x, baseY-h-8, w_, h, win);
     el("path", {d:`M ${ox+900} ${baseY-8} L ${ox+914} ${baseY-236} L ${ox+928} ${baseY-8} Z`, style:"fill:var(--paper)"}, g);
@@ -568,26 +577,42 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 
   /* ---------- the valley ---------- */
   (function valley(g){
-    el("path", {d:"M 400 400 C 560 320, 720 330, 880 360 C 1040 390, 1140 330, 1220 380", class:"thin"}, g);
-    el("path", {d:"M 420 340 C 600 280, 800 280, 1000 320 C 1100 340, 1160 310, 1200 330", class:"hair"}, g);
-    el("path", {d:"M 440 450 L 1180 450 M 440 458 L 1180 458", class:"hair"}, g);
-    el("path", {d:"M 520 430 L 1120 420", class:"thin"}, g); for (let x=540; x<1120; x+=36) el("path", {d:`M${x} 430 L ${x} 444`, class:"hair"}, g);
-    const b = [[560,466,60,18],[640,470,44,14],[700,464,70,22],[790,472,50,12],[860,466,64,20],[940,470,46,16],[1000,464,58,22],[1080,472,40,12]];
-    for (const [x,y,w,h] of b){ box(g, x, y, w, h, false); el("path", {d:`M${x} ${y} L ${x+w} ${y}`}, g); }
-    el("path", {d:"M 730 466 L 730 384 L 748 384 L 748 466 M 726 384 L 752 384 L 739 364 Z M 735 400 L 743 400 M 735 420 L 743 420"}, g);   // Hoover Tower
-    tintRect(g, 731, 385, 16, 81, "var(--sandstone)");                                                                                            // its sandstone
-    for (let i=0;i<5;i++){ const y = 500 + i*16; el("path", {d:`M ${520 - i*40} ${y} L ${1080 + i*40} ${y}`, class:"hair", "stroke-dasharray":"2 7"}, g); }
-    for (const x of [470, 505, 1130, 1165]) el("path", {d:`M${x} 500 q 0 -18 12 -22 q 12 4 12 22 z M${x+12} 500 l 0 12`, class:"thin"}, g);
+    // each glass shows its own campus, split down the crosshair
+    const defs = el("defs", {}, $("#L-valley"));
+    const cl = el("clipPath", {id:"eye-l"}, defs); el("rect", {x:0, y:0, width:800, height:700}, cl);
+    const cr = el("clipPath", {id:"eye-r"}, defs); el("rect", {x:800, y:0, width:800, height:700}, cr);
+    const L = el("g", {"clip-path":"url(#eye-l)"}, g), R = el("g", {"clip-path":"url(#eye-r)"}, g);
+    // left: the hills behind, the campus on its slope, its campanile over the trees, the bay in front
+    el("path", {d:"M 480 250 C 540 226, 610 214, 670 226 C 720 236, 770 226, 820 236 L 820 400 L 480 400 Z", class:"thin", style:"fill:var(--paper)"}, L);
+    el("path", {d:"M 480 300 C 560 286, 660 282, 820 292", class:"hair"}, L);
+    box(L, 548, 352, 56, 42, true); box(L, 700, 360, 70, 34, true); box(L, 612, 370, 30, 24, false);
+    campanile(L, 660, 394, 150);
+    tintRect(L, 649, 245, 22, 149, "var(--cream)");
+    for (const x of [520, 580, 690, 772]) el("path", {d:`M${x} 396 q 0 -16 10 -19 q 10 3 10 19 z`, class:"thin", style:"fill:var(--paper)"}, L);
+    el("path", {d:"M 480 396 L 820 396", class:"thin"}, L);
+    for (let i=0;i<4;i++){ const y = 412 + i*18; el("path", {d:`M ${500 + i*10} ${y} q 40 -3 80 0 M ${640 - i*14} ${y+6} q 50 -3 100 0`, class:"hair"}, L); }
+    // right: the foothills and the dish on them, the tower over the arcaded quad, palms along the front
+    el("path", {d:"M 780 262 C 850 236, 930 230, 1000 244 C 1050 254, 1090 256, 1130 262 L 1130 400 L 780 400 Z", class:"thin", style:"fill:var(--paper)"}, R);
+    el("path", {d:"M 1012 248 a 12 7 0 0 1 24 0 Z M 1024 248 L 1024 238", class:"thin"}, R);
+    const tx = 930;
+    el("path", {d:`M ${tx-10} 372 L ${tx-10} 252 L ${tx+10} 252 L ${tx+10} 372 Z M ${tx-12} 252 L ${tx+12} 252 L ${tx+12} 236 L ${tx-12} 236 Z M ${tx-8} 236 C ${tx-8} 224, ${tx+8} 224, ${tx+8} 236 M ${tx} 224 L ${tx} 216 M ${tx-4} 244 L ${tx+4} 244 M ${tx-4} 270 L ${tx+4} 270 M ${tx-4} 300 L ${tx+4} 300`, style:"fill:var(--paper)"}, R);
+    tintRect(R, tx-9, 237, 18, 135, "var(--sandstone)");
+    el("path", {d:"M 820 372 L 820 392 L 1110 392 L 1110 372 L 1100 364 L 830 364 Z", class:"thin", style:"fill:var(--paper)"}, R);
+    for (let x=834; x<1104; x+=14) el("path", {d:`M${x} 392 L ${x} 382 a 5 5 0 0 1 10 0 L ${x+10} 392`, class:"hair"}, R);
+    tint(R, "M 820 372 L 830 364 L 1100 364 L 1110 372 Z", "var(--orange)").style.opacity = ".3";
+    for (const x of [846, 984, 1070]) el("path", {d:`M${x} 396 L ${x+1} 350 M${x+1} 350 q -10 -2 -16 6 M${x+1} 350 q 10 -2 16 6 M${x+1} 350 q -6 -8 -14 -8 M${x+1} 350 q 6 -8 14 -8`, class:"thin"}, R);
+    el("path", {d:"M 780 396 L 1130 396", class:"thin"}, R);
+    for (let i=0;i<4;i++){ const y = 412 + i*18; el("path", {d:`M ${840 + i*12} ${y} q 40 -3 80 0 M ${980 - i*10} ${y+6} q 50 -3 100 0`, class:"hair"}, R); }
   })($("#valley-scene"));
   wobble($("#valley-scene"), 3); wobble($("#viewer-big"), 4);
-  fog($("#fog-valley"), [[290, 6, 5],[345, 5, 5]], 41);
+  fog($("#fog-valley"), [[330, 4, 3]], 41);
 
   /* ---------- the beam and the pan ---------- */
   const beam = $("#beam"), cone = $("#cone"), pans = document.querySelectorAll("svg.pan"), fgSvg = $("#L-fg"), fg = $("#fg"), stage = $("#stage");
   // what each view is, in the scene: the two ends the beam reaches for. The telescope is in front, on the rail.
   // from the point the beam reaches for the whole of the place; once turned, it skims the water to the place's feet
-  const TARGET = { city:{ ends:[[1050, 230], [1560, 336]], base:[[1050, 340], [1450, 340]] }, bridge:{ ends:[[160, 240], [760, 330]], base:[[160, 336], [760, 336]] }, tele:{ ends:[[1470, 334], [1600, 346]] } };
-  const beamPath = $("#beam path");
+  const TARGET = { city:{ ends:[[1020, 230], [1390, 336]], base:[[1060, 250], [1390, 338]] }, bridge:{ ends:[[160, 240], [760, 330]], base:[[300, 215], [560, 338]] }, tele:{ ends:[[1470, 334], [1600, 346]] } };
+  const beamPath = $("#beam path"); let beamTimer = null; const fogTimers = [];
   // where the lighthouse stands in each view: whole at the point; turned, only its lantern shows, large, at the side you turned from
   const LANTERN = [800, 265];
   const fgAt = (x, y, s) => ({ s, t:[x - s*LANTERN[0], y - s*LANTERN[1]] });
@@ -602,7 +627,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const onScreen = ends.map(([x, y]) => { if (!zoomed) return [x, y]; const [sx, sy] = toScreen(view, x, y); return [Math.max(40, Math.min(1560, sx)), sy]; });
     // the beam is drawn in the lighthouse's own space, which moves and scales with it
     const past = ([x, y]) => [lantern[0] + (x-lantern[0])*1.25, lantern[1] + (y-lantern[1])*1.25];
-    beamPath.setAttribute("d", onScreen.map(e => { const [x, y] = screenToFg(view, past(e)); return `M${LANTERN[0]} ${LANTERN[1]} L ${x.toFixed(1)} ${y.toFixed(1)}`; }).join(" "));
+    const far = onScreen.map(e => screenToFg(view, past(e)));
+    beamPath.setAttribute("d", far.map(([x, y]) => `M${LANTERN[0]} ${LANTERN[1]} L ${x.toFixed(1)} ${y.toFixed(1)}`).join(" "));
+    // the wash of light between the two lines, strongest at the lantern, gone by the far end
+    $("#beamlight").setAttribute("points", [LANTERN, ...far].map(q => q.map(v => v.toFixed(1)).join(",")).join(" "));
+    const g = $("#beamgrad"), mid = [(far[0][0]+far[1][0])/2, (far[0][1]+far[1][1])/2];
+    g.setAttribute("x1", LANTERN[0]); g.setAttribute("y1", LANTERN[1]); g.setAttribute("x2", mid[0].toFixed(1)); g.setAttribute("y2", mid[1].toFixed(1));
     // the fog opens between the same two lines, in scene units
     const [ox, oy] = zoomed ? toScene(view, ...lantern) : lantern, L = 1400/ZOOM[view].s;
     const ang = onScreen.map(([x, y]) => Math.atan2(y-lantern[1], x-lantern[0])); let [a0, a1] = ang; if (a1 < a0) [a0, a1] = [a1, a0]; if (a1 - a0 > Math.PI){ [a0, a1] = [a1, a0 + 2*Math.PI]; }
@@ -679,7 +709,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function go(view){
     clearTimeout(timer);
     stage.dataset.view = view;
-    $("#life").replaceChildren();                                              // whatever was crossing the last view stays there
+    $("#life").replaceChildren(); taxiUntil = 0;                               // whatever was crossing the last view stays there
+    beam.classList.add("moving"); clearTimeout(beamTimer); beamTimer = setTimeout(()=>beam.classList.remove("moving"), 1450);
+    stage.classList.add("fogout"); clearTimeout(fogTimers[0]); clearTimeout(fogTimers[1]);
+    fogTimers[0] = setTimeout(()=>stage.classList.add("turning"), 260);
+    fogTimers[1] = setTimeout(()=>{ stage.classList.remove("turning"); requestAnimationFrame(()=>requestAnimationFrame(()=>stage.classList.remove("fogout"))); }, 1450);
     hold(); light(null);
     if (view === "valley"){ $("#life").setAttribute("mask", "url(#binoc)"); $("#skyall").setAttribute("mask", "url(#binoc)"); }
     else { $("#life").removeAttribute("mask"); $("#skyall").removeAttribute("mask"); }
@@ -903,6 +937,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const life = $("#life");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   function tween(ms, step, done){ const t0 = performance.now(); (function f(t){ const k = Math.min(1, (t - t0)/ms); step(k); if (k < 1) requestAnimationFrame(f); else if (done) done(); })(t0); }
+  let taxiUntil = 0;                        // one robotaxi on the road at a time
   const EVENTS = {
     gull(){ const g = el("g", {class:"thin"}, life); const y = 150 + Math.random()*120, ltr = Math.random() < .5, flap = ["M-10 0 q 10 -9 20 0 M10 0 q 10 -9 20 0", "M-10 0 q 10 -2 20 0 M10 0 q 10 -2 20 0"];
       const w = el("path", {d:flap[0]}, g); let i = 0; const flapper = setInterval(()=>{ w.setAttribute("d", flap[i++ % 2]); }, 260);
@@ -914,8 +949,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       tween(32000, k=>{ g.setAttribute("transform", `translate(${1660 - k*1760},${y + k*18})`); }, ()=>{ clearInterval(blink); g.remove(); }); },
     rocket(){ const view = stage.dataset.view; if (view === "city") return EVENTS.gull();
       // it lifts from beyond the southern hills on the horizon, or, through the eyepieces, from the valley
-      const [x0, y0] = view === "valley" ? [760, 330] : view === "home" ? [1545, 332] : [1480, toScreen("bridge", 0, 338)[1]];
-      const g = el("g", {class:"thin"}, life);
+      const [x0, y0] = view === "valley" ? [930, 262] : view === "home" ? [1545, 342] : [1480, toScreen("bridge", 0, 338)[1]];
+      const g = el("g", {class:"thin"}, life); if (view === "home") g.setAttribute("clip-path", "url(#behind-hills)");
       el("path", {d:"M0 0 L 0 -26 L 4 -34 L 8 -26 L 8 0 Z M0 0 L -4 6 M8 0 L 12 6", transform:"translate(-4,0)", style:"fill:var(--paper)"}, g);
       const plume = el("g", {class:"hair"}, g);
       const puff = () => { if (plume.childElementCount < 40 && Math.random() < .6) el("path", {d:`M${(Math.random()-.5)*8} ${6 + Math.random()*10} l 0 ${6 + Math.random()*14}`}, plume); };
@@ -927,7 +962,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       tween(12500, k=>{
         if (k < .36){ const t = k/.36; g.setAttribute("transform", `translate(${x0 - t*40},${y0 - (2*t - t*t)*230}) rotate(${-t*10})`); puff(); }
         else if (k < .46){ const t = (k-.36)/.1;
-          if (!pop){ pop = el("g", {class:"hair"}, life); for (let i=0;i<9;i++){ const a = i/9*2*Math.PI; el("path", {d:`M${xf + Math.cos(a)*7} ${top - 16 + Math.sin(a)*7} l ${Math.cos(a)*9} ${Math.sin(a)*9}`}, pop); } plume.style.opacity = 0; }
+          if (!pop){ g.removeAttribute("clip-path"); pop = el("g", {class:"hair"}, life); for (let i=0;i<9;i++){ const a = i/9*2*Math.PI; el("path", {d:`M${xf + Math.cos(a)*7} ${top - 16 + Math.sin(a)*7} l ${Math.cos(a)*9} ${Math.sin(a)*9}`}, pop); } plume.style.opacity = 0; }
           g.setAttribute("transform", `translate(${xf + Math.sin(t*44)*2.5},${top + t*6}) rotate(${-10 + Math.sin(t*34)*14})`); pop.style.opacity = 1 - t*.6; }
         else if (k < .86){ const t = (k-.46)/.4; fx = xf + Math.sin(t*10)*20;
           g.setAttribute("transform", `translate(${fx},${top + 6 + t*t*(waterY - top - 6)}) rotate(${-10 + t*t*420 + Math.sin(t*24)*25})`); if (pop) pop.style.opacity = Math.max(0, .4 - t*2); }
@@ -936,9 +971,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
             el("path", {d:`M${fx-30} ${waterY+6} q 30 -5 60 0 M${fx-48} ${waterY+14} q 48 -6 96 0`, class:"hair"}, splash); }
           splash.style.opacity = 1 - (k-.86)/.14; }
       }, ()=>{ g.remove(); if (pop) pop.remove(); if (splash) splash.remove(); }); },
-    robotaxi(){ if (stage.dataset.view !== "city") return EVENTS.gull();
+    robotaxi(){ if (stage.dataset.view !== "city") return EVENTS.gull(); if (performance.now() < taxiUntil) return; taxiUntil = performance.now() + 21000;
       // the city's own units on screen, and the drawn hydrant's place on the shore; it comes in from the west along the front
-      const k = ZOOM.city.s*CITY.k, [hx, hy] = toScreen("city", CITY.x + HYD*CITY.k, CITY.y);
+      const k = ZOOM.city.s*CITY.k, [hx, hy] = toScreen("city", cityX(HYD), CITY.y);
       const g = el("g", {class:"thin"}, life); const S = 1.05*k; const y = hy - 3*S; const x0 = 1700;
       // a small car with its sensor dome, running the waterfront toward the hydrant by the Ferry Building
       const car = el("g", {transform:`scale(${S})`}, g);
