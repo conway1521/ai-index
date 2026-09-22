@@ -74,6 +74,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .rain{animation:fall var(--rfall,1.1s) linear infinite}
 @keyframes fall{from{transform:translateY(-40px)}to{transform:translateY(40px)}}
 .sunwash,.dawn{pointer-events:none}
+.skywash{mix-blend-mode:var(--blend,multiply)}
 .stage.stale .obs{color:var(--ink-3)}
 .beam{transform-origin:var(--bx) var(--by);transition:transform .8s cubic-bezier(.65,0,.25,1)}
 .stage:not([data-view="home"]) .fg .hot,.stage:not([data-view="home"]) .beam{display:none}
@@ -91,7 +92,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .hot .cap{text-decoration:underline dotted;text-decoration-color:var(--ink-3);text-underline-offset:6px}
 .hot:hover .cap,.hot:focus-visible .cap{text-decoration:underline solid;text-decoration-color:var(--ink)}
 .detail{opacity:0;transition:opacity .25s}
-.hot:hover .detail,.hot:focus-visible .detail{opacity:1}
+.hot:hover .detail,.hot:focus-visible .detail,.hot.lit .detail{opacity:1}
+.hot.lit .cap{text-decoration:underline solid;text-decoration-color:var(--ink)}
 .viewer{transition:transform 1s cubic-bezier(.5,0,.2,1)}
 .viewer.down{transform:translateY(420px)}
 .mask-in{transition:opacity .8s}
@@ -199,9 +201,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
           <feGaussianBlur in="d" stdDeviation="0.7"/>
         </filter>
         <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="6"/></filter>
+        <linearGradient id="skygrad" x1="0" y1="0" x2="0" y2="1"><stop id="sky-top" offset="0" stop-color="#BFD3E6" stop-opacity="0"/><stop id="sky-low" offset="1" stop-color="#F2B48C" stop-opacity="0"/></linearGradient>
         <mask id="fogmask"><rect x="0" y="0" width="4800" height="700" fill="white"/><polygon id="cone" points="0,0" fill="black"/></mask>
         <mask id="binoc"><rect x="0" y="0" width="1600" height="700" fill="black"/><circle cx="700" cy="290" r="210" fill="white"/><circle cx="900" cy="290" r="210" fill="white"/></mask>
       </defs>
+      <rect class="skywash" x="0" y="0" width="4800" height="342" fill="url(#skygrad)"/>
       <g id="sky" class="scene sky thin"></g>
     </svg>
     <!-- ================= the panorama: bridge | point | city, painted once ================= -->
@@ -310,6 +314,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const el = (tag, attrs={}, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; };
   function rng(seed){ let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
   const W = 4800, HOME = 1600;            // panorama width; the point sits in the middle third
+  const CH = 780, HYD = 1300;             // in the city third: City Hall's x, and the hydrant's on the shore
 
   /* ---------- line work ---------- */
   function water(g, x0, x1, y0, y1, seed, dens){
@@ -405,8 +410,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     tintRect(washes, ox+992, baseY-250, 16, 290, "var(--orange)");
     tint(washes, `M ${ox+620} ${baseY-250} Q ${ox+810} ${baseY-100} ${ox+1000} ${baseY-250} l 0 5 Q ${ox+810} ${baseY-95} ${ox+620} ${baseY-245} Z`, "var(--orange)");  // the cable
     el("path", {d:`M ${ox+1000} ${baseY-40} C ${ox+1150} ${baseY-90}, ${ox+1350} ${baseY-80}, ${ox+1600} ${baseY-30}`, class:"thin"}, g);
-    for (const [x,y,s] of [[ox+1180, baseY+90, 1],[ox+1300, baseY+170, 1.3],[ox+880, baseY+220, .8]]){ el("path", {d:`M${x} ${y} l ${-30*s} 0 l ${6*s} ${10*s} l ${48*s} 0 l ${6*s} ${-10*s} z M${x-14*s} ${y} l 0 ${-10*s} l ${22*s} 0 l 0 ${10*s} M${x-4*s} ${y-10*s} l 0 ${-9*s}`, class:"thin"}, g); }
-    for (const [x,y] of [[ox+300,150],[ox+340,170],[ox+1100,120]]) el("path", {d:`M${x-10} ${y} q 10 -8 20 0 M${x+10} ${y} q 10 -8 20 0`, class:"thin gull"}, g);
+    for (const [x,y,s] of [[ox+1180, baseY+90, 1],[ox+1000, baseY+160, 1.3],[ox+880, baseY+220, .8]]){ el("path", {d:`M${x} ${y} l ${-30*s} 0 l ${6*s} ${10*s} l ${48*s} 0 l ${6*s} ${-10*s} z M${x-14*s} ${y} l 0 ${-10*s} l ${22*s} 0 l 0 ${10*s} M${x-4*s} ${y-10*s} l 0 ${-9*s}`, class:"thin"}, g); }
   })(far, 0, 330);
 
   // middle third: the far city as seen from the point (x 1600..3200), faint
@@ -426,25 +430,30 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     el("path", {d:`M ${ox+520} ${baseY-60} C ${ox+640} ${baseY-120}, ${ox+760} ${baseY-118}, ${ox+880} ${baseY-70}`, class:"hair"}, g);
     const sx = ox+700, sy = baseY-118;
     el("path", {d:`M${sx-14} ${sy} L ${sx} ${sy-92} L ${sx+14} ${sy} M${sx-9} ${sy-30} L ${sx+9} ${sy-30} M${sx-6} ${sy-58} L ${sx+6} ${sy-58} M${sx-22} ${sy-70} L ${sx+22} ${sy-70}`, class:"thin"}, g);
+    suspension(g, ox+300, ox+490, baseY-34, 130, 90);
     el("path", {d:`M ${ox+560} ${baseY-30} L ${ox+600} ${baseY-44} L ${ox+640} ${baseY-30} M ${ox+596} ${baseY-44} L ${ox+596} ${baseY-60} L ${ox+606} ${baseY-60} L ${ox+606} ${baseY-44}`, class:"thin"}, g);
     const towers = [[860,110,26,1],[892,150,24,1],[920,80,20,0],[946,200,30,1],[982,260,34,1],[1022,180,26,1],[1054,150,22,1],[1082,120,28,0],[1116,96,22,1],[1144,140,26,1],[1176,70,20,0]];
     for (const [x,h,w,win] of towers) box(g, ox+x, baseY-h-8, w, h, win);
     el("path", {d:`M ${ox+900} ${baseY-8} L ${ox+914} ${baseY-236} L ${ox+928} ${baseY-8}`}, g);
     el("path", {d:`M ${ox+982} ${baseY-268} Q ${ox+999} ${baseY-290} ${ox+1016} ${baseY-268}`}, g);
     // City Hall, and Hayes Valley just west of it: Patricia's Green with its trees, and the red house over the green
-    dome(g, ox+1100, baseY-60, 80, "thin");
-    for (let x=ox+1004; x<ox+1056; x+=12) el("path", {d:`M${x} ${baseY-60} L ${x+6} ${baseY-68} L ${x+12} ${baseY-60}`, class:"hair"}, g);
-    el("path", {d:`M ${ox+1040} ${baseY-60} L ${ox+1040} ${baseY-92} L ${ox+1058} ${baseY-92} L ${ox+1058} ${baseY-60} M ${ox+1044} ${baseY-84} L ${ox+1054} ${baseY-84} M ${ox+1044} ${baseY-74} L ${ox+1054} ${baseY-74}`, class:"thin"}, g);
-    for (const x of [ox+1012, ox+1026]) el("path", {d:`M${x} ${baseY-60} q 0 -12 7 -14 q 7 2 7 14 z`, class:"hair"}, g);
+    // City Hall and Hayes Valley sit west of the towers, under Sutro, on the shore's register: the dome, the green with its trees, and the red house over the green
+    const hv = ox+CH, gy = baseY-8;
+    dome(g, hv, gy, 80, "thin");
+    for (let x=hv-96; x<hv-44; x+=12) el("path", {d:`M${x} ${gy} L ${x+6} ${gy-8} L ${x+12} ${gy}`, class:"hair"}, g);
+    el("path", {d:`M ${hv-60} ${gy} L ${hv-60} ${gy-32} L ${hv-42} ${gy-32} L ${hv-42} ${gy} M ${hv-56} ${gy-24} L ${hv-46} ${gy-24} M ${hv-56} ${gy-14} L ${hv-46} ${gy-14}`, class:"thin"}, g);
+    for (const x of [hv-88, hv-74]) el("path", {d:`M${x} ${gy} q 0 -12 7 -14 q 7 2 7 14 z`, class:"hair"}, g);
+    // the hydrant on the Embarcadero, past the Ferry Building, where the robotaxi meets it
+    el("path", {d:`M ${ox+HYD-3} ${gy} L ${ox+HYD-3} ${gy-11} Q ${ox+HYD} ${gy-15} ${ox+HYD+3} ${gy-11} L ${ox+HYD+3} ${gy} M ${ox+HYD-6} ${gy-7} L ${ox+HYD+6} ${gy-7}`, class:"thin"}, g);
     // Ferry Building on the waterfront
     el("path", {d:`M ${ox+1190} ${baseY-8} L ${ox+1190} ${baseY-30} L ${ox+1290} ${baseY-30} L ${ox+1290} ${baseY-8}`}, g);
     for (let x=ox+1198; x<ox+1290; x+=9) el("path", {d:`M${x} ${baseY-26} L ${x} ${baseY-12}`, class:"hair"}, g);
     el("path", {d:`M ${ox+1232} ${baseY-30} L ${ox+1232} ${baseY-96} L ${ox+1248} ${baseY-96} L ${ox+1248} ${baseY-30} M ${ox+1229} ${baseY-96} L ${ox+1251} ${baseY-96} L ${ox+1240} ${baseY-110} Z`}, g);
     el("circle", {cx:ox+1240, cy:baseY-84, r:5, class:"thin"}, g);
     if (colour){
-      tint(washes, `M ${ox+1073} ${baseY-80} C ${ox+1073} ${baseY-128}, ${ox+1127} ${baseY-128}, ${ox+1127} ${baseY-80} Z`, "var(--gold)");   // the dome
-      tintRect(washes, ox+1041, baseY-91, 16, 31, "var(--rose)");                                                                 // the house over the green
-      tint(washes, `M ${ox+1004} ${baseY-60} h 52 v 2 h -52 Z M ${ox+1012} ${baseY-60} q 0 -12 7 -14 q 7 2 7 14 Z M ${ox+1026} ${baseY-60} q 0 -12 7 -14 q 7 2 7 14 Z`, "var(--green)"); // the green and its trees
+      tint(washes, `M ${hv-27} ${gy-20} C ${hv-27} ${gy-68}, ${hv+27} ${gy-68}, ${hv+27} ${gy-20} Z`, "var(--gold)");   // the dome
+      tintRect(washes, hv-59, gy-31, 16, 31, "var(--rose)");                                                        // the house over the green
+      tint(washes, `M ${hv-96} ${gy} h 52 v 2 h -52 Z M ${hv-88} ${gy} q 0 -12 7 -14 q 7 2 7 14 Z M ${hv-74} ${gy} q 0 -12 7 -14 q 7 2 7 14 Z`, "var(--green)"); // the green and its trees
       tintRect(washes, ox+1191, baseY-29, 98, 21, "var(--cream)");                                                                // the Ferry Building
       tintRect(washes, ox+1233, baseY-95, 14, 66, "var(--cream)");
       tintRect(washes, ox+983, baseY-267, 32, 259, "var(--glass)").style.opacity = ".12";                                          // the tallest tower
@@ -481,15 +490,18 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     LIGHTS.innerHTML = "";
     const ox = HOME*2, baseY = 400, [ca, cb] = nightPair(d);
     // the dome, split by the pair
-    tint(LIGHTS, `M ${ox+1073} ${baseY-80} C ${ox+1073} ${baseY-128}, ${ox+1100} ${baseY-128}, ${ox+1100} ${baseY-120} L ${ox+1100} ${baseY-80} Z`, ca).classList.add("nightlight");
-    tint(LIGHTS, `M ${ox+1100} ${baseY-80} L ${ox+1100} ${baseY-120} C ${ox+1100} ${baseY-128}, ${ox+1127} ${baseY-128}, ${ox+1127} ${baseY-80} Z`, cb).classList.add("nightlight");
+    const hv = ox+CH, gy = baseY-8;
+    tint(LIGHTS, `M ${hv-27} ${gy-20} C ${hv-27} ${gy-68}, ${hv} ${gy-68}, ${hv} ${gy-60} L ${hv} ${gy-20} Z`, ca).classList.add("nightlight");
+    tint(LIGHTS, `M ${hv} ${gy-20} L ${hv} ${gy-60} C ${hv} ${gy-68}, ${hv+27} ${gy-68}, ${hv+27} ${gy-20} Z`, cb).classList.add("nightlight");
     // the crown: a soft wash and a grid of blocks that breathe out of step
     tintRect(LIGHTS, ox+983, baseY-290, 32, 30, "#9FB7C9").classList.add("nightlight");
     const grid = el("g", {class:"nightlight"}, LIGHTS); const r = rng(59);
     for (let i=0;i<4;i++) for (let j=0;j<5;j++){ const b = el("rect", {x:ox+986+i*7, y:baseY-286+j*6, width:5, height:4, class:"crownblock", style:`fill:#9FB7C9;stroke:none`}, grid); b.style.animationDelay = (-r()*9).toFixed(1) + "s"; }
     // the same lights, small, in the far city seen from the point
-    blob(LIGHTS, HOME+1020+1100*.55-14, 300+(baseY-136-250)*.55, 20, 22, ca, 61).classList.add("nightlight");
-    blob(LIGHTS, HOME+1020+982*.55-2, 300+(baseY-292-250)*.55, 26, 18, "#9FB7C9", 63).classList.add("nightlight");
+    const fx = HOME+1020+CH*.55, fb = 300+(250-8-20)*.55, ft = 300+(250-8-68)*.55;                    // the far dome, drawn at .55 on a base of 250
+    tint(LIGHTS, `M ${fx-15} ${fb} C ${fx-15} ${ft}, ${fx} ${ft}, ${fx} ${ft+4} L ${fx} ${fb} Z`, ca).classList.add("nightlight");
+    tint(LIGHTS, `M ${fx} ${fb} L ${fx} ${ft+4} C ${fx} ${ft}, ${fx+15} ${ft}, ${fx+15} ${fb} Z`, cb).classList.add("nightlight");
+    tintRect(LIGHTS, HOME+1020+983*.55, 300+(250-290)*.55, 18, 16, "#9FB7C9").classList.add("nightlight");   // the far crown
   }
   drawLights(new Date());
 
@@ -549,10 +561,15 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     cone.setAttribute("points", p.map(q=>q.join(",")).join(" "));
   }
   function aim(t){ beam.style.transform = `rotate(${angle[t]||0}deg)`; setCone(t); }
+  function light(t){ document.querySelectorAll(".hot").forEach(h=>h.classList.toggle("lit", h.id === "hot-"+t)); }
+  // left alone on the point, the beam turns to each view in its own time and holds it lit
+  const SWEEP = ["city", "tele", "bridge"]; let sweepTimer = null, sweepAt = 0;
+  function hold(){ clearInterval(sweepTimer); sweepTimer = null; }
+  function sweep(){ hold(); if (stage.dataset.view !== "home") return; const step = ()=>{ const t = SWEEP[sweepAt++ % SWEEP.length]; aim(t); light(t); }; step(); sweepTimer = setInterval(step, 8000); }
   for (const [id, t] of [["hot-city","city"],["hot-bridge","bridge"],["hot-tele","tele"]]){
     const h = $("#"+id);
-    h.addEventListener("mouseenter", ()=>aim(t)); h.addEventListener("focus", ()=>aim(t));
-    h.addEventListener("mouseleave", ()=>aim("home")); h.addEventListener("blur", ()=>aim("home"));
+    h.addEventListener("mouseenter", ()=>{ hold(); aim(t); light(t); }); h.addEventListener("focus", ()=>{ hold(); aim(t); light(t); });
+    h.addEventListener("mouseleave", ()=>sweep()); h.addEventListener("blur", ()=>sweep());
     h.addEventListener("click", ()=>go(t==="tele"?"valley":t));
     h.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(t==="tele"?"valley":t);} });
   }
@@ -615,6 +632,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     clearTimeout(timer);
     stage.dataset.view = view;
     $("#life").replaceChildren();                                              // whatever was crossing the last view stays there
+    hold(); light(null);
     if (view === "valley") $("#life").setAttribute("mask", "url(#binoc)"); else $("#life").removeAttribute("mask");
     const r = R[view];
     // the surfaces slide and lean in together; a percent of the surface width is a panorama unit over 1600
@@ -641,7 +659,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     } else {
       vv.classList.add("off"); big.classList.add("down");
       timer = setTimeout(()=>{ valley.classList.add("off"); fg.classList.remove("off"); }, 600);
-      if (view==="home") aim("home");
+      if (view==="home") sweep(); else { hold(); light(null); }
     }
   }
   home.addEventListener("click", ()=>go("home"));
@@ -682,12 +700,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const PRESETS = {
     clear:       { fog:.08, clouds:0, band:false, streak:false, rain:0 },
     "light cloud":{fog:.15, clouds:3, band:false, streak:false, rain:0 },
-    overcast:    { fog:.25, clouds:7, band:true,  streak:false, rain:0 },
+    overcast:    { fog:.25, clouds:5, band:true,  streak:false, rain:0 },
     fog:         { fog:.6,  clouds:1, band:false, streak:false, rain:0 },
     "thick fog": { fog:.95, clouds:0, band:false, streak:false, rain:0 },
-    rain:        { fog:.3,  clouds:7, band:true,  streak:false, rain:1 },
+    rain:        { fog:.3,  clouds:5, band:true,  streak:false, rain:1 },
     wind:        { fog:.2,  clouds:4, band:false, streak:true,  rain:0 },
-    storm:       { fog:.35, clouds:8, band:true,  streak:true,  rain:2 },
+    storm:       { fog:.35, clouds:6, band:true,  streak:true,  rain:2 },
   };
   function presetFor(o){
     const t = (o.text || "").toLowerCase();
@@ -751,6 +769,18 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const HEADING = { home:90, city:45, bridge:180, valley:150 };
 
   const sky = $("#sky");
+  // The sky's own colour: the faintest wash, blue by day, warm at the horizon around dawn and dusk, a deep
+  // blue at night. Each is a pair of stops keyed to the sun's altitude and blended between the keys.
+  const SKYKEYS = [[-18, ["#1B2238", .55, "#1B2238", .25]], [-7, ["#5D5F86", .45, "#E9A27A", .35]], [-1, ["#B4B0CF", .4, "#F2B48C", .55]],
+                   [6, ["#BFD3E6", .35, "#F4C9A6", .3]], [16, ["#BFD3E6", .38, "#DCE7EF", .08]]];
+  function hexLerp(a, b, t){ const A = a.match(/\w\w/g).map(h=>parseInt(h,16)), B = b.match(/\w\w/g).map(h=>parseInt(h,16)); return "#" + A.map((v,i)=>Math.round(v + (B[i]-v)*t).toString(16).padStart(2,"0")).join(""); }
+  function skyColour(sun){
+    const a = Math.max(SKYKEYS[0][0], Math.min(SKYKEYS[SKYKEYS.length-1][0], sun.alt)); let i = 0; while (i < SKYKEYS.length-2 && a > SKYKEYS[i+1][0]) i++;
+    const [a0, k0] = SKYKEYS[i], [a1, k1] = SKYKEYS[i+1], t = (a - a0)/(a1 - a0);
+    const top = $("#sky-top"), low = $("#sky-low");
+    top.setAttribute("stop-color", hexLerp(k0[0], k1[0], t)); top.setAttribute("stop-opacity", (k0[1] + (k1[1]-k0[1])*t).toFixed(3));
+    low.setAttribute("stop-color", hexLerp(k0[2], k1[2], t)); low.setAttribute("stop-opacity", (k0[3] + (k1[3]-k0[3])*t).toFixed(3));
+  }
   let current = { preset:"fog", rainLevel:0 };
   function drawSky(o, view){
     const [key, rainLevel] = presetFor(o); const w = PRESETS[key]; current = { preset:key, rainLevel };
@@ -767,8 +797,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     for (let i=0;i<w.clouds*3;i++){ const x = r()*W, y = 150 + r()*60, wd = 80 + r()*140;
       const d = w.streak ? `M${x} ${y} q ${wd*.5} -6 ${wd} 0 M${x+20} ${y+8} q ${wd*.3} -4 ${wd*.6} 0` : `M${x} ${y} q ${wd*.2} -18 ${wd*.45} -6 q ${wd*.15} -16 ${wd*.35} -2 q ${wd*.2} -4 ${wd*.2} 8 Z`;
       const c = el("path", {d, class:"cloud"}, sky); c.style.animationDelay = (-r()*240).toFixed(0) + "s"; }
-    if (w.band) for (let y=70; y<130; y+=12) el("path", {d:`M 0 ${y} L ${W} ${y}`, class:"hair"}, sky);
-    const rainN = [0, 500, 1400][Math.max(w.rain, rainLevel)];
+    if (w.band) for (let y=96; y<140; y+=18) el("path", {d:`M 0 ${y} L ${W} ${y}`, class:"hair"}, sky);
+    const rainN = [0, 220, 560][Math.max(w.rain, rainLevel)];
     if (rainN){ const slant = -lateral * 0.35; const g = el("g", {class:"rain"}, sky);
       for (let i=0;i<rainN;i++){ const x = r()*W, y = 130 + r()*420; el("path", {d:`M${x} ${y} l ${slant} 9`, class:"hair"}, g); } }
     document.querySelectorAll(".gull").forEach(p=>{ p.style.transform = `rotate(${lateral > 20 ? 14 : lateral < -20 ? -14 : 0}deg)`; p.style.transformOrigin = "center"; });
@@ -776,6 +806,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const now = sfNow(), sun = sunPosition(now), phase = moonPhase(now), moon = sunPosition(now, phase*360, Math.cos(phase*2*Math.PI));
     document.querySelectorAll(".sunwash,.dawn,.sun,.moon").forEach(n=>n.remove());
     const night = sun.alt < -6, dusk = !night && sun.alt < 4;
+    skyColour(sun);
     document.documentElement.dataset.theme = night ? "dark" : "light";
     stage.classList.toggle("night", night); stage.classList.toggle("dusk", dusk);
     drawLights(now);
@@ -788,12 +819,15 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const x = xOfAzimuth(sun.az); const morning = sun.az < 180;
       tint($("#washes"), `M ${x-700} 306 Q ${x} 296 ${x+700} 306 L ${x+700} 340 L ${x-700} 340 Z`, morning ? "#F2B48C" : "#E07A3F").classList.add("dawn");
     }
-    if (moon.alt > 0 && (night || sun.alt < 4) && w.fog < .9 && !w.band){
-      const x = xOfAzimuth(moon.az), y = yOfAltitude(moon.alt), g = el("g", {class:"moon thin"}, sky);
-      el("circle", {cx:x, cy:y, r:16}, g);
-      // the lit side: a lens between the limb and the terminator, phase 0 new, .5 full
+    // the moon is drawn at its phase and where it is; on a night it has set, the drawing keeps it low over the horizon anyway
+    if ((moon.alt > 0 || night) && (night || sun.alt < 4) && w.fog < .9 && !w.band){
+      const x = xOfAzimuth(moon.alt > 0 ? moon.az : (moon.az + 180) % 360), y = yOfAltitude(Math.max(moon.alt, night ? 16 : 0)), g = el("g", {class:"moon thin"}, sky);
+      // the lit side: a lens between the limb and the terminator, phase 0 new, .5 full. After dark the lit
+      // side is drawn in ink, which is white then; by day the disc is shaded and the lit side is left paper.
       const k = Math.cos(phase*2*Math.PI), sweep = phase < .5 ? 1 : 0;
-      el("path", {d:`M ${x} ${y-16} A 16 16 0 0 ${sweep} ${x} ${y+16} A ${Math.abs(k)*16} 16 0 0 ${(k>0) ? sweep : 1-sweep} ${x} ${y-16} Z`, style:"fill:var(--ink);stroke:none;opacity:.85"}, g);
+      const lens = `M ${x} ${y-16} A 16 16 0 0 ${sweep} ${x} ${y+16} A ${Math.abs(k)*16} 16 0 0 ${(k>0) ? 1-sweep : sweep} ${x} ${y-16} Z`;   // the limb on the lit side, then the terminator, bulging away from it past the quarter
+      if (night){ el("circle", {cx:x, cy:y, r:16}, g); el("path", {d:lens, style:"fill:var(--ink);stroke:none;opacity:.85"}, g); }
+      else { el("circle", {cx:x, cy:y, r:16, style:"fill:var(--ink);opacity:.14"}, g); el("path", {d:lens, style:"fill:var(--paper);stroke:none"}, g); el("circle", {cx:x, cy:y, r:16, class:"hair"}, g); }
     }
     const age = (Date.now() - o.time.getTime())/60000;
     stage.classList.toggle("stale", age > 90);
@@ -850,19 +884,16 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
           splash.style.opacity = 1 - (k-.82)/.18; }
       }, ()=>{ g.remove(); if (splash) splash.remove(); }); },
     robotaxi(){ if (stage.dataset.view !== "city") return EVENTS.gull();
-      const z = R.city.z, vx = x => 800 + z*(x-800), vy = y => 380 + z*(y-380);   // the city leans in, so the shore does too
+      const z = R.city.z, vx = x => 800 + z*(x-800), vy = y => 175 + z*(y-175);   // the city leans in about a point a quarter down, so the shore does too
       // it comes in from the right along the Embarcadero, past the Ferry Building, and meets the hydrant there
-      const g = el("g", {class:"thin"}, life); const y = vy(396); const S = 1.8*z; const hx = vx(1296), x0 = 1700;
+      const g = el("g", {class:"thin"}, life); const y = vy(390); const S = 1.15*z; const hx = vx(HYD), x0 = 1700;
       // a small car with its sensor dome, running the waterfront toward the hydrant by the Ferry Building
       const car = el("g", {transform:`scale(${S})`}, g);
       el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-10 0 a 3 3 0 1 0 6 0 M4 0 a 3 3 0 1 0 6 0 M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 M-8 -14 L -6 -8 M 10 -14 L 8 -8", class:"thin"}, car);
       const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, car); let d = 0; const spin = setInterval(()=>{ dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
-      const hyd = el("g", {transform:`translate(${hx},${y}) scale(${S})`}, life); el("path", {d:"M-3 0 L -3 -12 Q 0 -16 3 -12 L 3 0 M-6 -8 L 6 -8 M-3 -4 L 3 -4", class:"thin"}, hyd);
-      const spout = el("g", {class:"thin"}, hyd); spout.style.opacity = 0;
-      for (let i=0;i<11;i++) el("path", {d:`M0 -14 q ${7 + i*2} ${-16 - i*3} ${16 + i*4} ${-2 + i*2} M${16 + i*4} ${-2 + i*2} l 1 3`}, spout);
-      const stop = hx + 26*S;
-      tween(3200, k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*3 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .89) spout.style.opacity = Math.min(1, (k-.89)*12); },
-        ()=>{ tween(2600, k=>{ spout.style.opacity = 1; }, ()=>{ tween(2400, k=>{ g.setAttribute("transform", `translate(${stop + k*120},${y})`); spout.style.opacity = 1 - k; }, ()=>{ clearInterval(spin); g.remove(); hyd.remove(); }); }); }); },
+      const stop = hx + 20*S;
+      tween(3400, k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*2.5 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); },
+        ()=>{ tween(900, k=>{ car.setAttribute("transform", `scale(${S*(1 - 2*k)}, ${S})`); }, ()=>{ tween(2600, k=>{ g.setAttribute("transform", `translate(${stop + k*k*260},${y})`); }, ()=>{ clearInterval(spin); g.remove(); }); }); }); },
     gust(){ stage.classList.add("gust"); document.querySelectorAll(".gull").forEach(p=>{ p.style.transition = "transform .8s"; p.style.transform = "rotate(-22deg)"; });
       setTimeout(()=>{ stage.classList.remove("gust"); drawSky(OBS, stage.dataset.view); }, 5000); },
     ferry(){ if (stage.dataset.view !== "bridge") return EVENTS.gull();
