@@ -43,7 +43,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .stage>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;will-change:transform;pointer-events:none}
 .stage>svg.pan{transform-origin:50% 25%;transition:transform 1.4s cubic-bezier(.6,0,.2,1),opacity .8s}
 .stage>svg.fg{transform-origin:50% 100%;transition:transform 1.4s cubic-bezier(.6,0,.2,1)}
-.stage[data-view="valley"]>svg.pan{opacity:0}
+.stage[data-view="valley"]>svg.pan:not(#L-sky){opacity:0}
 .scene{stroke:var(--ink);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .scene .thin{stroke-width:1}
 .scene .hair{stroke-width:.7;opacity:.75}
@@ -77,7 +77,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .skywash{mix-blend-mode:var(--blend,multiply)}
 .stage.stale .obs{color:var(--ink-3)}
 .beam{transform-origin:var(--bx) var(--by);transition:transform .8s cubic-bezier(.65,0,.25,1)}
-.stage:not([data-view="home"]) .fg .hot,.stage:not([data-view="home"]) .beam{display:none}
+.stage:not([data-view="home"]) .fg .hot,.stage[data-view="valley"] .beam{display:none}
+.stage:not([data-view="home"]) .beam path{opacity:.4}
 .halo{fill:var(--gold);stroke:none;opacity:0;transition:opacity .6s}
 .nightlight{opacity:0;transition:opacity 1.2s}
 .dusk .nightlight{opacity:.45}
@@ -193,7 +194,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 
   <div class="frame">
   <div class="stage" id="stage" data-view="home" data-aw="on" data-ak="on">
-    <svg class="pan" id="L-sky" viewBox="0 0 1600 700" aria-hidden="true">
+    <svg class="pan" id="L-sky" viewBox="0 0 1600 700" aria-hidden="true" style="transform:translateX(-100%) scale(1)">
       <defs>
         <filter id="wc" x="-10%" y="-10%" width="120%" height="120%">
           <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="3" result="n"/>
@@ -203,21 +204,23 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="6"/></filter>
         <linearGradient id="skygrad" x1="0" y1="0" x2="0" y2="1"><stop id="sky-top" offset="0" stop-color="#BFD3E6" stop-opacity="0"/><stop id="sky-low" offset="1" stop-color="#F2B48C" stop-opacity="0"/></linearGradient>
         <mask id="fogmask"><rect x="0" y="0" width="4800" height="700" fill="white"/><polygon id="cone" points="0,0" fill="black"/></mask>
+        <linearGradient id="dawngrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F2B48C" stop-opacity="0"/><stop id="dawn-mid" offset=".5" stop-color="#F2B48C"/><stop offset="1" stop-color="#F2B48C" stop-opacity="0"/></linearGradient>
+        <mask id="binoc-pan"><rect x="0" y="0" width="4800" height="700" fill="black"/><circle cx="2300" cy="290" r="210" fill="white"/><circle cx="2500" cy="290" r="210" fill="white"/></mask>
         <mask id="binoc"><rect x="0" y="0" width="1600" height="700" fill="black"/><circle cx="700" cy="290" r="210" fill="white"/><circle cx="900" cy="290" r="210" fill="white"/></mask>
       </defs>
-      <rect class="skywash" x="0" y="0" width="4800" height="342" fill="url(#skygrad)"/>
-      <g id="sky" class="scene sky thin"></g>
+      <g id="skyall"><rect class="skywash" x="0" y="0" width="4800" height="342" fill="url(#skygrad)"/>
+      <g id="sky" class="scene sky thin"></g></g>
     </svg>
     <!-- ================= the panorama: bridge | point | city, painted once ================= -->
-    <svg class="pan" id="L-static" viewBox="0 0 1600 700" aria-hidden="true"><g class="scene"><g id="washes"></g><g id="far"></g></g></svg>
-    <svg class="pan" id="L-lights" viewBox="0 0 1600 700" aria-hidden="true"><g id="lights" class="scene"></g></svg>
-    <svg class="pan" id="L-water" viewBox="0 0 1600 700" aria-hidden="true"><g class="scene"><g id="water" class="hair"></g><g id="fog" class="fog" mask="url(#fogmask)"></g></g></svg>
+    <svg class="pan" id="L-static" viewBox="0 0 1600 700" aria-hidden="true" style="transform:translateX(-100%) scale(1)"><g class="scene"><g id="washes"></g><g id="far"></g></g></svg>
+    <svg class="pan" id="L-lights" viewBox="0 0 1600 700" aria-hidden="true" style="transform:translateX(-100%) scale(1)"><g id="lights" class="scene"></g></svg>
+    <svg class="pan" id="L-water" viewBox="0 0 1600 700" aria-hidden="true" style="transform:translateX(-100%) scale(1)"><g class="scene"><g id="water" class="hair"></g><g id="fog" class="fog" mask="url(#fogmask)"></g></g></svg>
     <!-- foreground: the point, the lighthouse, the railing, the viewer at rest -->
     <svg class="fg" id="L-fg" viewBox="0 0 1600 700" role="group" aria-label="An ink drawing of a lighthouse on a headland. Turn to the city or the bridge, or raise the coin telescope to look at the valley.">
       <g id="fg" class="scene">
         <path d="M560 700 C 600 620, 690 590, 760 585 C 830 580, 880 600, 930 610 C 980 620, 1040 660, 1060 700 Z" style="fill:var(--paper)"/>
         <path d="M600 660 C 650 640, 700 645, 740 630 M850 640 C 900 630, 950 650, 1000 670" class="thin"/>
-        <g class="beam" id="beam" style="--bx:800px;--by:300px"><path d="M800 300 L 1590 150 M800 300 L 1590 450" class="hair" stroke-dasharray="6 6"/></g>
+        <g class="beam" id="beam" style="--bx:800px;--by:300px"><path d="M800 300 L 3200 -156 M800 300 L 3200 756" class="hair" stroke-dasharray="6 6"/></g>
         <g id="lh"></g>
         <path d="M640 604 L 960 604 M640 604 L 640 630 M720 604 L 720 632 M800 604 L 800 632 M880 604 L 880 630 M960 604 L 960 628" class="thin"/>
         <g class="hot" id="hot-tele" tabindex="0" role="button" aria-label="The telescope: where usage lands">
@@ -357,6 +360,18 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function blob(g, x, y, w, h, color, seed){ const r = rng(seed); let d = `M${x} ${y+h/2}`; const n=7; for (let i=1;i<=n;i++){ const a = i/n*2*Math.PI; d += ` Q ${x+w/2+Math.cos(a-0.4)*w*0.6*(0.8+r()*0.4)} ${y+h/2+Math.sin(a-0.4)*h*0.6*(0.8+r()*0.4)} ${x+w/2+Math.cos(a)*w/2} ${y+h/2+Math.sin(a)*h/2}`; } return el("path", {d, class:"wc", style:`fill:${color}`}, g); }
   function tint(g, d, color, seed=1){ return el("path", {d, class:"wc", style:`fill:${color}`}, g); }
   function tintRect(g, x, y, w, h, color){ return tint(g, `M${x} ${y} h ${w} v ${h} h ${-w} Z`, color); }
+  // City Hall: the wide colonnaded base with its portico, the drum, the dome and the lantern
+  function domePath(x, base, w, h){ return `M ${x-w/2} ${base} C ${x-w/2} ${base-h*0.9}, ${x-w/2+w*0.15} ${base-h}, ${x} ${base-h} C ${x+w/2-w*0.15} ${base-h}, ${x+w/2} ${base-h*0.9}, ${x+w/2} ${base} Z`; }
+  function domeHalf(x, base, w, h, side){ const e = x + side*w/2, c = x + side*(w/2 - w*0.15); return `M ${e} ${base} C ${e} ${base-h*0.9}, ${c} ${base-h}, ${x} ${base-h} L ${x} ${base} Z`; }
+  function cityhall(g, x, gy){
+    el("path", {d:`M ${x-60} ${gy} L ${x-60} ${gy-22} L ${x+60} ${gy-22} L ${x+60} ${gy}`}, g);
+    for (let c=x-52; c<=x+52; c+=8) if (Math.abs(c-x) > 16) el("path", {d:`M${c} ${gy-4} L ${c} ${gy-18}`, class:"hair"}, g);
+    el("path", {d:`M ${x-14} ${gy} L ${x-14} ${gy-26} L ${x} ${gy-32} L ${x+14} ${gy-26} L ${x+14} ${gy} M ${x-8} ${gy-4} L ${x-8} ${gy-22} M ${x} ${gy-4} L ${x} ${gy-24} M ${x+8} ${gy-4} L ${x+8} ${gy-22}`, class:"thin"}, g);
+    el("path", {d:`M ${x-22} ${gy-22} L ${x-22} ${gy-44} L ${x+22} ${gy-44} L ${x+22} ${gy-22}`, class:"thin"}, g);
+    for (let c=x-16; c<=x+16; c+=8) el("path", {d:`M${c} ${gy-26} L ${c} ${gy-41}`, class:"hair"}, g);
+    el("path", {d:domePath(x, gy-44, 44, 24)}, g);
+    el("path", {d:`M ${x-3} ${gy-68} L ${x-3} ${gy-76} L ${x+3} ${gy-76} L ${x+3} ${gy-68} M ${x} ${gy-76} L ${x} ${gy-82}`, class:"thin"}, g);
+  }
   function dome(g, x, baseY, w, cls){ el("path", {d:`M ${x-w/2} ${baseY} L ${x-w/2} ${baseY-20} L ${x+w/2} ${baseY-20} L ${x+w/2} ${baseY}`, class:cls}, g); el("path", {d:`M ${x-w*0.33} ${baseY-20} C ${x-w*0.33} ${baseY-20-w*0.6}, ${x+w*0.33} ${baseY-20-w*0.6}, ${x+w*0.33} ${baseY-20} M ${x-4} ${baseY-20-w*0.46} L ${x+4} ${baseY-20-w*0.46} L ${x} ${baseY-20-w*0.62} Z`, class:cls}, g); }
   function campanile(g, x, baseY, h){ el("path", {d:`M ${x-11} ${baseY} L ${x-11} ${baseY-h} L ${x+11} ${baseY-h} L ${x+11} ${baseY} M ${x-14} ${baseY-h} L ${x+14} ${baseY-h} L ${x} ${baseY-h-22} Z M ${x-6} ${baseY-h+10} L ${x-6} ${baseY-h+30} M ${x+6} ${baseY-h+10} L ${x+6} ${baseY-h+30} M ${x-4} ${baseY-h+50} L ${x+4} ${baseY-h+50}`}, g); }
 
@@ -429,8 +444,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     el("path", {d:`M ${ox+30} ${baseY-6} C ${ox+200} ${baseY-30}, ${ox+400} ${baseY-40}, ${ox+700} ${baseY-24} C ${ox+900} ${baseY-14}, ${ox+1100} ${baseY-20}, ${ox+1580} ${baseY-8}`, class:"thin"}, g);
     el("path", {d:`M ${ox+520} ${baseY-60} C ${ox+640} ${baseY-120}, ${ox+760} ${baseY-118}, ${ox+880} ${baseY-70}`, class:"hair"}, g);
     const sx = ox+700, sy = baseY-118;
-    el("path", {d:`M${sx-14} ${sy} L ${sx} ${sy-92} L ${sx+14} ${sy} M${sx-9} ${sy-30} L ${sx+9} ${sy-30} M${sx-6} ${sy-58} L ${sx+6} ${sy-58} M${sx-22} ${sy-70} L ${sx+22} ${sy-70}`, class:"thin"}, g);
-    suspension(g, ox+300, ox+490, baseY-34, 130, 90);
+    // Sutro: three masts, the outer pair upright at the top, pinched to a waist, splayed to the feet, tied by struts
+    const H = 100;
+    el("path", {d:`M${sx-14} ${sy-H} L ${sx-14} ${sy-H*0.62} L ${sx-5} ${sy-H*0.38} L ${sx-22} ${sy} M${sx} ${sy-H-8} L ${sx} ${sy} M${sx+14} ${sy-H} L ${sx+14} ${sy-H*0.62} L ${sx+5} ${sy-H*0.38} L ${sx+22} ${sy}`, class:"thin"}, g);
+    for (const [f, hw] of [[0.92, 14], [0.62, 14], [0.38, 5], [0.14, 17]]) el("path", {d:`M${sx-hw} ${sy-H*f} L ${sx+hw} ${sy-H*f}`, class:"hair"}, g);
+    suspension(g, ox+60, ox+250, baseY-34, 130, 90);
     el("path", {d:`M ${ox+560} ${baseY-30} L ${ox+600} ${baseY-44} L ${ox+640} ${baseY-30} M ${ox+596} ${baseY-44} L ${ox+596} ${baseY-60} L ${ox+606} ${baseY-60} L ${ox+606} ${baseY-44}`, class:"thin"}, g);
     const towers = [[860,110,26,1],[892,150,24,1],[920,80,20,0],[946,200,30,1],[982,260,34,1],[1022,180,26,1],[1054,150,22,1],[1082,120,28,0],[1116,96,22,1],[1144,140,26,1],[1176,70,20,0]];
     for (const [x,h,w,win] of towers) box(g, ox+x, baseY-h-8, w, h, win);
@@ -439,21 +457,22 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     // City Hall, and Hayes Valley just west of it: Patricia's Green with its trees, and the red house over the green
     // City Hall and Hayes Valley sit west of the towers, under Sutro, on the shore's register: the dome, the green with its trees, and the red house over the green
     const hv = ox+CH, gy = baseY-8;
-    dome(g, hv, gy, 80, "thin");
-    for (let x=hv-96; x<hv-44; x+=12) el("path", {d:`M${x} ${gy} L ${x+6} ${gy-8} L ${x+12} ${gy}`, class:"hair"}, g);
-    el("path", {d:`M ${hv-60} ${gy} L ${hv-60} ${gy-32} L ${hv-42} ${gy-32} L ${hv-42} ${gy} M ${hv-56} ${gy-24} L ${hv-46} ${gy-24} M ${hv-56} ${gy-14} L ${hv-46} ${gy-14}`, class:"thin"}, g);
-    for (const x of [hv-88, hv-74]) el("path", {d:`M${x} ${gy} q 0 -12 7 -14 q 7 2 7 14 z`, class:"hair"}, g);
+    cityhall(g, hv, gy);
+    // the house over the green: three storeys, six windows across, west of City Hall
+    el("path", {d:`M ${hv-112} ${gy} L ${hv-112} ${gy-24} L ${hv-72} ${gy-24} L ${hv-72} ${gy}`, class:"thin"}, g);
+    for (let r=0; r<3; r++) for (let c=0; c<6; c++) el("path", {d:`M${hv-109+c*6.4} ${gy-19+r*6.5} l 3.4 0`, class:"hair"}, g);
     // the hydrant on the Embarcadero, past the Ferry Building, where the robotaxi meets it
-    el("path", {d:`M ${ox+HYD-3} ${gy} L ${ox+HYD-3} ${gy-11} Q ${ox+HYD} ${gy-15} ${ox+HYD+3} ${gy-11} L ${ox+HYD+3} ${gy} M ${ox+HYD-6} ${gy-7} L ${ox+HYD+6} ${gy-7}`, class:"thin"}, g);
+    el("path", {d:`M ${ox+HYD-3} ${gy} L ${ox+HYD-3} ${gy-14} Q ${ox+HYD} ${gy-18} ${ox+HYD+3} ${gy-14} L ${ox+HYD+3} ${gy} M ${ox+HYD-6} ${gy-9} L ${ox+HYD+6} ${gy-9} M ${ox+HYD-3} ${gy-5} L ${ox+HYD+3} ${gy-5}`, class:"thin"}, g);
     // Ferry Building on the waterfront
     el("path", {d:`M ${ox+1190} ${baseY-8} L ${ox+1190} ${baseY-30} L ${ox+1290} ${baseY-30} L ${ox+1290} ${baseY-8}`}, g);
     for (let x=ox+1198; x<ox+1290; x+=9) el("path", {d:`M${x} ${baseY-26} L ${x} ${baseY-12}`, class:"hair"}, g);
     el("path", {d:`M ${ox+1232} ${baseY-30} L ${ox+1232} ${baseY-96} L ${ox+1248} ${baseY-96} L ${ox+1248} ${baseY-30} M ${ox+1229} ${baseY-96} L ${ox+1251} ${baseY-96} L ${ox+1240} ${baseY-110} Z`}, g);
     el("circle", {cx:ox+1240, cy:baseY-84, r:5, class:"thin"}, g);
     if (colour){
-      tint(washes, `M ${hv-27} ${gy-20} C ${hv-27} ${gy-68}, ${hv+27} ${gy-68}, ${hv+27} ${gy-20} Z`, "var(--gold)");   // the dome
-      tintRect(washes, hv-59, gy-31, 16, 31, "var(--rose)");                                                        // the house over the green
-      tint(washes, `M ${hv-96} ${gy} h 52 v 2 h -52 Z M ${hv-88} ${gy} q 0 -12 7 -14 q 7 2 7 14 Z M ${hv-74} ${gy} q 0 -12 7 -14 q 7 2 7 14 Z`, "var(--green)"); // the green and its trees
+      tint(washes, domePath(hv, gy-44, 44, 24), "var(--glass)").style.opacity = ".3";                               // the dome, grey-blue
+      tintRect(washes, hv-3, gy-82, 6, 14, "var(--gold)");                                                          // the lantern's gold
+      tintRect(washes, hv-60, gy-22, 120, 22, "var(--cream)").style.opacity = ".3";                                 // the stone
+      tintRect(washes, hv-111, gy-23, 38, 23, "var(--rose)");                                                       // the house over the green
       tintRect(washes, ox+1191, baseY-29, 98, 21, "var(--cream)");                                                                // the Ferry Building
       tintRect(washes, ox+1233, baseY-95, 14, 66, "var(--cream)");
       tintRect(washes, ox+983, baseY-267, 32, 259, "var(--glass)").style.opacity = ".12";                                          // the tallest tower
@@ -491,16 +510,16 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const ox = HOME*2, baseY = 400, [ca, cb] = nightPair(d);
     // the dome, split by the pair
     const hv = ox+CH, gy = baseY-8;
-    tint(LIGHTS, `M ${hv-27} ${gy-20} C ${hv-27} ${gy-68}, ${hv} ${gy-68}, ${hv} ${gy-60} L ${hv} ${gy-20} Z`, ca).classList.add("nightlight");
-    tint(LIGHTS, `M ${hv} ${gy-20} L ${hv} ${gy-60} C ${hv} ${gy-68}, ${hv+27} ${gy-68}, ${hv+27} ${gy-20} Z`, cb).classList.add("nightlight");
+    tint(LIGHTS, domeHalf(hv, gy-44, 44, 24, -1), ca).classList.add("nightlight");
+    tint(LIGHTS, domeHalf(hv, gy-44, 44, 24, 1), cb).classList.add("nightlight");
     // the crown: a soft wash and a grid of blocks that breathe out of step
     tintRect(LIGHTS, ox+983, baseY-290, 32, 30, "#9FB7C9").classList.add("nightlight");
     const grid = el("g", {class:"nightlight"}, LIGHTS); const r = rng(59);
     for (let i=0;i<4;i++) for (let j=0;j<5;j++){ const b = el("rect", {x:ox+986+i*7, y:baseY-286+j*6, width:5, height:4, class:"crownblock", style:`fill:#9FB7C9;stroke:none`}, grid); b.style.animationDelay = (-r()*9).toFixed(1) + "s"; }
     // the same lights, small, in the far city seen from the point
-    const fx = HOME+1020+CH*.55, fb = 300+(250-8-20)*.55, ft = 300+(250-8-68)*.55;                    // the far dome, drawn at .55 on a base of 250
-    tint(LIGHTS, `M ${fx-15} ${fb} C ${fx-15} ${ft}, ${fx} ${ft}, ${fx} ${ft+4} L ${fx} ${fb} Z`, ca).classList.add("nightlight");
-    tint(LIGHTS, `M ${fx} ${fb} L ${fx} ${ft+4} C ${fx} ${ft}, ${fx+15} ${ft}, ${fx+15} ${fb} Z`, cb).classList.add("nightlight");
+    const fx = HOME+1020+CH*.55, fb = 300+(250-8-44)*.55;                                             // the far dome, drawn at .55 on a base of 250
+    tint(LIGHTS, domeHalf(fx, fb, 44*.55, 24*.55, -1), ca).classList.add("nightlight");
+    tint(LIGHTS, domeHalf(fx, fb, 44*.55, 24*.55, 1), cb).classList.add("nightlight");
     tintRect(LIGHTS, HOME+1020+983*.55, 300+(250-290)*.55, 18, 16, "#9FB7C9").classList.add("nightlight");   // the far crown
   }
   drawLights(new Date());
@@ -556,7 +575,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function setCone(t){
     const a = {city:[-14, 14], bridge:[166, 194], tele:[70, 110]}[t];
     if (!a){ cone.setAttribute("points", "0,0"); return; }
-    const ox=800+HOME, oy=300, L=1400, p=[[ox,oy]];
+    // the lantern, in panorama units, for the view the fog is cut in: at the point, or at the edge of the frame when the view has turned
+    const [ox, oy] = ({ city:[3408, 227], bridge:[1392, 227] })[stage.dataset.view] || [800+HOME, 300], L=1400, p=[[ox,oy]];
     for (let d=a[0]; d<=a[1]; d+=4){ const r=d*Math.PI/180; p.push([ox+L*Math.cos(r), oy+L*Math.sin(r)]); }
     cone.setAttribute("points", p.map(q=>q.join(",")).join(" "));
   }
@@ -585,13 +605,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
              title:"What has moved", lens:"Pay and employment by occupation, folded into 25 named skill groups and tested each year against that group's own year-to-year swing. The lens is set in advance at the size a move would have to reach to stand out from that history, which is why a small reading is still the right reading: this is the instrument that will notice. It changes once a year, with each spring release of the wage tables.",
              f1:["2.8","of 6.1","pay · largest standardised move · 2025 release","Six of 25 skill groups moved beyond two of their own standard errors; the largest sits at 2.8 against a lens of 6.1."],
              f2:["4.4","of 4.0","jobs · employment-weighted skill mix · 2025","The quantity side touched its lens this year. Whether it holds is what the next release answers."],
-             left:["bridge","turn to the bridge"], right:["valley","raise the telescope"], pan:-HOME*2, fgx:-720, z:1.25,
+             left:["bridge","turn to the bridge"], right:["valley","raise the telescope"], pan:-HOME*2, fgx:-770, z:1.25,
              tables:["outcomes_pay_series_balanced.csv","outcomes_quantity_series_balanced.csv","outcomes_pay_changes.csv"] },
     bridge:{ cap:["The bridge · the pipeline", "who is training for exposed work · degrees are the channel the counts can see"],
              title:"The pipeline", lens:"Bachelor's degrees awarded in fields whose graduates go on to exposed occupations, with each field scored by where its graduates actually work. This is the channel policy can count and the one that answers slowly, so a shift here is an early sign rather than a result. It changes once a year with the completions file, and the lateral channel, people arriving from other jobs, joins it when the flows matrix is released.",
              f1:["41","% of bachelor's","awarded in fields that lead to exposed jobs · 2024","Up from 40 percent the year before. Fields are scored by where their graduates actually work, not by where the catalogue says they should."],
              f2:["4 to 12","×","lateral arrivals over graduates, by occupation","From the flow account. The lateral matrix itself is the next file to arrive; until then this column carries the education channel only."],
-             left:["valley","raise the telescope"], right:["city","turn to the city"], pan:0, fgx:720, z:1.25,
+             left:["valley","raise the telescope"], right:["city","turn to the city"], pan:0, fgx:770, z:1.25,
              tables:["pipeline_completions_by_state.csv","pipeline_enrolment_by_exposure.csv","pipeline_field_exposure_crosswalk.csv","capacity_education_channel.csv"] },
     valley:{ cap:["The telescope · where usage lands", "what people ask the models to do, priced by the tasks it touches · reach in the wage bill"],
              title:"Where usage lands", lens:"What people ask the models to do, mapped through eighteen thousand tasks onto the dollars paid for them, then onto the skills those tasks use. Usage is where a change starts, so this is the view that moves first and most often, and it says nothing yet about pay. It changes with each platform release, every few months, and three platforms are shown side by side because each sees only its own users.",
@@ -633,7 +653,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     stage.dataset.view = view;
     $("#life").replaceChildren();                                              // whatever was crossing the last view stays there
     hold(); light(null);
-    if (view === "valley") $("#life").setAttribute("mask", "url(#binoc)"); else $("#life").removeAttribute("mask");
+    if (view === "valley"){ $("#life").setAttribute("mask", "url(#binoc)"); $("#skyall").setAttribute("mask", "url(#binoc-pan)"); }
+    else { $("#life").removeAttribute("mask"); $("#skyall").removeAttribute("mask"); }
     const r = R[view];
     // the surfaces slide and lean in together; a percent of the surface width is a panorama unit over 1600
     pans.forEach(p => { p.style.transform = `translateX(${(r.pan*r.z/16).toFixed(3)}%) scale(${r.z})`; });
@@ -659,7 +680,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     } else {
       vv.classList.add("off"); big.classList.add("down");
       timer = setTimeout(()=>{ valley.classList.add("off"); fg.classList.remove("off"); }, 600);
-      if (view==="home") sweep(); else { hold(); light(null); }
+      if (view==="home") sweep(); else { hold(); light(null); aim(view); }
     }
   }
   home.addEventListener("click", ()=>go("home"));
@@ -771,8 +792,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const sky = $("#sky");
   // The sky's own colour: the faintest wash, blue by day, warm at the horizon around dawn and dusk, a deep
   // blue at night. Each is a pair of stops keyed to the sun's altitude and blended between the keys.
-  const SKYKEYS = [[-18, ["#1B2238", .55, "#1B2238", .25]], [-7, ["#5D5F86", .45, "#E9A27A", .35]], [-1, ["#B4B0CF", .4, "#F2B48C", .55]],
-                   [6, ["#BFD3E6", .35, "#F4C9A6", .3]], [16, ["#BFD3E6", .38, "#DCE7EF", .08]]];
+  const SKYKEYS = [[-18, ["#1B2238", .28, "#1B2238", .1]], [-7, ["#5D5F86", .16, "#E9A27A", .14]], [-1, ["#B4B0CF", .14, "#F2B48C", .22]],
+                   [6, ["#BFD3E6", .12, "#F4C9A6", .1]], [16, ["#BFD3E6", .1, "#DCE7EF", .02]]];
   function hexLerp(a, b, t){ const A = a.match(/\w\w/g).map(h=>parseInt(h,16)), B = b.match(/\w\w/g).map(h=>parseInt(h,16)); return "#" + A.map((v,i)=>Math.round(v + (B[i]-v)*t).toString(16).padStart(2,"0")).join(""); }
   function skyColour(sun){
     const a = Math.max(SKYKEYS[0][0], Math.min(SKYKEYS[SKYKEYS.length-1][0], sun.alt)); let i = 0; while (i < SKYKEYS.length-2 && a > SKYKEYS[i+1][0]) i++;
@@ -794,7 +815,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     document.querySelectorAll(".fog").forEach(g=>{ g.style.opacity = w.fog; });
     sky.innerHTML = "";
     const r = rng(w.clouds*13+7);
-    for (let i=0;i<w.clouds*3;i++){ const x = r()*W, y = 150 + r()*60, wd = 80 + r()*140;
+    for (let i=0;i<w.clouds*3;i++){ const x = r()*W, y = 200 + r()*50, wd = 80 + r()*140;
       const d = w.streak ? `M${x} ${y} q ${wd*.5} -6 ${wd} 0 M${x+20} ${y+8} q ${wd*.3} -4 ${wd*.6} 0` : `M${x} ${y} q ${wd*.2} -18 ${wd*.45} -6 q ${wd*.15} -16 ${wd*.35} -2 q ${wd*.2} -4 ${wd*.2} 8 Z`;
       const c = el("path", {d, class:"cloud"}, sky); c.style.animationDelay = (-r()*240).toFixed(0) + "s"; }
     if (w.band) for (let y=96; y<140; y+=18) el("path", {d:`M 0 ${y} L ${W} ${y}`, class:"hair"}, sky);
@@ -817,7 +838,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     }
     if (sun.alt > -8 && sun.alt < 8){                                            // dawn or dusk: one warm band on the horizon, where the sun is
       const x = xOfAzimuth(sun.az); const morning = sun.az < 180;
-      tint($("#washes"), `M ${x-700} 306 Q ${x} 296 ${x+700} 306 L ${x+700} 340 L ${x-700} 340 Z`, morning ? "#F2B48C" : "#E07A3F").classList.add("dawn");
+      $("#dawn-mid").setAttribute("stop-color", morning ? "#F2B48C" : "#E07A3F");
+      const band = tint($("#washes"), `M ${x-700} 306 Q ${x} 296 ${x+700} 306 L ${x+700} 340 L ${x-700} 340 Z`, "none"); band.style.fill = "url(#dawngrad)"; band.classList.add("dawn");
     }
     // the moon is drawn at its phase and where it is; on a night it has set, the drawing keeps it low over the horizon anyway
     if ((moon.alt > 0 || night) && (night || sun.alt < 4) && w.fog < .9 && !w.band){
@@ -886,14 +908,17 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     robotaxi(){ if (stage.dataset.view !== "city") return EVENTS.gull();
       const z = R.city.z, vx = x => 800 + z*(x-800), vy = y => 175 + z*(y-175);   // the city leans in about a point a quarter down, so the shore does too
       // it comes in from the right along the Embarcadero, past the Ferry Building, and meets the hydrant there
-      const g = el("g", {class:"thin"}, life); const y = vy(390); const S = 1.15*z; const hx = vx(HYD), x0 = 1700;
+      const g = el("g", {class:"thin"}, life); const S = 1.05*z; const y = vy(392) - 3*S; const hx = vx(HYD), x0 = 1700;
       // a small car with its sensor dome, running the waterfront toward the hydrant by the Ferry Building
       const car = el("g", {transform:`scale(${S})`}, g);
       el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-10 0 a 3 3 0 1 0 6 0 M4 0 a 3 3 0 1 0 6 0 M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 M-8 -14 L -6 -8 M 10 -14 L 8 -8", class:"thin"}, car);
       const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, car); let d = 0; const spin = setInterval(()=>{ dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
+      // the water, from the drawn hydrant's cap, pouring toward the car
+      const spout = el("g", {class:"thin", transform:`translate(${hx},${vy(392)}) scale(${z})`}, life); spout.style.opacity = 0;
+      for (let i=0;i<9;i++) el("path", {d:`M0 -17 q ${6 + i*2} ${-14 - i*3} ${14 + i*4} ${-2 + i*2} M${14 + i*4} ${-2 + i*2} l 1 3`}, spout);
       const stop = hx + 20*S;
-      tween(3400, k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*2.5 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); },
-        ()=>{ tween(900, k=>{ car.setAttribute("transform", `scale(${S*(1 - 2*k)}, ${S})`); }, ()=>{ tween(2600, k=>{ g.setAttribute("transform", `translate(${stop + k*k*260},${y})`); }, ()=>{ clearInterval(spin); g.remove(); }); }); }); },
+      tween(3400, k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*2.5 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .89) spout.style.opacity = Math.min(1, (k-.89)*12); },
+        ()=>{ tween(2200, k=>{ spout.style.opacity = 1; }, ()=>{ tween(900, k=>{ car.setAttribute("transform", `scale(${S*(1 - 2*k)}, ${S})`); }, ()=>{ tween(2600, k=>{ g.setAttribute("transform", `translate(${stop + k*k*260},${y})`); spout.style.opacity = 1 - k; }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); }); }); }); }); },
     gust(){ stage.classList.add("gust"); document.querySelectorAll(".gull").forEach(p=>{ p.style.transition = "transform .8s"; p.style.transform = "rotate(-22deg)"; });
       setTimeout(()=>{ stage.classList.remove("gust"); drawSky(OBS, stage.dataset.view); }, 5000); },
     ferry(){ if (stage.dataset.view !== "bridge") return EVENTS.gull();
