@@ -333,13 +333,14 @@ def export_site() -> Path:
                             f"{int(pay['bundles_beyond_two'])} of 25 skill groups moved beyond two of their own standard errors; the largest sits at {pay['largest_statistic']:.1f} against a lens of {pay['threshold_95']:.1f}."],
                      "f2": [f"{quantity['largest_statistic']:.1f}", f"of {quantity['threshold_95']:.1f}", f"jobs · employment-weighted skill mix · {int(quantity['year'])}",
                             "The quantity side against its own lens. Whether it holds is what the next release answers."]},
-            "bridge": {"f1": [f"{share.loc[year]*100:.0f}", "% of bachelor's", f"awarded in fields that lead to exposed jobs · {year}",
+            "valley": {"f1": [f"{share.loc[year]*100:.0f}", "% of bachelor's", f"awarded in fields that lead to exposed jobs · {year}",
                               "Fields are scored by where their graduates actually work, not by where the catalogue says they should."]},
-            "valley": {"f1": [f"{latest['reach_share']*100:.0f}", "% of wages", f"reach · Anthropic consumer usage · {label}",
+            "bridge": {"f1": [f"{latest['reach_share']*100:.0f}", "% of wages", f"reach · Anthropic consumer usage · {label}",
                               " · ".join(f"{r*100:.0f} percent in {l}" for l, r in zip(anthropic['release'], anthropic['reach_share'])) + f". {split['delegated_share']*100:.0f} percent delegated outright on the {split['release']} release."],
                        "f2": [f"{top['concentration']:.1f}", "×", f"concentration on {top['bundle'].lower()}",
                               f"Usage lands on that skill group at {top['concentration']:.1f} times its weight in pay."]},
         },
+        # the bridge carries usage across to pay; the telescope looks down the bay at the campuses, the pipeline
         "releases": [{"date": str(r), "reach": round(float(x), 3)} for r, x in zip(anthropic["release"], anthropic["reach_share"])],
     }
     out = config.REPO_ROOT / "site" / "data" / "readings.json"

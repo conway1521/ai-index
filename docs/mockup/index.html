@@ -67,6 +67,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .stage[data-ak="off"] .fog{opacity:0 !important}
 .bart{animation:bart 26s linear infinite}
 @keyframes bart{0%{transform:translateX(300px)}50%{transform:translateX(840px)}100%{transform:translateX(840px)}}
+/* navigation lights after dusk: red and green at the wings, a white strobe at the tail; car lights likewise */
+.navlight{opacity:0}.dusk .navlight,.night .navlight{animation:nav var(--nav,1.3s) steps(1) infinite}
+@keyframes nav{0%{opacity:1}55%{opacity:.12}}
+.strobe{opacity:0}.dusk .strobe,.night .strobe{animation:strobe 1.6s steps(1) infinite}
+@keyframes strobe{0%{opacity:1}8%{opacity:0}}
+.carlight{opacity:0;transition:opacity .3s}.dusk .carlight,.night .carlight{opacity:.8}
+.tail{opacity:0;transition:opacity .2s}.dusk .tail,.night .tail{opacity:.5}.braking .tail{opacity:1}
 .water{animation:swell 6s ease-in-out infinite alternate}
 .water.b{animation-name:swellb;animation-duration:8.5s;animation-delay:-3s}
 .water.c{animation-name:swellc;animation-duration:11s;animation-delay:-6s}
@@ -91,7 +98,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 /* while the view turns, the fog lifts and comes back once it settles: it is most of what the turn has to redraw */
 .stage.fogout .fog{opacity:0 !important}.stage.turning .fog{display:none}
 .beam{transition:opacity .7s}.beam.moving{opacity:0;transition:none}
-#beamlight{mix-blend-mode:var(--blend,multiply)}
+#beamlight{mix-blend-mode:var(--blend,multiply);filter:url(#beamblur);opacity:.35;transition:opacity 1.2s}.dusk #beamlight{opacity:.6}.night #beamlight{opacity:.85}
 .stage:not([data-view="home"]) .fg .hot,.stage[data-view="valley"] .beam{display:none}
 .stage:not([data-view="home"]) .beam path{opacity:.4}
 .halo{fill:var(--gold);stroke:none;opacity:0;transition:opacity .6s}
@@ -206,7 +213,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   <header class="top">
     <div class="brand">[ name to come ] <small>MOCKUP</small></div>
   </header>
-  <p class="strap">The bridge, on the left, shows the pipeline: who is training for exposed work. The city, on the right, shows what has moved in pay and jobs. The telescope on the rail, aimed down the bay, shows where usage lands in the wage bill.</p>
+  <p class="strap">The bridge, on the left, shows where usage lands: what people ask the models to do, carried across to the pay for those tasks. The city, on the right, shows what has moved in pay and jobs. The telescope on the lighthouse, aimed down the bay at the campuses, shows the pipeline: who is training for exposed work.</p>
 
   <div class="frame">
   <div class="stage" id="stage" data-view="home" data-aw="on" data-ak="on">
@@ -224,6 +231,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       </defs>
       <g class="zoom"><g id="skyall"><rect class="skywash" x="0" y="0" width="1600" height="342" fill="url(#skygrad)"/>
       <g id="sky" class="scene sky thin"></g></g></g>
+      <g id="lifeback" class="life scene"></g>
     </svg>
     <!-- ================= the one scene from the point, painted once; the colour lies over the ink ================= -->
     <svg class="pan" id="L-static" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom scene"><g id="far"></g><g id="washes"></g></g></svg>
@@ -235,7 +243,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       <g class="zoom" id="fgzoom"><g id="fg" class="scene">
         <path d="M560 700 C 600 620, 690 590, 760 585 C 830 580, 880 600, 930 610 C 980 620, 1040 660, 1060 700 Z" style="fill:var(--paper)"/>
         <path d="M600 660 C 650 640, 700 645, 740 630 M850 640 C 900 630, 950 650, 1000 670" class="thin"/>
-        <defs><linearGradient id="beamgrad" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#E8C35A" stop-opacity=".16"/><stop offset="1" stop-color="#E8C35A" stop-opacity="0"/></linearGradient></defs>
+        <defs><filter id="beamblur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter><linearGradient id="beamgrad" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#F0D27A" stop-opacity=".5"/><stop offset="1" stop-color="#E8C35A" stop-opacity="0"/></linearGradient></defs>
         <g class="beam" id="beam"><polygon id="beamlight" points="0,0" fill="url(#beamgrad)" style="stroke:none"/><path d="" class="hair" stroke-dasharray="6 6"/></g>
         <g id="lh"></g>
         <!-- a small platform off the gallery, and the coin telescope on it, turned south -->
@@ -248,17 +256,17 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
           <text x="1540" y="188" text-anchor="end" class="mark" id="mark-city"></text>
           <g class="detail"><text x="1540" y="210" text-anchor="end">what has moved · pay and jobs, tested against their own history</text></g>
         </g>
-        <g class="hot" id="hot-bridge" tabindex="0" role="button" aria-label="The bridge: the pipeline">
+        <g class="hot" id="hot-bridge" tabindex="0" role="button" aria-label="The bridge: where usage lands">
           <path class="hit" d="M800 300 L0 120 L0 480 Z"/><path class="hit" d="M40 120 h560 v200 h-560 Z"/>
           <text x="110" y="160" class="cap">The bridge</text>
           <text x="110" y="188" class="mark" id="mark-bridge"></text>
-          <g class="detail"><text x="110" y="210">the pipeline · who is training for exposed work</text></g>
+          <g class="detail"><text x="110" y="210">where usage lands · the tasks people bring, carried across to their pay</text></g>
         </g>
-        <g class="hot" id="hot-tele" tabindex="0" role="button" aria-label="The telescope: where usage lands">
+        <g class="hot" id="hot-tele" tabindex="0" role="button" aria-label="The telescope: the pipeline">
           <path class="hit" d="M760 200 h140 v400 h-140 Z"/><path class="hit" d="M860 400 h290 v84 h-290 Z"/>
           <text x="872" y="424" class="cap">The telescope</text>
           <text x="872" y="446" class="mark" id="mark-valley"></text>
-          <g class="detail"><text x="872" y="466">where usage lands · looking south, down the bay</text></g>
+          <g class="detail"><text x="872" y="466">the pipeline · looking south, to the campuses</text></g>
         </g>
       </g></g>
     </svg>
@@ -447,6 +455,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   // filled down into the water so the Gate's north tower stands out of it; only its skyline is inked
   el("path", {d:"M 0 380 L 0 262 C 60 252, 150 256, 230 270 C 290 281, 332 304, 366 330 C 376 338, 384 343, 394 346 C 380 360, 330 372, 300 380 Z", style:"fill:var(--paper);stroke:none"}, headland);
   el("path", {d:"M 0 262 C 60 252, 150 256, 230 270 C 290 281, 332 304, 366 330 C 376 338, 384 343, 394 346"}, headland);
+  { const cp = el("clipPath", {id:"behind-rock", clipPathUnits:"userSpaceOnUse"}, el("defs", {}, $("#L-water"))); el("rect", {x:-14, y:-40, width:28, height:42}, cp); }
+  const bear = el("g", {transform:"translate(214,272) scale(1.4)", "clip-path":"url(#behind-rock)"}, headland), bearHead = el("g", {transform:"translate(0,8)", id:"bearhead"}, bear);
+  el("path", {d:"M -3.2 -5 a 1.4 1.4 0 1 1 0.1 0 M 3.2 -5 a 1.4 1.4 0 1 1 0.1 0", class:"thin", style:"fill:var(--paper)"}, bearHead);
+  el("path", {d:"M -4.2 1 Q -4.8 -5.4 0 -5.8 Q 4.8 -5.4 4.4 -1.2 Q 7.4 -1.4 7.6 0.2 Q 7.2 1.6 4 1.4 L 4 1.8 Z", class:"thin", style:"fill:var(--paper)"}, bearHead);
+  el("circle", {cx:2, cy:-2.6, r:.55, class:"solid"}, bearHead); el("circle", {cx:7.3, cy:-0.3, r:.6, class:"solid"}, bearHead);
+  el("path", {d:"M 199 276 L 202 268 L 208 263 L 216 261 L 223 263.5 L 227 269 L 229 276 Z", class:"thin", style:"fill:var(--paper)"}, headland);
+  el("path", {d:"M 212 262 L 214 268 L 211 272", class:"hair"}, headland);
   el("path", {d:"M 394 346 C 370 352, 340 356, 300 360", class:"hair"}, headland);
   el("path", {d:"M 20 318 C 100 300, 190 298, 280 312", class:"hair", "stroke-dasharray":"8 6"}, headland);
   fog(fogG, [[330, 5, 6],[400, 6, 7],[470, 5, 5]], 11);
@@ -590,15 +605,17 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const L = el("g", {"clip-path":"url(#eye-l)"}, g), R = el("g", {"clip-path":"url(#eye-r)"}, g);
     // left: the hills behind, the campus on its slope, its campanile over the trees, the bay in front
     // the hills behind: a ridge crowned with a ragged line of trees, a raised stand of them with a mast in it, then a sharp drop to the lower ridge
-    { const rr = rng(83); let d = "M 480 400 L 480 270";
-      for (let x = 480; x < 596; x += 10){ const y = 268 - (x-480)*0.08; d += ` Q ${x+5} ${(y - 5 - rr()*3).toFixed(1)} ${x+10} ${y.toFixed(1)}`; }
-      d += " L 600 250";
-      for (let x = 600; x < 690; x += 9) d += ` Q ${x+4.5} ${(240 - rr()*4).toFixed(1)} ${x+9} ${(246 + rr()*2).toFixed(1)}`;
-      d += " L 693 267";
-      for (let x = 693; x < 820; x += 11){ const y = 267 + (x-693)*0.03; d += ` Q ${x+5.5} ${(y - 4 - rr()*3).toFixed(1)} ${x+11} ${y.toFixed(1)}`; }
-      el("path", {d: d + " L 820 400 Z", class:"thin", style:"fill:var(--paper)"}, L); }
-    el("path", {d:"M 646 242 L 646 224 M 643 230 L 649 230", class:"hair"}, L);
-    el("path", {d:"M 480 318 C 540 300, 600 292, 660 300 C 720 308, 770 300, 820 306 M 560 334 C 600 322, 640 320, 700 330", class:"hair"}, L);
+    { const rr = rng(83);
+      let d = "M 480 400 L 480 304 C 500 300, 516 296, 530 292", x = 530;
+      const crown = u => u < 668 ? 292 - (u-530)/138*54 : 238 + (u-668)*0.06;             // the canopy's line: rising to its crest, then nearly level
+      while (x < 700){ const w = 5 + rr()*13, top = Math.min(crown(x), crown(x+w)) - 2 - rr()*7; d += ` Q ${(x+w*.5).toFixed(1)} ${top.toFixed(1)} ${(x+w).toFixed(1)} ${(crown(x+w) + rr()*2).toFixed(1)}`; x += w; }
+      d += ` Q ${(x+3).toFixed(1)} 250 ${(x+2).toFixed(1)} 262 Q ${(x+4).toFixed(1)} 270 ${(x+9).toFixed(1)} 273`; x += 9;   // the steep cut where the trees end
+      while (x < 820){ const w = 5 + rr()*9, y = 273 + (x-710)*0.05; d += ` Q ${(x+w/2).toFixed(1)} ${(y - 2 - rr()*4).toFixed(1)} ${(x+w).toFixed(1)} ${y.toFixed(1)}`; x += w; }
+      el("path", {d: d + " L 820 400 Z", class:"thin", style:"fill:var(--paper)"}, L);
+      // the grass below the trees: the hill's own shoulder, and a pale fold lower down
+      el("path", {d:"M 500 322 C 570 306, 640 298, 706 296 C 750 296, 790 300, 820 304", class:"hair"}, L);
+      el("path", {d:"M 540 342 C 600 332, 670 330, 740 336", class:"hair"}, L);
+    }
     box(L, 616, 352, 56, 42, true); box(L, 706, 360, 70, 34, true); box(L, 530, 370, 30, 24, false);
     campanile(L, 590, 394, 150);
     tintRect(L, 579, 245, 22, 149, "var(--cream)");
@@ -642,21 +659,28 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const screenToFg = (view, [x, y]) => { const f = FG[view] || FG.home; return [(x - f.t[0])/f.s, (y - f.t[1])/f.s]; };
   function aim(t){
     const view = stage.dataset.view, target = TARGET[t];
-    if (!target){ beamPath.setAttribute("d", ""); cone.setAttribute("points", "0,0"); return; }
-    // the lantern and the target on screen: at the point when home, else the small lighthouse at the base and the scaled scene
-    const zoomed = view !== "home", lantern = fgToScreen(view, LANTERN), ends = zoomed && target.base ? target.base : target.ends;
-    const onScreen = ends.map(([x, y]) => { if (!zoomed) return [x, y]; const [sx, sy] = toScreen(view, x, y); return [Math.max(40, Math.min(1560, sx)), sy]; });
-    // the beam is drawn in the lighthouse's own space, which moves and scales with it
-    const past = ([x, y]) => [lantern[0] + (x-lantern[0])*1.25, lantern[1] + (y-lantern[1])*1.25];
-    const far = onScreen.map(e => screenToFg(view, past(e)));
-    beamPath.setAttribute("d", far.map(([x, y]) => `M${LANTERN[0]} ${LANTERN[1]} L ${x.toFixed(1)} ${y.toFixed(1)}`).join(" "));
-    // the wash of light between the two lines, strongest at the lantern, gone by the far end
-    $("#beamlight").setAttribute("points", [LANTERN, ...far].map(q => q.map(v => v.toFixed(1)).join(",")).join(" "));
-    const g = $("#beamgrad"), mid = [(far[0][0]+far[1][0])/2, (far[0][1]+far[1][1])/2];
+    if (!target){ beamPath.setAttribute("d", ""); $("#beamlight").setAttribute("points", "0,0"); cone.setAttribute("points", "0,0"); return; }
+    const zoomed = view !== "home", lantern = fgToScreen(view, LANTERN);
+    let far;
+    if (!zoomed){
+      // from the point, two sight lines to the ends of the place, and the light between them
+      far = target.ends.map(([x, y]) => [lantern[0] + (x-lantern[0])*1.25, lantern[1] + (y-lantern[1])*1.25]);
+      beamPath.setAttribute("d", far.map(([x, y]) => `M${LANTERN[0]} ${LANTERN[1]} L ${x.toFixed(1)} ${y.toFixed(1)}`).join(" "));
+    } else {
+      // turned, a single narrow beam from the lantern to the middle of the place, widening a little with distance
+      const [a1, b1] = target.base.map(([x, y]) => toScreen(view, x, y)), c = [(a1[0]+b1[0])/2, (a1[1]+b1[1])/2];
+      const dx = c[0]-lantern[0], dy = c[1]-lantern[1], len = Math.hypot(dx, dy), nx = -dy/len, ny = dx/len, w = len*0.11, ext = 1.35;
+      const f = [lantern[0] + dx*ext, lantern[1] + dy*ext];
+      far = [[f[0] + nx*w*ext, f[1] + ny*w*ext], [f[0] - nx*w*ext, f[1] - ny*w*ext]];
+      beamPath.setAttribute("d", "");
+    }
+    const farFg = far.map(e => screenToFg(view, e));
+    $("#beamlight").setAttribute("points", [LANTERN, ...farFg].map(q => q.map(v => v.toFixed(1)).join(",")).join(" "));
+    const g = $("#beamgrad"), mid = [(farFg[0][0]+farFg[1][0])/2, (farFg[0][1]+farFg[1][1])/2];
     g.setAttribute("x1", LANTERN[0]); g.setAttribute("y1", LANTERN[1]); g.setAttribute("x2", mid[0].toFixed(1)); g.setAttribute("y2", mid[1].toFixed(1));
-    // the fog opens between the same two lines, in scene units
-    const [ox, oy] = zoomed ? toScene(view, ...lantern) : lantern, L = 1400/ZOOM[view].s;
-    const ang = onScreen.map(([x, y]) => Math.atan2(y-lantern[1], x-lantern[0])); let [a0, a1] = ang; if (a1 < a0) [a0, a1] = [a1, a0]; if (a1 - a0 > Math.PI){ [a0, a1] = [a1, a0 + 2*Math.PI]; }
+    // the fog opens between the same two edges, in scene units
+    const [ox, oy] = zoomed ? toScene(view, ...lantern) : lantern, L = 1600/ZOOM[view].s;
+    const ang = far.map(([x, y]) => Math.atan2(y-lantern[1], x-lantern[0])); let [a0, a1] = ang; if (a1 < a0) [a0, a1] = [a1, a0]; if (a1 - a0 > Math.PI){ [a0, a1] = [a1, a0 + 2*Math.PI]; }
     const p = [[ox, oy]]; for (let d=a0; d<=a1+1e-6; d+=(a1-a0)/8) p.push([ox+L*Math.cos(d), oy+L*Math.sin(d)]);
     cone.setAttribute("points", p.map(q=>q.map(v=>v.toFixed(1)).join(",")).join(" "));
   }
@@ -678,7 +702,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   // leans in; tables are the files the figures are cells of. The build's readings.json overwrites the figures.
   const R = {
     home:  { cap:["Three views from one point", "choose a view · the beam turns to it"],
-             title:"Three views from one point", lens:"Every AI tracker asks whether people are using it. This one asks what that use has reached: the people training for exposed work, the pay and jobs behind it, and the money paid for the tasks it touches.",
+             title:"Three views from one point", lens:"Every AI tracker asks whether people are using it. This one asks what that use has reached: the money paid for the tasks it touches, the pay and jobs behind them, and the people training for that work.",
              left:null, right:null, tables:[] },
     city:  { cap:["The city · what has moved", "pay and jobs by skill group, each tested against its own history · a move counts when it passes the lens"],
              title:"What has moved", lens:"Pay and employment by occupation, folded into 25 named skill groups and tested each year against that group's own year-to-year swing. The lens is set in advance at the size a move would have to reach to stand out from that history, which is why a small reading is still the right reading: this is the instrument that will notice. It changes once a year, with each spring release of the wage tables.",
@@ -686,24 +710,24 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
              f2:["4.4","of 4.0","jobs · employment-weighted skill mix · 2025","The quantity side touched its lens this year. Whether it holds is what the next release answers."],
              left:["bridge","turn to the bridge"], right:["valley","raise the telescope"], 
              tables:["outcomes_pay_series_balanced.csv","outcomes_quantity_series_balanced.csv","outcomes_pay_changes.csv"] },
-    bridge:{ cap:["The bridge · the pipeline", "who is training for exposed work · degrees are the channel the counts can see"],
-             title:"The pipeline", lens:"Bachelor's degrees awarded in fields whose graduates go on to exposed occupations, with each field scored by where its graduates actually work. This is the channel policy can count and the one that answers slowly, so a shift here is an early sign rather than a result. It changes once a year with the completions file, and the lateral channel, people arriving from other jobs, joins it when the flows matrix is released.",
-             f1:["41","% of bachelor's","awarded in fields that lead to exposed jobs · 2024","Up from 40 percent the year before. Fields are scored by where their graduates actually work, not by where the catalogue says they should."],
-             f2:["4 to 12","×","lateral arrivals over graduates, by occupation","From the flow account. The lateral matrix itself is the next file to arrive; until then this column carries the education channel only."],
-             left:["valley","raise the telescope"], right:["city","turn to the city"], 
-             tables:["pipeline_completions_by_state.csv","pipeline_enrolment_by_exposure.csv","pipeline_field_exposure_crosswalk.csv","capacity_education_channel.csv"] },
-    valley:{ cap:["The telescope · where usage lands", "what people ask the models to do, priced by the tasks it touches · reach in the wage bill"],
+    bridge:{ cap:["The bridge · where usage lands", "what people ask the models to do, carried across to the pay for those tasks · reach in the wage bill"],
              title:"Where usage lands", lens:"What people ask the models to do, mapped through eighteen thousand tasks onto the dollars paid for them, then onto the skills those tasks use. Usage is where a change starts, so this is the view that moves first and most often, and it says nothing yet about pay. It changes with each platform release, every few months, and three platforms are shown side by side because each sees only its own users.",
              f1:["23","% of wages","reach · Anthropic consumer usage · Feb 2026","18 percent in August 2025, 22 in November, 23 in February. Six percent delegated outright."],
              f2:["2.5","×","concentration on complex problem solving","Usage lands on that skill group at two and a half times its weight in pay; physical and psychomotor work at a third."],
-             left:["city","turn to the city"], right:["bridge","turn to the bridge"], 
+             left:["valley","raise the telescope"], right:["city","turn to the city"], 
              tables:["usage_reach.csv","usage_landing.csv","usage_by_occupation.csv"] },
+    valley:{ cap:["The telescope · the pipeline", "who is training for exposed work, seen from far off · degrees are the channel the counts can see"],
+             title:"The pipeline", lens:"Bachelor's degrees awarded in fields whose graduates go on to exposed occupations, with each field scored by where its graduates actually work. This is the channel policy can count and the one that answers slowly, so a shift here is an early sign rather than a result. It changes once a year with the completions file, and the lateral channel, people arriving from other jobs, joins it when the flows matrix is released.",
+             f1:["41","% of bachelor's","awarded in fields that lead to exposed jobs · 2024","Up from 40 percent the year before. Fields are scored by where their graduates actually work, not by where the catalogue says they should."],
+             f2:["4 to 12","×","lateral arrivals over graduates, by occupation","From the flow account. The lateral matrix itself is the next file to arrive; until then this column carries the education channel only."],
+             left:["city","turn to the city"], right:["bridge","turn to the bridge"], 
+             tables:["pipeline_completions_by_state.csv","pipeline_enrolment_by_exposure.csv","pipeline_field_exposure_crosswalk.csv","capacity_education_channel.csv"] },
   };
   // the same figures, as one line each on the drawing
   const MARK = {
-    bridge: f => `${f[0]}% of new degrees in exposed fields`,
+    bridge: f => `${f[0]}% of wages in tasks users bring`,
     city:   f => `pay moved ${f[0]} of the ${f[1].replace("of ","")} that would show`,
-    valley: f => `${f[0]}% of wages in tasks users bring`,
+    valley: f => `${f[0]}% of new degrees in exposed fields`,
   };
   const TABLE_DIR = "data/tables/";
   const COMMON = ["wagebill_national.csv","exposure_by_occupation.csv","state_exposure.csv","state_adoption_btos.csv","cps_young_worker_gauge.csv"];
@@ -730,14 +754,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function go(view){
     clearTimeout(timer);
     stage.dataset.view = view;
-    $("#life").replaceChildren(); taxiUntil = 0;                               // whatever was crossing the last view stays there
+    $("#life").replaceChildren(); $("#lifeback").replaceChildren(); taxiUntil = 0;                               // whatever was crossing the last view stays there
     beam.classList.add("moving"); clearTimeout(beamTimer); beamTimer = setTimeout(()=>beam.classList.remove("moving"), 1450);
     stage.classList.add("fogout"); clearTimeout(fogTimers[0]); clearTimeout(fogTimers[1]);
     fogTimers[0] = setTimeout(()=>stage.classList.add("turning"), 260);
     fogTimers[1] = setTimeout(()=>{ stage.classList.remove("turning"); requestAnimationFrame(()=>requestAnimationFrame(()=>stage.classList.remove("fogout"))); }, 1450);
     hold(); light(null);
-    if (view === "valley"){ $("#life").setAttribute("mask", "url(#binoc)"); $("#skyall").setAttribute("mask", "url(#binoc)"); }
-    else { $("#life").removeAttribute("mask"); $("#skyall").removeAttribute("mask"); }
+    for (const id of ["life", "skyall", "lifeback"]){ if (view === "valley") $("#"+id).setAttribute("mask", "url(#binoc)"); else $("#"+id).removeAttribute("mask"); }
     const r = R[view];
     // the one drawing scales about the place turned to; the lighthouse in front shrinks to the base of the frame
     const {c, s: zs} = ZOOM[view];
@@ -962,7 +985,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const life = $("#life");
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   function tween(ms, step, done){ const t0 = performance.now(); (function f(t){ const k = Math.min(1, (t - t0)/ms); step(k); if (k < 1) requestAnimationFrame(f); else if (done) done(); })(t0); }
-  let taxiUntil = 0;                        // one robotaxi on the road at a time
+  let taxiUntil = 0, bearUp = false;        // one robotaxi on the road at a time; one bear
   const EVENTS = {
     gull(){ // one to three, each its own size, pace, bob and wingbeat
       const n = 1 + Math.floor(Math.random()*Math.random()*3), ltr = Math.random() < .5, y0 = 130 + Math.random()*140, dur = 12000 + Math.random()*10000;
@@ -970,22 +993,54 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         const flap = ["M-10 0 q 10 -9 20 0 M10 0 q 10 -9 20 0", "M-10 0 q 10 -2 20 0 M10 0 q 10 -2 20 0"];
         const w = el("path", {d:flap[0]}, g); let i = 0; const flapper = setInterval(()=>{ w.setAttribute("d", flap[i++ % 2]); }, 200 + Math.random()*140);
         tween(dur*(.95 + Math.random()*.1), k=>{ const x = ltr ? -40 - dx + k*1740 : 1640 + dx - k*1740; g.setAttribute("transform", `translate(${x},${y0 + dy + Math.sin(k*fq + ph)*amp}) scale(${sc})`); }, ()=>{ clearInterval(flapper); g.remove(); }); } },
-    plane(){ // an airliner high over, one coming in to land with its gear down, one climbing out and folding its gear, or a small jet in a hurry
-      const kind = ["cruise","landing","takeoff","jet"][Math.floor(Math.random()*4)];
-      const g = el("g", {class:"thin"}, life), ship = el("g", {}, g);
-      if (kind === "jet") el("path", {d:"M-22 0 L 20 0 Q 25 0 23 -2 M-2 0 L -10 -7 M-2 0 L -10 6 M-19 0 L -23 -9 M-27 -9 L -19 -9"}, ship);
-      else el("path", {d:"M-30 0 L 30 0 L 32 -2 M-6 0 L -18 -12 M-6 0 L -18 12 M20 0 L 14 -9 M-28 0 L -33 -7"}, ship);
-      const gear = el("path", {d:"M 10 1 L 10 6 M -6 1 L -6 6 M 9 7 L 11 7 M -7 7 L -5 7", class:"hair"}, ship); gear.style.opacity = (kind === "landing" || kind === "takeoff") ? 1 : 0;
-      const light = el("circle", {cx:-30, cy:0, r:1.6, class:"solid"}, ship); let on = false; const blink = setInterval(()=>{ on = !on; light.style.opacity = on ? 1 : 0; }, 600 + Math.random()*300);
-      const spec = { cruise:{ ltr: Math.random() < .5, y:[90 + Math.random()*40, 100 + Math.random()*40], dur: 36000 + Math.random()*10000, s:.7 },
-                     landing:{ ltr:true, y:[110 + Math.random()*30, 300], dur: 24000 + Math.random()*6000, s:1 },
-                     takeoff:{ ltr:false, y:[320, 70 + Math.random()*30], dur: 22000 + Math.random()*6000, s:1 },
-                     jet:{ ltr: Math.random() < .5, y:[70 + Math.random()*40, 60 + Math.random()*50], dur: 14000 + Math.random()*5000, s:.6 } }[kind];
-      const wob = Math.random()*6;
-      tween(spec.dur, k=>{ const x = spec.ltr ? -80 + k*1760 : 1680 - k*1760, e = kind === "takeoff" ? k*k : kind === "landing" ? 1 - (1-k)*(1-k) : k, y = spec.y[0] + (spec.y[1] - spec.y[0])*e + Math.sin(k*5 + wob)*1.5;
-        if (kind === "takeoff") gear.style.opacity = Math.max(0, 1 - (k-.25)*6);
-        const climb = kind === "takeoff" ? -8 : kind === "landing" ? 5 : 0;
-        g.setAttribute("transform", `translate(${x},${y}) scale(${spec.ltr ? spec.s : -spec.s},${spec.s}) rotate(${spec.ltr ? climb : -climb})`); }, ()=>{ clearInterval(blink); g.remove(); }); },
+    plane(){ // several kinds, several paths: across high, in to land, up from behind the city, across and away, round and down behind the skyline, a small jet
+      const view = stage.dataset.view, kinds = ["cruise","landing","takeoff","away","turn","jet"], kind = PLANE_KIND || kinds[Math.floor(Math.random()*kinds.length)];
+      const g = el("g", {}, $("#lifeback")), ship = el("g", {class:"thin"}, g), P = "fill:var(--paper)";
+      if (kind === "jet"){
+        el("path", {d:"M-22 -3 L 15 -2.6 Q 23 -2.2 24 0 Q 22 2 15 2 L -16 2 Q -20 1.4 -22 -3 Z", style:P}, ship);
+        el("path", {d:"M-21 -2.8 L -25 -12 L -20 -12 L -15 -2.6 Z M -28 -12 L -17 -12", style:P}, ship);
+        el("path", {d:"M -17 -4.5 L -8 -4.5 Q -6 -3.2 -8 -2 L -17 -2 Z", style:P}, ship);
+        el("path", {d:"M -2 1 L -10 5.5 L -6 5.5 L 5 1 Z", style:P}, ship);
+        el("path", {d:"M -12 -0.5 L 12 -0.5", class:"hair", "stroke-dasharray":"1.2 2.2"}, ship);
+      } else {
+        el("path", {d:"M-33 -4 L 24 -3.2 Q 34 -2.6 35.5 0 Q 33.5 2.7 24 2.7 L -22 2.7 Q -28 2.1 -33 -4 Z", style:P}, ship);
+        el("path", {d:"M-32.5 -3.6 L -36.5 -16 L -30.5 -16 L -22 -3.4 Z", style:P}, ship);
+        el("path", {d:"M -29 -1.2 L -37 0.4 L -26 0.6", class:"thin"}, ship);
+        el("path", {d:"M -3 1.2 L -15 8 L -9.5 8 L 7 1.2 Z", style:P}, ship);
+        el("path", {d:"M -3 4.2 L 5 4.2 Q 7.2 5.6 5 7 L -3 7 Z", style:P}, ship);
+        el("path", {d:"M -24 -1 L 26 -0.6", class:"hair", "stroke-dasharray":"1.2 2.4"}, ship);
+      }
+      const gear = el("path", {d:"M 13 2.7 L 13 7 M -5 2.7 L -5 7 M 11.8 7.6 a 1.2 1.2 0 1 0 2.4 0 a 1.2 1.2 0 1 0 -2.4 0 M -6.2 7.6 a 1.2 1.2 0 1 0 2.4 0 a 1.2 1.2 0 1 0 -2.4 0", class:"hair"}, ship);
+      gear.style.opacity = (kind === "landing" || kind === "takeoff") ? 1 : 0;
+      // after dusk: red at the near wingtip, green showing past the fuselage, a white strobe on the fin
+      const tip = kind === "jet" ? [-10, 5.5] : [-15, 8];
+      const red = el("circle", {cx:tip[0], cy:tip[1], r:2.4, class:"navlight", style:"fill:#E0443A;stroke:none"}, ship);
+      const green = el("circle", {cx:-6, cy:-3.6, r:2.2, class:"navlight", style:"fill:#46C271;stroke:none"}, ship);
+      const strobe = el("circle", {cx: kind === "jet" ? -24 : -35, cy: kind === "jet" ? -12 : -16, r:2, class:"strobe", style:"fill:#FFFFFF;stroke:none"}, ship);
+      const beat = (.9 + Math.random()*.9).toFixed(2) + "s"; red.style.setProperty("--nav", beat); green.style.setProperty("--nav", beat); green.style.animationDelay = "-" + (Math.random()).toFixed(2) + "s";
+      // where it rises from, or sinks behind: the city, which sits differently in each view
+      const behind = { home:[1010, 262], city:[780, 300], bridge:[1250, 300], valley:[800, 300] }[view];
+      const L2R = Math.random() < .5, sx = L2R ? -90 : 1690, ex = L2R ? 1690 : -90;
+      const bez = (p0, p1, p2, p3, t) => { const u = 1-t; return [0,1].map(i => u*u*u*p0[i] + 3*u*u*t*p1[i] + 3*u*t*t*p2[i] + t*t*t*p3[i]); };
+      const hi = 80 + Math.random()*60;
+      const path = {
+        cruise:  { dur: 34000 + Math.random()*12000, s:[.62, .62], at: t => [sx + (ex-sx)*t, hi + Math.sin(t*4)*2] },
+        jet:     { dur: 13000 + Math.random()*5000,  s:[.6, .6], at: t => [sx + (ex-sx)*t, hi - 10 + t*(Math.random()<.5?1:-1)*0] },
+        landing: { dur: 24000 + Math.random()*6000,  s:[.7, 1], at: t => bez([sx, 110], [sx + (ex-sx)*.35, 140], [sx + (ex-sx)*.7, 250], [ex, 300 + Math.random()*0], t) },
+        takeoff: { dur: 20000 + Math.random()*6000,  s:[.45, .8], at: t => bez(behind, [behind[0] + (L2R?1:-1)*120, behind[1] - 40], [behind[0] + (L2R?1:-1)*500, 120], [behind[0] + (L2R?1:-1)*1100, 20], t), gearUp:true },
+        away:    { dur: 26000 + Math.random()*8000,  s:[.6, .12], at: t => bez([sx, 170], [800, 175], [L2R ? 1100 : 500, 110], [L2R ? 1150 : 450, 30], t), fade:true },
+        turn:    { dur: 26000 + Math.random()*8000,  s:[.55, .16], at: t => bez([ex, 120], [L2R ? 1100 : 500, 140], [behind[0] + (L2R?160:-160), behind[1] - 70], [behind[0], behind[1] + 10], t) },
+      }[kind];
+      let prev = path.at(0);
+      tween(path.dur, k=>{
+        const [x, y] = path.at(k), [nx, ny] = path.at(Math.min(1, k + .004)), dx = nx - x, dy = ny - y;
+        const dir = dx >= 0 ? 1 : -1; let rot = Math.atan2(dy, Math.abs(dx))*180/Math.PI * dir; rot = Math.max(-30, Math.min(30, rot));
+        const sc = path.s[0] + (path.s[1] - path.s[0])*k;
+        if (path.gearUp) gear.style.opacity = Math.max(0, 1 - (k-.2)*6);
+        if (path.fade) g.style.opacity = Math.min(1, (1-k)*6);
+        g.setAttribute("transform", `translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(dir*sc).toFixed(3)},${sc.toFixed(3)})`);
+        prev = [x, y];
+      }, ()=>g.remove()); },
     rocket(){ const view = stage.dataset.view; if (view === "city") return EVENTS.gull();
       // it lifts from behind the hills south of the city, or, through the eyepieces, from the south bay's campus
       const [x0, y0] = view === "valley" ? [930, 262] : view === "home" ? [1540, 344] : [1480, toScreen("bridge", 0, 338)[1]];
@@ -1020,13 +1075,21 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const car = el("g", {transform:`scale(${S})`}, g);
       el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 Z", class:"thin", style:"fill:var(--paper)"}, car);
       el("path", {d:"M-10 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M4 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M-8 -14 L -6 -8 M 10 -14 L 8 -8", class:"thin", style:"fill:var(--paper)"}, car);
+      el("path", {d:"M -16 -6 L -40 -11 L -40 -1 Z", class:"carlight", style:"fill:#F4D98A;stroke:none;opacity:.8"}, car);
+      el("circle", {cx:-15.5, cy:-5.5, r:1.3, class:"carlight", style:"fill:#FFF3C4;stroke:none"}, car);
+      el("rect", {x:14, y:-8, width:2.2, height:3.2, class:"tail", style:"fill:#E0443A;stroke:none"}, car);
       const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, car); let d = 0; const spin = setInterval(()=>{ dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
       // the water, from the drawn hydrant's cap, pouring toward the car
       const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${-k},${k})`}, life); spout.style.opacity = 0;
       for (let i=0;i<9;i++) el("path", {d:`M0 -17 q ${6 + i*2} ${-14 - i*3} ${14 + i*4} ${-2 + i*2} M${14 + i*4} ${-2 + i*2} l 1 3`}, spout);
       const stop = hx + 20*S;
-      tween(11000*(.85 + Math.random()*.3), k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*2.5*(1-k)/.11 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .89) spout.style.opacity = Math.min(1, (k-.89)*12); },
-        ()=>{ tween(2200, k=>{ spout.style.opacity = 1; }, ()=>{ tween(900, k=>{ car.setAttribute("transform", `scale(${S*(1 - 2*k)}, ${S})`); }, ()=>{ tween(6000, k=>{ g.setAttribute("transform", `translate(${stop + k*k*(1700-stop)},${y})`); spout.style.opacity = 1 - k; }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); }); }); }); }); },
+      tween(11000*(.85 + Math.random()*.3), k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*2.5*(1-k)/.11 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .86) car.classList.add("braking"); if (k > .89) spout.style.opacity = Math.min(1, (k-.89)*12); },
+        ()=>{ tween(2200, k=>{ spout.style.opacity = 1; }, ()=>{ tween(900, k=>{ car.setAttribute("transform", `scale(${S*(1 - 2*k)}, ${S})`); }, ()=>{ car.classList.remove("braking"); tween(6000, k=>{ g.setAttribute("transform", `translate(${stop + k*k*(1700-stop)},${y})`); spout.style.opacity = 1 - k; }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); }); }); }); }); },
+    bear(){ if (stage.dataset.view !== "bridge" || bearUp) return EVENTS.gull(); bearUp = true;
+      // up over the rock, a look one way and the other, and down again
+      const h = $("#bearhead"); const at = (y, fx) => h.setAttribute("transform", `translate(0,${y.toFixed(2)}) scale(${fx},1)`);
+      tween(1800, k=>at(8 - 17.5*(1-(1-k)**2), 1), ()=>{ setTimeout(()=>{ at(-9.5, -1); setTimeout(()=>{ at(-9.5, 1);
+        setTimeout(()=>tween(1400, k=>at(-9.5 + 17.5*k*k, 1), ()=>{ bearUp = false; }), 1600); }, 1400); }, 1500); }); },
     gust(){ stage.classList.add("gust"); document.querySelectorAll(".gull").forEach(p=>{ p.style.transition = "transform .8s"; p.style.transform = "rotate(-22deg)"; });
       setTimeout(()=>{ stage.classList.remove("gust"); }, 5000); },
     ferry(){ if (stage.dataset.view !== "bridge") return EVENTS.gull();
@@ -1034,7 +1097,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const y = 530 + Math.random()*50, dur = 28000 + Math.random()*14000, bob = 1 + Math.random()*1.5;
       tween(dur, k=>{ g.setAttribute("transform", `translate(${700 + k*1000},${y + Math.sin(k*20)*bob})`); }, ()=>g.remove()); },
   };
-  const WEIGHTS = [["gull",6],["plane",3],["gust",2],["ferry",1],["rocket",2],["robotaxi",1]];
+  const WEIGHTS = [["gull",6],["plane",4],["gust",2],["ferry",1],["rocket",2],["robotaxi",1],["bear",2]];
+  const PLANE_KIND = params.get("plane");
   const FORCE_FAIL = params.get("rocket") === "fail";
   const WELCOME = { city:"robotaxi", bridge:"ferry", home:"gull", valley:"gull" };
   let welcomeTimer = null;
