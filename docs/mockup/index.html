@@ -107,7 +107,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .halo{fill:var(--gold);stroke:none;opacity:0;transition:opacity .6s}
 .avlight,.shiplight{opacity:0}
 .dusk .avlight,.night .avlight{animation:av 2s steps(1) infinite}
-@keyframes av{0%{opacity:1}45%{opacity:.08}}
+@keyframes av{0%{opacity:.9}20%{opacity:.04}}
+.avlight{filter:url(#soft)}
 .dusk .shiplight,.night .shiplight{animation:shipflash 5s steps(1) infinite}
 @keyframes shipflash{0%{opacity:1}10%{opacity:0}}
 .night .lens{animation:occult 4s ease-in-out infinite}
@@ -245,6 +246,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
           <feGaussianBlur in="d" stdDeviation="0.7"/>
         </filter>
         <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="6"/></filter>
+        <filter id="soft" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur in="SourceGraphic" stdDeviation="1.1" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="haze" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="5"/></filter>
         <filter id="lamp" x="-400%" y="-400%" width="900%" height="900%"><feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <filter id="lampwide" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3.5"/></filter>
         <linearGradient id="skygrad" x1="0" y1="0" x2="0" y2="1"><stop id="sky-top" offset="0" stop-color="#BFD3E6" stop-opacity="0"/><stop id="sky-low" offset="1" stop-color="#F2B48C" stop-opacity="0"/></linearGradient>
@@ -405,6 +408,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     el("path", {d:`M${x-15} ${top-6} L ${x+15} ${top-6} M${x-13} ${top-6} Q ${x-13} ${top-20} ${x} ${top-21} Q ${x+13} ${top-20} ${x+13} ${top-6} Z`, style:P}, g);
     el("circle", {cx:x, cy:top-24, r:3, style:P}, g); el("path", {d:`M${x} ${top-27} L ${x} ${top-37}`, class:"thin"}, g);
     el("circle", {cx:x, cy:top+8, r:9, class:"halo", id:"halo"}, g);
+    { const c = el("circle", {cx:x, cy:top-38, r:1.7, class:"avlight", style:"fill:#E0443A;stroke:none"}, g); c.style.animationDuration = "2.1s"; c.style.animationDelay = "-.7s"; }
     // the lamp: a drum on its yoke and a short barrel ending in the lens; it pokes out of the glass on the side it faces
     const lamp = el("g", {id:"lamphead", transform:`translate(${x},${top+8})`}, lampAt);
     el("path", {d:"M -1.5 5 L -1.5 14 M 1.5 5 L 1.5 14", class:"hair"}, lamp);
@@ -514,7 +518,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         d += ` M ${(x + 1 + r()*2).toFixed(1)} ${(y + 1.5).toFixed(1)} q ${(4*k).toFixed(1)} ${(-2*k - r()).toFixed(1)} ${(9*k).toFixed(1)} ${(.5*r()).toFixed(1)}`;
         if (r() < .6) d += ` M ${(x - 4*k + r()*8*k).toFixed(1)} ${(y + 4*k).toFixed(1)} l ${(3*k).toFixed(1)} ${(-.8*k).toFixed(1)}`; }
       g.setAttribute("d", ""); g.innerHTML = ""; el("path", {d}, g); };
-    draw(); setInterval(()=>{ if (!reduced) draw(); }, 260);
+    draw(); setInterval(()=>{ if (!reduced) draw(); }, 1100);
   })();
   // a ridge that falls from the left edge to the water, the Gate's north end on its shoulder
   // the Marin headland: a low rounded shoulder falling to the water at the Gate's north end
@@ -669,17 +673,17 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     tintRect(L, ox+1041, baseY-290, 32, 30, "#9FB7C9").classList.add("nightlight");
     const grid = el("g", {class:"nightlight"}, L); const r = rng(59);
     // red lights for aircraft: Sutro's three masts, the pyramid's tip, the tallest tower's crown; each blinks steadily, out of step with the others
-    const red = (g_, x, y, r = 3) => { const c = el("circle", {cx:x, cy:y, r, class:"avlight lamp", style:"fill:#FF2A1F;stroke:none"}, g_);
-      c.style.animationDuration = (1.8 + Math.random()*.7).toFixed(2) + "s"; c.style.animationDelay = (-Math.random()*3).toFixed(2) + "s"; };
-    red(L, ox+700, baseY-104-108); red(L, ox+692, baseY-104-100, 2.6); red(L, ox+708, baseY-104-100, 2.6);
-    red(L, ox+1142, baseY-238); red(L, ox+1057, baseY-282);
+    const red = (g_, x, y, r = 1.8, period = 1.8 + Math.random()*.7, delay = -Math.random()*3) => { const c = el("circle", {cx:x, cy:y, r, class:"avlight", style:"fill:#E0443A;stroke:none"}, g_);
+      c.style.animationDuration = period.toFixed(2) + "s"; c.style.animationDelay = delay.toFixed(2) + "s"; };
+    { const P = 2.4; red(L, ox+700, baseY-104-108, 1.8, P, 0); red(L, ox+692, baseY-104-100, 1.6, P, -P/3); red(L, ox+708, baseY-104-100, 1.6, P, -2*P/3); }   // Sutro's three, one after another
+    red(L, ox+1142, baseY-238, 1.6); red(L, ox+1057, baseY-282, 1.8);
     for (let i=0;i<4;i++) for (let j=0;j<5;j++){ const b = el("rect", {x:ox+1044+i*7, y:baseY-286+j*6, width:5, height:4, class:"crownblock", style:`fill:#9FB7C9;stroke:none`}, grid); b.style.animationDelay = (-r()*9).toFixed(1) + "s"; }
   }
   drawLights(new Date());
   // on the bridge's two tower tops, red for aircraft; on Alcatraz, a white light for ships
   (function sceneLights(){
     const g = el("g", {}, $("#L-lights .zoom"));
-    for (const x of [300, 620]) for (const dx of [-5, 5]){ const c = el("circle", {cx:x + dx, cy:215, r:1.6, class:"avlight lamp", style:"fill:#FF2A1F;stroke:none"}, g);
+    for (const x of [300, 620]) for (const dx of [-5, 5]){ const c = el("circle", {cx:x + dx, cy:215, r:1, class:"avlight", style:"fill:#E0443A;stroke:none"}, g);
       c.style.animationDuration = (1.9 + Math.random()*.6).toFixed(2) + "s"; c.style.animationDelay = (-Math.random()*3).toFixed(2) + "s"; }
     const a = el("circle", {cx:976.8, cy:330.4, r:1.4, class:"shiplight lamp", style:"fill:#FFFFFF;stroke:none"}, g); a.style.animationDelay = (-Math.random()*5).toFixed(2) + "s";
   })();
@@ -773,7 +777,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   // what each view is, in the scene: the two ends the beam reaches for. The telescope is in front, on the rail.
   // from the point the beam reaches for the whole of the place; once turned, it skims the water to the place's feet
   // ends: the two edges of the light seen from the point; edge: the same once turned to it, running to the place's top and to its foot on the water
-  const TARGET = { city:{ ends:[[1005, 214], [1600, 342]], edge:[[1057, 215], [1600, 341]] }, bridge:{ ends:[[292, 214], [140, 332]], edge:[[300, 210], [150, 337]] }, tele:{ ends:[[1470, 334], [1600, 346]] } };
+  const TARGET = { city:{ ends:[[1005, 214], [1600, 342]], edge:[[1057, 215], [1600, 341]] }, bridge:{ ends:[[292, 214], [140, 332]], edge:[[300, 210], [150, 337]] }, tele:{ ends:[[1180, 470], [1600, 400]] } };
   const beamPath = $("#beam path"); let beamTimer = null; const fogTimers = [];
   // where the lighthouse stands in each view: whole at the point; turned, only its lantern shows, large, at the side you turned from
   const LANTERN = [800, 263];
@@ -814,8 +818,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function light(t){ document.querySelectorAll(".hot").forEach(h=>h.classList.toggle("lit", h.id === "hot-"+t)); }
   // left alone on the point, the beam turns to each view in its own time and holds it lit
   const SWEEP = ["city", "tele", "bridge"]; let sweepTimer = null, sweepAt = 0;
-  function hold(){ clearInterval(sweepTimer); sweepTimer = null; }
-  function sweep(){ hold(); if (stage.dataset.view !== "home") return; const step = ()=>{ const t = SWEEP[sweepAt++ % SWEEP.length]; aim(t); light(t); }; step(); sweepTimer = setInterval(step, 8000); }
+  function hold(){ clearTimeout(sweepTimer); sweepTimer = null; }
+  let sweepLast = null;
+  function sweep(){ hold(); if (stage.dataset.view !== "home") return;
+    const step = ()=>{ const options = SWEEP.filter(t => t !== sweepLast), t = options[Math.floor(Math.random()*options.length)]; sweepLast = t; aim(t); light(t);
+      sweepTimer = setTimeout(step, 6000 + Math.random()*5000); };
+    step(); }
   for (const [id, t] of [["hot-city","city"],["hot-bridge","bridge"],["hot-tele","tele"]]){
     const h = $("#"+id);
     h.addEventListener("mouseenter", ()=>{ hold(); aim(t); light(t); }); h.addEventListener("focus", ()=>{ hold(); aim(t); light(t); });
@@ -1103,7 +1111,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     }
     if (night){ const rs = rng(Math.floor(Date.now()/86400e3)); const n = 4 + Math.floor(rs()*2);
       for (let i=0;i<n;i++){ const x = 480 + rs()*1080, y = 30 + rs()*62, sz = 2 + rs()*1.6;
-        const st = el("path", {d:`M ${x} ${y-sz*2} L ${x+sz*.45} ${y-sz*.45} L ${x+sz*2} ${y} L ${x+sz*.45} ${y+sz*.45} L ${x} ${y+sz*2} L ${x-sz*.45} ${y+sz*.45} L ${x-sz*2} ${y} L ${x-sz*.45} ${y-sz*.45} Z`, class:"star", style:"fill:var(--ink);stroke:none"}, celes);
+        const st = el("path", {d:`M ${x} ${y-sz*2} L ${x+sz*.45} ${y-sz*.45} L ${x+sz*2} ${y} L ${x+sz*.45} ${y+sz*.45} L ${x} ${y+sz*2} L ${x-sz*.45} ${y+sz*.45} L ${x-sz*2} ${y} L ${x-sz*.45} ${y-sz*.45} Z`, class:"star", style:"fill:var(--ink);stroke:none;filter:url(#soft)"}, celes); st.dataset.x = x; st.dataset.y = y;
         st.style.animationDuration = (5 + rs()*7).toFixed(1) + "s"; st.style.animationDelay = (-rs()*10).toFixed(1) + "s"; } }
     // the moon is drawn at its phase and where it is; on a night it has set, the drawing keeps it low over the horizon anyway
     const moonAt = ((moon.alt > 0 || night) && (night || sun.alt < 4) && w.fog < .9) ? inFrame(view, xOfAzimuth(moon.alt > 0 ? moon.az : (moon.az + 180) % 360), yOfAltitude(Math.max(moon.alt, night ? 16 : 0)), 20) : null;
@@ -1113,9 +1121,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       // side is drawn in ink, which is white then; by day the disc is shaded and the lit side is left paper.
       const k = Math.cos(phase*2*Math.PI), sweep = phase < .5 ? 1 : 0;
       const lens = `M ${x} ${y-16} A 16 16 0 0 ${sweep} ${x} ${y+16} A ${Math.abs(k)*16} 16 0 0 ${(k>0) ? 1-sweep : sweep} ${x} ${y-16} Z`;   // the limb on the lit side, then the terminator, bulging away from it past the quarter
-      if (night){ el("circle", {cx:x, cy:y, r:16}, g); el("path", {d:lens, style:"fill:var(--ink);stroke:none;opacity:.85"}, g); }
+      if (night){ el("circle", {cx:x, cy:y, r:24, filter:"url(#haze)", style:"fill:var(--ink);stroke:none;opacity:.12"}, g); el("circle", {cx:x, cy:y, r:16, style:"fill:var(--paper)"}, g); el("path", {d:lens, style:"fill:var(--ink);stroke:none;opacity:.85"}, g); }
       else { el("circle", {cx:x, cy:y, r:16, style:"fill:var(--ink);opacity:.14"}, g); el("path", {d:lens, style:"fill:var(--paper);stroke:none"}, g); el("circle", {cx:x, cy:y, r:16, class:"hair"}, g); }
     }
+    // no star sits in front of the moon or the sun
+    for (const st of celes.querySelectorAll(".star")) for (const at of [moonAt, sunAt]) if (at && Math.hypot(+st.dataset.x - at[0], +st.dataset.y - at[1]) < 40) st.remove();
     const age = (Date.now() - o.time.getTime())/60000;
     stage.classList.toggle("stale", age > 90);
     const dir = ["N","NE","E","SE","S","SW","W","NW"][Math.round(((o.wind_from%360)+360)%360/45)%8];
@@ -1151,6 +1161,14 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       for (let i=0;i<5;i++){ const x = stern - 4 - i*(8 + r()*4), y = wl + (i % 2)*2.2 + r()*1.2; d += ` M ${x.toFixed(1)} ${y.toFixed(1)} q ${-3 - r()} ${(-1.8 - r()).toFixed(1)} ${(-6.5 - r()*2).toFixed(1)} 0`; }
       d += ` M ${bow - 8} ${wl + .5} L ${stern + 4} ${wl + .5}`;                                   // the line where hull meets water, broken a little
       p.setAttribute("d", d); }; }
+  function splashAt(x, y, sc = 1, ms = 1800){
+    const g = el("g", {class:"thin"}, life); let flow = 1;
+    const arcs = []; for (let i=0;i<10;i++) arcs.push(el("path", {d:""}, g));
+    const ring = el("path", {d:"", class:"hair"}, g);
+    const draw = () => arcs.forEach((a, i) => { const side = i % 2 ? 1 : -1, n = i >> 1, h = (6 + n*3.5)*(.8 + Math.random()*.4)*flow*sc, r = (4 + n*3)*(.85 + Math.random()*.3)*(.4 + .6*flow)*sc;
+      a.setAttribute("d", `M ${x} ${y} q ${(side*r*.45).toFixed(1)} ${(-h).toFixed(1)} ${(side*r).toFixed(1)} ${(1.5*sc).toFixed(1)} M ${(x + side*(r + Math.random()*2)).toFixed(1)} ${(y + 2).toFixed(1)} l ${(side*Math.random()*1.5).toFixed(1)} ${(1.5 + Math.random()*2).toFixed(1)}`); });
+    const t = setInterval(draw, 100); draw();
+    tween(ms, k=>{ flow = Math.max(0, 1 - k*1.05); ring.setAttribute("d", `M ${x - (10 + k*26)*sc} ${y + 2} q ${(10 + k*26)*sc} ${-3*sc} ${(20 + k*52)*sc} 0`); ring.style.opacity = 1 - k; }, ()=>{ clearInterval(t); g.remove(); }); }
   let taxiUntil = 0, bearUp = false, rocketUntil = 0, whaleUp = 0, lastPad = 0, ferryUntil = 0;        // one robotaxi on the road at a time; one bear
   const EVENTS = {
     gull(){ if (stage.classList.contains("night")) return; // one to three, each its own size, pace, bob and wingbeat
@@ -1213,42 +1231,68 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       }, ()=>g.remove()); },
     rocket(){ const view = stage.dataset.view; if (view !== "home" && view !== "valley") return 0;
       if (performance.now() < rocketUntil) return 0;
-      // from behind the land, straight up, slow off the pad and gathering speed, its trail of exhaust behind it;
-      // one in three loses its engine: the trail goes, it rises a little further, hangs and wobbles, and falls into the bay
-      const valley = view === "valley", far = $("#lifeback");
+      const valley = view === "valley", far = $("#lifeback"), night = stage.classList.contains("night");
       let x0; do { x0 = valley ? 830 + Math.random()*270 : 1430 + Math.random()*150; } while ((valley && Math.abs(x0 - 930) < 40) || Math.abs(x0 - lastPad) < 40);
       lastPad = x0;
-      const y0 = valley ? 300 : 342;                                                 // below the ridge; the land and the horizon hide it until it clears them
-      const holder = el("g", valley ? {} : {"clip-path":"url(#above-horizon)"}, far), g = el("g", {class:"thin"}, holder);
-      el("path", {d:"M-3 0 L -3 -20 Q 0 -30 3 -20 L 3 0 Z M-3 -5 L -7 2 L -3 0 M 3 -5 L 7 2 L 3 0", style:"fill:var(--paper)"}, g);
-      const plume = el("g", {class:"hair"}, g);
-      const puff = () => { if (plume.childElementCount < 40 && Math.random() < .6) el("path", {d:`M${((Math.random()-.5)*7).toFixed(1)} ${(4 + Math.random()*8).toFixed(1)} l 0 ${(6 + Math.random()*14).toFixed(1)}`}, plume); };
+      const y0 = valley ? 300 : 342, waterY = valley ? 430 : 376 + Math.random()*24;
+      const holder = el("g", valley ? {} : {"clip-path":"url(#above-horizon)"}, far), g = el("g", {class:"thin"}, holder), P = "fill:var(--paper)";
+      // the rocket in two halves, which is how it can come apart
+      const TOP = "M-3 -10 L -3 -20 Q 0 -30 3 -20 L 3 -10 L 1.5 -11.2 L 0 -9.8 L -1.5 -11.5 Z", BOT = "M-3 0 L -3 -10 L -1.5 -11.5 L 0 -9.8 L 1.5 -11.2 L 3 -10 L 3 0 Z M-3 -5 L -7 2 L -3 0 M 3 -5 L 7 2 L 3 0";
+      const plume = el("g", {class:"hair"}, g), flame = el("g", {}, g);
+      el("path", {d:"M -2.6 1 Q -1.2 7 0 13 Q 1.2 7 2.6 1 Z", style:"fill:#F29A3A;stroke:none"}, flame);
+      el("path", {d:"M -1.4 1 Q -.6 4.5 0 7.5 Q .6 4.5 1.4 1 Z", style:"fill:#D8352B;stroke:none"}, flame);
+      const top = el("path", {d:TOP, style:P}, g), bot = el("path", {d:BOT, style:P}, g);
+      const puff = () => { if (plume.childElementCount < 40 && Math.random() < .6) el("path", {d:`M${((Math.random()-.5)*7).toFixed(1)} ${(8 + Math.random()*8).toFixed(1)} l 0 ${(6 + Math.random()*14).toFixed(1)}`}, plume); };
+      const flick = (on, size = 1) => { flame.style.opacity = on ? 1 : 0; if (on) flame.setAttribute("transform", `scale(${(.9 + Math.random()*.2)*size},${(.8 + Math.random()*.45)*size})`); };
       const lean = (valley ? (Math.random() < .5 ? 1 : -1) : 1)*(.3 + Math.random()*.5), pace = .9 + Math.random()*.2;
-      const fails = FORCE_FAIL || Math.random() < 1/3;
+      const mode = params.get("rocket") === "crack" ? "crack" : FORCE_FAIL ? "sputter" : Math.random() < 2/3 ? "fly" : Math.random() < .5 ? "sputter" : "crack";
       rocketUntil = performance.now() + 60000;
       const end = () => { holder.remove(); rocketUntil = performance.now() + 4000; };
-      if (!fails){
+      if (mode === "fly"){
         tween(15000/pace, k=>{ const y = y0 - k*k*(y0 + 90), x = x0 - k*k*70*lean;
-          g.setAttribute("transform", `translate(${x.toFixed(2)},${y.toFixed(2)}) rotate(${(-k*9*lean).toFixed(2)})`);
-          puff(); plume.style.opacity = 1 - k*.6; }, end);
+          g.setAttribute("transform", `translate(${x.toFixed(2)},${y.toFixed(2)}) rotate(${(-k*9*lean).toFixed(2)})`); puff(); flick(true); plume.style.opacity = 1 - k*.6; }, end);
         return 16000; }
-      const lift = 190, coast = 28, top = y0 - lift - coast, waterY = valley ? 430 : 372 + Math.random()*30; let splash = null, fx = x0;
-      tween(13000/pace, k=>{
-        if (k < .36){ const t = k/.36; g.setAttribute("transform", `translate(${(x0 - t*t*18*lean).toFixed(2)},${(y0 - t*t*lift).toFixed(2)}) rotate(${(-t*5*lean).toFixed(2)})`);
-          puff(); }
-        else if (k < .5){ const t = (k-.36)/.14; plume.style.opacity = Math.max(0, 1 - t*4);                                   // the engine cuts: the trail goes, it coasts up and slows
-          g.setAttribute("transform", `translate(${(x0 - 18*lean - t*4*lean).toFixed(2)},${(y0 - lift - (1-(1-t)*(1-t))*coast).toFixed(2)}) rotate(${(-5*lean - t*3*lean).toFixed(2)})`); }
-        else if (k < .6){ const t = (k-.5)/.1;                                                                                      // it hangs and wobbles
-          g.setAttribute("transform", `translate(${(x0 - 22*lean + Math.sin(t*28)*1.4).toFixed(2)},${(top + t*3).toFixed(2)}) rotate(${(-8*lean + Math.sin(t*24)*(6 + t*16)).toFixed(2)})`); }
-        else if (k < .88){ const t = (k-.6)/.28; if (holder.parentNode !== life){ holder.removeAttribute("clip-path"); life.appendChild(holder); }   // and falls forward, into the near water
-          fx = x0 - 22*lean + Math.sin(t*9)*16;
-          g.setAttribute("transform", `translate(${fx.toFixed(2)},${(top + 3 + t*t*(waterY - top - 3)).toFixed(2)}) rotate(${(-8*lean + t*t*400*lean + Math.sin(t*22)*22).toFixed(2)})`); }
-        else { if (!splash){ g.style.opacity = 0; splash = el("g", {class:"thin"}, holder);
-            for (let i=0;i<7;i++){ const a = (-150 + i*20)*Math.PI/180; el("path", {d:`M${fx} ${waterY} l ${Math.cos(a)*8} ${Math.sin(a)*8} l ${Math.cos(a)*10} ${Math.sin(a)*14}`}, splash); }
-            el("path", {d:`M${fx-30} ${waterY+6} q 30 -5 60 0 M${fx-48} ${waterY+14} q 48 -6 96 0`, class:"hair"}, splash); }
-          splash.style.opacity = 1 - (k-.88)/.12; }
-      }, end);
-      return 14000; },
+      // both failures follow the same physics: thrust while the engine runs, then only gravity
+      const A = valley ? 17 : 20, G = 50, T = mode === "crack" ? 3.2 : 4.2, vb = A*T, hT = .5*A*T*T;
+      const smooth = u => { u = Math.max(0, Math.min(1, u)); return u*u*(3 - 2*u); };
+      const puffAt = (x, y, delay) => setTimeout(()=>{ if (!holder.isConnected) return; const c = el("circle", {cx:x, cy:y, r:2, style:`fill:${night ? "#EDEDE6" : "#8A8F96"};stroke:none;opacity:.8`}, holder.parentNode === life ? life : far);
+        tween(1300, k=>{ c.setAttribute("r", (2 + k*7).toFixed(1)); c.setAttribute("cy", (y - k*4).toFixed(1)); c.style.opacity = .8*(1 - k); }, ()=>c.remove()); }, delay);
+      const t0 = performance.now(); let brokeAt = null, pieces = null, done = false;
+      (function step(now){
+        if (!holder.isConnected || done) return;
+        const t = (now - t0)/1000*pace;
+        const h = t < T ? .5*A*t*t : hT + vb*(t - T) - .5*G*(t - T)*(t - T);
+        const x = t < T ? x0 - lean*1.2*t*t : x0 - lean*1.2*T*T - lean*2.4*T*.5*(t - T), y = y0 - h;
+        const apex = T + vb/G;
+        if (mode === "sputter"){
+          // the engine cuts; it coughs twice, a small grey puff each time, and is gone; the rocket coasts up, slows, tips over and falls
+          if (t < T){ flick(true); puff(); }
+          else { const dt = t - T, cough = (dt > .35 && dt < .5) || (dt > .95 && dt < 1.08);
+            flick(cough, .45); plume.style.opacity = Math.max(0, 1 - dt*2);
+            if (cough && !step.c1 && dt < .5){ step.c1 = true; puffAt(x, y + 8, 0); } if (cough && !step.c2 && dt > .95){ step.c2 = true; puffAt(x, y + 8, 0); } }
+          if (t > apex && holder.parentNode !== life){ holder.removeAttribute("clip-path"); life.appendChild(holder); }
+          const rot = -lean*4*Math.min(1, t/T) + lean*176*smooth((t - (apex - .5))/1.8);
+          g.setAttribute("transform", `translate(${x.toFixed(2)},${y.toFixed(2)}) rotate(${rot.toFixed(2)})`);
+          if (t > apex && y >= waterY){ done = true; splashAt(x, waterY, valley ? .8 : .7); return end(); }
+        } else {
+          // it comes apart in two: a crack, the halves spin away from each other, each falls into the bay on its own
+          if (!brokeAt && t >= T){ brokeAt = { x, y, t }; flame.remove(); plume.style.opacity = 0; holder.removeAttribute("clip-path"); life.appendChild(holder);
+            const pop = el("g", {class:"hair"}, holder); for (let i=0;i<6;i++){ const a = i/6*2*Math.PI; el("path", {d:`M ${(x + Math.cos(a)*4).toFixed(1)} ${(y - 10 + Math.sin(a)*4).toFixed(1)} l ${(Math.cos(a)*5).toFixed(1)} ${(Math.sin(a)*5).toFixed(1)}`}, pop); }
+            tween(700, k=>{ pop.style.opacity = 1 - k; }, ()=>pop.remove());
+            top.remove(); bot.remove(); g.setAttribute("transform", "");
+            const mk = (d, cy) => { const w = el("g", {}, holder); el("path", {d, style:P, transform:`translate(0,${-cy})`}, w); return w; };
+            pieces = [{ g:mk(TOP, -19), vx: 14 + Math.random()*6, vy: vb*.9, spin: 260, cy:-19, done:false },
+                      { g:mk(BOT, -5), vx: -10 - Math.random()*6, vy: vb*.6, spin: -190, cy:-5, done:false }]; }
+          if (!brokeAt){ flick(true); puff(); g.setAttribute("transform", `translate(${x.toFixed(2)},${y.toFixed(2)}) rotate(${(-lean*4*t/T).toFixed(2)})`); }
+          else { const dt = t - brokeAt.t; let left = 0;
+            for (const pc of pieces){ if (pc.done) continue; left++;
+              const px = brokeAt.x + pc.vx*dt, py = brokeAt.y + pc.cy - (pc.vy*dt - .5*G*dt*dt);
+              pc.g.setAttribute("transform", `translate(${px.toFixed(2)},${py.toFixed(2)}) rotate(${(pc.spin*dt).toFixed(1)})`);
+              if (dt > .3 && py >= waterY){ pc.done = true; pc.g.remove(); splashAt(px, waterY, valley ? .6 : .5); } }
+            if (!left){ done = true; return end(); } }
+        }
+        requestAnimationFrame(step); })(t0);
+      return 13000; },
     robotaxi(){ if (stage.dataset.view !== "city" || performance.now() < taxiUntil) return 0; taxiUntil = performance.now() + 21000;
       // the city's own units on screen, and the drawn hydrant's place on the shore; it comes in from the west along the front
       const k = ZOOM.city.s*CITY.k, [hx, hy] = toScreen("city", cityX(HYD), CITY.y);
@@ -1272,7 +1316,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       tween(drive, k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*2.5*(1-k)/.11 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .86) car.classList.add("braking"); if (k > .89) spout.style.opacity = 1; },
         ()=>{ tween(2200, k=>{ spout.style.opacity = 1; }, ()=>{ tween(900, k=>{ car.setAttribute("transform", `scale(${S*(1 - 2*k)}, ${S})`); }, ()=>{ car.classList.remove("braking"); tween(6000, k=>{ g.setAttribute("transform", `translate(${stop + k*k*(1700-stop)},${y})`); flow = Math.max(.05, 1 - k*1.05); }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); }); }); }); });
       return drive + 9100; },
-    bear(){ if (stage.dataset.view !== "bridge" || bearUp) return 0; bearUp = true;
+    zzz(){ if (stage.dataset.view !== "bridge" || !stage.classList.contains("night")) return 0;
+      const [bx, by] = toScreen("bridge", 158, 284);
+      for (let i=0;i<3;i++) setTimeout(()=>{ if (stage.dataset.view !== "bridge") return; const z = el("text", {x:bx, y:by, class:"cap", style:`font-size:${10 + i*4}px;fill:var(--ink)`}, life); z.textContent = "z";
+        const dx = 6 + Math.random()*8; tween(3200, k=>{ z.setAttribute("x", (bx + k*dx*3 + Math.sin(k*6)*3).toFixed(1)); z.setAttribute("y", (by - k*44).toFixed(1)); z.style.opacity = k < .2 ? k*5 : 1 - (k - .2)/.8; }, ()=>z.remove()); }, i*700);
+      return 5000; },
+    bear(){ if (stage.dataset.view !== "bridge" || bearUp) return 0; if (stage.classList.contains("night")) return EVENTS.zzz(); bearUp = true;
       // up over the rock, a look one way and the other, and down again
       const h = $("#bearhead"); const at = (y, fx) => h.setAttribute("transform", `translate(0,${y.toFixed(2)}) scale(${fx},1)`);
       // in the rain it brings an umbrella: opened once its head is up, folded before it goes back down
@@ -1336,6 +1385,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       }, ()=>{ g.remove(); cp.remove(); whaleUp = Math.max(0, whaleUp - 1); });
       return dur; },
     boat(){ const view = stage.dataset.view; if (view !== "bridge" && view !== "home") return 0; (Math.random() < .5 && !stage.classList.contains("night") ? EVENTS.sail : EVENTS.cargo)(); return 9000; },
+    muni(){ if (stage.dataset.view !== "home") return 0;
+      const g = el("g", {class:"hair"}, life), P = "fill:var(--paper)", south = Math.random() < .7, dur = 26000 + Math.random()*10000;
+      for (let i=0;i<2;i++){ el("path", {d:`M ${i*10} 0 L ${i*10} -3.4 L ${i*10 + 9} -3.4 L ${i*10 + 9} 0 Z`, style:P}, g); el("path", {d:`M ${i*10 + 1.5} -2.3 l 6 0`}, g);
+        el("rect", {x:i*10 + 1.5, y:-2.8, width:6, height:1.1, class:"carlight", style:"fill:#F8DC8C;stroke:none"}, g); }
+      el("circle", {cx:south ? 19.5 : -.5, cy:-1.2, r:.8, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, g);
+      tween(dur, k=>{ const x = south ? 1014 + k*600 : 1614 - k*600; g.setAttribute("transform", `translate(${(x - 14).toFixed(1)},339.4) scale(1.45)`); }, ()=>g.remove());
+      return 0; },
     bart(){ if (stage.dataset.view !== "valley") return 0;
       // half the trains run left to right, half right to left, nose first either way
       const t = $("#bart"), dur = 10500 + Math.random()*3000, east = Math.random() < .5;
@@ -1411,9 +1467,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
      clocks alongside. Everything is cancelled and restarted when the view changes, and any error in one
      event is caught so the others carry on. */
   const PLAY = {
-    home:   { first:[["rocket", 9000]],                                   features:["whale", "rocket", "boat"],  gap:[12000, 22000], ambient:[["gull", [18000, 34000]], ["plane", [26000, 48000]]] },
+    home:   { first:[["rocket", 9000]],                                   features:["whale", "rocket", "boat"],  gap:[12000, 22000], ambient:[["gull", [18000, 34000]], ["plane", [26000, 48000]], ["muni", [30000, 55000]]] },
     city:   { first:[["robotaxi", 6000], ["cityferry", 24000]],          features:["robotaxi", "cityferry"],    gap:[14000, 24000], ambient:[["gull", [20000, 36000]], ["plane", [28000, 50000]]] },
-    bridge: { first:[["boat", 2500], ["bear", 15000], ["whale", 30000]],  features:["bear", "whale", "boat"],     gap:[12000, 22000], ambient:[["gull", [18000, 34000]], ["plane", [30000, 55000]]] },
+    bridge: { first:[["boat", 2500], ["bear", 15000], ["whale", 30000]],  features:["bear", "whale", "boat"],     gap:[12000, 22000], ambient:[["gull", [18000, 34000]], ["plane", [30000, 55000]], ["zzz", [16000, 28000]]] },
     valley: { first:[["bart", 1500], ["rocket", 13000]],                  features:["bart", "rocket", "bart"],   gap:[5000, 11000],  ambient:[] },
   };
   const rand = ([lo, hi]) => lo + Math.random()*(hi - lo);
