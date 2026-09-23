@@ -499,6 +499,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   (function crests(){ const r = rng(19); for (let i=0;i<12;i++){ const x = r()*W, y = 360 + r()*320; const c = el("path", {d:`M${x} ${y} q 6 -3 12 0 M${x+3} ${y-2} l 2 -2`, class:"crest thin"}, waterG); c.style.animationDelay = (-r()*4).toFixed(2) + "s"; c.style.animationDuration = (3 + r()*3).toFixed(2) + "s"; } })();
   // the Marin headland, near, drawn over the water so the bay ends at its foot; the road out to the point on it
   const headland = el("g", {}); waterG.parentNode.insertBefore(headland, fogG);
+  const ALC = "translate(872,364) scale(1.15) translate(-966,-358)";            // the island's place: nearer the point than the city, clear of both
   (function alcatraz(g){
     // a steep-sided rock, flat on top, the long cellhouse along its crest, the lighthouse at its south end, the water tower low on the north
     const P = "fill:var(--paper)";
@@ -508,16 +509,16 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     for (let u = 956; u < 971; u += 2.6) el("path", {d:`M ${u.toFixed(1)} 338.2 l 1.2 0`, class:"hair"}, g);
     el("path", {d:"M 975 343 L 975.4 331 L 978.2 331 L 978.6 343 M 974.6 331 L 978.9 331 L 976.8 328.6 Z", class:"hair", style:P}, g);   // its lighthouse
     el("path", {d:"M 943.5 347 L 943.5 342 M 947.5 347 L 947.5 342 M 942.5 342 L 948.5 342 L 948.5 339 L 942.5 339 Z", class:"hair", style:P}, g);   // the water tower on its legs
-  })(headland);
+  })(el("g", {transform:ALC}, headland));
   // where something solid stands in the water, the water breaks around it, and keeps breaking
   (function foam(){
-    const g = $("#foam"), spots = [[620, 362, 1.2, "tower"], [612, 362, .9, "tower"], [940, 358, .5, "island"], [966, 358.5, .5, "island"], [992, 358, .5, "island"], [394, 347, 1, "shore"], [372, 351, .9, "shore"], [348, 355, .9, "shore"], [322, 358, .8, "shore"], [298, 360, .8, "shore"], [270, 362, .7, "shore"]];
+    const g = $("#foam"), spots = [[620, 362, 1.2, "tower"], [612, 362, .9, "tower"], [842, 364, .55, "island"], [872, 364.6, .55, "island"], [902, 364, .55, "island"], [394, 347, 1, "shore"], [372, 351, .9, "shore"], [348, 355, .9, "shore"], [322, 358, .8, "shore"], [298, 360, .8, "shore"], [270, 362, .7, "shore"]];
     const draw = () => { const r = Math.random; let d = "";
       for (const [x, y, k] of spots){
         d += ` M ${(x - 9*k - r()*3).toFixed(1)} ${(y + .5).toFixed(1)} q ${(4*k).toFixed(1)} ${(-2.4*k - r()*1.2).toFixed(1)} ${(8*k).toFixed(1)} 0`;
         d += ` M ${(x + 1 + r()*2).toFixed(1)} ${(y + 1.5).toFixed(1)} q ${(4*k).toFixed(1)} ${(-2*k - r()).toFixed(1)} ${(9*k).toFixed(1)} ${(.5*r()).toFixed(1)}`;
         if (r() < .6) d += ` M ${(x - 4*k + r()*8*k).toFixed(1)} ${(y + 4*k).toFixed(1)} l ${(3*k).toFixed(1)} ${(-.8*k).toFixed(1)}`; }
-      g.setAttribute("d", ""); g.innerHTML = ""; el("path", {d}, g); };
+      g.replaceChildren(); el("path", {d}, g); };
     draw(); setInterval(()=>{ if (!reduced) draw(); }, 1100);
   })();
   // a ridge that falls from the left edge to the water, the Gate's north end on its shoulder
@@ -685,7 +686,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const g = el("g", {}, $("#L-lights .zoom"));
     for (const x of [300, 620]) for (const dx of [-5, 5]){ const c = el("circle", {cx:x + dx, cy:215, r:1, class:"avlight", style:"fill:#E0443A;stroke:none"}, g);
       c.style.animationDuration = (1.9 + Math.random()*.6).toFixed(2) + "s"; c.style.animationDelay = (-Math.random()*3).toFixed(2) + "s"; }
-    const a = el("circle", {cx:976.8, cy:330.4, r:1.4, class:"shiplight lamp", style:"fill:#FFFFFF;stroke:none"}, g); a.style.animationDelay = (-Math.random()*5).toFixed(2) + "s";
+    const a = el("circle", {cx:884.4, cy:331.3, r:1.4, class:"shiplight lamp", style:"fill:#FFFFFF;stroke:none"}, g); a.style.animationDelay = (-Math.random()*5).toFixed(2) + "s";
   })();
 
   /* ---------- the coin viewer, small and large ---------- */
@@ -891,7 +892,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function go(view){
     clearTimeout(timer);
     stage.dataset.view = view;
-    $("#life").replaceChildren(); $("#lifeback").replaceChildren(); taxiUntil = 0;                               // whatever was crossing the last view stays there
+    $("#life").replaceChildren(); $("#lifeback").replaceChildren(); taxiUntil = 0; rocketUntil = 0; ferryUntil = 0; bartRun++;                               // whatever was crossing the last view stays there
     beam.classList.add("moving"); clearTimeout(beamTimer); beamTimer = setTimeout(()=>beam.classList.remove("moving"), 1450);
     stage.classList.add("fogout"); clearTimeout(fogTimers[0]); clearTimeout(fogTimers[1]);
     fogTimers[0] = setTimeout(()=>stage.classList.add("turning"), 260);
@@ -1054,7 +1055,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   // blue at night. Each is a pair of stops keyed to the sun's altitude and blended between the keys.
   // by the sun's height: pale and hazy low in the sky, fuller and deeper blue overhead as it climbs
   const SKYKEYS = [[-18, ["#1B2238", .3, "#1B2238", .12]], [-7, ["#7A7CA6", .2, "#E9A27A", .16]], [-1, ["#C4BEDD", .2, "#F2B48C", .22]],
-                   [6, ["#BFD3E6", .15, "#F4C9A6", .1]], [18, ["#B6CEE4", .17, "#E4ECF1", .06]], [34, ["#9DBFDF", .22, "#D6E4EE", .07]], [58, ["#86B0DA", .27, "#CADDEC", .08]]];
+                   [6, ["#BFD3E6", .16, "#F4C9A6", .1]], [16, ["#BFD3E6", .16, "#DCE7EF", .06]], [34, ["#9DBFDF", .22, "#D6E4EE", .07]], [58, ["#86B0DA", .27, "#CADDEC", .08]]];
   function hexLerp(a, b, t){ const A = a.match(/\w\w/g).map(h=>parseInt(h,16)), B = b.match(/\w\w/g).map(h=>parseInt(h,16)); return "#" + A.map((v,i)=>Math.round(v + (B[i]-v)*t).toString(16).padStart(2,"0")).join(""); }
   function skyColour(sun, key){
     const a = Math.max(SKYKEYS[0][0], Math.min(SKYKEYS[SKYKEYS.length-1][0], sun.alt)); let i = 0; while (i < SKYKEYS.length-2 && a > SKYKEYS[i+1][0]) i++;
@@ -1062,11 +1063,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const top = $("#sky-top"), low = $("#sky-low");
     top.setAttribute("stop-color", hexLerp(k0[0], k1[0], t)); top.setAttribute("stop-opacity", (k0[1] + (k1[1]-k0[1])*t).toFixed(3));
     low.setAttribute("stop-color", hexLerp(k0[2], k1[2], t)); low.setAttribute("stop-opacity", (k0[3] + (k1[3]-k0[3])*t).toFixed(3));
-    // late in the day, a little warmth low down
-    if (sun.az > 180 && sun.alt > 6 && sun.alt < 30){ const w = 1 - (sun.alt - 6)/24; low.setAttribute("stop-color", hexLerp(low.getAttribute("stop-color"), "#F1DCC4", .5*w)); }
     // then the weather: overcast lifts the sky toward a pale white-grey, a storm or rain lowers it to grey; light cloud keeps the day's blue
     const over = { overcast:["#E7E7E3", .6, .1], fog:["#ECECE8", .6, .12], "thick fog":["#EFEFEC", .8, .14], rain:["#A9ADB2", .6, .24], storm:["#7E858E", .85, .34] }[key];
-    if (over && sun.alt > -6){ const [c, f, op] = over;
+    if (over && sun.alt > 6 && stage.dataset.aw !== "off"){ const [c, f, op] = over;
       for (const st of [top, low]){ st.setAttribute("stop-color", hexLerp(st.getAttribute("stop-color"), c, f)); st.setAttribute("stop-opacity", Math.max(+st.getAttribute("stop-opacity"), op).toFixed(3)); } }
   }
   let current = { preset:"fog", rainLevel:0 };
@@ -1141,7 +1140,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     row($("#lab-sky"), skies.map(k=>[k,k]), k=>{ FORCED = k === "live" ? null : k; OBS = FORCED ? skyFor(FORCED) : LIVE; });
     row($("#lab-hour"), hours, h=>{ HOUR = h; });
   })();
-  $("#tg-aw").addEventListener("change", e=>{ stage.dataset.aw = e.target.checked ? "on":"off"; });
+  $("#tg-aw").addEventListener("change", e=>{ stage.dataset.aw = e.target.checked ? "on":"off"; drawSky(OBS, stage.dataset.view); });
   $("#tg-ak").addEventListener("change", e=>{ stage.dataset.ak = e.target.checked ? "on":"off"; });
 
   /* ---------- the life on the bay: one thing at a time, now and then ----------
@@ -1169,7 +1168,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       a.setAttribute("d", `M ${x} ${y} q ${(side*r*.45).toFixed(1)} ${(-h).toFixed(1)} ${(side*r).toFixed(1)} ${(1.5*sc).toFixed(1)} M ${(x + side*(r + Math.random()*2)).toFixed(1)} ${(y + 2).toFixed(1)} l ${(side*Math.random()*1.5).toFixed(1)} ${(1.5 + Math.random()*2).toFixed(1)}`); });
     const t = setInterval(draw, 100); draw();
     tween(ms, k=>{ flow = Math.max(0, 1 - k*1.05); ring.setAttribute("d", `M ${x - (10 + k*26)*sc} ${y + 2} q ${(10 + k*26)*sc} ${-3*sc} ${(20 + k*52)*sc} 0`); ring.style.opacity = 1 - k; }, ()=>{ clearInterval(t); g.remove(); }); }
-  let taxiUntil = 0, bearUp = false, rocketUntil = 0, whaleUp = 0, lastPad = 0, ferryUntil = 0;        // one robotaxi on the road at a time; one bear
+  let bartRun = 0, taxiUntil = 0, bearUp = false, rocketUntil = 0, whaleUp = 0, lastPad = 0, ferryUntil = 0;        // one robotaxi on the road at a time; one bear
   const EVENTS = {
     gull(){ if (stage.classList.contains("night")) return; // one to three, each its own size, pace, bob and wingbeat
       const n = 1 + Math.floor(Math.random()*Math.random()*3), ltr = Math.random() < .5, y0 = 130 + Math.random()*140, dur = 12000 + Math.random()*10000;
@@ -1259,7 +1258,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         tween(1300, k=>{ c.setAttribute("r", (2 + k*7).toFixed(1)); c.setAttribute("cy", (y - k*4).toFixed(1)); c.style.opacity = .8*(1 - k); }, ()=>c.remove()); }, delay);
       const t0 = performance.now(); let brokeAt = null, pieces = null, done = false;
       (function step(now){
-        if (!holder.isConnected || done) return;
+        if (!holder.isConnected){ rocketUntil = 0; return; } if (done) return;
         const t = (now - t0)/1000*pace;
         const h = t < T ? .5*A*t*t : hT + vb*(t - T) - .5*G*(t - T)*(t - T);
         const x = t < T ? x0 - lean*1.2*t*t : x0 - lean*1.2*T*T - lean*2.4*T*.5*(t - T), y = y0 - h;
@@ -1354,7 +1353,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       let x, y;
       if (near){ x = near[0] + (Math.random() < .5 ? -1 : 1)*(40 + Math.random()*30)*near[2]; y = near[1] + (Math.random() - .5)*12; }
       else if (view === "bridge"){ x = 640 + Math.random()*360; y = 420 + Math.random()*90; }
-      else { do { x = 430 + Math.random()*1050; y = 366 + Math.random()*114; } while ((x > 540 && x < 760) || (x > 900 && x < 1030 && y < 392)); }
+      else { do { x = 430 + Math.random()*1050; y = 366 + Math.random()*114; } while ((x > 540 && x < 760) || (x > 815 && x < 930 && y < 398)); }
       const sc = near ? near[2]*(.8 + Math.random()*.2) : view === "bridge" ? 1.4 + Math.random()*.4 : .7 + (y - 360)/120*.5, P = "fill:var(--paper)";
       WHALE_AT = [x, y, sc]; const cid = "whaleclip" + whaleUp;
       const defs = $("#L-life defs"); document.getElementById(cid)?.remove();
@@ -1394,8 +1393,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       return 0; },
     bart(){ if (stage.dataset.view !== "valley") return 0;
       // half the trains run left to right, half right to left, nose first either way
-      const t = $("#bart"), dur = 10500 + Math.random()*3000, east = Math.random() < .5;
-      tween(dur, k=>{ t.setAttribute("transform", east ? `translate(${(300 + k*540).toFixed(1)},0)` : `translate(${(1014 - k*540).toFixed(1)},0) scale(-1,1)`); }, ()=>t.setAttribute("transform", "translate(-400,0)"));
+      const t = $("#bart"), dur = 10500 + Math.random()*3000, east = Math.random() < .5, run = ++bartRun;
+      tween(dur, k=>{ if (run !== bartRun) return; t.setAttribute("transform", east ? `translate(${(300 + k*540).toFixed(1)},0)` : `translate(${(1014 - k*540).toFixed(1)},0) scale(-1,1)`); }, ()=>{ if (run === bartRun) t.setAttribute("transform", "translate(-400,0)"); });
       return dur; },
     cargo(){ const view = stage.dataset.view; if (view !== "bridge" && view !== "home") return 0;
       // a container ship, long and low, stacked with boxes, the house and funnel aft
@@ -1467,7 +1466,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
      clocks alongside. Everything is cancelled and restarted when the view changes, and any error in one
      event is caught so the others carry on. */
   const PLAY = {
-    home:   { first:[["rocket", 9000]],                                   features:["whale", "rocket", "boat"],  gap:[12000, 22000], ambient:[["gull", [18000, 34000]], ["plane", [26000, 48000]], ["muni", [30000, 55000]]] },
+    home:   { first:[["rocket", 9000], ["muni", 24000]],                                   features:["whale", "rocket", "boat"],  gap:[12000, 22000], ambient:[["gull", [18000, 34000]], ["plane", [26000, 48000]], ["muni", [30000, 55000]]] },
     city:   { first:[["robotaxi", 6000], ["cityferry", 24000]],          features:["robotaxi", "cityferry"],    gap:[14000, 24000], ambient:[["gull", [20000, 36000]], ["plane", [28000, 50000]]] },
     bridge: { first:[["boat", 2500], ["bear", 15000], ["whale", 30000]],  features:["bear", "whale", "boat"],     gap:[12000, 22000], ambient:[["gull", [18000, 34000]], ["plane", [30000, 55000]], ["zzz", [16000, 28000]]] },
     valley: { first:[["bart", 1500], ["rocket", 13000]],                  features:["bart", "rocket", "bart"],   gap:[5000, 11000],  ambient:[] },
