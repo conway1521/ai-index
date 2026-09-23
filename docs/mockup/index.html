@@ -1595,18 +1595,19 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         requestAnimationFrame(step); })(t0);
       return 13000; },
     robotaxi(){ if (stage.dataset.view !== "city" || performance.now() < taxiUntil || performance.now() < sfTrainUntil) return 0;
-      // it comes in from the south along the waterfront, the whole length of the city, with time to see the dome turning on its roof;
-      // it runs into the hydrant on the Embarcadero, the water arcs over it, it turns round and drives back the way it came
-      const k = ZOOM.city.s*CITY.k, [hx, hy] = toScreen("city", cityX(HYD), CITY.y), S = 1.05*k, y = hy - 3*S, x0 = 1700, stop = hx + 20*S, P = "fill:var(--paper)";
-      const g = el("g", {class:"thin"}, life), car = el("g", {transform:`scale(${S})`}, g);
+      // it comes in from the north along the waterfront, out from behind the lighthouse, the opposite way to the Caltrain, with time
+      // to see the dome turning on its roof; it runs into the hydrant on the Embarcadero, the water arcs over it, it turns round
+      // and drives back the way it came
+      const k = ZOOM.city.s*CITY.k, [hx, hy] = toScreen("city", cityX(HYD), CITY.y), S = 1.05*k, y = hy - 3*S, x0 = -120, stop = hx - 20*S, P = "fill:var(--paper)";
+      const g = el("g", {class:"thin"}, life), car = el("g", {transform:`scale(${-S},${S})`}, g);
       el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 Z", style:P}, car);
       el("path", {d:"M-10 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M4 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M-8 -14 L -6 -8 M 10 -14 L 8 -8", style:P}, car);
       el("path", {d:"M -16 -6 L -46 -13 L -46 0 Z", class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.55"}, car);
       el("circle", {cx:-15.5, cy:-5.5, r:1.5, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, car);
       el("rect", {x:14, y:-8.2, width:2.4, height:3.6, class:"tail", style:"fill:#D8352B;stroke:none"}, car);
       const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, car); let d = 0; const spin = setInterval(()=>{ if (!g.isConnected) return clearInterval(spin); dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
-      // the water, from the hydrant's cap, arcing east over the car that hit it
-      const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${k},${k})`}, life); spout.style.opacity = 0;
+      // the water, from the hydrant's cap, arcing west over the car that hit it
+      const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${-k},${k})`}, life); spout.style.opacity = 0;
       let flow = 1;
       const sprayD = i => { const j = (.85 + Math.random()*.3)*flow, h = (14 + i*3)*j, r = (14 + i*4)*(.9 + Math.random()*.2)*(.35 + .65*flow); return `M0 -17 q ${(r*.45).toFixed(1)} ${(-h).toFixed(1)} ${r.toFixed(1)} ${(-2 + i*2).toFixed(1)} M${(r + Math.random()*2).toFixed(1)} ${(-1 + i*2 + Math.random()*3).toFixed(1)} l ${(Math.random()*1.5).toFixed(1)} ${(2 + Math.random()*2).toFixed(1)}`; };
       const arcs = []; for (let i=0;i<9;i++) arcs.push(el("path", {d:sprayD(i)}, spout));
@@ -1614,8 +1615,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const drive = 11000*(.85 + Math.random()*.3), total = drive + 2200 + 900 + 6000;
       taxiUntil = performance.now() + total + 3000;
       tween(drive, u=>{ const x = x0 + Math.min(u*1.12, 1)*(stop - x0), bump = u > .89 ? Math.sin((u - .89)*70)*2.5*(1 - u)/.11 : 0;
-          g.setAttribute("transform", `translate(${x + bump},${y})`); if (u > .86) car.classList.add("braking"); if (u > .89) spout.style.opacity = 1; },
-        ()=>tween(2200, ()=>{}, ()=>tween(900, u=>{ car.setAttribute("transform", `scale(${S*(1 - 2*u)}, ${S})`); }, ()=>{ car.classList.remove("braking");
+          g.setAttribute("transform", `translate(${x - bump},${y})`); if (u > .86) car.classList.add("braking"); if (u > .89) spout.style.opacity = 1; },
+        ()=>tween(2200, ()=>{}, ()=>tween(900, u=>{ car.setAttribute("transform", `scale(${-S*(1 - 2*u)}, ${S})`); }, ()=>{ car.classList.remove("braking");
           tween(6000, u=>{ g.setAttribute("transform", `translate(${stop + u*u*(x0 - stop)},${y})`); flow = Math.max(.05, 1 - u*1.05); }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); }); })));
       return total; },
     caltrain(){ if (stage.dataset.view !== "city" || performance.now() < sfTrainUntil || performance.now() < taxiUntil) return 0;
