@@ -373,7 +373,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const el = (tag, attrs={}, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; };
   function rng(seed){ let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
   const W = 1600;                         // the frame is the scene: the view from the point
-  const CH = 756, HYD = 1372;             // in the city's own units: City Hall's x, and the hydrant's on the Marina seawall
+  const CH = 756, HYD = 1330;             // in the city's own units: City Hall's x, and the hydrant's on the Marina seawall
 
   /* ---------- line work ---------- */
   function water(g, x0, x1, y0, y1, seed, dens){
@@ -1386,30 +1386,52 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         }
         requestAnimationFrame(step); })(t0);
       return 13000; },
-    robotaxi(){ if (stage.dataset.view !== "city" || performance.now() < taxiUntil) return 0; taxiUntil = performance.now() + 21000;
-      // the city's own units on screen, and the drawn hydrant's place on the shore; it comes in from the west along the front
-      const k = ZOOM.city.s*CITY.k, [hx, hy] = toScreen("city", cityX(HYD), CITY.y);
-      const g = el("g", {class:"thin"}, life); const S = 1.05*k; const y = hy - 3*S; const x0 = 1700;
-      // a small car with its sensor dome, running the waterfront past the Ferry Building toward the hydrant at the Marina
-      const car = el("g", {transform:`scale(${S})`}, g);
-      el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 Z", class:"thin", style:"fill:var(--paper)"}, car);
-      el("path", {d:"M-10 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M4 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M-8 -14 L -6 -8 M 10 -14 L 8 -8", class:"thin", style:"fill:var(--paper)"}, car);
-      el("path", {d:"M -16 -6 L -46 -13 L -46 0 Z", class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.55"}, car);
-      el("circle", {cx:-15.5, cy:-5.5, r:1.5, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, car);
-      el("rect", {x:14, y:-8.2, width:2.4, height:3.6, class:"tail", style:"fill:#D8352B;stroke:none"}, car);
-      const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, car); let d = 0; const spin = setInterval(()=>{ dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
-      // the water, from the drawn hydrant's cap, arcing over the car that hit it; the car stops on the hydrant's east side, and west of it
-      // the lighthouse stands at the edge of the view, so the spray goes east, where there is room for it
-      const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${k},${k})`}, life); spout.style.opacity = 0;
+    robotaxi(){ if (stage.dataset.view !== "city" || performance.now() < taxiUntil) return 0;
+      // it comes out of the Marina toward us down a cross street, west of the hydrant, turns east onto the waterfront, runs into the
+      // hydrant, turns round, and goes back up the same street into the city. It keeps to the Marina, west of the Ferry Building,
+      // where the BART train never runs. Everything is on screen for the city view, in the city's own units scaled up.
+      const k = ZOOM.city.s*CITY.k, [hx, hy] = toScreen("city", cityX(HYD), CITY.y), [sx] = toScreen("city", 926, CITY.y);
+      const S = 1.05*k, y = hy - 3*S, stop = hx - 20*S, far = 7*S, P = "fill:var(--paper)";
+      const g = el("g", {class:"thin"}, life), side = el("g", {}, g), front = el("g", {}, g), back = el("g", {}, g);
+      // side on, nose to the left as drawn; flipped to face east
+      el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 Z", style:P}, side);
+      el("path", {d:"M-10 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M4 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M-8 -14 L -6 -8 M 10 -14 L 8 -8", style:P}, side);
+      el("path", {d:"M -16 -6 L -46 -13 L -46 0 Z", class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.55"}, side);
+      el("circle", {cx:-15.5, cy:-5.5, r:1.5, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, side);
+      el("rect", {x:14, y:-8.2, width:2.4, height:3.6, class:"tail", style:"fill:#D8352B;stroke:none"}, side);
+      const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, side); let d = 0; const spin = setInterval(()=>{ if (!g.isConnected) return clearInterval(spin); dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
+      // head on and from behind: the same body, the windscreen or the rear window, two lamps
+      const face = (host, lamp, glass) => { el("path", {d:"M-10 0 L 10 0 L 10 -8 L 7 -14 L -7 -14 L -10 -8 Z M -2.5 -14 L -2.5 -18 a 2.5 2 0 1 1 5 0 L 2.5 -14 Z", style:P}, host);
+        el("path", {d:`M -6.5 -13 L 6.5 -13 L 8.5 -8.5 L -8.5 -8.5 Z M -9 0 l 0 2.2 l 3.4 0 l 0 -2.2 M 5.6 0 l 0 2.2 l 3.4 0 l 0 -2.2`, style:P}, host);
+        for (const x of [-7.4, 7.4]) el("circle", {cx:x, cy:-4.6, r:1.3, class:lamp, style:`fill:${glass};stroke:none`}, host); };
+      face(front, "carlight lamp", "#FFF6D2"); face(back, "tail", "#D8352B");
+      el("path", {d:"M -7 -1 L -14 12 L 14 12 L 7 -1 Z", class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.4"}, front);
+      const show = v => { side.style.display = v === side ? "" : "none"; front.style.display = v === front ? "" : "none"; back.style.display = v === back ? "" : "none"; };
+      const at = (x, yy, sxk, syk, op = 1) => { g.setAttribute("transform", `translate(${x.toFixed(1)},${yy.toFixed(1)})`); g.style.opacity = op;
+        for (const v of [side, front, back]) v.setAttribute("transform", `scale(${(sxk*S).toFixed(3)},${(syk*S).toFixed(3)})`); };
+      // the water, from the drawn hydrant's cap, arcing west over the car that hit it
+      const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${-k},${k})`}, life); spout.style.opacity = 0;
       let flow = 1;
       const sprayD = i => { const j = (.85 + Math.random()*.3)*flow, h = (14 + i*3)*j, r = (14 + i*4)*(.9 + Math.random()*.2)*(.35 + .65*flow); return `M0 -17 q ${(r*.45).toFixed(1)} ${(-h).toFixed(1)} ${r.toFixed(1)} ${(-2 + i*2).toFixed(1)} M${(r + Math.random()*2).toFixed(1)} ${(-1 + i*2 + Math.random()*3).toFixed(1)} l ${(Math.random()*1.5).toFixed(1)} ${(2 + Math.random()*2).toFixed(1)}`; };
       const arcs = []; for (let i=0;i<9;i++) arcs.push(el("path", {d:sprayD(i)}, spout));
       const spray = setInterval(()=>{ if (!spout.isConnected) return clearInterval(spray); arcs.forEach((a, i) => a.setAttribute("d", sprayD(i))); }, 110);
-      const stop = hx + 20*S;
-      const drive = 11000*(.85 + Math.random()*.3);
-      tween(drive, k=>{ const x = x0 + Math.min(k*1.12, 1)*(stop-x0); const bump = k > .89 ? Math.sin((k-.89)*70)*2.5*(1-k)/.11 : 0; g.setAttribute("transform", `translate(${x+bump},${y})`); if (k > .86) car.classList.add("braking"); if (k > .89) spout.style.opacity = 1; },
-        ()=>{ tween(2200, k=>{ spout.style.opacity = 1; }, ()=>{ tween(900, k=>{ car.setAttribute("transform", `scale(${S*(1 - 2*k)}, ${S})`); }, ()=>{ car.classList.remove("braking"); tween(6000, k=>{ g.setAttribute("transform", `translate(${stop + k*k*(1700-stop)},${y})`); flow = Math.max(.05, 1 - k*1.05); }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); }); }); }); });
-      return drive + 9100; },
+      const ease = u => u*u*(3 - 2*u), turn = (from, to, ms, done) => tween(ms, u=>{ const half = u < .5; show(half ? from.v : to.v);
+        const w = half ? 1 - u*2 : u*2 - 1, v = half ? from : to; at(v.x, y, w*v.dir, 1); }, done);
+      const out = { x:sx, dir:1 };
+      // down the street toward us, small and far to full size at the waterfront, coming out of the dark if it is night
+      const T = [2400, 520, 2600, 2200, 900, 2400, 520, 2400];
+      show(front);
+      tween(T[0], u=>{ const e = ease(u), sc = .42 + .58*e; at(sx, y - far*(1 - e), sc, sc, Math.min(1, u*3)); }, ()=>
+      turn({ v:front, x:sx, dir:1 }, { v:side, x:sx, dir:-1 }, T[1], ()=>
+      tween(T[2], u=>{ const x = sx + (stop - sx)*Math.min(u*1.12, 1), bump = u > .89 ? Math.sin((u - .89)*70)*2.5*(1 - u)/.11 : 0;
+        at(x - bump, y, -1, 1); if (u > .82) side.classList.add("braking"); if (u > .89) spout.style.opacity = 1; }, ()=>
+      tween(T[3], ()=>{}, ()=>
+      tween(T[4], u=>{ at(stop, y, -(1 - 2*u), 1); }, ()=>{ side.classList.remove("braking");
+      tween(T[5], u=>{ at(stop + (sx - stop)*ease(u), y, 1, 1); flow = Math.max(.05, 1 - u*1.05); }, ()=>
+      turn({ v:side, x:sx, dir:1 }, { v:back, x:sx, dir:1 }, T[6], ()=>
+      tween(T[7], u=>{ const e = ease(u), sc = 1 - .58*e; at(sx, y - far*e, sc, sc, Math.min(1, (1 - u)*3)); }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); })) ); })))));
+      const total = T.reduce((a, b) => a + b, 0); taxiUntil = performance.now() + total + 6000;
+      return total; },
     zzz(){ if (stage.dataset.view !== "bridge" || !stage.classList.contains("night")) return 0;
       const [bx, by] = toScreen("bridge", 158, 284);
       for (let i=0;i<3;i++) setTimeout(()=>{ if (stage.dataset.view !== "bridge") return; const z = el("text", {x:bx, y:by, class:"cap", style:`font-size:${10 + i*4}px;fill:var(--ink)`}, life); z.textContent = "z";
