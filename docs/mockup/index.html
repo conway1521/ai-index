@@ -1020,6 +1020,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     }
     return now;
   }
+  // dawn and dusk in the hour chooser are set by the sun and not the clock, since sunset moves by two hours over the year: each is the
+  // minute today when the sun is 7.5 degrees below the horizon, which is after dark in the drawing, with the purple and orange sky low down
+  function twilight(evening){ const keep = HOUR; let best = evening ? 19.5 : 6.5, gap = 99;
+    for (let m = evening ? 15*60 : 3*60; m < (evening ? 23*60 : 10*60); m += 2){ HOUR = m/60; const a = sunPosition(sfNow()).alt, d = Math.abs(a + 7.5);
+      if (d < gap){ gap = d; best = HOUR; } }
+    HOUR = keep; return Math.round(best*60)/60; }
   function sfClock(d){ return new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",hour:"2-digit",minute:"2-digit",hour12:false}).format(d); }
   function sunPosition(d, haShift=0, decScale=1){
     const n = d.getTime()/86400e3 - 10957.5;                                  // days since J2000
@@ -1167,7 +1173,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   setInterval(()=>{ fetchObservation().then(o=>{ if (o){ LIVE = o; if (!FORCED) OBS = o; } drawSky(OBS, stage.dataset.view); }); }, 600e3);
   // the exploring strip: force a sky or an hour, for looking, not for the page
   (function lab(){
-    const skies = ["live","clear","light cloud","overcast","fog","thick fog","rain","wind","storm"], hours = [["now",null],["dawn",6.5],["morning",9],["midday",12.5],["afternoon",16],["dusk",19.3],["night",22.5]];
+    const skies = ["live","clear","light cloud","overcast","fog","thick fog","rain","wind","storm"], hours = [["now",null],["dawn",twilight(false)],["morning",9],["midday",12.5],["afternoon",16],["dusk",twilight(true)],["night",22.5]];
     const row = (host, items, pick) => items.forEach(([label, v]) => { const b = document.createElement("button"); b.textContent = label; b.onclick = ()=>{ pick(v); host.querySelectorAll("button").forEach(x=>x.classList.toggle("on", x===b)); drawSky(OBS, stage.dataset.view); }; host.appendChild(b); });
     row($("#lab-sky"), skies.map(k=>[k,k]), k=>{ FORCED = k === "live" ? null : k; OBS = FORCED ? skyFor(FORCED) : LIVE; });
     row($("#lab-hour"), hours, h=>{ HOUR = h; });
@@ -1392,8 +1398,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       el("circle", {cx:-15.5, cy:-5.5, r:1.5, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, car);
       el("rect", {x:14, y:-8.2, width:2.4, height:3.6, class:"tail", style:"fill:#D8352B;stroke:none"}, car);
       const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, car); let d = 0; const spin = setInterval(()=>{ dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
-      // the water, from the drawn hydrant's cap, pouring toward the car
-      const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${-k},${k})`}, life); spout.style.opacity = 0;
+      // the water, from the drawn hydrant's cap, arcing over the car that hit it; the car stops on the hydrant's east side, and west of it
+      // the lighthouse stands at the edge of the view, so the spray goes east, where there is room for it
+      const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${k},${k})`}, life); spout.style.opacity = 0;
       let flow = 1;
       const sprayD = i => { const j = (.85 + Math.random()*.3)*flow, h = (14 + i*3)*j, r = (14 + i*4)*(.9 + Math.random()*.2)*(.35 + .65*flow); return `M0 -17 q ${(r*.45).toFixed(1)} ${(-h).toFixed(1)} ${r.toFixed(1)} ${(-2 + i*2).toFixed(1)} M${(r + Math.random()*2).toFixed(1)} ${(-1 + i*2 + Math.random()*3).toFixed(1)} l ${(Math.random()*1.5).toFixed(1)} ${(2 + Math.random()*2).toFixed(1)}`; };
       const arcs = []; for (let i=0;i<9;i++) arcs.push(el("path", {d:sprayD(i)}, spout));
