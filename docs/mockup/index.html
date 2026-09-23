@@ -121,7 +121,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .nightlight{opacity:0;transition:opacity 1.2s}
 .dusk .nightlight{opacity:.45}
 .night .nightlight{opacity:.85}
-.crownblock{animation:flicker 9s ease-in-out infinite}
+.crownblock{animation:none}.dusk .crownblock,.night .crownblock{animation:flicker 9s ease-in-out infinite}
+.stage.asleep *{animation-play-state:paused !important}
 @keyframes flicker{0%,100%{opacity:.15}35%{opacity:.9}60%{opacity:.3}80%{opacity:.7}}
 .night .halo{opacity:.28;filter:url(#glow)}
 
@@ -195,6 +196,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .tables h3{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin:0 0 8px}
 .tables p{margin:0 0 10px;color:var(--ink-2);max-width:80ch;font-size:14px}
 .tables dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0;font-size:13px}
+.skip{position:absolute;left:12px;top:-60px;z-index:60;background:var(--paper);color:var(--ink);border:1px solid var(--ink);padding:8px 12px;font-family:var(--mono);font-size:13px}.skip:focus{top:12px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .tables dt{font-family:var(--display);color:var(--ink)}
 .tables dd{margin:0;font-family:var(--mono);font-size:12px;color:var(--ink-2);line-height:1.7}
@@ -218,6 +220,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .src b{color:var(--ink);font-weight:500}
 .coin .close{margin-top:12px;font-family:var(--mono);font-size:12px;background:transparent;border:1px solid var(--ink);color:var(--ink);padding:5px 12px;cursor:pointer}
 
+@media (forced-colors: active){.scene path,.scene circle,.scene rect{stroke:CanvasText}.scene text{fill:CanvasText}.hot:focus-visible .hit{stroke:Highlight}}
 @media (prefers-reduced-motion: reduce){.fogline,.cloud,.deck,.rain,.water,.water.b,.water.c,.crest,.crownblock,.bart,.star,.lens,.avlight,.shiplight,.navlight,.strobe,.carlight{animation:none !important}.stage>svg,.zoom,.viewer,.beam,.mask-in{transition:none}}
 @media (max-width:820px){
   /* On a phone the drawing is a picture and the figures beneath it are the way in: the labels in the
@@ -231,6 +234,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 }
 </style>
 
+<a class="skip" href="#reading">Skip to the three numbers</a>
 <div class="wrap">
   <header class="top">
     <div class="brand">[ name to come ] <small>MOCKUP</small></div>
@@ -282,7 +286,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         <g id="lh"></g>
         <!-- a small platform off the gallery, and the coin telescope on it, turned south -->
         <g transform="translate(866,285)" id="viewer-small"></g>
-        <g id="viewer-tap" class="tap" role="button" tabindex="0" aria-label="Look through the viewer: the pipeline"><rect x="852" y="258" width="28" height="30" style="fill:transparent;stroke:none"/></g>
+        <g id="viewer-tap" class="tap" tabindex="-1" aria-hidden="true"><rect x="852" y="258" width="28" height="30" style="fill:transparent;stroke:none"/></g>
         <path d="M640 604 L 960 604 M640 604 L 640 630 M720 604 L 720 632 M800 604 L 800 632 M880 604 L 880 630 M960 604 L 960 628" class="thin"/>
         <g class="hot" id="hot-city" tabindex="0" role="button" aria-label="The city: what has moved">
           <path class="hit" d="M800 300 L1600 120 L1600 480 Z"/><path class="hit" d="M1000 120 h560 v200 h-560 Z"/>
@@ -732,8 +736,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const t2 = el("text", {x:0, y:-82, "text-anchor":"middle"}, hood); t2.textContent = "PER MILLION TOKENS";
     el("circle", {cx:-236, cy:-112, r:20}, hood); el("path", {d:"M-236 -132 L -236 -92 M-256 -112 L -216 -112", class:"hair"}, hood);
     const k = el("text", {x:-236, y:-78, "text-anchor":"middle"}, hood); k.textContent = "FOCUS";
-    const hot = el("g", {class:"hot", id:"hot-coin", tabindex:"0", role:"button", "aria-label":"Insert a coin for sources and method"}, hood);
-    el("rect", {x:-110, y:-150, width:220, height:110}, hot);
+    const hot = el("g", {class:"hot", id:"hot-coin", tabindex:"0", role:"button", "aria-label":"Insert a coin: where the numbers come from"}, hood);
+    el("rect", {x:-110, y:-150, width:220, height:110, class:"hit"}, hot);
   })();
 
   /* ---------- the valley ---------- */
@@ -898,11 +902,14 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     document.querySelector(".stamp").lastChild.textContent = `figures from the ${j.built} build`;
     go(stage.dataset.view); }).catch(()=>{});
   function fill(f, id, goTo){ const n = $("#"+id); n.hidden = !f; if (!f) return;
-    n.querySelector(".n").innerHTML = f[0] + "<small>" + f[1] + "</small>"; n.querySelector(".l").textContent = f[2]; n.querySelector(".s").textContent = f[3];
-    if (goTo){ n.dataset.go = goTo; n.tabIndex = 0; n.setAttribute("role", "button"); n.onclick = ()=>go(goTo); n.onkeydown = e=>{ if (e.key==="Enter"||e.key===" "){ e.preventDefault(); go(goTo); } }; }
+    n.querySelector(".n").innerHTML = f[0] + " <small>" + f[1] + "</small>"; n.querySelector(".l").textContent = f[2]; n.querySelector(".s").textContent = f[3];
+    if (goTo){ n.dataset.go = goTo; n.tabIndex = 0; n.setAttribute("role", "button"); n.onclick = ()=>fromFigure(goTo); n.onkeydown = e=>{ if (e.key==="Enter"||e.key===" "){ e.preventDefault(); fromFigure(goTo); } }; }
     else { delete n.dataset.go; n.removeAttribute("role"); n.tabIndex = -1; n.onclick = null; n.onkeydown = null; } }
   let timer = null;
-  const HASH = { bridge:"bridge", city:"city", valley:"telescope" };
+  function fromFigure(view){ const r = stage.getBoundingClientRect(), off = r.bottom < 60 || r.top > innerHeight - 60;
+    if (off) stage.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    go(view); }
+  const HASH = { bridge:"bridge", city:"city", valley:"telescope" }, BASE_TITLE = document.title;
   function go(view, quiet){
     clearTimeout(timer);
     const keyed = stage.contains(document.activeElement) || (document.activeElement && document.activeElement.closest && document.activeElement.closest(".figure"));
@@ -935,11 +942,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     if (typeof drawSky === "function") drawSky(OBS, view);
     if (typeof direct === "function") direct(view);
     // who cannot see the turn hears it; a keyboard stays in the stage, on the way back or on the view it came from
-    $("#announce").textContent = r.cap[0] + ". " + r.cap[1];
+    const lead = view === "home" ? "" : ` ${r.f1[0]} ${r.f1[1]}, ${r.f1[2]}.`;
+    $("#announce").textContent = r.cap[0] + "." + lead;
+    document.title = view === "home" ? BASE_TITLE : `${r.cap[0]} · ${r.f1[0]} ${r.f1[1]} · ${BASE_TITLE}`;
     const prev = lastFrom;
     if (keyed) requestAnimationFrame(()=>{ const t = view === "home" ? $("#hot-" + ({bridge:"bridge", city:"city", valley:"tele"}[prev] || "city")) : home; t && t.focus({preventScroll:true}); });
     lastFrom = view;
-    if (!quiet){ const h = HASH[view] ? "#" + HASH[view] : location.pathname + location.search; if (location.hash !== (HASH[view] ? "#" + HASH[view] : "")) history.replaceState(null, "", h); }
+    if (!quiet){ const h = HASH[view] ? "#" + HASH[view] : location.pathname + location.search; if (location.hash !== (HASH[view] ? "#" + HASH[view] : "")) history.pushState(null, "", h); }
     const valley = $("#valley"), vv = $("#valley-view"), big = $("#viewer-big");
     if (view === "valley"){
       valley.classList.remove("off"); fg.classList.add("off");
@@ -954,7 +963,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   let lastFrom = "home";
   home.addEventListener("click", ()=>go("home"));
   const fromHash = () => ({ bridge:"bridge", city:"city", telescope:"valley" }[location.hash.slice(1)] || "home");
-  addEventListener("hashchange", ()=>{ const v = fromHash(); if (v !== stage.dataset.view) go(v, true); });
+  const follow = ()=>{ const v = fromHash(); if (v !== stage.dataset.view) go(v, true); };
+  addEventListener("hashchange", follow); addEventListener("popstate", follow);
 
   /* ---------- the coin card: three buildings ---------- */
   const SOURCES = [
@@ -978,7 +988,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   let coinFrom = null;
   function coin(){ coinFrom = document.activeElement; $("#coin").hidden = false; const b = vig.querySelector("button"); b.click(); b.focus(); }
   function uncoin(){ if ($("#coin").hidden) return; $("#coin").hidden = true; if (coinFrom && coinFrom.isConnected) coinFrom.focus(); coinFrom = null; }
-  document.addEventListener("keydown", e=>{ if (e.key === "Escape") uncoin(); });
+  document.addEventListener("keydown", e=>{ if (e.key === "Escape") uncoin();
+    if (e.key === "Tab" && !$("#coin").hidden){ const f = [...$("#coin").querySelectorAll("button")]; const i = f.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0){ e.preventDefault(); f[f.length - 1].focus(); } else if (!e.shiftKey && i === f.length - 1){ e.preventDefault(); f[0].focus(); } } });
   $("#hot-coin").addEventListener("click", coin);
   $("#hot-coin").addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); coin(); } });
   $("#coin-close").addEventListener("click", uncoin);
@@ -1193,14 +1205,15 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const dir = ["N","NE","E","SE","S","SW","W","NW"][Math.round(((o.wind_from%360)+360)%360/45)%8];
     $("#obs").innerHTML = `<b>${sfClock(now)} in San Francisco</b> · ${o.station} ${sfClock(o.time)} · ${o.text.toLowerCase()} · wind ${dir} ${o.wind_kmh} km/h${o.temp_c != null ? ` · ${o.temp_c}°C` : ""}${o.sample ? " · sample observation" : age > 90 ? " · last observation" : ""}`;
   }
-  let skyReady = false;
+  let skyReady = false, fitTitle = "";
   function fit(){
     const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
     const u = 1600/w, H = h*u, extra = Math.max(0, H - 700), stamp = document.querySelector(".stamp");
     const room = extra > 0 ? Math.min(extra, ((stamp ? stamp.offsetHeight : 0) + 16)*u) : 0, top = extra - room;
     const sr = stage.getBoundingClientRect(), c = $("#caption").getBoundingClientRect();
     FRAME.title = [0, -top, Math.max(440, (c.right - sr.left)*u + 24), (c.bottom - sr.top)*u - top + 14];
-    if (Math.abs(top - FRAME.top) < 1 && Math.abs(H - FRAME.H) < 1) return;
+    if (Math.abs(top - FRAME.top) < 1 && Math.abs(H - FRAME.H) < 1){ if (skyReady && fitTitle !== FRAME.title.join()) drawSky(OBS, stage.dataset.view); fitTitle = FRAME.title.join(); return; }
+    fitTitle = FRAME.title.join();
     FRAME.top = top; FRAME.H = H;
     for (const s of stage.querySelectorAll(":scope > svg")) s.setAttribute("viewBox", `0 ${(-top).toFixed(1)} 1600 ${H.toFixed(1)}`);
     $("#skygrad").setAttribute("y1", (-top).toFixed(1)); const sw = $("#skywash"); sw.setAttribute("y", (-top - 2).toFixed(1)); sw.setAttribute("height", (344 + top).toFixed(1));
@@ -1208,6 +1221,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   fit(); let fitT = null;
   new ResizeObserver(()=>{ clearTimeout(fitT); fitT = setTimeout(fit, 120); }).observe(stage);
   drawSky(OBS, "home"); skyReady = true;
+  setInterval(()=>{ const b = $("#obs b"); if (b && !document.hidden) b.textContent = `${sfClock(sfNow())} in San Francisco`; }, 30000);
   fetchObservation().then(o=>{ if (o){ LIVE = o; if (!FORCED) OBS = o; drawSky(OBS, stage.dataset.view); } });
   setInterval(()=>{ fetchObservation().then(o=>{ if (o){ LIVE = o; if (!FORCED) OBS = o; } drawSky(OBS, stage.dataset.view); }); }, 600e3);
   // the exploring strip: force a sky or an hour, for looking, not for the page
@@ -1403,7 +1417,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
             if (n > 3) cd += " M .8 -16.4 l 1.4 -1.8"; if (n > 5) cd += " M .5 -9.6 l -1.6 .9"; if (n > 7) cd += " M .6 -3 l 1.5 -.4";
             step.crack.setAttribute("d", n > 1 ? cd : "");
             g.setAttribute("transform", `translate(${x.toFixed(2)},${y.toFixed(2)}) rotate(${(-lean*4).toFixed(2)})`); }
-          else if (!brokeAt){ brokeAt = { x, y, t, vx: -lean*1.2*T }; plume.style.opacity = 0; body.remove(); step.crack.remove(); g.setAttribute("transform", "");
+          else if (!brokeAt){ brokeAt = { x, y, t, vx: -lean*1.2*T }; plume.style.opacity = 0; body.remove(); step.crack?.remove(); if (!step.cut){ step.cut = true; flame.remove(); holder.removeAttribute("clip-path"); life.appendChild(holder); } g.setAttribute("transform", "");
             const vx0 = -lean*1.2*T, vy0 = vb - G*(t - T);
             puffAt(x, y - 12, 0);
             const mk = (d, cx) => { const w = el("g", {}, holder); el("path", {d, style:P, transform:`translate(${-cx},11)`}, w); return w; };
@@ -1661,18 +1675,25 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const rand = ([lo, hi]) => lo + Math.random()*(hi - lo);
   let cues = [];
   function cue(ms, fn){ cues.push(setTimeout(()=>{ let r = 0; try { r = fn(); } catch (e) { console.error(e); } return r; }, ms)); }
-  function direct(view){
+  // no event comes back sooner than this, whatever the schedule says, so a long look never sees the same thing on repeat
+  const COOL = { rocket:120000, whale:45000, fluke:45000, bear:60000, cargo:40000, sail:30000, cityferry:40000, bartsf:60000, bart:12000, robotaxi:30000 }, lastPlayed = {};
+  function direct(view, resume){
     cues.forEach(clearTimeout); cues = [];
     if (reduced || params.get("event")) return;
     const plan = PLAY[view]; let bag = [], lastE = null;
     const next = () => { if (!bag.length){ bag = [...plan.features].sort(()=>Math.random() - .5); if (bag.length > 1 && bag[0] === lastE) bag.push(bag.shift()); } return (lastE = bag.shift()); };
-    const play = name => { let ms = 0; try { ms = EVENTS[name]() || 0; } catch (e) { console.error(e); } return ms; };
+    const play = name => { const now = performance.now(); if (COOL[name] && now - (lastPlayed[name] ?? -1e9) < COOL[name]) return 0;
+      let ms = 0; try { ms = EVENTS[name]() || 0; } catch (e) { console.error(e); } if (ms) lastPlayed[name] = now; return ms; };
     const feature = delay => cue(delay, ()=>{ if (stage.dataset.view !== view) return; const ms = play(next()); feature(Math.max(ms, 3000) + rand(plan.gap)); });
-    let end = 0; for (const [e, ms0] of plan.first){ const ms = ms0*(.7 + Math.random()*.6); cue(ms, ()=>{ if (stage.dataset.view === view) play(e); }); end = Math.max(end, ms); }
+    // the first act plays when a view opens; coming back to the tab picks up the schedule where it was
+    let end = 0; if (!resume) for (const [e, ms0] of plan.first){ const ms = ms0*(.7 + Math.random()*.6); cue(ms, ()=>{ if (stage.dataset.view === view) play(e); }); end = Math.max(end, ms); }
     feature(end + 8000 + rand(plan.gap));
     for (const [e, range] of plan.ambient){ const again = d => cue(d, ()=>{ if (stage.dataset.view === view) play(e); again(rand(range)); }); again(rand(range)); }
   }
-  document.addEventListener("visibilitychange", ()=>{ if (document.hidden){ cues.forEach(clearTimeout); cues = []; } else direct(stage.dataset.view); });
+  // off screen, the drawing's animation pauses and nothing new is scheduled; back in view it picks up where it was
+  new IntersectionObserver(([e])=>{ const away = !e.isIntersecting; if (away === stage.classList.contains("asleep")) return; stage.classList.toggle("asleep", away);
+    if (away){ cues.forEach(clearTimeout); cues = []; } else if (!document.hidden) direct(stage.dataset.view, true); }).observe(stage);
+  document.addEventListener("visibilitychange", ()=>{ if (document.hidden){ cues.forEach(clearTimeout); cues = []; } else if (!stage.classList.contains("asleep")) direct(stage.dataset.view, true); });
   if (params.get("event")){ setTimeout(()=>EVENTS[params.get("event")] && EVENTS[params.get("event")](), 2000); }
 
   /* ---------- the release strip ---------- */
