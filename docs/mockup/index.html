@@ -775,7 +775,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     el("path", {d:`M ${hv-96} ${gy} L ${hv-96} ${gy-16} L ${hv-56} ${gy-16} L ${hv-56} ${gy} Z`, class:"thin", style:"fill:var(--paper)"}, g);
     for (let r=0; r<2; r++) for (let c=0; c<6; c++) el("path", {d:`M${hv-93+c*6.4} ${gy-12+r*6.5} l 3.4 0`, class:"hair"}, g);
     cityhall(g, hv, gy);
-    labs(g, ox + 818, gy, .35);                                                                                 // the labs, low, between City Hall and the towers
+    labs(g, ox + 468, gy, .35);                                                                                 // the labs, low, down the shore past the pink house
     for (const x of [hv-130, hv-116]) el("path", {d:`M${x} ${gy} q 0 -12 7 -14 q 7 2 7 14 z M${x+7} ${gy} l 0 3`, class:"thin", style:"fill:var(--paper)"}, g);
     // the hydrant on the Embarcadero, in front of the towers, where the robotaxi meets it
     el("path", {d:`M ${ox+HYD-3} ${gy} L ${ox+HYD-3} ${gy-14} Q ${ox+HYD} ${gy-18} ${ox+HYD+3} ${gy-14} L ${ox+HYD+3} ${gy} M ${ox+HYD-6} ${gy-9} L ${ox+HYD+6} ${gy-9} M ${ox+HYD-3} ${gy-5} L ${ox+HYD+3} ${gy-5}`, class:"thin"}, g);
@@ -798,7 +798,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       tintRect(w, ox+1191, baseY-29, 98, 21, "var(--cream)");                                                  // the Ferry Building
       tintRect(w, ox+1233, baseY-95, 14, 66, "var(--cream)");
       tintRect(w, ox+1041, baseY-267, 32, 259, "var(--glass)").style.opacity = ".12";                            // the tallest tower
-      tintRect(w, ox+818, baseY-8-22, 32, 22, "var(--glass)").style.opacity = ".25";                             // the labs' glass
+      tintRect(w, ox+468, baseY-8-22, 32, 22, "var(--glass)").style.opacity = ".25";                             // the labs' glass
     }
   }
   skyline(cityG, cityW, 8, true, 0);
@@ -1595,33 +1595,53 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         requestAnimationFrame(step); })(t0);
       return 13000; },
     robotaxi(){ if (stage.dataset.view !== "city" || performance.now() < taxiUntil || performance.now() < sfTrainUntil) return 0;
-      // it comes in from the north along the waterfront, out from behind the lighthouse, the opposite way to the Caltrain, with time
-      // to see the dome turning on its roof; it runs into the hydrant on the Embarcadero, the water arcs over it, it turns round
-      // and drives back the way it came
-      const k = ZOOM.city.s*CITY.k, [hx, hy] = toScreen("city", cityX(HYD), CITY.y), S = 1.05*k, y = hy - 3*S, x0 = -120, stop = hx - 20*S, P = "fill:var(--paper)";
-      const g = el("g", {class:"thin"}, life), car = el("g", {transform:`scale(${-S},${S})`}, g);
-      el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 Z", style:P}, car);
-      el("path", {d:"M-10 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M4 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M-8 -14 L -6 -8 M 10 -14 L 8 -8", style:P}, car);
-      el("path", {d:"M -16 -6 L -46 -13 L -46 0 Z", class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.55"}, car);
-      el("circle", {cx:-15.5, cy:-5.5, r:1.5, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, car);
-      el("rect", {x:14, y:-8.2, width:2.4, height:3.6, class:"tail", style:"fill:#D8352B;stroke:none"}, car);
-      const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, car); let d = 0; const spin = setInterval(()=>{ if (!g.isConnected) return clearInterval(spin); dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
-      // the water, from the hydrant's cap, arcing west over the car that hit it
-      const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${-k},${k})`}, life); spout.style.opacity = 0;
+      // it comes out of the Marina toward us down a cross street, turns east onto the waterfront, runs the length of it to the hydrant
+      // on the Embarcadero, turns round, drives back, and goes up the same street into the city; the Caltrain never runs at the same time
+      const k = ZOOM.city.s*CITY.k, [hx, hy] = toScreen("city", cityX(HYD), CITY.y), [sx] = toScreen("city", 926, CITY.y);
+      const S = 1.05*k, y = hy - 3*S, stop = hx - 20*S, P = "fill:var(--paper)";
+      const g = el("g", {class:"thin"}, life), side = el("g", {}, g), front = el("g", {}, g), back = el("g", {}, g);
+      // side on, nose to the left as drawn; flipped to face east
+      el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 Z", style:P}, side);
+      el("path", {d:"M-10 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M4 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M-8 -14 L -6 -8 M 10 -14 L 8 -8", style:P}, side);
+      el("path", {d:"M -16 -6 L -46 -13 L -46 0 Z", class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.55"}, side);
+      el("circle", {cx:-15.5, cy:-5.5, r:1.5, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, side);
+      el("rect", {x:14, y:-8.2, width:2.4, height:3.6, class:"tail", style:"fill:#D8352B;stroke:none"}, side);
+      const dome = el("circle", {cx:2, cy:-18, r:1.2, class:"solid"}, side); let d = 0; const spin = setInterval(()=>{ if (!g.isConnected) return clearInterval(spin); dome.setAttribute("cx", 2 + Math.cos(d+=.6)*3); }, 80);
+      // head on and from behind: the same body, the windscreen or the rear window, two lamps
+      const face = (host, lamp, glass) => { el("path", {d:"M-10 0 L 10 0 L 10 -8 L 7 -14 L -7 -14 L -10 -8 Z M -2.5 -14 L -2.5 -18 a 2.5 2 0 1 1 5 0 L 2.5 -14 Z", style:P}, host);
+        el("path", {d:`M -6.5 -13 L 6.5 -13 L 8.5 -8.5 L -8.5 -8.5 Z M -9 0 l 0 2.2 l 3.4 0 l 0 -2.2 M 5.6 0 l 0 2.2 l 3.4 0 l 0 -2.2`, style:P}, host);
+        for (const x of [-7.4, 7.4]) el("circle", {cx:x, cy:-4.6, r:1.3, class:lamp, style:`fill:${glass};stroke:none`}, host); };
+      face(front, "carlight lamp", "#FFF6D2"); face(back, "tail", "#D8352B");
+      el("path", {d:"M -7 -1 L -14 12 L 14 12 L 7 -1 Z", class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.4"}, front);
+      const show = v => { side.style.display = v === side ? "" : "none"; front.style.display = v === front ? "" : "none"; back.style.display = v === back ? "" : "none"; };
+      const at = (x, yy, sxk, syk, op = 1) => { yy += 3*S*(1 - syk); g.setAttribute("transform", `translate(${x.toFixed(1)},${yy.toFixed(1)})`); g.style.opacity = op;
+        for (const v of [side, front, back]) v.setAttribute("transform", `scale(${(sxk*S).toFixed(3)},${(syk*S).toFixed(3)})`); };
+      // the water, from the drawn hydrant's cap, bursting east, away from the car that hit it
+      const spout = el("g", {class:"thin", transform:`translate(${hx},${hy}) scale(${k},${k})`}, life); spout.style.opacity = 0;
       let flow = 1;
       const sprayD = i => { const j = (.85 + Math.random()*.3)*flow, h = (14 + i*3)*j, r = (14 + i*4)*(.9 + Math.random()*.2)*(.35 + .65*flow); return `M0 -17 q ${(r*.45).toFixed(1)} ${(-h).toFixed(1)} ${r.toFixed(1)} ${(-2 + i*2).toFixed(1)} M${(r + Math.random()*2).toFixed(1)} ${(-1 + i*2 + Math.random()*3).toFixed(1)} l ${(Math.random()*1.5).toFixed(1)} ${(2 + Math.random()*2).toFixed(1)}`; };
       const arcs = []; for (let i=0;i<9;i++) arcs.push(el("path", {d:sprayD(i)}, spout));
       const spray = setInterval(()=>{ if (!spout.isConnected) return clearInterval(spray); arcs.forEach((a, i) => a.setAttribute("d", sprayD(i))); }, 110);
-      const drive = 11000*(.85 + Math.random()*.3), total = drive + 2200 + 900 + 6000;
-      taxiUntil = performance.now() + total + 3000;
-      tween(drive, u=>{ const x = x0 + Math.min(u*1.12, 1)*(stop - x0), bump = u > .89 ? Math.sin((u - .89)*70)*2.5*(1 - u)/.11 : 0;
-          g.setAttribute("transform", `translate(${x - bump},${y})`); if (u > .86) car.classList.add("braking"); if (u > .89) spout.style.opacity = 1; },
-        ()=>tween(2200, ()=>{}, ()=>tween(900, u=>{ car.setAttribute("transform", `scale(${-S*(1 - 2*u)}, ${S})`); }, ()=>{ car.classList.remove("braking");
-          tween(6000, u=>{ g.setAttribute("transform", `translate(${stop + u*u*(x0 - stop)},${y})`); flow = Math.max(.05, 1 - u*1.05); }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); }); })));
+      const ease = u => u*u*(3 - 2*u), turn = (from, to, ms, done) => tween(ms, u=>{ const half = u < .5; show(half ? from.v : to.v);
+        const w = half ? 1 - u*2 : u*2 - 1, v = half ? from : to; at(v.x, y, w*v.dir, 1); }, done);
+      const out = { x:sx, dir:1 };
+      // out of the Marina toward us: on the waterfront's own line, small at first and growing, as a car does coming down a street at you
+      const T = [2400, 520, 7200, 2200, 900, 6200, 520, 2400];
+      show(front);
+      tween(T[0], u=>{ const e = ease(u), sc = .42 + .58*e; at(sx, y, sc, sc, Math.min(1, u*3)); }, ()=>
+      turn({ v:front, x:sx, dir:1 }, { v:side, x:sx, dir:-1 }, T[1], ()=>
+      tween(T[2], u=>{ const x = sx + (stop - sx)*Math.min(u*1.12, 1), bump = u > .89 ? Math.sin((u - .89)*70)*2.5*(1 - u)/.11 : 0;
+        at(x - bump, y, -1, 1); if (u > .82) side.classList.add("braking"); if (u > .89) spout.style.opacity = 1; }, ()=>
+      tween(T[3], ()=>{}, ()=>
+      tween(T[4], u=>{ at(stop, y, -(1 - 2*u), 1); }, ()=>{ side.classList.remove("braking");
+      tween(T[5], u=>{ at(stop + (sx - stop)*ease(u), y, 1, 1); flow = Math.max(.05, 1 - u*1.4); }, ()=>
+      turn({ v:side, x:sx, dir:1 }, { v:back, x:sx, dir:1 }, T[6], ()=>
+      tween(T[7], u=>{ const e = ease(u), sc = 1 - .58*e; at(sx, y, sc, sc, Math.min(1, (1 - u)*3)); }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); })) ); })))));
+      const total = T.reduce((a, b) => a + b, 0); taxiUntil = performance.now() + total + 6000;
       return total; },
     caltrain(){ if (stage.dataset.view !== "city" || performance.now() < sfTrainUntil || performance.now() < taxiUntil) return 0;
       // Caltrain up the peninsula: a locomotive and five double-deck cars come in from the south, slow to the terminal by
-      // Civic Center, wait, and go back south; it runs a little inland of the waterfront, behind the road the robotaxi uses
+      // Civic Center, wait, and go back south; it runs on the same ground line as the robotaxi, never at the same time
       const V = "city", Z = ZOOM[V].s, TERM = cityX(CH - 104), OUT = 1690, VM = 70, A = 26, DWELL = 5, S = .95;
       const N = 6, CL = 10, GAP = .9, L = N*CL + (N - 1)*GAP;
       const prof = (d, v0, v1) => { let vp = VM, da = (vp*vp - v0*v0)/(2*A), dd = (vp*vp - v1*v1)/(2*A);
@@ -1630,15 +1650,15 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         return { T: t1 + t2 + t3, at: t => t < t1 ? v0*t + .5*A*t*t : t < t1 + t2 ? da + vp*(t - t1) : da + (d - da - dd) + (u => vp*u - .5*A*u*u)(Math.min(t - t1 - t2, t3)) }; };
       const inn = prof(OUT - TERM, VM, 0), out = prof(OUT - TERM, 0, VM), total = inn.T + DWELL + out.T;
       sfTrainUntil = performance.now() + total*1000 + 1000;
-      const [, gy] = toScreen(V, 0, 337.6), holder = el("g", {}), g = el("g", {class:"hair"}, holder), P = "fill:var(--paper)"; life.prepend(holder);
-      // the cab car at the north end, then the gallery cars, then the locomotive at the south end
-      for (let i=0;i<N;i++){ const x = i*(CL + GAP), loco = i === N - 1, cab = i === 0;
-        const d = loco ? `M ${x} 0 L ${x} -4.6 L ${x + CL - 2.2} -4.6 L ${x + CL} -2.6 L ${x + CL} 0 Z`
-                : cab ? `M ${x} 0 L ${x} -3.4 L ${x + 1.6} -5.2 L ${x + CL} -5.2 L ${x + CL} 0 Z` : `M ${x} 0 L ${x} -5.2 L ${x + CL} -5.2 L ${x + CL} 0 Z`;
+      const [, gy] = toScreen(V, 0, CITY.y), holder = el("g", {}), g = el("g", {class:"hair"}, holder), P = "fill:var(--paper)"; life.prepend(holder);
+      // a locomotive at each end with its nose sloped outward, the double-deck cars between them, so whichever way it runs it leads with a head
+      for (let i=0;i<N;i++){ const x = i*(CL + GAP), north = i === 0, south = i === N - 1;
+        const d = north ? `M ${x} 0 L ${x} -2.4 L ${x + 2.4} -4.8 L ${x + CL} -4.8 L ${x + CL} 0 Z`
+                : south ? `M ${x} 0 L ${x} -4.8 L ${x + CL - 2.4} -4.8 L ${x + CL} -2.4 L ${x + CL} 0 Z` : `M ${x} 0 L ${x} -5.2 L ${x + CL} -5.2 L ${x + CL} 0 Z`;
         el("path", {d, style:P}, g);
-        if (!loco){ el("path", {d:`M ${x + 1.4} -3.9 l ${CL - 2.8} 0 M ${x + 1.4} -1.9 l ${CL - 2.8} 0`}, g);
+        if (!north && !south){ el("path", {d:`M ${x + 1.4} -3.9 l ${CL - 2.8} 0 M ${x + 1.4} -1.9 l ${CL - 2.8} 0`}, g);
           for (const yy of [-4.3, -2.3]) el("rect", {x:x + 1.4, y:yy, width:CL - 2.8, height:.8, class:"carlight", style:"fill:#F8DC8C;stroke:none"}, g); }
-        else el("path", {d:`M ${x + 1.2} -3.4 l 3 0 M ${x + CL - 3.4} -3.6 l 1.6 0`}, g); }
+        else el("path", {d: north ? `M ${x + 1.4} -3.2 l 1.4 -1.2 M ${x + 4.2} -3.4 l 4 0` : `M ${x + CL - 1.4} -3.2 l -1.4 -1.2 M ${x + 1.8} -3.4 l 4 0`}, g); }
       const northLamp = el("circle", {cx:.4, cy:-1.2, r:.6, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, g);
       const southLamp = el("circle", {cx:L - .4, cy:-1.2, r:.6, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, g);
       const northTail = el("circle", {cx:.4, cy:-2.4, r:.45, class:"carlight", style:"fill:#D8352B;stroke:none"}, g);
