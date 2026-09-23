@@ -444,15 +444,15 @@ def export_site() -> Path:
         },
     }
 
-    pay_clause = "has moved past its usual range" if pay_out else "has stayed within its usual range"
-    jobs_clause = (f" while the mix of those skills in employment has shifted more than in any three years since {since}" if qty_record else
-                   " while the mix of those skills in employment has moved past its usual range" if qty_out else
-                   ", and the mix of those skills in employment has stayed within its range too")
-    lede = (f'In the latest releases, work on the tasks people bring to AI models accounts for '
-            f'<a href="#bridge" data-view="bridge">{wages} percent of the wages paid in the United States</a>, pay across the twenty-five '
-            f'skill groups the index follows <a href="#city" data-view="city">{pay_clause}</a>{jobs_clause}, and '
-            f'<a href="#telescope" data-view="valley">{degrees:.0f} percent of new bachelor\'s degrees</a> go to the third of fields whose '
-            f'graduates hold the jobs most exposed to these models.')
+    # the opening sentence stays short enough for two or three lines: one clause per view, the detail is in the readings below
+    if not pay_out and not qty_out:
+        city = '<a href="#city" data-view="city">pay and the mix of jobs have stayed within their usual range</a>'
+    else:
+        city = ('<a href="#city" data-view="city">pay ' + ("has moved past" if pay_out else "has stayed within") + ' its usual range</a>'
+                + (f" while the mix of jobs has shifted more than in any three years since {since}" if qty_record else
+                   " while the mix of jobs has moved past its usual range" if qty_out else ""))
+    lede = (f'The tasks people bring to AI models account for <a href="#bridge" data-view="bridge">{wages} percent of US wages</a>, {city}, '
+            f'and <a href="#telescope" data-view="valley">{degrees:.0f} percent of new degrees</a> are in fields that lead to the most exposed jobs.')
 
     meaning = []
     if not pay_out:
@@ -476,7 +476,7 @@ def export_site() -> Path:
                    + (f", against {before:.1f} percent in {year - 1}" if before is not None else "")
                    + ", and people who move into those jobs from other occupations will join the count once the flows between occupations are published.")
 
-    notes = [f"new usage data: {_published(latest['release'])}", f"next wage tables: spring {int(pay['year']) + 2}"]
+    notes = ["new data coming", f"next wage tables: spring {int(pay['year']) + 2}"]
     if qty_record:
         notes.append(f"jobs mix: largest shift since {since}")
 
