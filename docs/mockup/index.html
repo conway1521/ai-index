@@ -373,7 +373,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const el = (tag, attrs={}, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; };
   function rng(seed){ let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
   const W = 1600;                         // the frame is the scene: the view from the point
-  const CH = 756, HYD = 838;              // in the city's own units: City Hall's x, and the hydrant's on the shore
+  const CH = 756, HYD = 1372;             // in the city's own units: City Hall's x, and the hydrant's on the Marina seawall
 
   /* ---------- line work ---------- */
   function water(g, x0, x1, y0, y1, seed, dens){
@@ -614,12 +614,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     for (let r=0; r<2; r++) for (let c=0; c<6; c++) el("path", {d:`M${hv-93+c*6.4} ${gy-12+r*6.5} l 3.4 0`, class:"hair"}, g);
     cityhall(g, hv, gy);
     for (const x of [hv-130, hv-116]) el("path", {d:`M${x} ${gy} q 0 -12 7 -14 q 7 2 7 14 z M${x+7} ${gy} l 0 3`, class:"thin", style:"fill:var(--paper)"}, g);
-    // the hydrant on the Embarcadero, in front of the towers, where the robotaxi meets it
+    // the hydrant on the Marina seawall, east of the harbour, where the robotaxi meets it
     el("path", {d:`M ${ox+HYD-3} ${gy} L ${ox+HYD-3} ${gy-14} Q ${ox+HYD} ${gy-18} ${ox+HYD+3} ${gy-14} L ${ox+HYD+3} ${gy} M ${ox+HYD-6} ${gy-9} L ${ox+HYD+6} ${gy-9} M ${ox+HYD-3} ${gy-5} L ${ox+HYD+3} ${gy-5}`, class:"thin"}, g);
     // Ferry Building on the waterfront
     { const rf = rng(131), P = "fill:var(--paper)";
       el("path", {d:`M ${ox-40} ${b0+3} L ${ox+1580} ${b0+3}`, class:"hair"}, g);                                  // the seawall's face
-      for (let u = 1060; u < 1560; u += 34 + rf()*16){ if (Math.abs(u - 1240) < 40) continue; const w = 16 + rf()*8, l = 8 + rf()*6;   // piers, running out into the water
+      for (let u = 1060; u < 1560; u += 34 + rf()*16){ if (Math.abs(u - 1240) < 40 || Math.abs(u - HYD) < 30) continue; const w = 16 + rf()*8, l = 8 + rf()*6;   // piers, running out into the water
         el("path", {d:`M ${ox+u} ${b0} L ${ox+u+w} ${b0} L ${ox+u+w+2} ${b0+l} L ${ox+u+2} ${b0+l} Z`, class:"hair", style:P}, g);
         if (rf() < .6) el("path", {d:`M ${ox+u+3} ${b0} L ${ox+u+3} ${b0-7} L ${ox+u+w-3} ${b0-7} L ${ox+u+w-3} ${b0}`, class:"hair", style:P}, g); }
       for (let u = -30; u < 420; u += 10 + rf()*14){ const w = 5 + rf()*7, h = 2 + rf()*3;                          // where the hills reach the water: rocks, and a strip of beach
@@ -1384,7 +1384,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       // the city's own units on screen, and the drawn hydrant's place on the shore; it comes in from the west along the front
       const k = ZOOM.city.s*CITY.k, [hx, hy] = toScreen("city", cityX(HYD), CITY.y);
       const g = el("g", {class:"thin"}, life); const S = 1.05*k; const y = hy - 3*S; const x0 = 1700;
-      // a small car with its sensor dome, running the waterfront toward the hydrant by the Ferry Building
+      // a small car with its sensor dome, running the waterfront past the Ferry Building toward the hydrant at the Marina
       const car = el("g", {transform:`scale(${S})`}, g);
       el("path", {d:"M-16 0 L 16 0 L 16 -8 L 10 -14 L -8 -14 L -16 -8 Z M-2 -14 L -2 -18 a 4 3 0 1 1 8 0 L 6 -14 Z", class:"thin", style:"fill:var(--paper)"}, car);
       el("path", {d:"M-10 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M4 0 a 3 3 0 1 0 6 0 a 3 3 0 1 0 -6 0 M-8 -14 L -6 -8 M 10 -14 L 8 -8", class:"thin", style:"fill:var(--paper)"}, car);
@@ -1472,7 +1472,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       }, ()=>{ g.remove(); cp.remove(); whaleUp = Math.max(0, whaleUp - 1); });
       return dur; },
     boat(){ const view = stage.dataset.view; if (view !== "bridge" && view !== "home") return 0; (Math.random() < .5 && !stage.classList.contains("night") ? EVENTS.sail : EVENTS.cargo)(); return 9000; },
-    bartsf(){ if (stage.dataset.view !== "home" || performance.now() < sfTrainUntil) return 0;
+    bartsf(){ const V = stage.dataset.view; if ((V !== "home" && V !== "city") || performance.now() < sfTrainUntil) return 0;
       // BART along Market, seen from the point: six cars out of the Transbay Tube by the Ferry Building, stopping at Embarcadero,
       // Montgomery, Civic Center and 16th Street Mission, then on down the peninsula past the right edge; or the same run northbound.
       // Between stations it accelerates, runs and brakes, so the stops read as stops. The places are the drawing's own:
@@ -1491,7 +1491,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       const total = legs.reduce((a, l) => a + l.T, 0);
       sfTrainUntil = performance.now() + total*1000 + 1000;
       // it comes out of the tube at the waterfront, so it is clipped there; the clip sits on a still holder, the train moves inside it
-      const holder = el("g", {"clip-path":"url(#sf-portal)"}, life), g = el("g", {class:"hair"}, holder), P = "fill:var(--paper)";
+      // the run is worked out in the scene and drawn on screen for the view: at the point as it is, turned to the city larger and nearer.
+      // The train is put first in the life layer, so the robotaxi on the waterfront passes in front of it
+      const Z = ZOOM[V].s, [portal, gy] = toScreen(V, 1004, 339.4), pr = $("#sf-portal rect");
+      pr.setAttribute("x", portal.toFixed(1)); pr.setAttribute("y", (gy - 60).toFixed(1)); pr.setAttribute("width", 2000); pr.setAttribute("height", 70);
+      const holder = el("g", {"clip-path":"url(#sf-portal)"}), g = el("g", {class:"hair"}, holder), P = "fill:var(--paper)"; life.prepend(holder);
       for (let i=0;i<N;i++){ const x = i*(CL + GAP);
         const d = i === 0 ? `M ${x} 0 L ${x + .5} -1.7 Q ${x + 1.1} -3 ${x + 2.6} -3 L ${x + CL} -3 L ${x + CL} 0 Z`
                 : i === N - 1 ? `M ${x} 0 L ${x} -3 L ${x + CL - 2.6} -3 Q ${x + CL - 1.1} -3 ${x + CL - .5} -1.7 L ${x + CL} 0 Z`
@@ -1503,7 +1507,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       el("circle", {cx:tail, cy:-1, r:.55, class:"carlight", style:"fill:#D8352B;stroke:none"}, g);
       tween(total*1000, k=>{ let t = k*total, i = 0; while (i < legs.length - 1 && t > legs[i].T){ t -= legs[i].T; i++; }
         const lg = legs[i], xc = lg.from + lg.dir*lg.at(Math.min(t, lg.T));
-        g.setAttribute("transform", `translate(${(xc - half).toFixed(2)},339.4) scale(${S})`); }, ()=>holder.remove());
+        g.setAttribute("transform", `translate(${toScreen(V, xc - half, 0)[0].toFixed(2)},${gy.toFixed(2)}) scale(${S*Z})`); }, ()=>holder.remove());
       return 0; },
     bart(){ if (stage.dataset.view !== "valley") return 0;
       // half the trains run left to right, half right to left, nose first either way
@@ -1581,7 +1585,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
      event is caught so the others carry on. */
   const PLAY = {
     home:   { first:[["rocket", 9000], ["bartsf", 20000]],                                   features:["whale", "rocket", "boat"],  gap:[12000, 22000], ambient:[["gull", [18000, 34000]], ["plane", [26000, 48000]], ["bartsf", [30000, 50000]]] },
-    city:   { first:[["robotaxi", 6000], ["cityferry", 24000]],          features:["robotaxi", "cityferry"],    gap:[14000, 24000], ambient:[["gull", [20000, 36000]], ["plane", [28000, 50000]]] },
+    city:   { first:[["robotaxi", 6000], ["bartsf", 12000], ["cityferry", 24000]], features:["robotaxi", "cityferry"],    gap:[14000, 24000], ambient:[["gull", [20000, 36000]], ["plane", [28000, 50000]], ["bartsf", [30000, 50000]]] },
     bridge: { first:[["boat", 2500], ["bear", 15000], ["whale", 30000]],  features:["bear", "whale", "boat"],     gap:[12000, 22000], ambient:[["gull", [18000, 34000]], ["plane", [30000, 55000]], ["zzz", [16000, 28000]]] },
     valley: { first:[["bart", 1500], ["rocket", 13000]],                  features:["bart", "rocket", "bart"],   gap:[5000, 11000],  ambient:[] },
   };
