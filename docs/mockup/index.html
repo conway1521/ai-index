@@ -309,7 +309,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     <svg class="pan" id="L-lights" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom"><g id="lights" class="scene"></g></g></svg>
     <svg class="pan" id="L-water" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom scene"><g id="skyfront" class="sky thin"></g><g id="water" class="hair"></g><g id="fog" class="fog" mask="url(#fogmask)"></g><g id="foam" class="hair"></g><g id="rainnear" class="sky thin"></g></g></svg>
     <!-- foreground: the point, the lighthouse, the railing, the viewer at rest -->
-    <svg id="L-life" viewBox="0 0 1600 700" aria-hidden="true"><defs><clipPath id="sf-portal"><rect x="1004" y="300" width="700" height="60"/></clipPath><clipPath id="behind-hills"><path clip-rule="evenodd" d="M0 0 H1600 V700 H0 Z M 1400 700 L 1400 314 L 1500 320 L 1600 329 L 1600 700 Z"/></clipPath><clipPath id="behind-foothills"><path clip-rule="evenodd" d="M0 0 H1600 V700 H0 Z M 780 700 L 780 262 C 850 236, 930 230, 1000 244 C 1050 254, 1090 256, 1130 262 L 1130 700 Z"/></clipPath></defs><g id="life" class="life scene"></g></svg>
+    <svg id="L-life" viewBox="0 0 1600 700" aria-hidden="true"><defs><clipPath id="behind-hills"><path clip-rule="evenodd" d="M0 0 H1600 V700 H0 Z M 1400 700 L 1400 314 L 1500 320 L 1600 329 L 1600 700 Z"/></clipPath><clipPath id="behind-foothills"><path clip-rule="evenodd" d="M0 0 H1600 V700 H0 Z M 780 700 L 780 262 C 850 236, 930 230, 1000 244 C 1050 254, 1090 256, 1130 262 L 1130 700 Z"/></clipPath></defs><g id="life" class="life scene"></g></svg>
     <svg class="fg" id="L-fg" viewBox="0 0 1600 700" role="group" aria-label="An ink drawing of a lighthouse on a headland. Turn to the city or the bridge, or raise the coin telescope to look at the valley.">
       <g class="zoom" id="fgzoom"><g id="fg" class="scene">
         <path d="M560 700 C 600 620, 690 590, 760 585 C 830 580, 880 600, 930 610 C 980 620, 1040 660, 1060 700 Z" style="fill:var(--paper)"/>
@@ -920,11 +920,20 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     // the elevated line across the front, and a train along it now and then
     el("path", {d:"M 480 418 L 820 418 M 480 423 L 820 423", class:"thin"}, L);
     for (let x = 500; x < 820; x += 46) el("path", {d:`M${x} 423 L ${x} 460 M${x+6} 423 L ${x+6} 460`, class:"hair"}, L);
-    { const train = el("g", {class:"bart", id:"bart", transform:"translate(-400,0)"}, L);
-      for (let i=0;i<3;i++){ const x = i*58, nose = i === 2;
-        el("path", {d: nose ? `M ${x} 417 L ${x} 405 L ${x+42} 405 Q ${x+54} 406 ${x+56} 417 Z` : `M ${x} 417 L ${x} 405 L ${x+56} 405 L ${x+56} 417 Z`, class:"thin", style:"fill:var(--paper)"}, train);
-        for (let j=0; j<5; j++){ el("path", {d:`M ${x+5+j*9} 410 l 5 0`, class:"hair"}, train); el("rect", {x:x+5+j*9, y:408.5, width:5, height:3, class:"carlight", style:"fill:#F8DC8C;stroke:none"}, train); }
-        if (nose){ el("path", {d:`M ${x+56} 413 L ${x+86} 407 L ${x+86} 419 Z`, class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.5"}, train); el("circle", {cx:x+55, cy:413, r:1.6, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, train); } } }
+    // a BART train on the elevated line: four aluminium cars, the long raked cab at each end, the band along the side
+    { const train = el("g", {class:"bart", id:"bart", transform:"translate(-400,0)"}, L), P = "fill:var(--paper)";
+      for (let i=0;i<4;i++){ const x = i*52, head = i === 3, tail = i === 0;
+        const d = head ? `M ${x} 417 L ${x} 404.5 L ${x+30} 404.5 L ${x+46} 411.5 Q ${x+50} 413.5 ${x+50} 417 Z`
+                : tail ? `M ${x+50} 417 L ${x+50} 404.5 L ${x+20} 404.5 L ${x+4} 411.5 Q ${x} 413.5 ${x} 417 Z` : `M ${x} 417 L ${x} 404.5 L ${x+50} 404.5 L ${x+50} 417 Z`;
+        el("path", {d, class:"thin", style:P}, train);
+        el("path", {d:`M ${x + (tail ? 8 : 2)} 414.6 L ${x + (head ? 44 : 48)} 414.6`, class:"hair"}, train);
+        if (head) el("path", {d:`M ${x+31} 405.6 L ${x+43} 410.8`, class:"hair"}, train);
+        if (tail) el("path", {d:`M ${x+19} 405.6 L ${x+7} 410.8`, class:"hair"}, train);
+        const from = tail ? 20 : 5, to = head ? 28 : 46;
+        for (let wx = from; wx + 5 <= to; wx += 8.5){ el("path", {d:`M ${x+wx} 409.5 l 5 0`, class:"hair"}, train); el("rect", {x:x+wx, y:408, width:5, height:3, class:"carlight", style:"fill:#F8DC8C;stroke:none"}, train); } }
+      el("path", {d:"M 206 413 L 236 407 L 236 419 Z", class:"carlight beamcone", style:"fill:#F6DE92;stroke:none;fill-opacity:.5"}, train);
+      el("circle", {cx:205, cy:413.5, r:1.6, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, train);
+      el("circle", {cx:1.5, cy:413.5, r:1.3, class:"carlight", style:"fill:#D8352B;stroke:none"}, train); }
     for (let i=0;i<2;i++){ const y = 452 + i*14; el("path", {d:`M ${510 + i*10} ${y} q 40 -3 80 0 M ${660 - i*14} ${y+5} q 50 -3 100 0`, class:"hair"}, L); }
     // right: the foothills and the dish on them, the tower over the arcaded quad, palms along the front
     el("path", {d:"M 780 262 C 850 236, 930 230, 1000 244 C 1050 254, 1090 256, 1130 262 L 1130 400 L 780 400 Z", class:"thin", style:"fill:var(--paper)"}, R);
@@ -1639,10 +1648,10 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       tween(T[7], u=>{ const e = ease(u), sc = 1 - .58*e; at(sx, y, sc, sc, Math.min(1, (1 - u)*3)); }, ()=>{ clearInterval(spin); g.remove(); spout.remove(); })) ); })))));
       const total = T.reduce((a, b) => a + b, 0); taxiUntil = performance.now() + total + 6000;
       return total; },
-    caltrain(){ if (stage.dataset.view !== "city" || performance.now() < sfTrainUntil || performance.now() < taxiUntil) return 0;
+    caltrain(){ const V = stage.dataset.view; if ((V !== "city" && V !== "home") || performance.now() < sfTrainUntil || (V === "city" && performance.now() < taxiUntil)) return 0;
       // Caltrain up the peninsula: a locomotive and five double-deck cars come in from the south, slow to the terminal by
       // Civic Center, wait, and go back south; it runs on the same ground line as the robotaxi, never at the same time
-      const V = "city", Z = ZOOM[V].s, TERM = cityX(CH - 104), OUT = 1690, VM = 70, A = 26, DWELL = 5, S = .95;
+      const Z = ZOOM[V].s, TERM = cityX(CH - 104), OUT = 1690, VM = 70, A = 26, DWELL = 5, S = .95;
       const N = 6, CL = 10, GAP = .9, L = N*CL + (N - 1)*GAP;
       const prof = (d, v0, v1) => { let vp = VM, da = (vp*vp - v0*v0)/(2*A), dd = (vp*vp - v1*v1)/(2*A);
         if (da + dd > d){ vp = Math.sqrt((2*A*d + v0*v0 + v1*v1)/2); da = (vp*vp - v0*v0)/(2*A); dd = (vp*vp - v1*v1)/(2*A); }
@@ -1764,47 +1773,10 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       return dur; },
     boat(){ const view = stage.dataset.view; if (view !== "bridge" && view !== "home") return 0;
       if (document.querySelectorAll("#life [data-boat], #lifeback [data-boat]").length >= 2) return 0; /* two on the water at most */ (Math.random() < .5 && !stage.classList.contains("night") ? EVENTS.sail : EVENTS.cargo)(); return 9000; },
-    bartsf(){ const V = stage.dataset.view; if (V !== "home" || performance.now() < sfTrainUntil) return 0;
-      // BART along Market, seen from the point: six cars out of the Transbay Tube by the Ferry Building, stopping at Embarcadero,
-      // Montgomery, Civic Center and 16th Street Mission, then on down the peninsula past the right edge; or the same run northbound.
-      // Between stations it accelerates, runs and brakes, so the stops read as stops. The places are the drawing's own:
-      // the Ferry Building and City Hall are where the skyline has them, Montgomery halfway between, 16th Street a little south.
-      const STOPS = [cityX(1240), 1126, cityX(CH), 1306], TUBE = cityX(1240) - 12, OUT = 1650, VM = 80, A = 55, DWELL = 1.4, S = .95;
-      const N = 6, CL = 8, GAP = .8, L = N*CL + (N - 1)*GAP, half = L*S/2;
-      const south = Math.random() < .6, stops = south ? STOPS : [...STOPS].reverse();
-      const start = south ? TUBE - half - 70 : OUT, finish = south ? OUT : TUBE - half - 70;
-      const prof = (d, v0, v1) => { let vp = VM, da = (vp*vp - v0*v0)/(2*A), dd = (vp*vp - v1*v1)/(2*A);
-        if (da + dd > d){ vp = Math.sqrt((2*A*d + v0*v0 + v1*v1)/2); da = (vp*vp - v0*v0)/(2*A); dd = (vp*vp - v1*v1)/(2*A); }
-        const t1 = (vp - v0)/A, t2 = (d - da - dd)/vp, t3 = (vp - v1)/A;
-        return { T: t1 + t2 + t3, at: t => t < t1 ? v0*t + .5*A*t*t : t < t1 + t2 ? da + vp*(t - t1) : da + (d - da - dd) + (u => vp*u - .5*A*u*u)(Math.min(t - t1 - t2, t3)) }; };
-      const legs = []; let from = start, v0 = VM;
-      for (const x of [...stops, finish]){ const last = x === finish, pr = prof(Math.abs(x - from), v0, last ? VM : 0);
-        legs.push({ from, dir: Math.sign(x - from), T: pr.T, at: pr.at }); if (!last) legs.push({ from: x, dir: 0, T: DWELL, at: ()=>0 }); from = x; v0 = last ? VM : 0; }
-      const total = legs.reduce((a, l) => a + l.T, 0);
-      sfTrainUntil = performance.now() + total*1000 + 1000;
-      // it comes out of the tube at the waterfront, so it is clipped there; the clip sits on a still holder, the train moves inside it
-      // the run is worked out in the scene and drawn on screen for the view: at the point as it is, turned to the city larger and nearer.
-      // The train is put first in the life layer, so the robotaxi on the waterfront passes in front of it
-      const Z = ZOOM[V].s, [portal, gy] = toScreen(V, 1004, 339.4), pr = $("#sf-portal rect");
-      pr.setAttribute("x", portal.toFixed(1)); pr.setAttribute("y", (gy - 60).toFixed(1)); pr.setAttribute("width", 2000); pr.setAttribute("height", 70);
-      const holder = el("g", {"clip-path":"url(#sf-portal)"}), g = el("g", {class:"hair"}, holder), P = "fill:var(--paper)"; life.prepend(holder);
-      for (let i=0;i<N;i++){ const x = i*(CL + GAP);
-        const d = i === 0 ? `M ${x} 0 L ${x + .5} -1.7 Q ${x + 1.1} -3 ${x + 2.6} -3 L ${x + CL} -3 L ${x + CL} 0 Z`
-                : i === N - 1 ? `M ${x} 0 L ${x} -3 L ${x + CL - 2.6} -3 Q ${x + CL - 1.1} -3 ${x + CL - .5} -1.7 L ${x + CL} 0 Z`
-                : `M ${x} 0 L ${x} -3 L ${x + CL} -3 L ${x + CL} 0 Z`;
-        el("path", {d, style:P}, g); el("path", {d:`M ${x + 1.6} -1.9 l ${CL - 3.2} 0`}, g);
-        el("rect", {x:x + 1.6, y:-2.4, width:CL - 3.2, height:1, class:"carlight", style:"fill:#F8DC8C;stroke:none"}, g); }
-      const head = south ? L - .3 : .3, tail = south ? .3 : L - .3;
-      el("circle", {cx:head, cy:-1, r:.7, class:"carlight lamp", style:"fill:#FFF6D2;stroke:none"}, g);
-      el("circle", {cx:tail, cy:-1, r:.55, class:"carlight", style:"fill:#D8352B;stroke:none"}, g);
-      tween(total*1000, k=>{ let t = k*total, i = 0; while (i < legs.length - 1 && t > legs[i].T){ t -= legs[i].T; i++; }
-        const lg = legs[i], xc = lg.from + lg.dir*lg.at(Math.min(t, lg.T));
-        g.setAttribute("transform", `translate(${toScreen(V, xc - half, 0)[0].toFixed(2)},${gy.toFixed(2)}) scale(${S*Z})`); }, ()=>holder.remove());
-      return 0; },
     bart(){ if (stage.dataset.view !== "valley") return 0;
       // half the trains run left to right, half right to left, nose first either way
       const t = $("#bart"), dur = 10500 + Math.random()*3000, east = Math.random() < .5, run = ++bartRun;
-      tween(dur, k=>{ if (run !== bartRun) return; t.setAttribute("transform", east ? `translate(${(300 + k*540).toFixed(1)},0)` : `translate(${(1014 - k*540).toFixed(1)},0) scale(-1,1)`); }, ()=>{ if (run === bartRun) t.setAttribute("transform", "translate(-400,0)"); });
+      tween(dur, k=>{ if (run !== bartRun) return; t.setAttribute("transform", east ? `translate(${(260 + k*580).toFixed(1)},0)` : `translate(${(1050 - k*580).toFixed(1)},0) scale(-1,1)`); }, ()=>{ if (run === bartRun) t.setAttribute("transform", "translate(-400,0)"); });
       return dur; },
     cargo(){ const view = stage.dataset.view; if (view !== "bridge" && view !== "home") return 0;
       // a container ship, long and low, stacked with boxes, the house and funnel aft
@@ -1876,7 +1848,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
      clocks alongside. Everything is cancelled and restarted when the view changes, and any error in one
      event is caught so the others carry on. */
   const PLAY = {
-    home:   { first:[["boat", 3000], ["rocket", 9000], ["banner", 14000], ["bartsf", 22000], ["whale", 32000]], features:["whale", "boat", "rocket", "whale", "boat"], gap:[9000, 16000], ambient:[["gull", [18000, 34000]], ["plane", [26000, 48000]], ["bartsf", [30000, 50000]], ["boat", [45000, 75000]], ["banner", [80000, 130000]]] },
+    home:   { first:[["boat", 3000], ["rocket", 9000], ["banner", 14000], ["caltrain", 22000], ["whale", 32000]], features:["whale", "boat", "rocket", "whale", "boat"], gap:[9000, 16000], ambient:[["gull", [18000, 34000]], ["plane", [26000, 48000]], ["caltrain", [40000, 65000]], ["boat", [45000, 75000]], ["banner", [80000, 130000]]] },
     city:   { first:[["robotaxi", 6000], ["cityferry", 24000], ["caltrain", 34000]], features:["robotaxi", "cityferry", "caltrain"],    gap:[12000, 22000], ambient:[["gull", [20000, 36000]], ["plane", [28000, 50000]], ["caltrain", [45000, 75000]], ["banner", [40000, 90000]]] },
     bridge: { first:[["boat", 2500], ["bear", 12000], ["whale", 24000]],  features:["whale", "boat", "bear", "whale", "boat"], gap:[9000, 16000], ambient:[["gull", [18000, 34000]], ["plane", [30000, 55000]], ["zzz", [16000, 28000]], ["boat", [50000, 80000]], ["banner", [45000, 100000]]] },
     valley: { first:[["bart", 1500], ["rocket", 13000]],                  features:["rocket", "bart"],   gap:[6000, 11000],  ambient:[] },
@@ -1885,7 +1857,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   let cues = [];
   function cue(ms, fn){ cues.push(setTimeout(()=>{ let r = 0; try { r = fn(); } catch (e) { console.error(e); } return r; }, ms)); }
   // no event comes back sooner than this, whatever the schedule says, so a long look never sees the same thing on repeat
-  const COOL = { rocket:120000, whale:45000, fluke:45000, bear:60000, cargo:40000, sail:30000, cityferry:40000, banner:60000, bartsf:60000, caltrain:50000, bart:12000, robotaxi:30000 }, lastPlayed = {};
+  const COOL = { rocket:120000, whale:45000, fluke:45000, bear:60000, cargo:40000, sail:30000, cityferry:40000, banner:60000, caltrain:50000, bart:12000, robotaxi:30000 }, lastPlayed = {};
   function direct(view, resume){
     cues.forEach(clearTimeout); cues = [];
     if (reduced || params.get("event")) return;
