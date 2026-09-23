@@ -253,7 +253,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     <!-- ================= the one scene from the point, painted once; the colour lies over the ink ================= -->
     <svg class="pan" id="L-static" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom scene"><g id="far"></g><g id="washes"></g></g></svg>
     <svg class="pan" id="L-lights" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom"><g id="lights" class="scene"></g></g></svg>
-    <svg class="pan" id="L-water" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom scene"><g id="skyfront" class="sky thin"></g><g id="water" class="hair"></g><g id="fog" class="fog" mask="url(#fogmask)"></g></g></svg>
+    <svg class="pan" id="L-water" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom scene"><g id="skyfront" class="sky thin"></g><g id="water" class="hair"></g><g id="fog" class="fog" mask="url(#fogmask)"></g><g id="foam" class="hair"></g><g id="rainnear" class="sky thin"></g></g></svg>
     <!-- foreground: the point, the lighthouse, the railing, the viewer at rest -->
     <svg id="L-life" viewBox="0 0 1600 700" aria-hidden="true"><defs><clipPath id="behind-hills"><path clip-rule="evenodd" d="M0 0 H1600 V700 H0 Z M 1400 700 L 1400 314 L 1500 320 L 1600 329 L 1600 700 Z"/></clipPath><clipPath id="behind-foothills"><path clip-rule="evenodd" d="M0 0 H1600 V700 H0 Z M 780 700 L 780 262 C 850 236, 930 230, 1000 244 C 1050 254, 1090 256, 1130 262 L 1130 700 Z"/></clipPath></defs><g id="life" class="life scene"></g></svg>
     <svg class="fg" id="L-fg" viewBox="0 0 1600 700" role="group" aria-label="An ink drawing of a lighthouse on a headland. Turn to the city or the bridge, or raise the coin telescope to look at the valley.">
@@ -486,6 +486,17 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   (function crests(){ const r = rng(19); for (let i=0;i<12;i++){ const x = r()*W, y = 360 + r()*320; const c = el("path", {d:`M${x} ${y} q 6 -3 12 0 M${x+3} ${y-2} l 2 -2`, class:"crest thin"}, waterG); c.style.animationDelay = (-r()*4).toFixed(2) + "s"; c.style.animationDuration = (3 + r()*3).toFixed(2) + "s"; } })();
   // the Marin headland, near, drawn over the water so the bay ends at its foot; the road out to the point on it
   const headland = el("g", {}); waterG.parentNode.insertBefore(headland, fogG);
+  // where something solid stands in the water, the water breaks around it, and keeps breaking
+  (function foam(){
+    const g = $("#foam"), spots = [[620, 362, 1.2, "tower"], [612, 362, .9, "tower"], [394, 347, 1, "shore"], [372, 351, .9, "shore"], [348, 355, .9, "shore"], [322, 358, .8, "shore"], [298, 360, .8, "shore"], [270, 362, .7, "shore"]];
+    const draw = () => { const r = Math.random; let d = "";
+      for (const [x, y, k] of spots){
+        d += ` M ${(x - 9*k - r()*3).toFixed(1)} ${(y + .5).toFixed(1)} q ${(4*k).toFixed(1)} ${(-2.4*k - r()*1.2).toFixed(1)} ${(8*k).toFixed(1)} 0`;
+        d += ` M ${(x + 1 + r()*2).toFixed(1)} ${(y + 1.5).toFixed(1)} q ${(4*k).toFixed(1)} ${(-2*k - r()).toFixed(1)} ${(9*k).toFixed(1)} ${(.5*r()).toFixed(1)}`;
+        if (r() < .6) d += ` M ${(x - 4*k + r()*8*k).toFixed(1)} ${(y + 4*k).toFixed(1)} l ${(3*k).toFixed(1)} ${(-.8*k).toFixed(1)}`; }
+      g.setAttribute("d", ""); g.innerHTML = ""; el("path", {d}, g); };
+    draw(); setInterval(()=>{ if (!reduced) draw(); }, 260);
+  })();
   // a ridge that falls from the left edge to the water, the Gate's north end on its shoulder
   // the Marin headland: a low rounded shoulder falling to the water at the Gate's north end
   // filled down into the water so the Gate's north tower stands out of it; only its skyline is inked
@@ -649,7 +660,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     el("path", {d:"M-300 -60 L 300 -60", class:"hair"}, hood);
     el("path", {d:"M-14 -134 L 14 -134 M 0 -142 L 0 -126", class:"thin"}, hood);                      // the slot
     el("path", {d:"M-70 -126 L 70 -126 L 70 -74 L -70 -74 Z", class:"thin"}, hood);                  // the plate
-    const t = el("text", {x:0, y:-100, "text-anchor":"middle", class:"cap"}, hood); t.textContent = "25.5¢";
+    const t = el("text", {x:0, y:-100, "text-anchor":"middle", class:"cap"}, hood); t.textContent = "25¢";
     const t2 = el("text", {x:0, y:-82, "text-anchor":"middle"}, hood); t2.textContent = "PER MILLION TOKENS";
     el("circle", {cx:-236, cy:-112, r:20}, hood); el("path", {d:"M-236 -132 L -236 -92 M-256 -112 L -216 -112", class:"hair"}, hood);
     const k = el("text", {x:-236, y:-78, "text-anchor":"middle"}, hood); k.textContent = "FOCUS";
@@ -710,7 +721,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const beam = $("#beam"), cone = $("#cone"), pans = document.querySelectorAll("svg.pan"), fgSvg = $("#L-fg"), fg = $("#fg"), stage = $("#stage");
   // what each view is, in the scene: the two ends the beam reaches for. The telescope is in front, on the rail.
   // from the point the beam reaches for the whole of the place; once turned, it skims the water to the place's feet
-  const TARGET = { city:{ ends:[[1000, 230], [1450, 336]], base:[[1020, 250], [1450, 338]] }, bridge:{ ends:[[160, 240], [760, 330]], base:[[300, 215], [560, 338]] }, tele:{ ends:[[1470, 334], [1600, 346]] } };
+  // ends: the two edges of the light seen from the point; edge: the same once turned to it, running to the place's top and to its foot on the water
+  const TARGET = { city:{ ends:[[1005, 214], [1600, 342]], edge:[[1057, 215], [1600, 341]] }, bridge:{ ends:[[292, 214], [140, 332]], edge:[[300, 210], [150, 337]] }, tele:{ ends:[[1470, 334], [1600, 346]] } };
   const beamPath = $("#beam path"); let beamTimer = null; const fogTimers = [];
   // where the lighthouse stands in each view: whole at the point; turned, only its lantern shows, large, at the side you turned from
   const LANTERN = [800, 263];
@@ -728,11 +740,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       far = target.ends.map(([x, y]) => [x, y]);
       beamPath.setAttribute("d", far.map(([x, y]) => `M${LANTERN[0]} ${LANTERN[1]} L ${x.toFixed(1)} ${y.toFixed(1)}`).join(" "));
     } else {
-      // turned, a single narrow beam from the lantern to the middle of the place, widening a little with distance
-      const [a1, b1] = target.base.map(([x, y]) => toScreen(view, x, y)), c = [(a1[0]+b1[0])/2, (a1[1]+b1[1])/2];
-      const dx = c[0]-lantern[0], dy = c[1]-lantern[1], len = Math.hypot(dx, dy), nx = -dy/len, ny = dx/len, w = len*0.11, ext = .78;   // the drawn light stops short of the shore, where the first solid thing stands
-      const f = [lantern[0] + dx*ext, lantern[1] + dy*ext];
-      far = [[f[0] + nx*w*ext, f[1] + ny*w*ext], [f[0] - nx*w*ext, f[1] - ny*w*ext]];
+      // turned, the light spans the place: one edge to its top, the other to its foot on the water, both kept within the frame
+      far = target.edge.map(([x, y]) => { const [sx, sy] = toScreen(view, x, y); return [Math.max(20, Math.min(1580, sx)), Math.max(20, sy)]; });
     }
     const farFg = far.map(e => screenToFg(view, e));
     const mid = [(farFg[0][0]+farFg[1][0])/2, (farFg[0][1]+farFg[1][1])/2];
@@ -1007,7 +1016,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     document.documentElement.style.setProperty("--cdrift", cross + "s");
     document.documentElement.style.setProperty("--rfall", (o.wind_kmh > 40 ? .7 : 1.1) + "s");
     document.querySelectorAll(".fog").forEach(g=>{ g.style.opacity = Math.max(w.fog, .4); });
-    sky.innerHTML = ""; skyFront.innerHTML = ""; celes.innerHTML = "";
+    sky.innerHTML = ""; skyFront.innerHTML = ""; celes.innerHTML = ""; $("#rainnear").innerHTML = "";
     const r = rng(w.clouds*13+7), clock = Date.now()/1000;
     // most cloud is behind the land and the bridge; one in four passes in front of them
     // cloud keeps to two bands: high, above the labels, and low, along the horizon behind the land
@@ -1018,7 +1027,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     if (w.band) for (let y=90; y<104; y+=10) el("path", {d:`M 0 ${y} L ${W} ${y}`, class:"hair"}, sky);
     const rainN = [0, 220, 560][Math.max(w.rain, rainLevel)];
     if (rainN){ const slant = -lateral * 0.35;
-      const far = el("g", {class:"rain"}, sky), near = el("g", {class:"rain near"}, skyFront);
+      const far = el("g", {class:"rain"}, sky), near = el("g", {class:"rain near"}, $("#rainnear"));
       for (let i=0;i<rainN;i++){ const x = r()*W, y = 60 + r()*272; el("path", {d:`M${x} ${y} l ${slant*.7} 7`, class:"hair"}, far); }        // above the horizon only
       for (let i=0;i<rainN*.35;i++){ const x = r()*W, y = 40 + r()*640; el("path", {d:`M${x} ${y} l ${slant*1.3} 13`, class:"hair"}, near); } }
     document.querySelectorAll(".gull").forEach(p=>{ p.style.transform = `rotate(${lateral > 20 ? 14 : lateral < -20 ? -14 : 0}deg)`; p.style.transformOrigin = "center"; });
@@ -1207,23 +1216,29 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     bear(){ if (stage.dataset.view !== "bridge" || bearUp) return 0; bearUp = true;
       // up over the rock, a look one way and the other, and down again
       const h = $("#bearhead"); const at = (y, fx) => h.setAttribute("transform", `translate(0,${y.toFixed(2)}) scale(${fx},1)`);
-      const wet = (PRESETS[current.preset] || {}).rain > 0 || current.rainLevel > 0; $("#brolly").style.display = wet ? "" : "none";   // in the rain, it brings an umbrella
-      tween(1800, k=>at(8 - 17*(1-(1-k)**2), 1), ()=>{ setTimeout(()=>{ at(-9, -1); setTimeout(()=>{ at(-9, 1);
-        setTimeout(()=>tween(1400, k=>at(-9 + 17*k*k, 1), ()=>{ bearUp = false; }), 1600); }, 1400); }, 1500); });
+      // in the rain it brings an umbrella: opened once its head is up, folded before it goes back down
+      const wet = (PRESETS[current.preset] || {}).rain > 0 || current.rainLevel > 0, u = $("#brolly");
+      const brolly = (open, ms) => { if (!wet) return; u.style.display = ""; tween(ms, k=>{ const f = open ? k : 1 - k; u.setAttribute("transform", `translate(1,-6) scale(${(.08 + .92*f).toFixed(2)},${(.3 + .7*f).toFixed(2)}) translate(-1,6)`); }, ()=>{ if (!open) u.style.display = "none"; }); };
+      u.style.display = "none";
+      const rise = 1500 + Math.random()*900, look = 1100 + Math.random()*900, peek = 15 + Math.random()*3;   // each time a little different
+      const first = Math.random() < .5 ? -1 : 1, top = 8 - peek;
+      tween(rise, k=>at(8 - peek*(1-(1-k)**2), 1), ()=>{ brolly(true, 500); setTimeout(()=>{ at(top, first); setTimeout(()=>{ at(top, -first);
+        setTimeout(()=>{ brolly(false, 450); setTimeout(()=>tween(1400, k=>at(top + peek*k*k, 1), ()=>{ bearUp = false; }), 500); }, look + 400); }, look); }, 1200 + Math.random()*800); });
       return 7800; },
     gust(){ stage.classList.add("gust"); document.querySelectorAll(".gull").forEach(p=>{ p.style.transition = "transform .8s"; p.style.transform = "rotate(-22deg)"; });
       setTimeout(()=>{ stage.classList.remove("gust"); }, 5000); },
     sail(){ const view = stage.dataset.view; if (view !== "bridge" && view !== "home") return 0;
-      const g = el("g", {class:"thin"}, life), boat = el("g", {}, g), P = "fill:var(--paper)";
+      const home = view === "home", farLane = !home && Math.random() < .5;   // on the bridge, half of them pass out under it, far off, behind the south tower
+      const g = el("g", {class:"thin"}, farLane ? $("#lifeback") : life), boat = el("g", {}, g), P = "fill:var(--paper)";
       el("path", {d:"M -22 0 L 24 0 L 17 7 L -16 7 Z", style:P}, boat);
       el("path", {d:"M 0 0 L 0 -44", class:"thin"}, boat);
       el("path", {d:"M 1.5 -42 Q 14 -24 21 -3 L 1.5 -3 Z", style:P}, boat);
       el("path", {d:"M -1.5 -38 L -1.5 -4 L -17 -4 Z", style:P}, boat);
       el("circle", {cx:0, cy:-45, r:1.3, class:"carlight lamp", style:"fill:#FFFFFF;stroke:none"}, boat);
       el("circle", {cx:-20, cy:2, r:1.3, class:"carlight lamp", style:"fill:#FF3B30;stroke:none"}, boat);
-      const home = view === "home", y = home ? 362 + Math.random()*100 : 535 + Math.random()*45, dur = 60000 + Math.random()*20000, heel = 3 + Math.random()*4;
-      const sc = home ? .28 + (y - 362)/100*.22 : .55 + Math.random()*.15, wk = wake(boat, 24, -18, 6.5);
-      tween(dur, k=>{ g.setAttribute("transform", `translate(${-60 + k*1760},${y + Math.sin(k*34)*1.6}) scale(${sc}) rotate(${-heel + Math.sin(k*23)*1.5})`); wk(performance.now()); }, ()=>g.remove()); },
+      const y = home ? 362 + Math.random()*100 : farLane ? 386 + Math.random()*16 : 520 + Math.random()*60, dur = (farLane ? 80000 : 60000) + Math.random()*24000, heel = 3 + Math.random()*4;
+      const sc = home ? .28 + (y - 362)/100*.22 : farLane ? .3 + Math.random()*.08 : .5 + Math.random()*.18, wk = wake(boat, 24, -18, 6.5), ltr = Math.random() < .5;
+      tween(dur, k=>{ const x = ltr ? -60 + k*1760 : 1660 - k*1760; g.setAttribute("transform", `translate(${x.toFixed(1)},${(y + Math.sin(k*34)*1.6).toFixed(1)}) scale(${ltr ? sc : -sc},${sc}) rotate(${-heel + Math.sin(k*23)*1.5})`); wk(performance.now()); }, ()=>g.remove()); },
     whale(){ const view = stage.dataset.view; if ((view !== "bridge" && view !== "home") || whaleUp) return 0;
       return EVENTS.fluke(null); },
     fluke(near){ const view = stage.dataset.view; whaleUp++;
@@ -1284,18 +1299,18 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       el("circle", {cx:-48, cy:-27, r:1.3, class:"carlight lamp", style:"fill:#FFFFFF;stroke:none"}, g);
       el("circle", {cx:69, cy:-6, r:1.3, class:"carlight lamp", style:"fill:#46C271;stroke:none"}, g);
       const home = view === "home", y = home ? 356 + Math.random()*110 : 550 + Math.random()*35, dur = 70000 + Math.random()*20000;
-      const sc = home ? .42 + (y - 356)/110*.4 : 1.25 + Math.random()*.25, wk = wake(g, 66, -58, 9);
+      const sc = home ? .42 + (y - 356)/110*.4 : 1.2 + Math.random()*.3, wk = wake(g, 66, -58, 9), dir = Math.random() < .5 ? 1 : -1;
       const drops = params.get("crate") === "1" || Math.random() < 1/3, at = params.get("crate") === "1" ? .28 : .35 + Math.random()*.3; let dropped = false;
       tween(dur, k=>{
-        const x = -120 + k*1880; g.setAttribute("transform", `translate(${x.toFixed(1)},${(y + Math.sin(k*18)*1.2).toFixed(1)}) scale(${sc})`); wk(performance.now());
+        const x = dir > 0 ? -120 + k*1880 : 1720 - k*1880; g.setAttribute("transform", `translate(${x.toFixed(1)},${(y + Math.sin(k*18)*1.2).toFixed(1)}) scale(${dir*sc},${sc})`); wk(performance.now());
         if (drops && !dropped && k > at){ dropped = true;
           // one box on the top tier slides over the side, drops, lands with a splash, bobs, and slips under
           const [box, bx, by] = boxes[2 + Math.floor(Math.random()*5)]; box.remove();
           const c = el("g", {class:"thin"}, life); el("rect", {x:-4.7, y:-2.3, width:9.4, height:4.6, style:P}, c);
-          const wx = x + (bx + 4.7)*sc, wy0 = y + (by + 2.3)*sc, wy = y + 16*sc; let splash = null;
+          const wx = x + dir*(bx + 4.7)*sc, wy0 = y + (by + 2.3)*sc, wy = y + 16*sc; let splash = null;
           tween(9000, u=>{
             const fall = Math.min(1, u/.12), cy = wy0 + (wy - wy0)*fall*fall, rot = fall*28 + (u > .12 ? Math.sin(u*40)*6 : 0), sink = u > .6 ? (u - .6)/.4 : 0;
-            c.setAttribute("transform", `translate(${(wx - u*14).toFixed(1)},${(cy + sink*5*sc).toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(sc*(1 - sink*.5)).toFixed(2)})`); c.style.opacity = 1 - sink;
+            c.setAttribute("transform", `translate(${(wx - dir*u*14).toFixed(1)},${(cy + sink*5*sc).toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(sc*(1 - sink*.5)).toFixed(2)})`); c.style.opacity = 1 - sink;
             if (u > .12 && !splash){ splash = el("g", {class:"hair"}, life); for (let i=0;i<6;i++){ const a = (-150 + i*24)*Math.PI/180; el("path", {d:`M${wx} ${wy} l ${Math.cos(a)*7*sc} ${Math.sin(a)*9*sc}`}, splash); }
               el("path", {d:`M ${wx - 14*sc} ${wy + 3} q ${14*sc} -3 ${28*sc} 0`}, splash); }
             if (splash) splash.style.opacity = Math.max(0, 1 - (u - .12)*3);
@@ -1350,7 +1365,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const next = () => { if (!bag.length){ bag = [...plan.features].sort(()=>Math.random() - .5); if (bag.length > 1 && bag[0] === lastE) bag.push(bag.shift()); } return (lastE = bag.shift()); };
     const play = name => { let ms = 0; try { ms = EVENTS[name]() || 0; } catch (e) { console.error(e); } return ms; };
     const feature = delay => cue(delay, ()=>{ if (stage.dataset.view !== view) return; const ms = play(next()); feature(Math.max(ms, 3000) + rand(plan.gap)); });
-    let end = 0; for (const [e, ms] of plan.first){ cue(ms, ()=>{ if (stage.dataset.view === view) play(e); }); end = Math.max(end, ms); }
+    let end = 0; for (const [e, ms0] of plan.first){ const ms = ms0*(.7 + Math.random()*.6); cue(ms, ()=>{ if (stage.dataset.view === view) play(e); }); end = Math.max(end, ms); }
     feature(end + 16000 + rand(plan.gap));
     for (const [e, range] of plan.ambient){ const again = d => cue(d, ()=>{ if (stage.dataset.view === view) play(e); again(rand(range)); }); again(rand(range)); }
   }
