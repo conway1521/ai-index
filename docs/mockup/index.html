@@ -53,7 +53,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .scene .thin{stroke-width:.8px}
 .scene .hair{stroke-width:.55px;opacity:.75}
 @property --ck{syntax:'<number>';inherits:true;initial-value:.62}
-.stage{--ck:.62;transition:--ck 1.4s}
+.stage{--ck:.62}
+.stage.fogout .water,.stage.fogout .crest,.stage.fogout .fogline,.stage.fogout .cloud,.stage.fogout .deck{animation-play-state:paused}
 .stage[data-view="city"]{--ck:1}
 .scene .city path{stroke-width:calc(1px*var(--ck))}.scene .city path.thin{stroke-width:calc(.7px*var(--ck))}.scene .city path.hair{stroke-width:calc(.45px*var(--ck))}
 .vig .scene{stroke-width:1.6}.vig .scene .thin{stroke-width:1}.vig .scene .hair{stroke-width:.7}
@@ -61,6 +62,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .scene text{font-family:var(--mono);font-size:12px;fill:var(--ink-2);stroke:none;letter-spacing:.04em}
 .scene .cap{font-family:var(--display);font-size:20px;fill:var(--ink);letter-spacing:0}
 .scene .cap.strong{font-weight:600}
+.bannertext{font-family:var(--mono);font-size:11.5px;fill:var(--ink);letter-spacing:.04em;stroke:none}
 .scene .mark{font-family:var(--mono);font-size:15px;fill:var(--ink);letter-spacing:.02em}
 .wc{stroke:none;opacity:var(--wash-a);filter:url(#wc);mix-blend-mode:var(--blend,multiply)}
 .fog{transition:opacity .6s}
@@ -160,7 +162,26 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .caption h1{font-family:var(--display);font-size:20px;font-weight:600;margin:0;color:var(--ink)}
 .caption p{font-family:var(--mono);font-size:12px;color:var(--ink-2);margin:3px 0 0;letter-spacing:.04em;line-height:1.5}
 
-.reading{display:grid;grid-template-columns:1.2fr 2fr;gap:28px;padding-block:22px;border-bottom:1px solid var(--hair)}
+/* the opening sentence: the three views in one line of prose, each number a way into its view */
+.lede{font-family:var(--display);font-size:clamp(18px,1.55vw,21px);line-height:1.5;max-width:82ch;margin:16px 0 0;color:var(--ink);text-wrap:pretty}
+.lede a,.item a.n{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;text-decoration-color:var(--ink-3)}
+.lede a:hover,.lede a:focus-visible,.item a.n:hover,.item a.n:focus-visible{text-decoration-color:var(--ink)}
+.meaning,.how{max-width:70ch;margin:8px 0 0}
+.meaning summary,.how summary{font-family:var(--mono);font-size:13px;color:var(--ink-2);letter-spacing:.03em;cursor:pointer;padding:8px 0;list-style:none;min-height:24px}
+.meaning summary::-webkit-details-marker,.how summary::-webkit-details-marker{display:none}
+.meaning summary::before,.how summary::before{content:"+ ";color:var(--ink-3)}.meaning[open] summary::before,.how[open] summary::before{content:"− "}
+.meaning p,.how p{font-size:16px;line-height:1.6;color:var(--ink-2);margin:4px 0 12px}
+.notes{font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.03em;margin:2px 0 0;line-height:1.7}
+.reading{padding-block:22px 26px;border-bottom:1px solid var(--hair)}
+.reading h2{font-family:var(--display);font-weight:600;font-size:22px;margin:0 0 14px;line-height:1.2}
+.reading h2:focus{outline:none}
+/* each reading: the number begins its own sentence, and the source sits quietly under it */
+.items{display:grid;gap:22px}
+.item{display:grid;grid-template-columns:120px minmax(0,62ch);column-gap:22px;align-items:baseline;border-top:1px solid var(--hair);padding-top:14px}
+.item .n{font-family:var(--display);font-size:42px;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.item .s{font-family:var(--display);font-size:18px;line-height:1.55}
+.item .cite{grid-column:2;font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.03em;line-height:1.7;margin-top:8px}
+.item .cite a{color:inherit}
 .figures{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
 .reading.three .figures{grid-template-columns:repeat(3,1fr)}
 .figure[hidden]{display:none}
@@ -225,7 +246,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 @media (max-width:820px){
   /* On a phone the drawing is a picture and the figures beneath it are the way in: the labels in the
      drawing go, the filters go, and the three views become three cards to tap. */
-  .reading{grid-template-columns:1fr}.figures,.reading.three .figures{grid-template-columns:1fr}.series{grid-template-columns:1fr}.cad{white-space:normal}
+  .item{grid-template-columns:1fr}.item .n{font-size:38px;margin-bottom:6px}.item .cite{grid-column:1}.item .s{font-size:17px}.lede{font-size:19px}.series{grid-template-columns:1fr}.cad{white-space:normal}
   .stage{aspect-ratio:4/3}.scene .cap,.scene .mark,.scene .detail{display:none}   /* the drawing sits in the middle band; the card above it, the stamp below */
   .stamp{font-size:10px;line-height:1.5}.ctl{position:static;justify-content:flex-end;margin-top:8px;padding:0;background:none}.stamp .obs{font-size:10px}
   .wc{filter:none}
@@ -234,12 +255,14 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 }
 </style>
 
-<a class="skip" href="#reading">Skip to the three numbers</a>
+<a class="skip" href="#reading">Skip to the readings</a>
 <div class="wrap">
   <header class="top">
     <div class="brand">[ name to come ] <small>MOCKUP</small></div>
   </header>
-  <p class="strap">The bridge, on the left, shows where usage lands: what people ask the models to do, carried across to the pay for those tasks. The city, on the right, shows what has moved in pay and jobs. The telescope on the lighthouse, aimed down the bay at the campuses, shows the pipeline: who is training for exposed work.</p>
+  <p class="lede" id="lede"></p>
+  <details class="meaning" id="meaning"><summary>What does this mean</summary><div id="meaning-body"></div></details>
+  <p class="notes" id="notes"></p>
 
   <div class="frame">
   <div class="stage" id="stage" data-view="home" data-aw="on" data-ak="on">
@@ -347,12 +370,10 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   </div>
 
   <section class="reading three" id="reading">
-    <div><h2 id="r-title"></h2><p class="lens" id="r-lens"></p><p class="from" id="r-from"></p></div>
-    <div class="figures">
-      <div class="figure" id="f1" tabindex="-1"><div class="n"></div><div class="l"></div><div class="s"></div></div>
-      <div class="figure" id="f2" tabindex="-1"><div class="n"></div><div class="l"></div><div class="s"></div></div>
-      <div class="figure" id="f3" tabindex="-1" hidden><div class="n"></div><div class="l"></div><div class="s"></div></div>
-    </div>
+    <h2 id="r-title" tabindex="-1"></h2>
+    <div class="items" id="items"></div>
+    <details class="how" id="r-how"><summary>How it is measured</summary><p id="r-lens"></p></details>
+    <p class="from" id="r-from"></p>
   </section>
 
   <section class="series">
@@ -375,6 +396,112 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   <p class="foot">Ink on paper, one splash of colour in each view, a little life now and then, a gull, a plane on the approach, a rocket out of the south, a robotaxi that meets a hydrant, a gust, and the sky drawn from the latest observation at the airport: the description and visibility pick one of eight presets, wind sets how fast the fog and cloud drift and which way, by the heading of the view you are looking along, and rain falls slanted by it. The light follows San Francisco's clock: the sun rises over the city and sets past the bridge, the drawing turns to white ink on black after dark, and the moon is drawn at its phase. Nothing in the drawing encodes a number from the index; those sit beneath it in their own units, with the file each came from.</p>
 </div>
 
+<script type="application/json" id="readings">{
+  "built": "23 September 2026",
+  "lede": "In the latest releases, work on the tasks people bring to AI models accounts for <a href=\"#bridge\" data-view=\"bridge\">21 percent of the wages paid in the United States<\/a>, pay across the twenty-five skill groups the index follows <a href=\"#city\" data-view=\"city\">has stayed within its usual range<\/a> while the mix of those skills in employment has shifted more than in any three years since 2013, and <a href=\"#telescope\" data-view=\"valley\">41 percent of new bachelor's degrees<\/a> go to the third of fields whose graduates hold the jobs most exposed to these models.",
+  "meaning": [
+    "The tasks people bring to AI models are paid about a fifth of all the wages in the United States, while pay across the skills behind them has moved no further over the last three years than in an ordinary stretch of the record, so these models already reach a wide share of paid work and there is no sign yet that employers pay for those skills differently.",
+    "The reading that stands out is the mix of work: over the last three years employment has moved toward jobs that draw on arts and humanities by more than in any three-year stretch since 2013, although a record of thirteen years produces a shift that size by chance about one time in eleven, and the same test was passed in 2020 and 2021, when the pandemic reshuffled employment, so the next release of the wage tables will show whether it holds.",
+    "Degrees are the slow channel and the one policy can count: 40.7 percent of new bachelor's degrees in 2024 went to the most exposed third of fields, against 40.3 percent in 2023, and people who move into those jobs from other occupations will join the count once the flows between occupations are published."
+  ],
+  "notes": [
+    "new usage data: June 2026",
+    "next wage tables: spring 2027",
+    "jobs mix: largest shift since 2013"
+  ],
+  "views": {
+    "bridge": {
+      "capline": "21% of wages go to tasks people bring to AI models · June 2026",
+      "mark": "21% of wages in tasks people bring",
+      "items": [
+        {
+          "n": "21%",
+          "view": "bridge",
+          "s": "of all the wages paid in the United States go to work on the tasks people bring to AI models, in the usage record the Anthropic Economic Index published in June 2026, against 18 percent in its September 2025 release, and 6 percent go to tasks people hand over to the model entirely, on the March 2026 record.",
+          "src": "Anthropic Economic Index, June 2026 · OEWS wages, May 2025",
+          "tables": [
+            "usage_reach.csv"
+          ]
+        },
+        {
+          "n": "2.4×",
+          "view": "bridge",
+          "s": "is the weight of that use on systems skills, measured against their share of pay and the most of any skill group, while resource management skills receive 0.2 times their share.",
+          "src": "Anthropic Economic Index, June 2026 · O*NET 30.2",
+          "tables": [
+            "usage_landing.csv"
+          ]
+        }
+      ],
+      "how": "Each conversation in the usage record is matched to the O*NET tasks it touches, each task is weighted by the wages paid for it in the latest OEWS release, and the share moves with every usage release, every few months, for the one platform whose record the index reads so far."
+    },
+    "city": {
+      "capline": "pay 2.8, 6.1 needed · jobs mix 8.2, 6.7 needed",
+      "mark": "pay 2.8 of 6.1 needed · jobs 8.2 of 6.7",
+      "items": [
+        {
+          "n": "2.8",
+          "view": "city",
+          "s": "standard errors is the largest change in pay across the twenty-five skill groups over the last three years, a rise in the pay of complex problem solving skills, where 6.1 would be needed to stand out from each group's own record since 2013, and eight of the ten earlier three-year stretches in that record moved as far or further.",
+          "src": "OEWS, May 2012 to May 2025, occupations present in every year",
+          "tables": [
+            "outcomes_pay_series_balanced.csv",
+            "outcomes_pay_changes.csv"
+          ]
+        },
+        {
+          "n": "8.2",
+          "view": "city",
+          "s": "standard errors is the largest shift in the mix of skills in employment over the last three years, toward work that draws on arts and humanities, past the 6.7 needed to stand out and further than any of the ten earlier three-year stretches since 2013, although a record of thirteen years produces a shift that size by chance about one time in eleven, and the same test was passed in 2020 and 2021.",
+          "src": "OEWS, May 2012 to May 2025, occupations present in every year",
+          "tables": [
+            "outcomes_quantity_series_balanced.csv"
+          ]
+        }
+      ],
+      "how": "For each skill group the index takes the last three yearly changes in pay, and in the share of employment, and sets them against that group's own changes since 2013: a change stands out when it passes the level only the most extreme three-year stretches in the record reached, and both the reading and that level are recalculated with each spring release of the wage tables."
+    },
+    "valley": {
+      "capline": "40.7% of new degrees in the most exposed fields · 2024",
+      "mark": "40.7% of new degrees in exposed fields",
+      "items": [
+        {
+          "n": "40.7%",
+          "view": "valley",
+          "s": "of new bachelor's degrees in 2024 went to the third of fields whose graduates hold the jobs most exposed to AI models, with each field scored by where its graduates actually work, against 40.3 percent in 2023.",
+          "src": "IPEDS completions, 2024 · field exposure from ACS and the Eloundou task measure",
+          "tables": [
+            "pipeline_completions_by_state.csv",
+            "pipeline_field_exposure_crosswalk.csv"
+          ]
+        }
+      ],
+      "how": "Degrees come from the IPEDS completions file and each field of study is scored by the exposure of the occupations its graduates hold, on the task measure of Eloundou and coauthors, so the share moves once a year, and people who arrive in exposed jobs from other occupations will join this view when the flows between occupations are published."
+    }
+  },
+  "releases": [
+    {
+      "date": "2025-09-15 (2025-08-04)",
+      "reach": 0.181
+    },
+    {
+      "date": "2026-01-15 (2025-11-13)",
+      "reach": 0.219
+    },
+    {
+      "date": "2026-03-24 (2026-02-05)",
+      "reach": 0.232
+    },
+    {
+      "date": "2026-06-26 (2026-04)",
+      "reach": 0.193
+    },
+    {
+      "date": "2026-06-26 (2026-05)",
+      "reach": 0.211
+    }
+  ]
+}</script>
 <script>
 (function(){
   const $ = (s, r=document) => r.querySelector(s);
@@ -396,13 +523,16 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         el("path", {d:`M${x.toFixed(1)} ${(y + (r()-.5)*4*near).toFixed(1)} q ${(l/2).toFixed(1)} ${(3*near).toFixed(1)} ${l.toFixed(1)} 0`, style:`opacity:${(.45 + near*.55).toFixed(2)}`}, g); }
       y += dens*(.28 + near*1.5); }
   }
+  // the fog's lines drift in four groups, two speeds and two phases, each group moved as one: the same look as a line each,
+  // for a fraction of the work, since one moving group costs the browser what one moving line does
   function fog(g, bands, seed){
-    const r = rng(seed);
+    const r = rng(seed), sets = {};
+    const set = k => { const key = (k % 2) + "" + (Math.floor(k/2) % 2); if (!sets[key]){ sets[key] = el("g", {class:"fogline" + (k % 2 ? " b" : "")}, g); sets[key].style.animationDelay = (-[0, 23, 41, 11][+key[0]*2 + +key[1]]).toFixed(1) + "s"; } return sets[key]; };
     for (const [y, amp, n] of bands) for (let k=0;k<n;k++){
       const yy = y + k*7 + (r()-.5)*3; let d = `M -200 ${yy}`;
       for (let x=-200; x<=W+200; x+=60) d += ` q 30 ${(r()>.5?1:-1)*amp} 60 0`;
-      const p = el("path", {d, class:"fogline " + (k%2? "b":"")}, g);
-      p.style.strokeWidth = (0.6 + r()*0.6).toFixed(2); p.style.opacity = (0.35 + r()*0.5).toFixed(2); p.style.animationDelay = (-r()*60).toFixed(1) + "s";
+      const p = el("path", {d}, set(k));
+      p.style.strokeWidth = (0.6 + r()*0.6).toFixed(2); p.style.opacity = (0.35 + r()*0.5).toFixed(2); r();
     }
   }
   function lighthouse(g, x, y, h){
@@ -511,7 +641,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   el("path", {d:`M 330 340 L ${W} 340`, class:"hair"}, waterG);
   const waterA = el("g", {class:"water"}, waterG), waterB = el("g", {class:"water b"}, waterG), waterC = el("g", {class:"water c"}, waterG);
   water(waterA, 0, W, 352, 690, 3, 40); water(waterB, 0, W, 366, 690, 4, 40); water(waterC, 0, W, 380, 690, 8, 40);
-  (function crests(){ const r = rng(19); for (let i=0;i<12;i++){ const x = r()*W, y = 360 + r()*320; const c = el("path", {d:`M${x} ${y} q 6 -3 12 0 M${x+3} ${y-2} l 2 -2`, class:"crest thin"}, waterG); c.style.animationDelay = (-r()*4).toFixed(2) + "s"; c.style.animationDuration = (3 + r()*3).toFixed(2) + "s"; } })();
+  // twelve crests in three groups of four, spread over the water, each group breaking on its own beat
+  (function crests(){ const r = rng(19), sets = [0, 1, 2].map(j => { const g = el("g", {class:"crest thin"}, waterG); g.style.animationDelay = (-j*1.6).toFixed(2) + "s"; g.style.animationDuration = (3.4 + j*.9).toFixed(2) + "s"; return g; });
+    for (let i=0;i<12;i++){ const x = r()*W, y = 360 + r()*320; el("path", {d:`M${x} ${y} q 6 -3 12 0 M${x+3} ${y-2} l 2 -2`}, sets[i % 3]); r(); r(); } })();
   // the Marin headland, near, drawn over the water so the bay ends at its foot; the road out to the point on it
   const headland = el("g", {}); waterG.parentNode.insertBefore(headland, fogG);
   const ALC = "translate(872,364) scale(1.15) translate(-966,-358)";            // the island's place: nearer the point than the city, clear of both
@@ -856,37 +988,31 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   $("#viewer-tap").addEventListener("click", ()=>go("valley"));
   $("#viewer-tap").addEventListener("keydown", e=>{ if (e.key==="Enter"||e.key===" "){ e.preventDefault(); go("valley"); } });
   const R = {
-    home:  { cap:["Three views from one point", "choose a view · the beam turns to it"],
-             title:"Three views from one point", lens:"Every AI tracker asks whether people are using it. This one asks what that use has reached: the money paid for the tasks it touches, the pay and jobs behind them, and the people training for that work.",
-             left:null, right:null, tables:[] },
-    city:  { cap:["The city · what has moved", "pay and jobs by skill group, each tested against its own history · a move counts when it passes the lens"],
-             title:"What has moved", lens:"Pay and employment by occupation, folded into 25 named skill groups and tested each year against that group's own year-to-year swing. The lens is set in advance at the size a move would have to reach to stand out from that history, which is why a small reading is still the right reading: this is the instrument that will notice. It changes once a year, with each spring release of the wage tables.",
-             f1:["2.8","of 6.1","pay · largest standardised move · 2025 release","Six of 25 skill groups moved beyond two of their own standard errors; the largest sits at 2.8 against a lens of 6.1."],
-             f2:["4.4","of 4.0","jobs · employment-weighted skill mix · 2025","The quantity side touched its lens this year. Whether it holds is what the next release answers."],
-             left:["bridge","turn to the bridge"], right:["valley","raise the telescope"], 
+    home:  { cap:["Three views from one point", "choose a view · the beam turns to it"], title:"The readings", left:null, right:null, tables:[] },
+    city:  { cap:["The city · what has moved"], title:"What has moved", left:["bridge","turn to the bridge"], right:["valley","raise the telescope"],
              tables:["outcomes_pay_series_balanced.csv","outcomes_quantity_series_balanced.csv","outcomes_pay_changes.csv"] },
-    bridge:{ cap:["The bridge · where usage lands", "what people ask the models to do, carried across to the pay for those tasks · reach in the wage bill"],
-             title:"Where usage lands", lens:"What people ask the models to do, mapped through eighteen thousand tasks onto the dollars paid for them, then onto the skills those tasks use. Usage is where a change starts, so this is the view that moves first and most often, and it says nothing yet about pay. It changes with each platform release, every few months, and three platforms are shown side by side because each sees only its own users.",
-             f1:["23","% of wages","reach · Anthropic consumer usage · Feb 2026","18 percent in August 2025, 22 in November, 23 in February. Six percent delegated outright."],
-             f2:["2.5","×","concentration on complex problem solving","Usage lands on that skill group at two and a half times its weight in pay; physical and psychomotor work at a third."],
-             left:["valley","raise the telescope"], right:["city","turn to the city"], 
+    bridge:{ cap:["The bridge · where usage lands"], title:"Where usage lands", left:["valley","raise the telescope"], right:["city","turn to the city"],
              tables:["usage_reach.csv","usage_landing.csv","usage_by_occupation.csv"] },
-    valley:{ cap:["The telescope · the pipeline", "who is training for exposed work, seen from far off · degrees are the channel the counts can see"],
-             title:"The pipeline", lens:"Bachelor's degrees awarded in fields whose graduates go on to exposed occupations, with each field scored by where its graduates actually work. This is the channel policy can count and the one that answers slowly, so a shift here is an early sign rather than a result. It changes once a year with the completions file, and the lateral channel, people arriving from other jobs, joins it when the flows matrix is released.",
-             f1:["41","% of bachelor's","awarded in fields that lead to exposed jobs · 2024","Up from 40 percent the year before. Fields are scored by where their graduates actually work, not by where the catalogue says they should."],
-             f2:["4 to 12","×","lateral arrivals over graduates, by occupation","From the flow account. The lateral matrix itself is the next file to arrive; until then this column carries the education channel only."],
-             left:["city","turn to the city"], right:["bridge","turn to the bridge"], 
+    valley:{ cap:["The telescope · the pipeline"], title:"The pipeline", left:["city","turn to the city"], right:["bridge","turn to the bridge"],
              tables:["pipeline_completions_by_state.csv","pipeline_enrolment_by_exposure.csv","pipeline_field_exposure_crosswalk.csv","capacity_education_channel.csv"] },
   };
-  // the same figures, as one line each on the drawing
-  const MARK = {
-    bridge: f => `${f[0]}% of wages in tasks users bring`,
-    city:   f => `pay moved ${f[0]} of the ${f[1].replace("of ","")} that would show`,
-    valley: f => `${f[0]}% of new degrees in exposed fields`,
-  };
+  // the words and numbers: the build writes them into readings.json from its tables, and the page carries the last build's copy
+  // so it reads the same before, or without, the fetch
+  const READ = JSON.parse($("#readings").textContent);
   const TABLE_DIR = "data/tables/";
   const COMMON = ["wagebill_national.csv","exposure_by_occupation.csv","state_exposure.csv","state_adoption_btos.csv","cps_young_worker_gauge.csv"];
-  function marks(){ for (const v in MARK) $("#mark-"+v).textContent = MARK[v](R[v].f1); }
+  function marks(){ for (const v of ["bridge", "city", "valley"]) $("#mark-"+v).textContent = READ.views[v].mark; }
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const VIEWNAME = { bridge:"the bridge", city:"the city", valley:"the telescope" }, VIEWHASH = { bridge:"bridge", city:"city", valley:"telescope" };
+  // the opening sentence and what follows it; the lede is the build's own markup, its clauses linked to the views
+  function top(){ $("#lede").innerHTML = READ.lede;
+    $("#meaning-body").replaceChildren(...READ.meaning.map(t => { const p = document.createElement("p"); p.textContent = t; return p; }));
+    $("#notes").textContent = READ.notes.join(" · "); marks(); }
+  function item(it, link){
+    const n = link ? `<a class="n" href="#${VIEWHASH[it.view]}" data-view="${it.view}" aria-label="${esc(it.n)}: open ${VIEWNAME[it.view]}">${esc(it.n)}</a>` : `<span class="n">${esc(it.n)}</span>`;
+    return `<div class="item">${n} <span class="s">${esc(it.s)}</span><span class="cite">${esc(it.src)}${it.tables ? " · " + tableLinks(it.tables) : ""}</span></div>`; }
+  // a number or a clause that names a view turns the drawing to it
+  for (const host of ["#lede", "#items"]) $(host).addEventListener("click", e=>{ const a = e.target.closest("a[data-view]"); if (!a) return; e.preventDefault(); fromFigure(a.dataset.view); });
   function tableLinks(list){ return list.map(t => `<a href="${TABLE_DIR}${t}">${t}</a>`).join(" · "); }
   (function tableList(){
     const dl = $("#table-list");
@@ -898,21 +1024,17 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const edgeL = $("#edge-left"), edgeR = $("#edge-right"), home = $("#btn-home");
   // The real page reads readings.json written by the build; the mockup carries the same numbers embedded.
   fetch("data/readings.json").then(r=>r.ok ? r.json() : null).then(j=>{ if (!j) return;
-    for (const view in j.views){ if (R[view] && view !== "home"){ Object.assign(R[view], j.views[view]); } }
+    Object.assign(READ, j); top();
     document.querySelector(".stamp").lastChild.textContent = `figures from the ${j.built} build`;
-    go(stage.dataset.view); }).catch(()=>{});
-  function fill(f, id, goTo){ const n = $("#"+id); n.hidden = !f; if (!f) return;
-    n.querySelector(".n").innerHTML = f[0] + " <small>" + f[1] + "</small>"; n.querySelector(".l").textContent = f[2]; n.querySelector(".s").textContent = f[3];
-    if (goTo){ n.dataset.go = goTo; n.tabIndex = 0; n.setAttribute("role", "button"); n.onclick = ()=>fromFigure(goTo); n.onkeydown = e=>{ if (e.key==="Enter"||e.key===" "){ e.preventDefault(); fromFigure(goTo); } }; }
-    else { delete n.dataset.go; n.removeAttribute("role"); n.tabIndex = -1; n.onclick = null; n.onkeydown = null; } }
+    go(stage.dataset.view, true); }).catch(()=>{});
   let timer = null;
-  function fromFigure(view){ const r = stage.getBoundingClientRect(), off = r.bottom < 60 || r.top > innerHeight - 60;
+  function fromFigure(view){ const r = stage.getBoundingClientRect(), seen = Math.min(r.bottom, innerHeight) - Math.max(r.top, 0), off = seen < r.height*.6;
     if (off) stage.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
     go(view); }
   const HASH = { bridge:"bridge", city:"city", valley:"telescope" }, BASE_TITLE = document.title;
   function go(view, quiet){
     clearTimeout(timer);
-    const keyed = stage.contains(document.activeElement) || (document.activeElement && document.activeElement.closest && document.activeElement.closest(".figure"));
+    const keyed = stage.contains(document.activeElement) || (document.activeElement && document.activeElement.closest && document.activeElement.closest(".item, .lede"));
     stage.dataset.view = view;
     $("#life").replaceChildren(); $("#lifeback").replaceChildren(); taxiUntil = 0; rocketUntil = 0; ferryUntil = 0; sfTrainUntil = 0; bartRun++;                               // whatever was crossing the last view stays there
     beam.classList.add("moving"); clearTimeout(beamTimer); beamTimer = setTimeout(()=>beam.classList.remove("moving"), 1450);
@@ -929,12 +1051,12 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     document.querySelectorAll(".zoom").forEach(g => { if (g.id !== "fgzoom") g.style.transform = `translate(${800 - zs*c[0]}px, ${300 - zs*c[1]}px) scale(${zs})`; });
     const f = FG[view] || FG.home;
     $("#fgzoom").style.transform = `translate(${f.t[0]}px, ${f.t[1]}px) scale(${f.s})`;
-    $("#cap-h").textContent = r.cap[0]; $("#cap-p").textContent = r.cap[1];
-    $("#r-title").textContent = r.title; $("#r-lens").textContent = r.lens;
+    $("#cap-h").textContent = r.cap[0]; $("#cap-p").textContent = view === "home" ? r.cap[1] : READ.views[view].capline;
+    $("#r-title").textContent = r.title; $("#r-how").hidden = view === "home"; if (view !== "home") $("#r-lens").textContent = READ.views[view].how;
     marks();
-    if (view === "home"){ fill(R.bridge.f1,"f1","bridge"); fill(R.city.f1,"f2","city"); fill(R.valley.f1,"f3","valley"); $("#r-from").innerHTML = "each figure is a cell of a table listed <a href=\"#tables\">below</a>"; }
-    else { fill(r.f1,"f1"); fill(r.f2,"f2"); fill(null,"f3"); $("#r-from").innerHTML = "from " + tableLinks(r.tables); }
-    $("#reading").classList.toggle("three", view === "home");
+    const V = READ.views, list = view === "home" ? [V.bridge.items[0], V.city.items[0], V.city.items[1], V.valley.items[0]] : V[view].items;
+    $("#items").innerHTML = list.map(it => item(it, view === "home")).join("");
+    $("#r-from").innerHTML = view === "home" ? "each number is a cell of a table, and the tables are listed <a href=\"#tables\">below</a>" : "";
     edgeL.hidden = !r.left; edgeR.hidden = !r.right; home.hidden = (view==="home");
     if (r.left){ edgeL.querySelector("span").textContent = r.left[1]; edgeL.onclick = ()=>go(r.left[0]); }
     if (r.right){ edgeR.querySelector("span").textContent = r.right[1]; edgeR.onclick = ()=>go(r.right[0]); }
@@ -942,9 +1064,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     if (typeof drawSky === "function") drawSky(OBS, view);
     if (typeof direct === "function") direct(view);
     // who cannot see the turn hears it; a keyboard stays in the stage, on the way back or on the view it came from
-    const lead = view === "home" ? "" : ` ${r.f1[0]} ${r.f1[1]}, ${r.f1[2]}.`;
+    const first = view === "home" ? null : READ.views[view].items[0], lead = first ? ` ${first.n} ${first.s}` : "";
     $("#announce").textContent = r.cap[0] + "." + lead;
-    document.title = view === "home" ? BASE_TITLE : `${r.cap[0]} · ${r.f1[0]} ${r.f1[1]} · ${BASE_TITLE}`;
+    document.title = view === "home" ? BASE_TITLE : `${r.cap[0]} · ${first.n} · ${BASE_TITLE}`;
     const prev = lastFrom;
     if (keyed) requestAnimationFrame(()=>{ const t = view === "home" ? $("#hot-" + ({bridge:"bridge", city:"city", valley:"tele"}[prev] || "city")) : home; t && t.focus({preventScroll:true}); });
     lastFrom = view;
@@ -1289,7 +1411,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       drops.setAttribute("d", d); pits.setAttribute("d", pd);
       rings.setAttribute("d", ell((10 + t*26)*sc) + " " + (t > .6 ? ell((6 + (t - .6)*22)*sc) : "")); rings.style.opacity = Math.max(0, 1 - k*1.05);
     }, ()=>g.remove()); }
-  let sfTrainUntil = 0, bartRun = 0, taxiUntil = 0, bearUp = false, rocketUntil = 0, whaleUp = 0, lastPad = 0, ferryUntil = 0;        // one robotaxi on the road at a time; one bear
+  let bannerAt = 0, sfTrainUntil = 0, bartRun = 0, taxiUntil = 0, bearUp = false, rocketUntil = 0, whaleUp = 0, lastPad = 0, ferryUntil = 0;        // one robotaxi on the road at a time; one bear
   const EVENTS = {
     gull(){ if (stage.classList.contains("night")) return; // one to three, each its own size, pace, bob and wingbeat
       const n = 1 + Math.floor(Math.random()*Math.random()*3), ltr = Math.random() < .5, y0 = 130 + Math.random()*140, dur = 12000 + Math.random()*10000;
@@ -1502,6 +1624,31 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       tween(rise, k=>at(8 - peek*(1-(1-k)**2), 1), ()=>{ brolly(true, 500); setTimeout(()=>{ at(top, first); setTimeout(()=>{ at(top, -first);
         setTimeout(()=>{ brolly(false, 450); setTimeout(()=>tween(1400, k=>at(top + peek*k*k, 1), ()=>{ bearUp = false; }), 500); }, look + 400); }, look); }, 1200 + Math.random()*800); });
       return 7800; },
+    // a small plane towing a banner, level and high, carrying one of the build's notices; each flight takes the next one.
+    // The same notices are printed under the opening sentence, so nothing is only on the banner.
+    banner(){ const view = stage.dataset.view; if (view === "valley" || !READ.notes || !READ.notes.length) return 0;
+      const text = READ.notes[bannerAt++ % READ.notes.length], ltr = Math.random() < .5, P = "fill:var(--paper)";
+      const g = el("g", {class:"thin"}, $("#lifeback")), plane = el("g", {}, g), tow = el("g", {}, g);
+      // the plane: a high wing, a strut, a propeller, as the ones that tow banners along the beach
+      el("path", {d:"M -14 -2 L 10 -2.5 Q 16 -2 17 0.5 Q 15 2.8 9 2.8 L -10 2.4 Q -13 1.4 -14 -2 Z", style:P}, plane);
+      el("path", {d:"M -14 -2 L -17 -9 L -13 -9 L -9 -2.2 Z M -4 -3.2 L 9 -3.2 L 9 -4.6 L -4 -4.6 Z M 2 -3.2 L 5 2.4", style:P}, plane);
+      el("path", {d:"M 17.5 -3.5 L 17.5 4.5", class:"hair"}, plane);
+      // on a narrow frame the whole rig is drawn larger, so its letters stay about nine pixels tall on screen
+      const u = stage.clientWidth/1600, sz = Math.max(1, 9/(11.5*u)), w = (Math.max(90, text.length*7.3 + 22))*sz, h = 17*sz, gap = 26*sz;
+      const rope = el("path", {d:"", class:"hair"}, tow), cloth = el("path", {d:"", style:P}, tow);
+      const words = el("text", {class:"bannertext", "text-anchor":"middle", "dominant-baseline":"central", style:`font-size:${(11.5*sz).toFixed(1)}px`}, tow); words.textContent = text;
+      const y = Math.max(104 - FRAME.top*.45, FRAME.title[3] + h/2 + 8), dur = 30000 + Math.random()*6000, span = 1600 + w + gap + 120;
+      tween(dur, k=>{ const t = k*dur/1000, x = ltr ? -60 - w - gap + k*span : 1660 + w + gap - k*span, dir = ltr ? 1 : -1, bob = Math.sin(t*1.3)*1.2;
+        plane.setAttribute("transform", `translate(${x.toFixed(1)},${(y + bob).toFixed(1)}) scale(${dir*sz},${sz})`);
+        // the banner hangs back on its rope and ripples along its length
+        const x0 = x - dir*gap, x1 = x0 - dir*w, wave = i => Math.sin(t*5 + i*1.7)*1.4*sz;
+        rope.setAttribute("d", `M ${(x - dir*14*sz).toFixed(1)} ${(y + bob).toFixed(1)} L ${x0.toFixed(1)} ${(y + 2*sz).toFixed(1)}`);
+        let top = `M ${x0.toFixed(1)} ${(y + 2*sz - h/2 + wave(0)).toFixed(1)}`, bot = "";
+        for (let i = 1; i <= 6; i++){ const xi = x0 - dir*w*i/6; top += ` L ${xi.toFixed(1)} ${(y + 2*sz - h/2 + wave(i)).toFixed(1)}`; }
+        for (let i = 6; i >= 0; i--){ const xi = x0 - dir*w*i/6; bot += ` L ${xi.toFixed(1)} ${(y + 2*sz + h/2 + wave(i)).toFixed(1)}`; }
+        cloth.setAttribute("d", top + bot + " Z");
+        words.setAttribute("x", ((x0 + x1)/2).toFixed(1)); words.setAttribute("y", (y + 2*sz + wave(3)).toFixed(1)); }, ()=>g.remove());
+      return dur; },
     gust(){ stage.classList.add("gust"); document.querySelectorAll(".gull").forEach(p=>{ p.style.transition = "transform .8s"; p.style.transform = "rotate(-22deg)"; });
       setTimeout(()=>{ stage.classList.remove("gust"); }, 5000); },
     sail(){ const view = stage.dataset.view; if (view !== "bridge" && view !== "home") return 0;
@@ -1667,16 +1814,16 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
      clocks alongside. Everything is cancelled and restarted when the view changes, and any error in one
      event is caught so the others carry on. */
   const PLAY = {
-    home:   { first:[["boat", 3000], ["rocket", 9000], ["bartsf", 20000], ["whale", 30000]], features:["whale", "boat", "rocket", "whale", "boat"], gap:[9000, 16000], ambient:[["gull", [18000, 34000]], ["plane", [26000, 48000]], ["bartsf", [30000, 50000]], ["boat", [45000, 75000]]] },
-    city:   { first:[["robotaxi", 6000], ["bartsf", 12000], ["cityferry", 24000]], features:["robotaxi", "cityferry"],    gap:[14000, 24000], ambient:[["gull", [20000, 36000]], ["plane", [28000, 50000]], ["bartsf", [30000, 50000]]] },
-    bridge: { first:[["boat", 2500], ["bear", 12000], ["whale", 24000]],  features:["whale", "boat", "bear", "whale", "boat"], gap:[9000, 16000], ambient:[["gull", [18000, 34000]], ["plane", [30000, 55000]], ["zzz", [16000, 28000]], ["boat", [50000, 80000]]] },
+    home:   { first:[["boat", 3000], ["rocket", 9000], ["banner", 14000], ["bartsf", 22000], ["whale", 32000]], features:["whale", "boat", "rocket", "whale", "boat"], gap:[9000, 16000], ambient:[["gull", [18000, 34000]], ["plane", [26000, 48000]], ["bartsf", [30000, 50000]], ["boat", [45000, 75000]], ["banner", [80000, 130000]]] },
+    city:   { first:[["robotaxi", 6000], ["bartsf", 12000], ["cityferry", 24000]], features:["robotaxi", "cityferry"],    gap:[14000, 24000], ambient:[["gull", [20000, 36000]], ["plane", [28000, 50000]], ["bartsf", [30000, 50000]], ["banner", [40000, 90000]]] },
+    bridge: { first:[["boat", 2500], ["bear", 12000], ["whale", 24000]],  features:["whale", "boat", "bear", "whale", "boat"], gap:[9000, 16000], ambient:[["gull", [18000, 34000]], ["plane", [30000, 55000]], ["zzz", [16000, 28000]], ["boat", [50000, 80000]], ["banner", [45000, 100000]]] },
     valley: { first:[["bart", 1500], ["rocket", 13000]],                  features:["bart", "rocket", "bart"],   gap:[5000, 11000],  ambient:[] },
   };
   const rand = ([lo, hi]) => lo + Math.random()*(hi - lo);
   let cues = [];
   function cue(ms, fn){ cues.push(setTimeout(()=>{ let r = 0; try { r = fn(); } catch (e) { console.error(e); } return r; }, ms)); }
   // no event comes back sooner than this, whatever the schedule says, so a long look never sees the same thing on repeat
-  const COOL = { rocket:120000, whale:45000, fluke:45000, bear:60000, cargo:40000, sail:30000, cityferry:40000, bartsf:60000, bart:12000, robotaxi:30000 }, lastPlayed = {};
+  const COOL = { rocket:120000, whale:45000, fluke:45000, bear:60000, cargo:40000, sail:30000, cityferry:40000, banner:60000, bartsf:60000, bart:12000, robotaxi:30000 }, lastPlayed = {};
   function direct(view, resume){
     cues.forEach(clearTimeout); cues = [];
     if (reduced || params.get("event")) return;
@@ -1703,6 +1850,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     el("circle", {cx:x, cy:60, r: isNext?5:4, class:"pt"+(isNext?" next":"")}, ticks);
     const t = el("text", {x, y:82, "text-anchor":"middle"}, ticks); t.textContent = d;
     const u = el("text", {x, y:44, "text-anchor":"middle", class:"lbl"}, ticks); u.textContent = l; });
+  top();
   go(fromHash(), true);
 })();
 </script>

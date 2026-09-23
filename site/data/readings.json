@@ -1,41 +1,84 @@
 {
-  "built": "22 September 2026",
+  "built": "23 September 2026",
+  "lede": "In the latest releases, work on the tasks people bring to AI models accounts for <a href=\"#bridge\" data-view=\"bridge\">21 percent of the wages paid in the United States</a>, pay across the twenty-five skill groups the index follows <a href=\"#city\" data-view=\"city\">has stayed within its usual range</a> while the mix of those skills in employment has shifted more than in any three years since 2013, and <a href=\"#telescope\" data-view=\"valley\">41 percent of new bachelor's degrees</a> go to the third of fields whose graduates hold the jobs most exposed to these models.",
+  "meaning": [
+    "The tasks people bring to AI models are paid about a fifth of all the wages in the United States, while pay across the skills behind them has moved no further over the last three years than in an ordinary stretch of the record, so these models already reach a wide share of paid work and there is no sign yet that employers pay for those skills differently.",
+    "The reading that stands out is the mix of work: over the last three years employment has moved toward jobs that draw on arts and humanities by more than in any three-year stretch since 2013, although a record of thirteen years produces a shift that size by chance about one time in eleven, and the same test was passed in 2020 and 2021, when the pandemic reshuffled employment, so the next release of the wage tables will show whether it holds.",
+    "Degrees are the slow channel and the one policy can count: 40.7 percent of new bachelor's degrees in 2024 went to the most exposed third of fields, against 40.3 percent in 2023, and people who move into those jobs from other occupations will join the count once the flows between occupations are published."
+  ],
+  "notes": [
+    "new usage data: June 2026",
+    "next wage tables: spring 2027",
+    "jobs mix: largest shift since 2013"
+  ],
   "views": {
-    "city": {
-      "f1": [
-        "2.8",
-        "of 6.1",
-        "pay · largest standardised move · 2025 release",
-        "6 of 25 skill groups moved beyond two of their own standard errors; the largest sits at 2.8 against a lens of 6.1."
+    "bridge": {
+      "capline": "21% of wages go to tasks people bring to AI models · June 2026",
+      "mark": "21% of wages in tasks people bring",
+      "items": [
+        {
+          "n": "21%",
+          "view": "bridge",
+          "s": "of all the wages paid in the United States go to work on the tasks people bring to AI models, in the usage record the Anthropic Economic Index published in June 2026, against 18 percent in its September 2025 release, and 6 percent go to tasks people hand over to the model entirely, on the March 2026 record.",
+          "src": "Anthropic Economic Index, June 2026 · OEWS wages, May 2025",
+          "tables": [
+            "usage_reach.csv"
+          ]
+        },
+        {
+          "n": "2.4×",
+          "view": "bridge",
+          "s": "is the weight of that use on systems skills, measured against their share of pay and the most of any skill group, while resource management skills receive 0.2 times their share.",
+          "src": "Anthropic Economic Index, June 2026 · O*NET 30.2",
+          "tables": [
+            "usage_landing.csv"
+          ]
+        }
       ],
-      "f2": [
-        "8.2",
-        "of 6.7",
-        "jobs · employment-weighted skill mix · 2025",
-        "The quantity side against its own lens. Whether it holds is what the next release answers."
-      ]
+      "how": "Each conversation in the usage record is matched to the O*NET tasks it touches, each task is weighted by the wages paid for it in the latest OEWS release, and the share moves with every usage release, every few months, for the one platform whose record the index reads so far."
+    },
+    "city": {
+      "capline": "pay 2.8, 6.1 needed · jobs mix 8.2, 6.7 needed",
+      "mark": "pay 2.8 of 6.1 needed · jobs 8.2 of 6.7",
+      "items": [
+        {
+          "n": "2.8",
+          "view": "city",
+          "s": "standard errors is the largest change in pay across the twenty-five skill groups over the last three years, a rise in the pay of complex problem solving skills, where 6.1 would be needed to stand out from each group's own record since 2013, and eight of the ten earlier three-year stretches in that record moved as far or further.",
+          "src": "OEWS, May 2012 to May 2025, occupations present in every year",
+          "tables": [
+            "outcomes_pay_series_balanced.csv",
+            "outcomes_pay_changes.csv"
+          ]
+        },
+        {
+          "n": "8.2",
+          "view": "city",
+          "s": "standard errors is the largest shift in the mix of skills in employment over the last three years, toward work that draws on arts and humanities, past the 6.7 needed to stand out and further than any of the ten earlier three-year stretches since 2013, although a record of thirteen years produces a shift that size by chance about one time in eleven, and the same test was passed in 2020 and 2021.",
+          "src": "OEWS, May 2012 to May 2025, occupations present in every year",
+          "tables": [
+            "outcomes_quantity_series_balanced.csv"
+          ]
+        }
+      ],
+      "how": "For each skill group the index takes the last three yearly changes in pay, and in the share of employment, and sets them against that group's own changes since 2013: a change stands out when it passes the level only the most extreme three-year stretches in the record reached, and both the reading and that level are recalculated with each spring release of the wage tables."
     },
     "valley": {
-      "f1": [
-        "41",
-        "% of bachelor's",
-        "awarded in fields that lead to exposed jobs · 2024",
-        "Fields are scored by where their graduates actually work, not by where the catalogue says they should."
-      ]
-    },
-    "bridge": {
-      "f1": [
-        "21",
-        "% of wages",
-        "reach · Anthropic consumer usage · 2026-06-26 (2026-05)",
-        "18 percent in 2025-09-15 (2025-08-04) · 22 percent in 2026-01-15 (2025-11-13) · 23 percent in 2026-03-24 (2026-02-05) · 19 percent in 2026-06-26 (2026-04) · 21 percent in 2026-06-26 (2026-05). 6 percent delegated outright on the 2026-03-24 (2026-02-05) release."
+      "capline": "40.7% of new degrees in the most exposed fields · 2024",
+      "mark": "40.7% of new degrees in exposed fields",
+      "items": [
+        {
+          "n": "40.7%",
+          "view": "valley",
+          "s": "of new bachelor's degrees in 2024 went to the third of fields whose graduates hold the jobs most exposed to AI models, with each field scored by where its graduates actually work, against 40.3 percent in 2023.",
+          "src": "IPEDS completions, 2024 · field exposure from ACS and the Eloundou task measure",
+          "tables": [
+            "pipeline_completions_by_state.csv",
+            "pipeline_field_exposure_crosswalk.csv"
+          ]
+        }
       ],
-      "f2": [
-        "2.4",
-        "×",
-        "concentration on systems skills",
-        "Usage lands on that skill group at 2.4 times its weight in pay."
-      ]
+      "how": "Degrees come from the IPEDS completions file and each field of study is scored by the exposure of the occupations its graduates hold, on the task measure of Eloundou and coauthors, so the share moves once a year, and people who arrive in exposed jobs from other occupations will join this view when the flows between occupations are published."
     }
   },
   "releases": [

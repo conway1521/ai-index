@@ -65,6 +65,22 @@ def _null(changes: pd.DataFrame, n_treated: int) -> pd.DataFrame:
     return pd.DataFrame(draws)
 
 
+def _largest(changes: pd.DataFrame, treated: list[int]) -> tuple[str, int]:
+    """Which bundle carries the largest statistic, and which way its treated years moved.
+
+    The statistic itself is the paper's; this only names where it sits, so
+    the page can say which skill group moved and in which direction.
+    """
+    a = changes.loc[changes.index.isin(treated)]
+    b = changes.loc[~changes.index.isin(treated)]
+    t = (a.mean() - b.mean()) / np.sqrt(a.var(ddof=1) / len(a) + b.var(ddof=1) / len(b))
+    size = t.abs()
+    if size.isna().all():            # nothing moved at all, so no bundle carries the statistic
+        return "", 0
+    key = size.idxmax()
+    return str(key), int(np.sign(t[key]))
+
+
 def series(changes: pd.DataFrame, label: str, n_treated: int = N_TREATED) -> pd.DataFrame:
     """The statistic, its threshold and the distance to detection, per year."""
     years = list(changes.index)
@@ -78,6 +94,7 @@ def series(changes: pd.DataFrame, label: str, n_treated: int = N_TREATED) -> pd.
         null = _null(available, n_treated)
         strict = null[null["consecutive"]]
         threshold = float(strict["largest"].quantile(QUANTILE))
+        bundle, direction = _largest(available, treated)
         rows.append({
             "series": label,
             "year": int(end),
@@ -90,6 +107,10 @@ def series(changes: pd.DataFrame, label: str, n_treated: int = N_TREATED) -> pd.
             "p_largest_consecutive": round(float((strict["largest"] >= largest).mean()), 3),
             "p_count_consecutive": round(float((strict["count"] >= count).mean()), 3),
             "consecutive_relabellings": int(len(strict)),
+            "earlier_windows_at_least": int((strict["largest"] >= largest).sum()) - 1,
+            "first_transition": int(available.index.min()),
+            "largest_bundle": bundle,
+            "largest_direction": direction,
         })
     out = pd.DataFrame(rows)
     if len(out):
