@@ -218,6 +218,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .tables h3{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin:0 0 8px}
 .tables p{margin:0 0 10px;color:var(--ink-2);max-width:80ch;font-size:14px}
 .tables dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0;font-size:13px}
+/* the lighter drawing, for a device that struggles */
+.lite .fogline.b,.lite .water.c,.lite .crest{display:none}.lite #beamlight{filter:none}
+.stage.fogout .wc{filter:none}
 .skip{position:absolute;left:12px;top:-60px;z-index:60;background:var(--paper);color:var(--ink);border:1px solid var(--ink);padding:8px 12px;font-family:var(--mono);font-size:13px}.skip:focus{top:12px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .tables dt{font-family:var(--display);color:var(--ink)}
@@ -523,6 +526,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   // the frame: the drawing is 1600 by 700; a stage of another shape, a phone's for one, gets its extra height as more sky above
   // (and room for the stamp below), so FRAME.top is how far the frame reaches above the drawing's top edge, in its own units
   const FRAME = { top:0, H:700, title:[0, 0, 440, 104] };
+  // San Francisco's calendar and clock, each formatter made once: building one is slow, and the page asks the time often
+  const SF = { md: new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",month:"2-digit",day:"2-digit"}),
+               y: new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",year:"numeric"}),
+               hm: new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",hour:"numeric",minute:"numeric",hour12:false}),
+               clock: new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",hour:"2-digit",minute:"2-digit",hour12:false}) };
   const W = 1600;                         // the frame is the scene: the view from the point
   const CH = 756, HYD = 838;              // in the city's own units: City Hall's x, and the hydrant's on the Embarcadero
 
@@ -817,9 +825,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
                       "10-31":["var(--orange)","#8E7CC3"], "11-11":["var(--orange)","var(--sky)"],
                       "12-31":["var(--gold)","var(--gold)"] };
   function nightPair(d){
-    const key = new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",month:"2-digit",day:"2-digit"}).format(d).replace("/","-");
+    const key = SF.md.format(d).replace("/","-");
     if (OCCASIONS[key]) return OCCASIONS[key];
-    const [mm, dd] = key.split("-").map(Number), yy = +new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",year:"numeric"}).format(d);
+    const [mm, dd] = key.split("-").map(Number), yy = +SF.y.format(d);
     const doy = Math.round((Date.UTC(yy, mm - 1, dd) - Date.UTC(yy, 0, 0))/86400e3), r = rng(doy*7+3);
     const a = Math.floor(r()*PALETTE.length); let b = Math.floor(r()*PALETTE.length); if (b === a) b = (a+3) % PALETTE.length;
     return [PALETTE[a], PALETTE[b]];
@@ -1198,7 +1206,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   function sfNow(){
     const now = new Date();
     if (HOUR != null){
-      const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",hour:"numeric",minute:"numeric",hour12:false}).formatToParts(now).map(p=>[p.type,p.value]));
+      const parts = Object.fromEntries(SF.hm.formatToParts(now).map(p=>[p.type,p.value]));
       const h = HOUR; const sfH = (+parts.hour % 24) + (+parts.minute)/60;
       return new Date(now.getTime() + (h - sfH)*3600e3);
     }
@@ -1210,7 +1218,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     for (let m = evening ? 15*60 : 3*60; m < (evening ? 23*60 : 10*60); m += 2){ HOUR = m/60; const a = sunPosition(sfNow()).alt, d = Math.abs(a + 7.5);
       if (d < gap){ gap = d; best = HOUR; } }
     HOUR = keep; return Math.round(best*60)/60; }
-  function sfClock(d){ return new Intl.DateTimeFormat("en-US",{timeZone:"America/Los_Angeles",hour:"2-digit",minute:"2-digit",hour12:false}).format(d); }
+  function sfClock(d){ return SF.clock.format(d); }
   function sunPosition(d, haShift=0, decScale=1){
     const n = d.getTime()/86400e3 - 10957.5;                                  // days since J2000
     const L = (280.460 + 0.9856474*n) % 360, g = ((357.528 + 0.9856003*n) % 360)*rad;
@@ -1296,7 +1304,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const sy = v => toScene(view, 800, v)[1], base = sy([0, 84, 96, 104][heavy]);
     // most cloud is behind the land and the bridge; one in four passes in front of them
     // cloud keeps to two bands: high, above the labels, and low, along the horizon behind the land
-    for (let i=0;i<w.clouds*3 + heavy*4;i++){ const y = heavy ? sy(200 + r()*84) : i % 3 === 2 ? 236 + r()*52 : 66 - FRAME.top*.8 + r()*(24 + FRAME.top*.45), wd = (heavy ? 50 : 80) + r()*(heavy ? 80 : 140), front = false;
+    for (let i=0, n = Math.round((w.clouds*3 + heavy*4)*(LITE.on ? .6 : 1));i<n;i++){ const y = heavy ? sy(200 + r()*84) : i % 3 === 2 ? 236 + r()*52 : 66 - FRAME.top*.8 + r()*(24 + FRAME.top*.45), wd = (heavy ? 50 : 80) + r()*(heavy ? 80 : 140), front = false;
       const d = w.streak ? `M0 ${y} q ${wd*.5} -6 ${wd} 0 M20 ${y+8} q ${wd*.3} -4 ${wd*.6} 0` : `M0 ${y} q ${wd*.2} -18 ${wd*.45} -6 q ${wd*.15} -16 ${wd*.35} -2 q ${wd*.2} -4 ${wd*.2} 8 Z`;
       const c = el("path", {d, class:"cloud"}, front ? skyFront : sky); if (!w.streak) c.style.fill = "var(--paper)";
       const own = cross*(.8 + r()*.4); c.dataset.dur = own.toFixed(0); c.dataset.ph = (-(((clock/own) + r()) % 1)*own).toFixed(1); }
@@ -1320,7 +1328,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         if ((i*5 + 1) % 7 === 0) folds += ` M ${(ox + x).toFixed(1)} ${(y - 24 - (i % 3)*9).toFixed(1)} q ${(wd*.7).toFixed(1)} 5 ${(wd*1.6).toFixed(1)} -2`; });
       el("path", {d:folds, class:"hair", style:"opacity:.6"}, deck);
       SLOW.ddrift = cross*.6; }
-    const rainN = Math.round([0, 220, 560][Math.max(w.rain, rainLevel)]*FRAME.H/700), rtop = heavy ? base : 60 - FRAME.top;
+    const rainN = Math.round([0, 220, 560][Math.max(w.rain, rainLevel)]*FRAME.H/700*(LITE.on ? .5 : 1)), rtop = heavy ? base : 60 - FRAME.top;
     if (rainN){ const slant = -lateral * 0.35;
       const far = el("g", {class:"rain"}, $("#rainfar")), near = el("g", {class:"rain near"}, $("#rainnear"));
       for (let i=0;i<rainN;i++){ const x = r()*W, y = rtop + r()*(332 - rtop); el("path", {d:`M${x} ${y} l ${slant*.7} 7`, class:"hair"}, far); }        // above the horizon only
@@ -1388,7 +1396,22 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       c.setAttribute("transform", `translate(${(d > 0 ? 1900 - 2400*f : -500 + 2400*f).toFixed(1)},0)`); }
     for (const g of document.querySelectorAll(".deck")){ const f = frac(t/SLOW.ddrift); g.setAttribute("transform", `translate(${(-600*(d > 0 ? f : 1 - f)).toFixed(1)},0)`); }
   }
-  setInterval(slowTick, 100);
+  let slowTimer = setInterval(slowTick, 100);
+  /* A device that struggles gets a lighter drawing: half the fog lines, one water layer fewer, no crests, no blur on the beam,
+     half the rain, fewer clouds, and the slow things moved five times a second. Every event stays. The page decides by
+     watching its own frames for three seconds after it settles; ?lite=1 or ?lite=0 fixes the choice. */
+  const LITE = { on:false };
+  function lighten(on){ if (LITE.on === on) return; LITE.on = on; stage.classList.toggle("lite", on);
+    clearInterval(slowTimer); slowTimer = setInterval(slowTick, on ? 200 : 100); if (skyReady) drawSky(OBS, stage.dataset.view); }
+  { const forced = new URLSearchParams(location.search).get("lite");
+    if (forced === "1") setTimeout(()=>lighten(true)); else if (forced !== "0" && !lessMotion.matches) setTimeout(()=>{
+      if (document.hidden) return; const gaps = []; let last = performance.now(), blocked = 0; const until = last + 3000;
+      // two signs of a device at its limit: frames arriving late, and the main thread held in long stretches
+      let watch = null; try { watch = new PerformanceObserver(list => { for (const e of list.getEntries()) blocked += e.duration; }); watch.observe({ entryTypes:["longtask"] }); } catch (e) {}
+      const tick = t => { gaps.push(t - last); last = t; if (t < until) requestAnimationFrame(tick);
+        else { watch && watch.disconnect(); const slow = gaps.filter(g => g > 40).length/gaps.length, mean = gaps.reduce((a, b) => a + b, 0)/gaps.length;
+          if (mean > 22 || slow > .15 || blocked > 450) lighten(true); } };
+      requestAnimationFrame(tick); }, 1500); }
   function fit(){
     const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
     const u = 1600/w, H = h*u, extra = Math.max(0, H - 700), stamp = document.querySelector(".stamp");
@@ -1409,8 +1432,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   setInterval(()=>{ fetchObservation().then(o=>{ if (o){ LIVE = o; if (!FORCED) OBS = o; } drawSky(OBS, stage.dataset.view); }); }, 600e3);
   // the exploring strip: force a sky or an hour, for looking, not for the page
   (function lab(){
-    const skies = ["live","clear","light cloud","overcast","fog","thick fog","rain","wind","storm"], hours = [["now",null],["dawn",twilight(false)],["morning",9],["midday",12.5],["afternoon",16],["dusk",twilight(true)],["night",22.5]];
-    const row = (host, items, pick) => items.forEach(([label, v]) => { const b = document.createElement("button"); b.textContent = label; b.setAttribute("aria-pressed", "false"); b.onclick = ()=>{ pick(v); host.querySelectorAll("button").forEach(x=>{ x.classList.toggle("on", x===b); x.setAttribute("aria-pressed", String(x===b)); }); drawSky(OBS, stage.dataset.view); }; host.appendChild(b); });
+    const skies = ["live","clear","light cloud","overcast","fog","thick fog","rain","wind","storm"], hours = [["now",null],["dawn",()=>twilight(false)],["morning",9],["midday",12.5],["afternoon",16],["dusk",()=>twilight(true)],["night",22.5]];
+    const row = (host, items, pick) => items.forEach(([label, v]) => { const b = document.createElement("button"); b.textContent = label; b.setAttribute("aria-pressed", "false"); b.onclick = ()=>{ pick(typeof v === "function" ? v() : v); host.querySelectorAll("button").forEach(x=>{ x.classList.toggle("on", x===b); x.setAttribute("aria-pressed", String(x===b)); }); drawSky(OBS, stage.dataset.view); }; host.appendChild(b); });
     row($("#lab-sky"), skies.map(k=>[k,k]), k=>{ FORCED = k === "live" ? null : k; OBS = FORCED ? skyFor(FORCED) : LIVE; });
     row($("#lab-hour"), hours, h=>{ HOUR = h; });
   })();
