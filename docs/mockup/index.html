@@ -46,20 +46,35 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .stage{position:relative;margin-top:14px;border:1px solid var(--ink);background:var(--paper);overflow:hidden;aspect-ratio:16/7}
 /* Each layer is its own drawing surface, so the line work with its filters is painted once and only the
    water, the fog and the sky repaint; turning to a view moves the surfaces, which repaints nothing. */
-.stage>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.stage>svg,.swell,.swell>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+/* The swell moves on the graphics card: each of its three layers is a sheet of its own, slid a few pixels back and forth by
+   the compositor at the full frame rate, and the main thread does no work for it. The distance is set in the drawing's units,
+   so it grows with the zoom as it would inside the drawing. The wrapper carries the hairline opacity for the whole of the
+   water, so crossings between the layers look as they did when it was one group. */
+@property --zs{syntax:'<number>';inherits:true;initial-value:1}
+.stage{--zs:1;transition:--zs 1.4s cubic-bezier(.6,0,.2,1)}
+.swell{opacity:.75;transition:opacity .8s}
+.scene .fine{stroke-width:.55px}
+.sheet.sa,.sheet.sb,.sheet.sc{animation:2s cubic-bezier(.37,0,.63,1) infinite alternate both}
+.sheet.sa{animation-name:swa;animation-duration:6s}
+.sheet.sb{animation-name:swb;animation-duration:8.5s;animation-delay:-3s}
+.sheet.sc{animation-name:swc;animation-duration:11s;animation-delay:-6s}
+@keyframes swa{from{transform:translate(calc(var(--zs)*-14%/16),calc(var(--zs)*-2%/7))}to{transform:translate(calc(var(--zs)*14%/16),calc(var(--zs)*3%/7))}}
+@keyframes swb{from{transform:translate(calc(var(--zs)*12%/16),calc(var(--zs)*2%/7))}to{transform:translate(calc(var(--zs)*-12%/16),calc(var(--zs)*-3%/7))}}
+@keyframes swc{from{transform:translate(calc(var(--zs)*-8%/16),calc(var(--zs)*3%/7))}to{transform:translate(calc(var(--zs)*8%/16),calc(var(--zs)*-2%/7))}}
 .stage>svg.pan{transition:opacity .8s}
 /* Turning to a view is a scale of the one drawing about that place, on a group inside each surface, so the
    ink keeps its weight: strokes are set in screen pixels and do not thicken with the zoom. */
 .zoom{transform-box:view-box;transform-origin:0 0;transition:transform 1.4s cubic-bezier(.6,0,.2,1)}
 .scene path,.scene circle,.scene rect{vector-effect:non-scaling-stroke}
 .vig .scene path{vector-effect:none}
-.stage[data-view="valley"]>svg.pan:not(#L-sky):not(#L-rainfar){opacity:0}
+.stage[data-view="valley"]>svg.pan:not(#L-sky):not(#L-rainfar),.stage[data-view="valley"]>.swell{opacity:0}
 .scene{stroke:var(--ink);fill:none;stroke-width:1.25px;stroke-linecap:round;stroke-linejoin:round}
 .scene .thin{stroke-width:.8px}
 .scene .hair{stroke-width:.55px;opacity:.75}
 @property --ck{syntax:'<number>';inherits:true;initial-value:.62}
 .stage{--ck:.62}
-.stage.fogout .water,.stage.fogout .crest,.stage.fogout .fogline,.stage.fogout .cloud,.stage.fogout .deck{animation-play-state:paused}
+.stage.fogout .sheet,.stage.fogout .crest,.stage.fogout .fogline,.stage.fogout .cloud,.stage.fogout .deck{animation-play-state:paused}
 .stage[data-view="city"]{--ck:1}
 .scene .city path{stroke-width:calc(1px*var(--ck))}.scene .city path.thin{stroke-width:calc(.7px*var(--ck))}.scene .city path.hair{stroke-width:calc(.45px*var(--ck))}
 .vig .scene{stroke-width:1.6}.vig .scene .thin{stroke-width:1}.vig .scene .hair{stroke-width:.7}
@@ -84,9 +99,6 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 #celes{transition:opacity .8s}
 .star{animation:twinkle 8s ease-in-out infinite;opacity:.85}
 @keyframes twinkle{0%,70%,100%{opacity:.85}78%{opacity:.15}86%{opacity:.9}}
-@keyframes swell{from{transform:translate(-14px,-2px)}to{transform:translate(14px,3px)}}
-@keyframes swellb{from{transform:translate(12px,2px)}to{transform:translate(-12px,-3px)}}
-@keyframes swellc{from{transform:translate(-8px,3px)}to{transform:translate(8px,-2px)}}
 .crest{opacity:0}
 @keyframes crest{0%,100%{opacity:0}40%,60%{opacity:.9}}
 .life{pointer-events:none}
@@ -219,7 +231,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .tables p{margin:0 0 10px;color:var(--ink-2);max-width:80ch;font-size:14px}
 .tables dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0;font-size:13px}
 /* the lighter drawing, for a device that struggles */
-.lite .fogline.b,.lite .water.c,.lite .crest{display:none}.lite #beamlight{filter:none}
+.lite .fogline.b,.lite #L-swell-c,.lite .crest{display:none}.lite #beamlight{filter:none}
 .stage.fogout .wc{filter:none}
 .skip{position:absolute;left:12px;top:-60px;z-index:60;background:var(--paper);color:var(--ink);border:1px solid var(--ink);padding:8px 12px;font-family:var(--mono);font-size:13px}.skip:focus{top:12px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
@@ -246,7 +258,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .coin .close{margin-top:12px;font-family:var(--mono);font-size:12px;background:transparent;border:1px solid var(--ink);color:var(--ink);padding:5px 12px;cursor:pointer}
 
 @media (forced-colors: active){.scene path,.scene circle,.scene rect{stroke:CanvasText}.scene text{fill:CanvasText}.hot:focus-visible .hit{stroke:Highlight}}
-@media (prefers-reduced-motion: reduce){.fogline,.bank,.cloud,.deck,.rain,.rainsheet,.water,.water.b,.water.c,.crest,.crownblock,.bart,.star,.lens,.avlight,.shiplight,.navlight,.strobe,.carlight{animation:none !important}.stage>svg,.zoom,.viewer,.beam,.mask-in{transition:none}}
+@media (prefers-reduced-motion: reduce){.fogline,.bank,.cloud,.deck,.rain,.rainsheet,.sheet,.crest,.crownblock,.bart,.star,.lens,.avlight,.shiplight,.navlight,.strobe,.carlight{animation:none !important}.stage>svg,.zoom,.viewer,.beam,.mask-in{transition:none}}
 @media (max-width:820px){
   /* On a phone the drawing is a picture and the figures beneath it are the way in: the labels in the
      drawing go, the filters go, and the three views become three cards to tap. */
@@ -305,7 +317,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     <svg class="pan rainsheet skylike" id="L-rainfar" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom"><g id="rainfar" class="scene sky thin"></g></g></svg>
     <svg class="pan" id="L-static" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom scene"><g id="far"></g><g id="washes"></g></g></svg>
     <svg class="pan" id="L-lights" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom"><g id="lights" class="scene"></g></g></svg>
-    <svg class="pan" id="L-water" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom scene"><g id="skyfront" class="sky thin"></g><g id="water" class="hair"></g><g id="fog" class="fog" mask="url(#fogmask)"></g><g id="foam" class="hair"></g></g></svg>
+    <div class="swell" aria-hidden="true"><svg class="pan sheet" id="L-waterlines" viewBox="0 0 1600 700"><g class="zoom scene"><g id="water"></g></g></svg><svg class="pan sheet sa" id="L-swell-a" viewBox="0 0 1600 700"><g class="zoom scene"><g id="swell-a" class="fine"></g></g></svg><svg class="pan sheet sb" id="L-swell-b" viewBox="0 0 1600 700"><g class="zoom scene"><g id="swell-b" class="fine"></g></g></svg><svg class="pan sheet sc" id="L-swell-c" viewBox="0 0 1600 700"><g class="zoom scene"><g id="swell-c" class="fine"></g></g></svg></div>
+    <svg class="pan" id="L-water" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom scene"><g id="skyfront" class="sky thin"></g><g id="fog" class="fog" mask="url(#fogmask)"></g><g id="foam" class="hair"></g></g></svg>
     <svg class="pan rainsheet near" id="L-rainnear" viewBox="0 0 1600 700" aria-hidden="true"><g class="zoom scene"><g id="rainnear" class="sky thin"></g></g></svg>
     <!-- foreground: the point, the lighthouse, the railing, the viewer at rest -->
     <svg id="L-life" viewBox="0 0 1600 700" aria-hidden="true"><defs><clipPath id="behind-hills"><path clip-rule="evenodd" d="M0 0 H1600 V700 H0 Z M 1400 700 L 1400 314 L 1500 320 L 1600 329 L 1600 700 Z"/></clipPath><clipPath id="behind-foothills"><path clip-rule="evenodd" d="M0 0 H1600 V700 H0 Z M 780 700 L 780 262 C 850 236, 930 230, 1000 244 C 1050 254, 1090 256, 1130 262 L 1130 700 Z"/></clipPath></defs><g id="life" class="life scene"></g></svg>
@@ -661,13 +674,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 
   // the bay: the horizon from the headland to the city, and the water below it
   el("path", {d:`M 330 340 L ${W} 340`, class:"hair"}, waterG);
-  const waterA = el("g", {class:"water"}, waterG), waterB = el("g", {class:"water b"}, waterG), waterC = el("g", {class:"water c"}, waterG);
+  const waterA = $("#swell-a"), waterB = $("#swell-b"), waterC = $("#swell-c");
   water(waterA, 0, W, 352, 690, 3, 40); water(waterB, 0, W, 366, 690, 4, 40); water(waterC, 0, W, 380, 690, 8, 40);
   // twelve crests in three groups of four, spread over the water, each group breaking on its own beat
   (function crests(){ const r = rng(19), sets = [0, 1, 2].map(j => { const g = el("g", {class:"crest thin"}, waterG); g.dataset.ph = (j*1.6).toFixed(2); g.dataset.dur = (3.4 + j*.9).toFixed(2); return g; });
     for (let i=0;i<12;i++){ const x = r()*W, y = 360 + r()*320; el("path", {d:`M${x} ${y} q 6 -3 12 0 M${x+3} ${y-2} l 2 -2`}, sets[i % 3]); r(); r(); } })();
   // the Marin headland, near, drawn over the water so the bay ends at its foot; the road out to the point on it
-  const headland = el("g", {}); waterG.parentNode.insertBefore(headland, fogG);
+  const headland = el("g", {}); fogG.parentNode.insertBefore(headland, fogG);
   const ALC = "translate(872,364) scale(1.15) translate(-966,-358)";            // the island's place: nearer the point than the city, clear of both
   (function alcatraz(g){
     // a steep-sided rock, flat on top, the long cellhouse along its crest, the lighthouse at its south end, the water tower low on the north
@@ -1082,6 +1095,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     // the one drawing scales about the place turned to; the lighthouse in front shrinks to the base of the frame
     const {c, s: zs} = ZOOM[view];
     document.querySelectorAll(".zoom").forEach(g => { if (g.id !== "fgzoom") g.style.transform = `translate(${800 - zs*c[0]}px, ${300 - zs*c[1]}px) scale(${zs})`; });
+    stage.style.setProperty("--zs", zs);
     const f = FG[view] || FG.home;
     $("#fgzoom").style.transform = `translate(${f.t[0]}px, ${f.t[1]}px) scale(${f.s})`;
     $("#cap-h").textContent = r.cap[0]; $("#cap-p").textContent = view === "home" ? r.cap[1] : READ.views[view].capline;
@@ -1378,16 +1392,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   const SLOW = { dir:1, drift:60, ddrift:900 };
   const frac = x => x - Math.floor(x), easeIO = f => .5 - .5*Math.cos(Math.PI*f);
   const swing = (t, dur, ph) => { const u = (t + ph)/dur, f = frac(u); return easeIO(Math.floor(u) % 2 ? 1 - f : f); };
-  const SWELL = { "": [6, 0, -14, -2, 14, 3], b: [8.5, 3, 12, 2, -12, -3], c: [11, 6, -8, 3, 8, -2] };
-  const lessMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    const lessMotion = matchMedia("(prefers-reduced-motion: reduce)");
   function slowTick(place){
     // placed once whenever the sky is drawn, even when nothing is to move, so the cloud is spread across the sky and not piled at its edge
     if (!place && (document.hidden || lessMotion.matches || stage.classList.contains("asleep") || stage.classList.contains("fogout"))) return;
     const t = performance.now()/1000, d = SLOW.dir;
     for (const g of document.querySelectorAll(".fogline")){ const f = frac((t + +(g.dataset.ph || 0))/(SLOW.drift*(g.classList.contains("b") ? 1.4 : 1)));
       g.setAttribute("transform", `translate(${(-180*(d > 0 ? f : 1 - f)).toFixed(1)},0)`); }
-    for (const g of document.querySelectorAll(".water")){ const [dur, ph, x0, y0, x1, y1] = SWELL[g.classList.contains("b") ? "b" : g.classList.contains("c") ? "c" : ""], e = swing(t, dur, ph);
-      g.setAttribute("transform", `translate(${(x0 + (x1 - x0)*e).toFixed(1)},${(y0 + (y1 - y0)*e).toFixed(1)})`); }
     for (const g of document.querySelectorAll(".crest")){ if (!g.dataset.dur) continue; const f = frac((t + +g.dataset.ph)/+g.dataset.dur);
       g.style.opacity = (.9*(f < .4 ? easeIO(f/.4) : f < .6 ? 1 : easeIO((1 - f)/.4))).toFixed(2); }
     for (const g of document.querySelectorAll(".bank")){ const b = g.classList.contains("b"), e = swing(t, b ? 53 : 38, 0);
@@ -1421,7 +1432,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     if (Math.abs(top - FRAME.top) < 1 && Math.abs(H - FRAME.H) < 1){ if (skyReady && fitTitle !== FRAME.title.join()) drawSky(OBS, stage.dataset.view); fitTitle = FRAME.title.join(); return; }
     fitTitle = FRAME.title.join();
     FRAME.top = top; FRAME.H = H;
-    for (const s of stage.querySelectorAll(":scope > svg")) s.setAttribute("viewBox", `0 ${(-top).toFixed(1)} 1600 ${H.toFixed(1)}`);
+    for (const s of stage.querySelectorAll(":scope > svg, :scope > .swell > svg")) s.setAttribute("viewBox", `0 ${(-top).toFixed(1)} 1600 ${H.toFixed(1)}`);
     $("#skygrad").setAttribute("y1", (-top).toFixed(1)); const sw = $("#skywash"); sw.setAttribute("y", (-top - 2).toFixed(1)); sw.setAttribute("height", (344 + top).toFixed(1));
     if (skyReady) drawSky(OBS, stage.dataset.view); }
   fit(); let fitT = null;
