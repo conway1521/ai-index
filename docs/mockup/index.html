@@ -97,6 +97,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .lamp{filter:url(#lamp)}.beamcone{filter:url(#lampwide)}
 .tail{opacity:0;transition:opacity .2s}.night .tail{opacity:.45}.braking .tail{opacity:1}.night .braking .tail{fill:#FF2A1F !important;filter:url(#lamp)}
 #celes{transition:opacity .8s}
+#L-static-r{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transform-origin:0 0;transition:opacity .8s;visibility:hidden}
+.rastered #L-static{display:none}.rastered #L-static-r{visibility:visible}.stage[data-view="valley"]>#L-static-r{opacity:0}
 .star{animation:twinkle 8s ease-in-out infinite;opacity:.85}
 @keyframes twinkle{0%,70%,100%{opacity:.85}78%{opacity:.15}86%{opacity:.9}}
 .crest{opacity:0}
@@ -668,6 +670,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
      lighthouse in front is fixed, and shrinks to the base of the frame when the view has turned. */
   // c is the point of the scene brought to the middle of the frame (800, 300); s is how far the view leans in
   const ZOOM = { home:{c:[800,300], s:1}, city:{c:[1140,300], s:2.3}, bridge:{c:[430,290], s:2.4}, valley:{c:[800,300], s:1} };
+  const RASTER = { turn:null };
   const toScreen = (view, x, y) => { const {c, s} = ZOOM[view]; return [800 + s*(x-c[0]), 300 + s*(y-c[1])]; };
   const toScene  = (view, x, y) => { const {c, s} = ZOOM[view]; return [c[0] + (x-800)/s, c[1] + (y-300)/s]; };
   const far = $("#far"), washes = $("#washes"), waterG = $("#water"), fogG = $("#fog");
@@ -1095,7 +1098,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     // the one drawing scales about the place turned to; the lighthouse in front shrinks to the base of the frame
     const {c, s: zs} = ZOOM[view];
     document.querySelectorAll(".zoom").forEach(g => { if (g.id !== "fgzoom") g.style.transform = `translate(${800 - zs*c[0]}px, ${300 - zs*c[1]}px) scale(${zs})`; });
-    stage.style.setProperty("--zs", zs);
+    stage.style.setProperty("--zs", zs); if (RASTER.turn) RASTER.turn(view);
     const f = FG[view] || FG.home;
     $("#fgzoom").style.transform = `translate(${f.t[0]}px, ${f.t[1]}px) scale(${f.s})`;
     $("#cap-h").textContent = r.cap[0]; $("#cap-p").textContent = view === "home" ? r.cap[1] : READ.views[view].capline;
@@ -1438,6 +1441,64 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   fit(); let fitT = null;
   new ResizeObserver(()=>{ clearTimeout(fitT); fitT = setTimeout(fit, 120); }).observe(stage);
   drawSky(OBS, "home"); skyReady = true;
+  /* ?raster=1, to compare: the still line work is drawn once into a picture of the view in hand, and the picture stands in for it,
+     so a turn slides and scales one picture where it would redraw every line on every frame. The lines in the picture thicken
+     and soften with the zoom while the turn runs, and a crisp picture of the new view replaces it when the turn ends; pictures
+     of the other views are made while the page is idle, so that swap is immediate. */
+  if (params.get("raster") === "1") (function raster(){
+    const src = $("#L-static"), cv = document.createElement("canvas"), cache = new Map(), PROPS = ["stroke", "stroke-width", "stroke-opacity", "stroke-dasharray",
+      "stroke-linecap", "stroke-linejoin", "fill", "fill-opacity", "opacity", "vector-effect", "filter", "mix-blend-mode", "display"];
+    cv.id = "L-static-r"; cv.setAttribute("aria-hidden", "true"); src.after(cv);
+    let shown = null, shownKey = "", edits = 0, endT = null, idleT = null;
+    new MutationObserver(() => { edits++; }).observe(src, { childList:true, subtree:true, attributes:true, attributeFilter:["d", "transform"] });
+    const hash = t => { let h = 2166136261; for (let i = 0; i < t.length; i++){ h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); };
+    // the styles each line has in a given view: only the city view changes a line's weight, through --ck
+    function styles(view){
+      if (view !== stage.dataset.view) stage.style.setProperty("--ck", view === "city" ? "1" : ".62");
+      const out = [...src.querySelectorAll("*")].map(e => { const cs = getComputedStyle(e);
+        return PROPS.map(k => `${k}:${cs.getPropertyValue(k).replace(/url\([^)]*#([^)"']+)["']?\)/g, "url(#$1)")}`).join(";"); });
+      stage.style.removeProperty("--ck"); return out; }
+    async function picture(view){
+      const st = styles(view), w = stage.clientWidth, h = stage.clientHeight, dpr = Math.min(devicePixelRatio || 1, Math.sqrt(8e6/(w*h)));   /* the screen's own resolution, up to eight million pixels */
+      const key = [view, w, h, dpr, src.getAttribute("viewBox"), edits, hash(st.join("|"))].join();
+      if (cache.has(key)) return { key, bmp:cache.get(key) };
+      const clone = src.cloneNode(true), z = clone.querySelector(".zoom"), {c, s} = ZOOM[view];
+      clone.removeAttribute("id"); clone.removeAttribute("class"); clone.setAttribute("xmlns", "http://www.w3.org/2000/svg"); clone.setAttribute("width", w); clone.setAttribute("height", h);
+      clone.querySelectorAll("*").forEach((e, i) => { e.setAttribute("style", st[i]); e.removeAttribute("class"); });
+      z.setAttribute("transform", `translate(${800 - s*c[0]} ${300 - s*c[1]}) scale(${s})`);
+      const defs = el("defs", {}, clone), refs = new Set(st.join(";").match(/url\(#[^)]+\)/g) || []);
+      for (const r of refs){ const d = document.getElementById(r.slice(5, -1)); if (d) defs.appendChild(d.cloneNode(true)); }
+      const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)], { type:"image/svg+xml" }));
+      try { const img = new Image(); img.src = url; await img.decode();
+        const off = document.createElement("canvas"); off.width = Math.round(w*dpr); off.height = Math.round(h*dpr);
+        off.getContext("2d").drawImage(img, 0, 0, off.width, off.height);
+        const bmp = await createImageBitmap(off); if (cache.size > 8) cache.delete(cache.keys().next().value); cache.set(key, bmp); return { key, bmp }; }
+      finally { URL.revokeObjectURL(url); } }
+    // shows the picture of the view in hand, unmoved, once nothing is turning
+    async function settle(){
+      const view = stage.dataset.view; if (view === "valley" || stage.classList.contains("turning")) return;
+      const { key, bmp } = await picture(view); if (view !== stage.dataset.view || stage.classList.contains("turning")) return;
+      if (key === shownKey && shown === view && cv.style.transform === "none") return; shownKey = key;
+      cv.width = bmp.width; cv.height = bmp.height; cv.getContext("2d").drawImage(bmp, 0, 0);
+      cv.style.transition = "none"; cv.style.transform = "none"; shown = view; if (!stage.classList.contains("rastered")) stage.classList.add("rastered");
+      clearTimeout(idleT); idleT = setTimeout(ahead, 1200); }
+    // pictures of the other views, one at a time while the page is idle
+    function ahead(){ const next = ["home", "city", "bridge"].filter(v => v !== stage.dataset.view);
+      (function one(){ const v = next.shift(); if (!v || stage.classList.contains("turning")) return;
+        (window.requestIdleCallback || setTimeout)(() => picture(v).then(one, () => {})); })(); }
+    // a turn moves the picture from the view it shows to the view turned to, on the same curve and time as the drawing
+    RASTER.turn = view => {
+      if (!shown) return; clearTimeout(endT);
+      const k = stage.clientWidth/1600, top = FRAME.top, a = ZOOM[shown], b = ZOOM[view], r = b.s/a.s;
+      const a0 = [800 - a.s*a.c[0], 300 - a.s*a.c[1]], a1 = [800 - b.s*b.c[0], 300 - b.s*b.c[1]];
+      const tx = k*(a1[0] - r*a0[0]), ty = k*(a1[1] - r*a0[1] + top*(1 - r));
+      cv.style.transition = "transform 1.4s cubic-bezier(.6,0,.2,1), opacity .8s"; cv.style.transform = `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${r.toFixed(5)})`;
+      endT = setTimeout(settle, 1500); };
+    let fitR = null; new ResizeObserver(() => { clearTimeout(fitR); fitR = setTimeout(settle, 300); }).observe(stage);
+    lessMotion.addEventListener("change", settle); matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => setTimeout(settle, 100));
+    let clsT = null; new MutationObserver(() => { clearTimeout(clsT); clsT = setTimeout(settle, 400); }).observe(stage, { attributes:true, attributeFilter:["class"] });
+    setTimeout(settle, 300);
+  })();
   setInterval(()=>{ const b = $("#obs b"); if (b && !document.hidden) b.textContent = `${sfClock(sfNow())} in San Francisco`; }, 30000);
   fetchObservation().then(o=>{ if (o){ LIVE = o; if (!FORCED) OBS = o; drawSky(OBS, stage.dataset.view); } });
   setInterval(()=>{ fetchObservation().then(o=>{ if (o){ LIVE = o; if (!FORCED) OBS = o; } drawSky(OBS, stage.dataset.view); }); }, 600e3);
