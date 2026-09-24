@@ -1441,11 +1441,11 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   fit(); let fitT = null;
   new ResizeObserver(()=>{ clearTimeout(fitT); fitT = setTimeout(fit, 120); }).observe(stage);
   drawSky(OBS, "home"); skyReady = true;
-  /* ?raster=1, to compare: the still line work is drawn once into a picture of the view in hand, and the picture stands in for it,
+  /* The still line work is drawn once into a picture of the view in hand, and the picture stands in for it (?raster=0 turns this off),
      so a turn slides and scales one picture where it would redraw every line on every frame. The lines in the picture thicken
      and soften with the zoom while the turn runs, and a crisp picture of the new view replaces it when the turn ends; pictures
      of the other views are made while the page is idle, so that swap is immediate. */
-  if (params.get("raster") === "1") (function raster(){
+  if (params.get("raster") !== "0") (function raster(){
     const src = $("#L-static"), cv = document.createElement("canvas"), cache = new Map(), PROPS = ["stroke", "stroke-width", "stroke-opacity", "stroke-dasharray",
       "stroke-linecap", "stroke-linejoin", "fill", "fill-opacity", "opacity", "vector-effect", "filter", "mix-blend-mode", "display"];
     cv.id = "L-static-r"; cv.setAttribute("aria-hidden", "true"); src.after(cv);
@@ -1962,8 +1962,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
      clocks alongside. Everything is cancelled and restarted when the view changes, and any error in one
      event is caught so the others carry on. */
   const PLAY = {
-    home:   { first:[["boat", 3000], ["rocket", 9000], ["banner", 14000], ["caltrain", 22000], ["whale", 32000]], features:["whale", "boat", "rocket", "whale", "boat"], gap:[9000, 16000], ambient:[["gull", [18000, 34000]], ["plane", [26000, 48000]], ["caltrain", [40000, 65000]], ["boat", [45000, 75000]], ["banner", [80000, 130000]]] },
-    city:   { first:[["robotaxi", 6000], ["cityferry", 24000], ["caltrain", 34000]], features:["robotaxi", "cityferry", "caltrain"],    gap:[12000, 22000], ambient:[["gull", [20000, 36000]], ["plane", [28000, 50000]], ["caltrain", [45000, 75000]], ["banner", [40000, 90000]]] },
+    home:   { first:[["boat", 3000], ["rocket", 9000], ["banner", 14000], ["caltrain", 22000], ["whale", 32000]], features:["whale", "boat", "rocket", "whale", "boat"], gap:[9000, 16000], ambient:[["gull", [18000, 34000]], ["plane", [26000, 48000]], ["caltrain", [40000, 65000]], ["boat", [45000, 75000]], ["rocket", [55000, 85000]], ["banner", [80000, 130000]]] },
+    city:   { first:[["caltrain", 3000], ["cityferry", 16000], ["robotaxi", 40000]], features:["caltrain", "cityferry", "robotaxi"],    gap:[12000, 22000], ambient:[["gull", [20000, 36000]], ["plane", [28000, 50000]], ["caltrain", [45000, 75000]], ["banner", [40000, 90000]]] },
     bridge: { first:[["boat", 2500], ["bear", 12000], ["whale", 24000]],  features:["whale", "boat", "bear", "whale", "boat"], gap:[9000, 16000], ambient:[["gull", [18000, 34000]], ["plane", [30000, 55000]], ["zzz", [16000, 28000]], ["boat", [50000, 80000]], ["banner", [45000, 100000]]] },
     valley: { first:[["bart", 1500], ["rocket", 13000]],                  features:["rocket", "bart"],   gap:[6000, 11000],  ambient:[] },
   };
@@ -1977,10 +1977,16 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     if (reduced || params.get("event")) return;
     const plan = PLAY[view]; let bag = [], lastE = null;
     const next = () => { if (!bag.length){ bag = [...plan.features].sort(()=>Math.random() - .5); if (bag.length > 1 && bag[0] === lastE) bag.push(bag.shift()); } return (lastE = bag.shift()); };
-    // through the telescope the launches are the thing to watch, so they come round sooner there
-    const cool = name => name === "rocket" && view === "valley" ? 40000 : COOL[name];
-    const play = name => { const now = performance.now(), c = cool(name); if (c && now - (lastPlayed[name] ?? -1e9) < c) return 0;
-      let ms = 0; try { ms = EVENTS[name]() || 0; } catch (e) { console.error(e); } if (ms) lastPlayed[name] = now; return ms; };
+    // launches and trains are counted per view, so one seen through the telescope or from the point does not hold back the
+    // next one in another view; launches come round sooner through the telescope, since there they are the thing to watch
+    const slot = name => name === "rocket" || name === "caltrain" ? name + ":" + view : name;
+    const cool = name => name === "rocket" ? (view === "valley" ? 40000 : 60000) : COOL[name];
+    const play = (name, again) => { const now = performance.now(), c = cool(name); if (c && now - (lastPlayed[slot(name)] ?? -1e9) < c) return 0;
+      let ms = 0; try { ms = EVENTS[name]() || 0; } catch (e) { console.error(e); } if (ms) lastPlayed[slot(name)] = now;
+      // the train and the car share the ground line: one turned away while the other runs goes as soon as the line is clear
+      else if (!again && (name === "caltrain" || name === "robotaxi") && view === "city")
+        cue(Math.max(1500, Math.max(sfTrainUntil, taxiUntil) - now + 1500), ()=>{ if (stage.dataset.view === view) play(name, true); });
+      return ms; };
     const feature = delay => cue(delay, ()=>{ if (stage.dataset.view !== view) return; const ms = play(next()); feature(Math.max(ms, 3000) + rand(plan.gap)); });
     // the first act plays when a view opens; coming back to the tab picks up the schedule where it was
     let end = 0; if (!resume) for (const [e, ms0] of plan.first){ const ms = ms0*(.7 + Math.random()*.6); cue(ms, ()=>{ if (stage.dataset.view === view) play(e); }); end = Math.max(end, ms); }
