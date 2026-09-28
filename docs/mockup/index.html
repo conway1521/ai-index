@@ -1355,7 +1355,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     // the day's light
     const now = sfNow(), sun = sunPosition(now), phase = moonPhase(now), moon = sunPosition(now, phase*360, Math.cos(phase*2*Math.PI));
     document.querySelectorAll(".sunwash,.dawn,.sun,.moon").forEach(n=>n.remove());
-    const night = sun.alt < -6, dusk = !night && sun.alt < 4;
+    // once the sun is down the page goes dark, with the purple and orange low in the sky, as the dusk and dawn buttons show it;
+    // the stars wait for the sky to darken further
+    const night = sun.alt < 0, dusk = !night && sun.alt < 4, starry = sun.alt < -6;
     skyColour(sun, key);
     document.documentElement.dataset.theme = night ? "dark" : "light";
     stage.classList.toggle("night", night); stage.classList.toggle("dusk", dusk);
@@ -1365,7 +1367,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     if (sunAt){ const [x, y] = sunAt;
       el("path", {d:`M ${x} ${y} m -22 0 a 22 22 0 1 0 44 0 a 22 22 0 1 0 -44 0 M ${x} ${y-34} l 0 -10 M ${x} ${y+34} l 0 10 M ${x-34} ${y} l -10 0 M ${x+34} ${y} l 10 0`, class:"thin sun", style:"fill:var(--paper)"}, celes);
     }
-    if (night && !heavy){ const rs = rng(Math.floor(Date.now()/86400e3)); const n = 4 + Math.floor(rs()*2) + Math.round(FRAME.top/140);
+    if (starry && !heavy){ const rs = rng(Math.floor(Date.now()/86400e3)); const n = 4 + Math.floor(rs()*2) + Math.round(FRAME.top/140);
       for (let i=0;i<n;i++){ const x = 480 + rs()*1080, y = 30 - FRAME.top*.9 + rs()*(62 + FRAME.top*.6), sz = 2 + rs()*1.6;
         const st = el("path", {d:`M ${x} ${y-sz*2} L ${x+sz*.45} ${y-sz*.45} L ${x+sz*2} ${y} L ${x+sz*.45} ${y+sz*.45} L ${x} ${y+sz*2} L ${x-sz*.45} ${y+sz*.45} L ${x-sz*2} ${y} L ${x-sz*.45} ${y-sz*.45} Z`, class:"star", style:"fill:var(--ink);stroke:none;filter:url(#soft)"}, celes); st.dataset.x = x; st.dataset.y = y;
         st.style.animationDuration = (5 + rs()*7).toFixed(1) + "s"; st.style.animationDelay = (-rs()*10).toFixed(1) + "s"; } }
