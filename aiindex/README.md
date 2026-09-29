@@ -27,13 +27,14 @@ repository, cloned beside this one or pointed to by `SKILLS_DNA_ROOT`.
     python -m pytest aiindex/tests
 
 `COLLECT.md` lists every input to place by hand, with its source. Most of
-them are attached to the dated data releases of the paper repository, and
+them are attached to the dated data releases of the ai-data repository, and
 
     python -m aiindex.place_release
 
 fetches each one, checks it against the release manifest and links it where
-the loaders read it. It needs `GITHUB_TOKEN` with read access to the paper
-repository when the files are not already on disk.
+the loaders read it. It needs ai-data cloned beside this repository, or
+`AI_DATA_ROOT` pointing to it, and `GITHUB_TOKEN` with read access to ai-data
+when the files are not already in its cache, `AI_DATA_CACHE`.
 
 The build fetches every input from its official host, falls back to a
 committed copy when the host refuses, and writes `output/manifest.json`
@@ -65,8 +66,9 @@ Three workflows, in `.github/workflows/`:
 
 Both `build.yml` and `tests.yml` check out `paper-skills-dna`, whose `src`
 holds the O*NET readers, gamma, the named bundles and the relabelling
-inference. While that repository is private they need a `PAPER_REPO_TOKEN`
-secret with read access to it; when it goes public, delete the token line.
+inference, and `build.yml` also checks out `ai-data`, whose releases hold the
+inputs. Both repositories are private, so the workflows need a `SOURCE_TOKEN`
+secret with read access to them.
 The build skips itself rather than failing if the checkout does not happen,
 so the reachability report still lands.
 

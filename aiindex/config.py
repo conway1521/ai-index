@@ -14,6 +14,10 @@ REPO_ROOT = PACKAGE_ROOT.parent
 # SKILLS_DNA_ROOT. The commit this index was last run against is recorded
 # in CLAUDE.md.
 PAPER_ROOT = Path(os.environ.get("SKILLS_DNA_ROOT", REPO_ROOT.parent / "paper-skills-dna")).resolve()
+# The dated data releases, read through the ai-data repository's reader and
+# checked against its manifests. It is cloned beside this one or pointed to by
+# AI_DATA_ROOT.
+DATA_ROOT = Path(os.environ.get("AI_DATA_ROOT", REPO_ROOT.parent / "ai-data")).resolve()
 RAW_DIR = PACKAGE_ROOT / "data" / "raw"
 FIXTURE_DIR = PACKAGE_ROOT / "tests" / "fixtures"
 OUTPUT_DIR = PACKAGE_ROOT / "output"

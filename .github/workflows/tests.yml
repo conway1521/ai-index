@@ -9,7 +9,7 @@ jobs:
         with:
           repository: conway1521/paper-skills-dna
           path: paper-skills-dna
-          token: ${{ secrets.PAPER_REPO_TOKEN }}
+          token: ${{ secrets.SOURCE_TOKEN }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"

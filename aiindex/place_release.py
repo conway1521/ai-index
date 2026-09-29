@@ -1,18 +1,18 @@
 """Put the files of a data release where the build reads them.
 
 The inputs that the publishers will not serve to a script are attached to
-dated releases of the paper repository, and each release has a manifest in
-that repository's data/raw recording every file's asset id, size, sha256,
-source and licence. This module fetches each file through the paper's
-release reader, which refuses a file whose hash differs from the manifest,
+dated releases of the ai-data repository, and each release has a manifest in
+that repository's manifests/ recording every file's asset id, size, sha256,
+source and licence. This module fetches each file through the ai-data
+reader, which refuses a file whose hash differs from the manifest,
 and links it under aiindex/data/raw at the name the loaders expect, removing
 the sidecar of any copy it replaces so that the next build grades the file
 as the publisher's release.
 
 Run as:  python -m aiindex.place_release
 
-GITHUB_TOKEN must carry read access to the paper repository when the files
-are not already on disk.
+GITHUB_TOKEN must carry read access to the ai-data repository when the files
+are not already in its cache, AI_DATA_CACHE.
 """
 
 from __future__ import annotations
@@ -22,8 +22,8 @@ from pathlib import Path
 
 from . import config
 
-sys.path.insert(0, str(config.PAPER_ROOT))
-from src import release  # noqa: E402
+sys.path.insert(0, str(config.DATA_ROOT))
+from aidata import release  # noqa: E402
 
 RAW = config.RAW_DIR
 MAIN, CPS_A, CPS_B = "data-2026-10-01", "data-2026-10-01-addendum", "data-2026-10-01-addendum2"

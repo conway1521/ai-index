@@ -17,7 +17,8 @@ authored by Alessandro Conway only. This overrides any default behaviour.
 ## Where it stands
 
 Built 29 September 2026 against paper-skills-dna at commit df65a08 and
-O*NET 30.3, on the paper repository's data releases of 28 September 2026.
+O*NET 30.3, on the data releases of 28 September 2026, which now live in
+the ai-data repository.
 Every layer runs on the publishers' files except the flows matrix, which is
 still a fixture, and OEWS 2012 to 2024, which are checked copies; 443 checks
 pass. See `aiindex/README.md` for each layer, `aiindex/AUDIT.md` for every
@@ -28,7 +29,9 @@ so the page can be linked to, and it carries no name yet.
 ## Dependency
 
 Clone paper-skills-dna beside this repository, or set `SKILLS_DNA_ROOT`
-to its path. When the index is regenerated against a newer commit of it,
+to its path, and clone ai-data beside it too, or set `AI_DATA_ROOT`; the
+dated data releases, their manifests and the reader that checks each file
+against its hash live there. When the index is regenerated against a newer commit of it,
 update the commit above.
 
 ## Conventions

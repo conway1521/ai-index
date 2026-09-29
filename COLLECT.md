@@ -1,8 +1,8 @@
 # Files to collect by hand
 
 Everything below except the flows matrix is now attached to the data
-releases of the paper repository (`data-2026-10-01` and its two addenda),
-each file recorded with its hash in that repository's `data/raw` manifests.
+releases of the ai-data repository (`data-2026-10-01` and its two addenda),
+each file recorded with its hash in that repository's `manifests`.
 `python -m aiindex.place_release` puts them where the build reads them. The
 sections below remain the record of where each file comes from, and the
 route for the next vintage: download, attach to a new dated release, add it

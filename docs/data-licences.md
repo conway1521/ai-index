@@ -20,7 +20,7 @@ public, so the open items in the last column are owed now.
 | Indeed AI tracker | the publisher's repository | yes, with citation | confirm the repository's licence |
 | Flows transition matrix | unpublished | a fixture only | none until it is released |
 
-Two files in the paper repository's release are not read by the index and
+Two files in the ai-data release are not read by the index and
 are not republished by it: the Srinivasan, Chen and Zakerinia occupation
 scores, which carry no stated licence, and OpenAI's AI Jobs Transition
 Framework classification, whose files state no licence.

@@ -9,9 +9,9 @@ name: build
 
 on:
   # The weekly schedule is paused. Most inputs now come from the dated data
-  # releases of the paper repository, and a runner without them would rebuild
+  # releases of the ai-data repository, and a runner without them would rebuild
   # from copies and stand-ins and commit that over the published readings.
-  # Restore the schedule once a run places the release with PAPER_REPO_TOKEN
+  # Restore the schedule once a run places the release with SOURCE_TOKEN
   # and the release files fit the runner's disk:
   #   schedule:
   #     - cron: "0 11 * * 1"
@@ -84,17 +84,26 @@ jobs:
         with:
           repository: conway1521/paper-skills-dna
           path: paper-skills-dna
-          token: ${{ secrets.PAPER_REPO_TOKEN }}
+          token: ${{ secrets.SOURCE_TOKEN }}
+
+      - name: Fetch the data release manifests and reader
+        id: data
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: conway1521/ai-data
+          path: ai-data
+          token: ${{ secrets.SOURCE_TOKEN }}
 
       - name: Is the machinery here
         id: ready
         run: |
-          if [ -d paper-skills-dna/src ]; then
+          if [ -d paper-skills-dna/src ] && [ -d ai-data/aidata ]; then
             echo "ok=true" >> "$GITHUB_OUTPUT"
           else
             echo "ok=false" >> "$GITHUB_OUTPUT"
-            echo "The paper repository was not checked out, so the build is skipped." >> "$GITHUB_STEP_SUMMARY"
-            echo "Add a PAPER_REPO_TOKEN secret with read access to it, or make it public." >> "$GITHUB_STEP_SUMMARY"
+            echo "The paper or data repository was not checked out, so the build is skipped." >> "$GITHUB_STEP_SUMMARY"
+            echo "Add a SOURCE_TOKEN secret with read access to paper-skills-dna and ai-data." >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - uses: actions/setup-python@v5
@@ -122,11 +131,13 @@ jobs:
 
       - name: Place the data release
         # The files the publishers will not serve to a script, fetched from the
-        # paper repository's releases and checked against their manifests.
+        # ai-data releases and checked against their manifests.
         if: steps.ready.outputs.ok == 'true'
         env:
           SKILLS_DNA_ROOT: ${{ github.workspace }}/paper-skills-dna
-          GITHUB_TOKEN: ${{ secrets.PAPER_REPO_TOKEN }}
+          AI_DATA_ROOT: ${{ github.workspace }}/ai-data
+          AI_DATA_CACHE: ${{ runner.temp }}/ai-data
+          GITHUB_TOKEN: ${{ secrets.SOURCE_TOKEN }}
         run: python -m aiindex.place_release
 
       - name: Build
