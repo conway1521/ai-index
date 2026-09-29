@@ -4,8 +4,8 @@ The repository commits no raw input. The page and the tables under
 `aiindex/output/tables` are derived from the inputs below and are what a
 public launch republishes, with the checks and the manifest beside them.
 This note records each source's terms as they could be read on 29 September
-2026, and what remains to be confirmed before the repository or the page is
-made public.
+2026, and what remains to be confirmed. The repository and the page are
+public, so the open items in the last column are owed now.
 
 | Source | Terms | Derived tables republished | Before launch |
 |---|---|---|---|

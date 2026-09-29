@@ -22,8 +22,8 @@ Every layer runs on the publishers' files except the flows matrix, which is
 still a fixture, and OEWS 2012 to 2024, which are checked copies; 443 checks
 pass. See `aiindex/README.md` for each layer, `aiindex/AUDIT.md` for every
 source and `docs/data-licences.md` for what may be republished. The page is
-`site/index.html`; it is not public, and it waits on a name and on the
-paper being posted.
+`site/index.html`. The repository is public and Pages publishes `site/`,
+so the page can be linked to, and it carries no name yet.
 
 ## Dependency
 

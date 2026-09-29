@@ -59,9 +59,9 @@ Three workflows, in `.github/workflows/`:
   changed in `aiindex/output` and `site/data`. The raw inputs are cached
   between runs, so only a new release is fetched.
 - `tests.yml` runs the suite on every push.
-- `pages.yml` publishes `site/`, whose `index.html` is the page. GitHub serves Pages from a
-  private repository only on a paid plan; on the free plan this one fails
-  until the repository is public.
+- `pages.yml` publishes `site/`, whose `index.html` is the page, with the tables,
+  checks and manifest beside it under `data/`. It runs only when the repository's
+  Pages source is set to GitHub Actions.
 
 Both `build.yml` and `tests.yml` check out `paper-skills-dna`, whose `src`
 holds the O*NET readers, gamma, the named bundles and the relabelling
