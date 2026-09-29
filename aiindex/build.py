@@ -62,7 +62,7 @@ def build_spine() -> dict:
 @_step("wage bill")
 def build_wagebill() -> dict:
     wagebill.ensure_files()
-    panel = wagebill.harmonise(wagebill.load(grade="mirror"))
+    panel = wagebill.harmonise(wagebill.load())
     national = wagebill.national(panel)
     states = wagebill.by_state(panel)
     _write("wagebill_national", national)

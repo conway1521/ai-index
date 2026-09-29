@@ -59,9 +59,12 @@ SUPERSEDED = ["oews/oesm25nat.zip", "onet/onet_db_30_2_text.zip", "acs/psam_p27_
 
 def _link(source: Path, target: Path) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
-    for stale in (target, target.with_suffix(target.suffix + ".source")):
-        if stale.is_symlink() or stale.exists():
-            stale.unlink()
+    if target.is_symlink() or target.exists():
+        target.unlink()
+    # a sidecar that grades a copy is removed; one that already records the publisher's file is kept
+    sidecar = target.with_suffix(target.suffix + ".source")
+    if sidecar.exists() and not sidecar.read_text().startswith("real"):
+        sidecar.unlink()
     target.symlink_to(source.resolve())
 
 
