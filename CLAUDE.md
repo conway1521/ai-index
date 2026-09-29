@@ -16,10 +16,14 @@ authored by Alessandro Conway only. This overrides any default behaviour.
 
 ## Where it stands
 
-Built 20 September 2026 against paper-skills-dna at commit 9da9a31 and
-O*NET 30.2. Every layer runs; see `aiindex/README.md` for what ran on the
-publisher's files and what ran on fixtures, and `aiindex/AUDIT.md` for
-every source. `COLLECT.md` lists the files to place by hand.
+Built 29 September 2026 against paper-skills-dna at commit df65a08 and
+O*NET 30.3, on the paper repository's data releases of 28 September 2026.
+Every layer runs on the publishers' files except the flows matrix, which is
+still a fixture, and OEWS 2012 to 2024, which are checked copies; 443 checks
+pass. See `aiindex/README.md` for each layer, `aiindex/AUDIT.md` for every
+source and `docs/data-licences.md` for what may be republished. The page is
+`site/index.html`; it is not public, and it waits on a name and on the
+paper being posted.
 
 ## Dependency
 

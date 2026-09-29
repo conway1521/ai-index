@@ -1,9 +1,9 @@
 series,year,treated_transitions,transitions_available,bundles_beyond_two,largest_statistic,threshold_95,distance_to_detection,p_largest_consecutive,p_count_consecutive,consecutive_relabellings,earlier_windows_at_least,first_transition,largest_bundle,largest_direction
-relative pay by skill bundle,2018,"2016,2017,2018",6,5,3.135,3.318,0.945,0.75,0.5,4,2,2013,2.C.2,1
-relative pay by skill bundle,2019,"2017,2018,2019",7,7,5.114,4.945,1.034,0.2,0.4,5,0,2013,2.B.2,-1
-relative pay by skill bundle,2020,"2018,2019,2020",8,9,6.558,6.129,1.07,0.167,0.167,6,0,2013,4.A.3,1
-relative pay by skill bundle,2021,"2019,2020,2021",9,6,3.653,4.35,0.84,0.429,0.571,7,2,2013,2.B.2,-1
-relative pay by skill bundle,2022,"2020,2021,2022",10,3,3.839,4.407,0.871,0.375,0.875,8,2,2013,2.B.3,1
-relative pay by skill bundle,2023,"2021,2022,2023",11,5,4.223,4.743,0.89,0.444,0.333,9,3,2013,4.A.1,1
-relative pay by skill bundle,2024,"2022,2023,2024",12,4,7.564,6.275,1.205,0.1,0.4,10,0,2013,2.B.2,1
-relative pay by skill bundle,2025,"2023,2024,2025",13,4,2.537,6.512,0.39,0.909,0.727,11,9,2013,2.B.3,-1
+relative pay by skill bundle,2018,"2016,2017,2018",6,5,3.181,3.181,1.0,0.5,0.5,4,1,2013,2.C.2,1
+relative pay by skill bundle,2019,"2017,2018,2019",7,9,4.284,4.2,1.02,0.2,0.2,5,0,2013,1.A.4,-1
+relative pay by skill bundle,2020,"2018,2019,2020",8,7,6.627,6.188,1.071,0.167,0.167,6,0,2013,4.A.3,1
+relative pay by skill bundle,2021,"2019,2020,2021",9,5,4.752,5.819,0.817,0.286,0.714,7,1,2013,2.B.1,1
+relative pay by skill bundle,2022,"2020,2021,2022",10,4,4.075,4.648,0.877,0.375,0.875,8,2,2013,4.A.1,1
+relative pay by skill bundle,2023,"2021,2022,2023",11,4,3.487,4.228,0.825,0.444,0.778,9,3,2013,4.A.1,1
+relative pay by skill bundle,2024,"2022,2023,2024",12,4,6.255,5.708,1.096,0.1,0.8,10,0,2013,2.B.2,1
+relative pay by skill bundle,2025,"2023,2024,2025",13,3,2.191,5.685,0.385,1.0,0.909,11,10,2013,2.B.2,1

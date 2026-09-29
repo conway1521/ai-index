@@ -19,7 +19,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from . import (acs, btos, capacity, checks, config, cps, exposure, ipeds, onet_release,
+from . import (acs, btos, capacity, checks, config, cps, exposure, ipeds, onet_release, postings,
                openai, outcomes, pipeline, spine, state, usage, wagebill)
 from .manifest import MANIFEST
 
@@ -163,17 +163,23 @@ def build_pipeline(measures: pd.DataFrame, national: pd.DataFrame) -> dict:
     persons = acs.person_file()
     link = acs.field_occupation_link(persons)
     field_acs = pipeline.field_exposure_from_acs(link.rename(columns={"weight": "weight"}), scored)
-    _write("pipeline_field_exposure_acs_test_state", field_acs)
-    inst = ipeds.institutions(2023)
+    _write("pipeline_field_exposure_acs", field_acs)
+    inst = ipeds.institutions(2025)
     frames = []
-    for year in (2023, 2024):
+    for year in (2023, 2024, 2025):
         frames.append(ipeds.completions(year))
     awards = pd.concat(frames, ignore_index=True)
     by_state = pipeline.completions_by_state(awards, inst, field_xw, "eloundou_beta")
     _write("pipeline_completions_by_state", by_state)
     nsc_path = config.RAW_DIR / "nsc" / "major_field_appendix.csv"
     grade = "real"
-    if not nsc_path.exists():
+    ctee = sorted((config.RAW_DIR / "nsc").glob("CTEE*CIPGroupEnrollment*.xlsx"))
+    if ctee:
+        nsc_path = config.OUTPUT_DIR / "tables" / "nsc_cip_family_enrolment.csv"
+        pipeline.clearinghouse_cip_families(ctee[-1]).to_csv(nsc_path, index=False)
+        MANIFEST.record("nsc_cip_group_enrolment", ctee[-1], grade="real",
+                        official_url="https://nscresearchcenter.org/current-term-enrollment-estimates/")
+    elif not nsc_path.exists():
         # The Clearinghouse host is unreachable from some networks and no copy
         # of the appendix is committed anywhere public. A fixture in its shape
         # stands in, graded as such, so the table exists in its final form.
@@ -213,7 +219,7 @@ def build_capacity(measures: pd.Series) -> dict | None:
 
 @_step("cps gauge")
 def build_cps(measures: pd.Series, employment: pd.Series) -> pd.DataFrame | None:
-    months = sorted(cps.CPS_DIR.glob("*pub.dat*")) + sorted(cps.CPS_DIR.glob("*.zip"))
+    months = sorted(cps.CPS_DIR.glob("*pub.dat*")) + sorted(cps.CPS_DIR.glob("*.zip")) + sorted(cps.CPS_DIR.glob("*pub.csv"))
     grade = "real"
     if not months:
         # The Census host is unreachable from some networks. The gauge then runs
@@ -239,6 +245,9 @@ def build_cps(measures: pd.Series, employment: pd.Series) -> pd.DataFrame | None
     tercile.index = tercile.index.astype(int)
     frames = []
     for path in months:
+        if path.suffix.lower() == ".csv":
+            frames.append(cps.read_month(path))
+            continue
         year = 2000 + int(path.name[3:5]) if path.name[3:5].isdigit() else max(layouts)
         layout = layouts.get(year) or layouts[max(layouts)]
         positions = cps.parse_layout(layout.read_text(errors="replace"))
@@ -251,6 +260,19 @@ def build_cps(measures: pd.Series, employment: pd.Series) -> pd.DataFrame | None
     _write("cps_young_worker_gauge", gauge)
     _write("cps_cells", cells.assign(period=cells["period"].astype(str)))
     return gauge
+
+
+@_step("postings")
+def build_postings() -> dict:
+    out = postings.build()
+    _write("postings_step_at_release", out["reading"])
+    _write("postings_release_bound", out["step"])
+    _write("postings_gradient_quarterly", out["quarterly"])
+    _write("postings_specified_test", out["specified"])
+    # the average exposure of tasks named in ads moves with which tasks are named as well as with their shares;
+    # it is written for inspection and kept off the page until the difference from the gradient is understood
+    _write("postings_asked_exposure_monthly", out["asked"])
+    return out
 
 
 def main() -> None:
@@ -277,6 +299,7 @@ def main() -> None:
     latest = wages["national"][wages["national"]["vintage"] == wages["national"]["vintage"].max()].set_index("soc_code")
     build_capacity(measures["eloundou_beta"].dropna())
     build_cps(measures["eloundou_beta"].dropna(), latest["employment"])
+    build_postings()
 
     checks.write()
     MANIFEST.write()
@@ -295,10 +318,6 @@ def main() -> None:
     print(json.dumps({k: v for k, v in report.items() if k != "grades"}, indent=2))
     grades = pd.Series(report["grades"]).value_counts().to_dict()
     print(f"  input grades: {grades}")
-
-
-if __name__ == "__main__":
-    main()
 
 
 _SMALL = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven",
@@ -345,7 +364,11 @@ def export_site() -> Path:
     name = lambda code: names.get(code, code).lower()
     reach = pd.read_csv(tables / "usage_reach.csv")
     anthropic = reach[reach["platform"] == "anthropic"].sort_values("release")
-    latest, first = anthropic.iloc[-1], anthropic.iloc[0]
+    # reach counts every published task, so the headline comes from the latest release that publishes
+    # all of its use; a release with a reporting threshold is in the table and not in the headline
+    complete = anthropic[anthropic["published_use"] >= 0.99]
+    latest, first = complete.iloc[-1], complete.iloc[0]
+    newest = anthropic.iloc[-1]
     # the monthly slices carry no collaboration split, so the delegated share comes from the last release that does
     split = anthropic[anthropic["delegated_share"] > 0].iloc[-1]
     landing = pd.read_csv(tables / "usage_landing.csv")
@@ -360,7 +383,20 @@ def export_site() -> Path:
     year = int(share.index.max())
     degrees, before = float(share.loc[year]) * 100, float(share.loc[year - 1]) * 100 if year - 1 in share.index else None
 
+    # what employers ask for: the step at the release in the job-ad gradient, and when the fall came
+    asks = pd.read_csv(tables / "postings_step_at_release.csv").iloc[0]
+    grad = pd.read_csv(tables / "postings_gradient_quarterly.csv").set_index("quarter")["all_coef"]
+    pre_release = grad[[q for q in grad.index if q < "2022Q4"]]
+    post_release = grad[[q for q in grad.index if q >= "2022Q4"]]
+    low_q = pre_release.idxmin()
+    ordinal = {"1": "first", "2": "second", "3": "third", "4": "fourth"}
+    low_when = f"the {ordinal[low_q[-1]]} quarter of {low_q[:4]}"
+    fell_before = float(pre_release.min()) <= float(post_release.mean())
+    asks_out = asks["statistic"] >= asks["threshold_95"]
+
     wages = round(float(latest["reach_share"]) * 100)
+    core = float(newest["reach_share_three_quarters"]) * 100
+    core_first = float(anthropic.iloc[0]["reach_share_three_quarters"]) * 100
     since = int(pay["first_transition"])
     pay_out = pay["largest_statistic"] >= pay["threshold_95"]
     qty_out = qty["largest_statistic"] >= qty["threshold_95"]
@@ -407,13 +443,20 @@ def export_site() -> Path:
                        f"while {low['bundle'].lower()} receive {low['concentration']:.1f} times their share."),
                  "src": f"Anthropic Economic Index, {_published(latest['release'])} · O*NET 30.2",
                  "tables": ["usage_landing.csv"]},
+                {"n": f"{core:.1f}%", "view": "bridge",
+                 "s": (f"of wages are paid for the tasks that together make up three quarters of all that use, "
+                       f"{int(newest['tasks_three_quarters'])} tasks in the {_published(newest['release'])} record, "
+                       f"against {core_first:.1f} percent in the {_published(anthropic.iloc[0]['release'])} release."),
+                 "src": f"Anthropic Economic Index, {_published(newest['release'])} · OEWS wages, May {int(pay['year'])}",
+                 "tables": ["usage_reach.csv"]},
             ],
             "how": ("Each conversation in the usage record is matched to the O*NET tasks it touches, each task is weighted by the wages paid "
                     "for it in the latest OEWS release, and the share moves with every usage release, every few months, for the one platform "
-                    "whose record the index reads so far."),
+                    "whose record the index reads so far. A task counts as reached when any use of it is published, so the headline comes from the latest release that publishes every task, and the tasks making up three quarters of use are counted in every release alike, since no release leaves any of them out."),
         },
         "city": {
-            "capline": f"pay {pay['largest_statistic']:.1f}, {pay['threshold_95']:.1f} needed · jobs mix {qty['largest_statistic']:.1f}, {qty['threshold_95']:.1f} needed",
+            "capline": (f"pay {pay['largest_statistic']:.1f}, {pay['threshold_95']:.1f} needed · jobs mix {qty['largest_statistic']:.1f}, "
+                        f"{qty['threshold_95']:.1f} needed · job ads {asks['statistic']:.1f}, {asks['threshold_95']:.1f} needed"),
             "mark": f"pay {pay['largest_statistic']:.1f} of {pay['threshold_95']:.1f} needed · jobs {qty['largest_statistic']:.1f} of {qty['threshold_95']:.1f}",
             "items": [
                 {"n": f"{pay['largest_statistic']:.1f}", "view": "city", "s": pay_sentence,
@@ -422,10 +465,21 @@ def export_site() -> Path:
                 {"n": f"{qty['largest_statistic']:.1f}", "view": "city", "s": qty_sentence,
                  "src": f"OEWS, May {since - 1} to May {int(qty['year'])}, occupations present in every year",
                  "tables": ["outcomes_quantity_series_balanced.csv"]},
+                {"n": f"{asks['statistic']:.1f}", "view": "city",
+                 "s": (f"standard errors is the step, at the release of language models, in how much job ads within each occupation ask "
+                       f"for the tasks those models can do, measured against the sixteen months before, "
+                       + (f"past the {asks['threshold_95']:.1f} needed to stand out from the same step at each earlier month"
+                          if asks_out else
+                          f"where {asks['threshold_95']:.1f} would be needed to stand out from the same step at each earlier month")
+                       + (f", and the larger fall came before the release, from 2020 to {low_when}." if fell_before else ".")),
+                 "src": "NLx job ads, September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander · Eloundou task measure",
+                 "tables": ["postings_step_at_release.csv", "postings_gradient_quarterly.csv", "postings_release_bound.csv"]},
             ],
             "how": (f"For each skill group the index takes the last three yearly changes in pay, and in the share of employment, and sets them "
                     f"against that group's own changes since {since}: a change stands out when it passes the level only the most extreme three-year "
-                    f"stretches in the record reached, and both the reading and that level are recalculated with each spring release of the wage tables."),
+                    f"stretches in the record reached, and both the reading and that level are recalculated with each spring release of the wage tables. "
+                    f"The job-ad reading compares, within each occupation and month, the share of ads naming each task with that task's exposure, "
+                    f"and sets the change at the release against the same change placed at every earlier month."),
         },
         "valley": {
             "capline": f"{degrees:.1f}% of new degrees in the most exposed fields · {year}",
@@ -471,6 +525,13 @@ def export_site() -> Path:
                           f"in {_words(odds)}" if odds else "")
                        + (f", and the same test was passed in {_joined([str(y) for y in flagged])}" + (", when the pandemic reshuffled employment" if covid else "") if flagged else "")
                        + ", so the next release of the wage tables will show whether it holds.")
+    meaning.append(f"What employers ask for moved before the models did: within occupations, job ads named the tasks the models can do less often "
+                   f"from 2020 to {low_when}, and the release itself added a step of {asks['statistic']:.1f} standard errors"
+                   + (f", past the {asks['threshold_95']:.1f} needed to stand out, so the next months of ads will show whether it holds."
+                      if asks_out else f" against the {asks['threshold_95']:.1f} needed to stand out from an ordinary month.")
+                   if fell_before else
+                   f"Within occupations, job ads moved at the release of language models by {asks['statistic']:.1f} standard errors against "
+                   f"the {asks['threshold_95']:.1f} needed to stand out from an ordinary month.")
     meaning.append(f"Degrees are the slow channel and the one policy can count: {degrees:.1f} percent of new bachelor's degrees in {year} went to "
                    f"the most exposed third of fields"
                    + (f", against {before:.1f} percent in {year - 1}" if before is not None else "")
@@ -486,9 +547,14 @@ def export_site() -> Path:
         "meaning": meaning,
         "notes": notes,
         "views": views,
-        "releases": [{"date": str(r), "reach": round(float(x), 3)} for r, x in zip(anthropic["release"], anthropic["reach_share"])],
+        "releases": [{"date": str(r), "reach": round(float(x), 3), "published_use": round(float(p), 3)}
+                 for r, x, p in zip(anthropic["release"], anthropic["reach_share"], anthropic["published_use"])],
     }
     out = config.REPO_ROOT / "site" / "data" / "readings.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(readings, indent=2, ensure_ascii=False))
     return out
+
+
+if __name__ == "__main__":
+    main()

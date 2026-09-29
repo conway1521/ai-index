@@ -33,8 +33,8 @@ wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicat
 wagebill,nonnegative employment national_M2024_dl.xlsx,True,0.0,0 negative values in employment national_M2024_dl.xlsx
 wagebill,nonnegative wage national_M2024_dl.xlsx,True,0.0,0 negative values in wage national_M2024_dl.xlsx
 wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
-wagebill,nonnegative employment oesm25nat.zip,True,0.0,0 negative values in employment oesm25nat.zip
-wagebill,nonnegative wage oesm25nat.zip,True,0.0,0 negative values in wage oesm25nat.zip
+wagebill,nonnegative employment national_M2025_dl.xlsx,True,0.0,0 negative values in employment national_M2025_dl.xlsx
+wagebill,nonnegative wage national_M2025_dl.xlsx,True,0.0,0 negative values in wage national_M2025_dl.xlsx
 wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
 wagebill,nonnegative employment state_M2012_dl.xlsx,True,0.0,0 negative values in employment state_M2012_dl.xlsx
 wagebill,nonnegative wage state_M2012_dl.xlsx,True,0.0,0 negative values in wage state_M2012_dl.xlsx
@@ -75,32 +75,38 @@ wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicat
 wagebill,nonnegative employment state_M2024_dl.xlsx,True,0.0,0 negative values in employment state_M2024_dl.xlsx
 wagebill,nonnegative wage state_M2024_dl.xlsx,True,0.0,0 negative values in wage state_M2024_dl.xlsx
 wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,nonnegative employment state_M2025_dl.xlsx,True,0.0,0 negative values in employment state_M2025_dl.xlsx
+wagebill,nonnegative wage state_M2025_dl.xlsx,True,0.0,0 negative values in wage state_M2025_dl.xlsx
+wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
+wagebill,wage bill on hybrid codes 2019,True,0.11755692954732373,11.8% carried onto 2018 codes through the BLS hybrid table
+wagebill,wage bill on hybrid codes 2020,True,0.12508677566270043,12.5% carried onto 2018 codes through the BLS hybrid table
 spine,SOC 2010 to 2018: source codes,True,463.0,463 distinct soc_2010 codes
 spine,SOC 2010 to 2018: one-to-many,True,44.0,44 soc_2010 codes map to several soc_2018
 spine,"unique key ['soc_2010', 'soc_2018']",True,0.0,"0 duplicate rows on ['soc_2010', 'soc_2018']"
-wagebill,wage bill carried onto 2018 SOC 2012,True,0.8797997221558966,"88.0% carried, the rest is codes that split"
-wagebill,wage bill carried onto 2018 SOC 2013,True,0.8795932483346159,"88.0% carried, the rest is codes that split"
-wagebill,wage bill carried onto 2018 SOC 2014,True,0.8785581167457475,"87.9% carried, the rest is codes that split"
-wagebill,wage bill carried onto 2018 SOC 2015,True,0.877763455477494,"87.8% carried, the rest is codes that split"
-wagebill,wage bill carried onto 2018 SOC 2016,True,0.8763734037152299,"87.6% carried, the rest is codes that split"
-wagebill,wage bill carried onto 2018 SOC 2017,True,0.8816518681062514,"88.2% carried, the rest is codes that split"
-wagebill,wage bill carried onto 2018 SOC 2018,True,0.8813727871831991,"88.1% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2012,True,0.890653700678786,"89.1% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2013,True,0.8904758566059261,"89.0% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2014,True,0.8875287165924938,"88.8% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2015,True,0.886591765659717,"88.7% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2016,True,0.8850916478531743,"88.5% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2017,True,0.8784250028050601,"87.8% carried, the rest is codes that split"
+wagebill,wage bill carried onto 2018 SOC 2018,True,0.878262133627358,"87.8% carried, the rest is codes that split"
 wagebill,state sum over national employment 2019,True,0.995384920448343,states cover 99.5% of national employment on common occupations
 wagebill,state sum over national employment 2021,True,0.9970008879945187,states cover 99.7% of national employment on common occupations
 wagebill,state sum over national employment 2022,True,0.9964489366908515,states cover 99.6% of national employment on common occupations
 wagebill,state sum over national employment 2023,True,0.9972880502448243,states cover 99.7% of national employment on common occupations
 wagebill,state sum over national employment 2024,True,0.997297607431414,states cover 99.7% of national employment on common occupations
+wagebill,state sum over national employment 2025,True,0.9969392260221724,states cover 99.7% of national employment on common occupations
 wagebill,"unique key ['vintage', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'soc_code']"
 wagebill,nonnegative national bill,True,0.0,0 negative values in national bill
-wagebill,national wage bill 2012,True,5216143229000.0,"5.216 trillion dollars over 727 occupations, 113.8 million jobs"
-wagebill,national wage bill 2013,True,5372679626400.0,"5.373 trillion dollars over 727 occupations, 115.7 million jobs"
-wagebill,national wage bill 2014,True,5545488759400.0,"5.545 trillion dollars over 726 occupations, 117.3 million jobs"
-wagebill,national wage bill 2015,True,5802926178100.0,"5.803 trillion dollars over 726 occupations, 120.2 million jobs"
-wagebill,national wage bill 2016,True,6048798176300.0,"6.049 trillion dollars over 727 occupations, 122.0 million jobs"
-wagebill,national wage bill 2017,True,6284473240400.0,"6.284 trillion dollars over 729 occupations, 124.5 million jobs"
-wagebill,national wage bill 2018,True,6541938931500.0,"6.542 trillion dollars over 729 occupations, 126.2 million jobs"
-wagebill,national wage bill 2019,True,7846316287600.0,"7.846 trillion dollars over 785 occupations, 146.8 million jobs"
-wagebill,national wage bill 2020,True,7719842801000.0,"7.720 trillion dollars over 782 occupations, 138.3 million jobs"
+wagebill,national wage bill 2012,True,5280494132000.0,"5.280 trillion dollars over 738 occupations, 115.8 million jobs"
+wagebill,national wage bill 2013,True,5439152132700.0,"5.439 trillion dollars over 737 occupations, 117.7 million jobs"
+wagebill,national wage bill 2014,True,5602111491200.0,"5.602 trillion dollars over 735 occupations, 119.1 million jobs"
+wagebill,national wage bill 2015,True,5861290458300.0,"5.861 trillion dollars over 736 occupations, 122.0 million jobs"
+wagebill,national wage bill 2016,True,6108972183200.0,"6.109 trillion dollars over 737 occupations, 123.9 million jobs"
+wagebill,national wage bill 2017,True,6261471929600.0,"6.261 trillion dollars over 727 occupations, 124.1 million jobs"
+wagebill,national wage bill 2018,True,6518850284000.0,"6.519 trillion dollars over 727 occupations, 125.8 million jobs"
+wagebill,national wage bill 2019,True,7846316287600.0,"7.846 trillion dollars over 842 occupations, 146.8 million jobs"
+wagebill,national wage bill 2020,True,7719842801000.0,"7.720 trillion dollars over 839 occupations, 138.3 million jobs"
 wagebill,national wage bill 2021,True,8203133169600.0,"8.203 trillion dollars over 825 occupations, 140.8 million jobs"
 wagebill,national wage bill 2022,True,9144916394100.0,"9.145 trillion dollars over 825 occupations, 147.8 million jobs"
 wagebill,national wage bill 2023,True,9930995771100.0,"9.931 trillion dollars over 826 occupations, 151.7 million jobs"
@@ -118,7 +124,7 @@ outcomes,"relative pay by skill bundle p-value in [0.0, 1.0]",True,0.0,"0 values
 outcomes,nonnegative employment-weighted skill intensity statistic,True,0.0,0 negative values in employment-weighted skill intensity statistic
 outcomes,nonnegative employment-weighted skill intensity threshold,True,0.0,0 negative values in employment-weighted skill intensity threshold
 outcomes,"employment-weighted skill intensity p-value in [0.0, 1.0]",True,0.0,"0 values of employment-weighted skill intensity p-value outside [0.0, 1.0]"
-outcomes,balanced panel,True,653.0,653 occupations present in all 14 years
+outcomes,balanced panel,True,661.0,661 occupations present in all 14 years
 outcomes,nonnegative relative pay by skill bundle statistic,True,0.0,0 negative values in relative pay by skill bundle statistic
 outcomes,nonnegative relative pay by skill bundle threshold,True,0.0,0 negative values in relative pay by skill bundle threshold
 outcomes,"relative pay by skill bundle p-value in [0.0, 1.0]",True,0.0,"0 values of relative pay by skill bundle p-value outside [0.0, 1.0]"
@@ -131,16 +137,24 @@ aei,task usage shares sum to one 2026-01-15 (2025-11-13) within 0% of expected,T
 aei,usage on statements that match an O*NET task 2026-01-15 (2025-11-13) coverage at least 90%,True,0.935143892986623,93.5% of usage on statements that match an O*NET task 2026-01-15 (2025-11-13) covered
 aei,task usage shares sum to one 2026-03-24 (2026-02-05) within 0% of expected,True,4.440892098500626e-16,"actual 1 against expected 1, gap 0.00%"
 aei,usage on statements that match an O*NET task 2026-03-24 (2026-02-05) coverage at least 90%,True,0.9297139999999999,93.0% of usage on statements that match an O*NET task 2026-03-24 (2026-02-05) covered
-aei,usage on statements that match an O*NET task 2026-06-26 (2026-04) coverage at least 90%,True,1.0,100.0% of usage on statements that match an O*NET task 2026-06-26 (2026-04) covered
-aei,usage on statements that match an O*NET task 2026-06-26 (2026-05) coverage at least 90%,True,1.0,100.0% of usage on statements that match an O*NET task 2026-06-26 (2026-05) covered
+aei,"published task share of use 2026-06-26 2026-04 in [0.8, 1.01]",True,0.0,"0 values of published task share of use 2026-06-26 2026-04 outside [0.8, 1.01]"
+aei,use on tasks above the reporting threshold 2026-06-26 2026-04,True,0.884,88.4%
+aei,task usage shares sum to one 2026-06-26 2026-04 within 1% of expected,True,0.0,"actual 1 against expected 1, gap 0.00%"
+aei,"published task share of use 2026-06-26 2026-05 in [0.8, 1.01]",True,0.0,"0 values of published task share of use 2026-06-26 2026-05 outside [0.8, 1.01]"
+aei,use on tasks above the reporting threshold 2026-06-26 2026-05,True,0.9432,94.3%
+aei,task usage shares sum to one 2026-06-26 2026-05 within 1% of expected,True,0.0,"actual 1 against expected 1, gap 0.00%"
 usage,share sums to one within ['soc_code'],True,1.1102230246251565e-16,largest deviation from one is 1.11e-16
 usage,wage bill with task shares coverage at least 85%,True,0.915244175225329,91.5% of wage bill with task shares covered
 usage,task values add to the joined wage bill within 0% of expected,True,0.0,"actual 9.9157e+12 against expected 9.9157e+12, gap 0.00%"
 usage,task bundle rows sum to one (min) within 0% of expected,True,4.440892098500626e-16,"actual 1 against expected 1, gap 0.00%"
 usage,task bundle rows sum to one (max) within 0% of expected,True,4.440892098500626e-16,"actual 1 against expected 1, gap 0.00%"
 openai,activity shares 2026-06,True,0.9999899999999999,"165 activities, raw total 1.000 before normalising"
+openai,30.2 detailed activities found by title in the release in use coverage at least 95%,True,1.0,100.0% of 30.2 detailed activities found by title in the release in use covered
+openai,30.2 intermediate activities spanning several new ones,True,0.0,0
 usage,activity shares with tasks to receive them coverage at least 90%,True,0.9748597485974859,97.5% of activity shares with tasks to receive them covered
 openai,activity shares 2026-06,True,0.9999899999999999,"165 activities, raw total 1.000 before normalising"
+openai,30.2 detailed activities found by title in the release in use coverage at least 95%,True,1.0,100.0% of 30.2 detailed activities found by title in the release in use covered
+openai,30.2 intermediate activities spanning several new ones,True,0.0,0
 usage,activity shares with tasks to receive them coverage at least 90%,True,0.9748597485974859,97.5% of activity shares with tasks to receive them covered
 usage,nonnegative usage share,True,0.0,0 negative values in usage share
 usage,"usage_share sums to one within ['platform', 'release']",True,0.0,largest deviation from one is 0.00e+00
@@ -153,8 +167,7 @@ usage,"usage_share sums to one within ['platform', 'release']",True,0.0,largest 
 usage,"automation plus augmentation in [0.0, 1.01]",True,0.0,"0 values of automation plus augmentation outside [0.0, 1.01]"
 usage,nonnegative usage share,True,0.0,0 negative values in usage share
 usage,"usage_share sums to one within ['platform', 'release']",True,0.0,largest deviation from one is 0.00e+00
-usage,nonnegative usage share,True,0.0,0 negative values in usage share
-usage,"usage_share sums to one within ['platform', 'release']",True,0.0,largest deviation from one is 0.00e+00
+usage,"automation plus augmentation in [0.0, 1.01]",True,0.0,"0 values of automation plus augmentation outside [0.0, 1.01]"
 usage,nonnegative usage share,True,0.0,0 negative values in usage share
 usage,"usage_share sums to one within ['platform', 'release']",True,0.0,largest deviation from one is 0.00e+00
 usage,nonnegative usage share,True,0.0,0 negative values in usage share
@@ -167,9 +180,9 @@ usage,usage matched to a valued task anthropic 2026-01-15 (2025-11-13),True,0.75
 usage,reach anthropic 2026-03-24 (2026-02-05) never exceeds its whole,True,0.0,0 rows where the part exceeds the whole
 usage,usage matched to a valued task anthropic 2026-03-24 (2026-02-05),True,0.7718803847204625,77.2% of usage share lands on tasks with a value
 usage,reach anthropic 2026-06-26 (2026-04) never exceeds its whole,True,0.0,0 rows where the part exceeds the whole
-usage,usage matched to a valued task anthropic 2026-06-26 (2026-04),True,0.8032958808017336,80.3% of usage share lands on tasks with a value
+usage,usage matched to a valued task anthropic 2026-06-26 (2026-04),True,0.9071266968325791,90.7% of usage share lands on tasks with a value
 usage,reach anthropic 2026-06-26 (2026-05) never exceeds its whole,True,0.0,0 rows where the part exceeds the whole
-usage,usage matched to a valued task anthropic 2026-06-26 (2026-05),True,0.808317148359889,80.8% of usage share lands on tasks with a value
+usage,usage matched to a valued task anthropic 2026-06-26 (2026-05),True,0.9095631891433418,91.0% of usage share lands on tasks with a value
 usage,reach openai 2026-06 (dollar allocation) never exceeds its whole,True,0.0,0 rows where the part exceeds the whole
 usage,usage matched to a valued task openai 2026-06 (dollar allocation),True,1.0,100.0% of usage share lands on tasks with a value
 usage,reach openai 2026-06 (equal allocation) never exceeds its whole,True,0.0,0 rows where the part exceeds the whole
@@ -178,21 +191,19 @@ usage,"usage_share_on_bundle sums to one within ['platform', 'release']",True,1.
 usage,"reach share of bundle bill in [0.0, 1.000000001]",True,0.0,"0 values of reach share of bundle bill outside [0.0, 1.000000001]"
 state,"share of bill exposed in [0.0, 1.0]",True,0.0,"0 values of share of bill exposed outside [0.0, 1.0]"
 state,"unique key ['vintage', 'state_fips', 'measure']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'measure']"
-state,"median state wage bill scored, anthropic_observed coverage at least 80%",True,0.9237160158896087,"92.4% of median state wage bill scored, anthropic_observed covered"
-state,"median state wage bill scored, eloundou_beta coverage at least 80%",True,0.9440985775607275,"94.4% of median state wage bill scored, eloundou_beta covered"
-state,"median state wage bill scored, felten_aioe coverage at least 80%",True,0.809569395264663,"81.0% of median state wage bill scored, felten_aioe covered"
+state,"median state wage bill scored, anthropic_observed coverage at least 80%",True,0.9297490554203294,"93.0% of median state wage bill scored, anthropic_observed covered"
+state,"median state wage bill scored, eloundou_beta coverage at least 80%",True,0.9541830209599803,"95.4% of median state wage bill scored, eloundou_beta covered"
+state,"median state wage bill scored, felten_aioe coverage at least 80%",True,0.8184578493857977,"81.8% of median state wage bill scored, felten_aioe covered"
 state,"unique key ['state_fips', 'start', 'end', 'measure']",True,0.0,"0 duplicate rows on ['state_fips', 'start', 'end', 'measure']"
-state,realised change cells 2022-2024 eloundou_beta,True,,"median exposed cells per state 173, median unexposed 422"
+state,realised change cells 2023-2025 eloundou_beta,True,,"median exposed cells per state 176, median unexposed 419"
 state,"unique key ['state_fips', 'start', 'end', 'measure']",True,0.0,"0 duplicate rows on ['state_fips', 'start', 'end', 'measure']"
-state,realised change cells 2022-2024 felten_aioe,True,,"median exposed cells per state 163, median unexposed 363"
+state,realised change cells 2023-2025 felten_aioe,True,,"median exposed cells per state 161, median unexposed 361"
 state,"unique key ['state_fips', 'start', 'end', 'measure']",True,0.0,"0 duplicate rows on ['state_fips', 'start', 'end', 'measure']"
-state,realised change cells 2022-2024 anthropic_observed,True,,"median exposed cells per state 128, median unexposed 462"
+state,realised change cells 2023-2025 anthropic_observed,True,,"median exposed cells per state 126, median unexposed 458"
 btos,"share using AI in [0.0, 100.0]",True,0.0,"0 values of share using AI outside [0.0, 100.0]"
 btos,cycles with a reference date coverage at least 99%,True,1.0,100.0% of cycles with a reference date covered
 btos,"unique key ['state', 'series', 'cycle']",True,0.0,"0 duplicate rows on ['state', 'series', 'cycle']"
 state,state abbreviations without a FIPS code,True,1.0,['XX']
-state,"BTOS share using AI in [0.0, 100.0]",True,0.0,"0 values of BTOS share using AI outside [0.0, 100.0]"
-state,"unique key ['state_fips', 'year']",True,0.0,"0 duplicate rows on ['state_fips', 'year']"
 state,"BTOS share using AI in [0.0, 100.0]",True,0.0,"0 values of BTOS share using AI outside [0.0, 100.0]"
 state,"unique key ['state_fips', 'year']",True,0.0,"0 duplicate rows on ['state_fips', 'year']"
 aei,state usage shares sum to one 2025-09-15 within 2% of expected,True,9.606147934659859e-06,"actual 0.99999 against expected 1, gap 0.00%"
@@ -206,7 +217,7 @@ pipeline,unique key ['cip_code'],True,0.0,0 duplicate rows on ['cip_code']
 pipeline,CIP codes scored on eloundou_beta coverage at least 80%,True,0.8898740083994401,89.0% of CIP codes scored on eloundou_beta covered
 pipeline,CIP codes scored on felten_aioe coverage at least 80%,True,0.8688754083061129,86.9% of CIP codes scored on felten_aioe covered
 acs,nonnegative person weight,True,0.0,0 negative values in person weight
-acs,weighted persons,True,5717184.0,5.72 million in state 27
+acs,weighted persons,True,340110990.0,340.11 million over 51 state codes
 spine,O*NET-SOC prefix equals SOC within 0% of expected,True,0.0,"actual 1 against expected 1, gap 0.00%"
 spine,O*NET-SOC to SOC: source codes,True,1016.0,1016 distinct onetsoc_code codes
 spine,O*NET-SOC to SOC: one-to-many,True,0.0,0 onetsoc_code codes map to several soc_code
@@ -216,21 +227,25 @@ spine,Census codes mapped to SOC coverage at least 97%,True,0.9894736842105263,9
 spine,Census to SOC: source codes,True,564.0,564 distinct census_code codes
 spine,Census to SOC: one-to-many,True,134.0,134 census_code codes map to several soc_code
 spine,"unique key ['census_code', 'soc_code']",True,0.0,"0 duplicate rows on ['census_code', 'soc_code']"
-acs,graduates on an occupation that maps to SOC coverage at least 90%,True,0.981156169333606,98.1% of graduates on an occupation that maps to SOC covered
+acs,graduates on an occupation that maps to SOC coverage at least 90%,True,0.9770795034233896,97.7% of graduates on an occupation that maps to SOC covered
 acs,field families with a CIP family coverage at least 95%,True,1.0,100.0% of field families with a CIP family covered
-acs,link weights add to the graduates they came from within 0% of expected,True,0.0,"actual 1.21859e+06 against expected 1.21859e+06, gap 0.00%"
+acs,link weights add to the graduates they came from within 0% of expected,True,0.0,"actual 6.47596e+07 against expected 6.47596e+07, gap 0.00%"
 pipeline,unique key ['fod_code'],True,0.0,0 duplicate rows on ['fod_code']
 ipeds,unique key ['unitid'],True,0.0,0 duplicate rows on ['unitid']
 ipeds,nonnegative awards 2023,True,0.0,0 negative values in awards 2023
 ipeds,"unique key ['unitid', 'cip_code', 'award_level']",True,0.0,"0 duplicate rows on ['unitid', 'cip_code', 'award_level']"
-ipeds,first-major awards 2023,True,5297774.0,"5,297,774 awards over 5960 institutions"
+ipeds,first-major awards 2023,True,5299203.0,"5,299,203 awards over 5960 institutions"
 ipeds,nonnegative awards 2024,True,0.0,0 negative values in awards 2024
 ipeds,"unique key ['unitid', 'cip_code', 'award_level']",True,0.0,"0 duplicate rows on ['unitid', 'cip_code', 'award_level']"
-ipeds,first-major awards 2024,True,5459862.0,"5,459,862 awards over 5869 institutions"
-pipeline,awards with an institution state coverage at least 98%,True,0.9997512292479019,100.0% of awards with an institution state covered
-pipeline,awards on a scored CIP coverage at least 80%,True,0.869505158940124,87.0% of awards on a scored CIP covered
+ipeds,first-major awards 2024,True,5456629.0,"5,456,629 awards over 5869 institutions"
+ipeds,nonnegative awards 2025,True,0.0,0 negative values in awards 2025
+ipeds,"unique key ['unitid', 'cip_code', 'award_level']",True,0.0,"0 duplicate rows on ['unitid', 'cip_code', 'award_level']"
+ipeds,first-major awards 2025,True,5701913.0,"5,701,913 awards over 5811 institutions"
+pipeline,awards with an institution state coverage at least 98%,True,0.9972097291422901,99.7% of awards with an institution state covered
+pipeline,awards on a scored CIP coverage at least 80%,True,0.8694315047413846,86.9% of awards on a scored CIP covered
 pipeline,"share of awards in exposed fields in [0.0, 1.0]",True,0.0,"0 values of share of awards in exposed fields outside [0.0, 1.0]"
 pipeline,nonnegative awards,True,0.0,0 negative values in awards
+pipeline,nonnegative Clearinghouse CIP family enrolment,True,0.0,0 negative values in Clearinghouse CIP family enrolment
 pipeline,Clearinghouse fields without a CIP mapping,True,0.0,0 labels unmapped: []
 pipeline,nonnegative enrolment,True,0.0,0 negative values in enrolment
 pipeline,"share of enrolment in exposed fields in [0.0, 1.0]",True,0.0,"0 values of share of enrolment in exposed fields outside [0.0, 1.0]"
@@ -255,18 +270,175 @@ spine,Census to SOC: source codes,True,564.0,564 distinct census_code codes
 spine,Census to SOC: one-to-many,True,134.0,134 census_code codes map to several soc_code
 spine,"unique key ['census_code', 'soc_code']",True,0.0,"0 duplicate rows on ['census_code', 'soc_code']"
 cps,census codes with an exposure score coverage at least 90%,True,0.9627659574468085,96.3% of census codes with an exposure score covered
+cps,"month in sample 2022-04 in [1, 8]",True,0.0,"0 values of month in sample 2022-04 outside [1, 8]"
+cps,"age 2022-04 in [0, 85]",True,0.0,"0 values of age 2022-04 outside [0, 85]"
+cps,weighted civilian population 16+ 2022-04,True,263559397.0083,263.6 million; the published figure is between 265 and 275 million
+cps,"month in sample 2023-04 in [1, 8]",True,0.0,"0 values of month in sample 2023-04 outside [1, 8]"
+cps,"age 2023-04 in [0, 85]",True,0.0,"0 values of age 2023-04 outside [0, 85]"
+cps,weighted civilian population 16+ 2023-04,True,266443193.007,266.4 million; the published figure is between 265 and 275 million
+cps,"month in sample 2024-04 in [1, 8]",True,0.0,"0 values of month in sample 2024-04 outside [1, 8]"
+cps,"age 2024-04 in [0, 85]",True,0.0,"0 values of age 2024-04 outside [0, 85]"
+cps,weighted civilian population 16+ 2024-04,True,268065824.0177,268.1 million; the published figure is between 265 and 275 million
 cps,"month in sample 2025-04 in [1, 8]",True,0.0,"0 values of month in sample 2025-04 outside [1, 8]"
 cps,"age 2025-04 in [0, 85]",True,0.0,"0 values of age 2025-04 outside [0, 85]"
-cps,weighted civilian population 16+ 2025-04,True,52456886.0,52.5 million; the published figure is between 265 and 275 million
+cps,weighted civilian population 16+ 2025-04,True,273196965.0057,273.2 million; the published figure is between 265 and 275 million
+cps,"month in sample 2026-04 in [1, 8]",True,0.0,"0 values of month in sample 2026-04 outside [1, 8]"
+cps,"age 2026-04 in [0, 85]",True,0.0,"0 values of age 2026-04 outside [0, 85]"
+cps,weighted civilian population 16+ 2026-04,True,274954636.9921,275.0 million; the published figure is between 265 and 275 million
+cps,"month in sample 2022-08 in [1, 8]",True,0.0,"0 values of month in sample 2022-08 outside [1, 8]"
+cps,"age 2022-08 in [0, 85]",True,0.0,"0 values of age 2022-08 outside [0, 85]"
+cps,weighted civilian population 16+ 2022-08,True,264183767.9907,264.2 million; the published figure is between 265 and 275 million
+cps,"month in sample 2023-08 in [1, 8]",True,0.0,"0 values of month in sample 2023-08 outside [1, 8]"
+cps,"age 2023-08 in [0, 85]",True,0.0,"0 values of age 2023-08 outside [0, 85]"
+cps,weighted civilian population 16+ 2023-08,True,267213250.0172,267.2 million; the published figure is between 265 and 275 million
+cps,"month in sample 2024-08 in [1, 8]",True,0.0,"0 values of month in sample 2024-08 outside [1, 8]"
+cps,"age 2024-08 in [0, 85]",True,0.0,"0 values of age 2024-08 outside [0, 85]"
+cps,weighted civilian population 16+ 2024-08,True,268855761.997,268.9 million; the published figure is between 265 and 275 million
+cps,"month in sample 2025-08 in [1, 8]",True,0.0,"0 values of month in sample 2025-08 outside [1, 8]"
+cps,"age 2025-08 in [0, 85]",True,0.0,"0 values of age 2025-08 outside [0, 85]"
+cps,weighted civilian population 16+ 2025-08,True,274000990.013,274.0 million; the published figure is between 265 and 275 million
+cps,"month in sample 2026-08 in [1, 8]",True,0.0,"0 values of month in sample 2026-08 outside [1, 8]"
+cps,"age 2026-08 in [0, 85]",True,0.0,"0 values of age 2026-08 outside [0, 85]"
+cps,weighted civilian population 16+ 2026-08,True,275415199.9889,275.4 million; the published figure is between 265 and 275 million
+cps,"month in sample 2022-12 in [1, 8]",True,0.0,"0 values of month in sample 2022-12 outside [1, 8]"
+cps,"age 2022-12 in [0, 85]",True,0.0,"0 values of age 2022-12 outside [0, 85]"
+cps,weighted civilian population 16+ 2022-12,True,264844326.0053,264.8 million; the published figure is between 265 and 275 million
+cps,"month in sample 2023-12 in [1, 8]",True,0.0,"0 values of month in sample 2023-12 outside [1, 8]"
+cps,"age 2023-12 in [0, 85]",True,0.0,"0 values of age 2023-12 outside [0, 85]"
+cps,weighted civilian population 16+ 2023-12,True,267991083.982,268.0 million; the published figure is between 265 and 275 million
+cps,"month in sample 2024-12 in [1, 8]",True,0.0,"0 values of month in sample 2024-12 outside [1, 8]"
+cps,"age 2024-12 in [0, 85]",True,0.0,"0 values of age 2024-12 outside [0, 85]"
+cps,weighted civilian population 16+ 2024-12,True,269637916.02680004,269.6 million; the published figure is between 265 and 275 million
+cps,"month in sample 2025-12 in [1, 8]",True,0.0,"0 values of month in sample 2025-12 outside [1, 8]"
+cps,"age 2025-12 in [0, 85]",True,0.0,"0 values of age 2025-12 outside [0, 85]"
+cps,weighted civilian population 16+ 2025-12,True,274816120.9874,274.8 million; the published figure is between 265 and 275 million
+cps,"month in sample 2022-02 in [1, 8]",True,0.0,"0 values of month in sample 2022-02 outside [1, 8]"
+cps,"age 2022-02 in [0, 85]",True,0.0,"0 values of age 2022-02 outside [0, 85]"
+cps,weighted civilian population 16+ 2022-02,True,263324071.01439998,263.3 million; the published figure is between 265 and 275 million
+cps,"month in sample 2023-02 in [1, 8]",True,0.0,"0 values of month in sample 2023-02 outside [1, 8]"
+cps,"age 2023-02 in [0, 85]",True,0.0,"0 values of age 2023-02 outside [0, 85]"
+cps,weighted civilian population 16+ 2023-02,True,266111906.99400002,266.1 million; the published figure is between 265 and 275 million
+cps,"month in sample 2024-02 in [1, 8]",True,0.0,"0 values of month in sample 2024-02 outside [1, 8]"
+cps,"age 2024-02 in [0, 85]",True,0.0,"0 values of age 2024-02 outside [0, 85]"
+cps,weighted civilian population 16+ 2024-02,True,267711140.9953,267.7 million; the published figure is between 265 and 275 million
 cps,"month in sample 2025-02 in [1, 8]",True,0.0,"0 values of month in sample 2025-02 outside [1, 8]"
 cps,"age 2025-02 in [0, 85]",True,0.0,"0 values of age 2025-02 outside [0, 85]"
-cps,weighted civilian population 16+ 2025-02,True,52249420.0,52.2 million; the published figure is between 265 and 275 million
+cps,weighted civilian population 16+ 2025-02,True,272846797.0148,272.8 million; the published figure is between 265 and 275 million
+cps,"month in sample 2026-02 in [1, 8]",True,0.0,"0 values of month in sample 2026-02 outside [1, 8]"
+cps,"age 2026-02 in [0, 85]",True,0.0,"0 values of age 2026-02 outside [0, 85]"
+cps,weighted civilian population 16+ 2026-02,True,274765804.00100005,274.8 million; the published figure is between 265 and 275 million
+cps,"month in sample 2022-01 in [1, 8]",True,0.0,"0 values of month in sample 2022-01 outside [1, 8]"
+cps,"age 2022-01 in [0, 85]",True,0.0,"0 values of age 2022-01 outside [0, 85]"
+cps,weighted civilian population 16+ 2022-01,True,263202495.9874,263.2 million; the published figure is between 265 and 275 million
+cps,"month in sample 2023-01 in [1, 8]",True,0.0,"0 values of month in sample 2023-01 outside [1, 8]"
+cps,"age 2023-01 in [0, 85]",True,0.0,"0 values of age 2023-01 outside [0, 85]"
+cps,weighted civilian population 16+ 2023-01,True,265961719.98589998,266.0 million; the published figure is between 265 and 275 million
+cps,"month in sample 2024-01 in [1, 8]",True,0.0,"0 values of month in sample 2024-01 outside [1, 8]"
+cps,"age 2024-01 in [0, 85]",True,0.0,"0 values of age 2024-01 outside [0, 85]"
+cps,weighted civilian population 16+ 2024-01,True,267540214.98959997,267.5 million; the published figure is between 265 and 275 million
 cps,"month in sample 2025-01 in [1, 8]",True,0.0,"0 values of month in sample 2025-01 outside [1, 8]"
 cps,"age 2025-01 in [0, 85]",True,0.0,"0 values of age 2025-01 outside [0, 85]"
-cps,weighted civilian population 16+ 2025-01,True,52239600.0,52.2 million; the published figure is between 265 and 275 million
+cps,weighted civilian population 16+ 2025-01,True,272684713.00530005,272.7 million; the published figure is between 265 and 275 million
+cps,"month in sample 2026-01 in [1, 8]",True,0.0,"0 values of month in sample 2026-01 outside [1, 8]"
+cps,"age 2026-01 in [0, 85]",True,0.0,"0 values of age 2026-01 outside [0, 85]"
+cps,weighted civilian population 16+ 2026-01,True,274675770.01129997,274.7 million; the published figure is between 265 and 275 million
+cps,"month in sample 2022-07 in [1, 8]",True,0.0,"0 values of month in sample 2022-07 outside [1, 8]"
+cps,"age 2022-07 in [0, 85]",True,0.0,"0 values of age 2022-07 outside [0, 85]"
+cps,weighted civilian population 16+ 2022-07,True,264011530.99289998,264.0 million; the published figure is between 265 and 275 million
+cps,"month in sample 2023-07 in [1, 8]",True,0.0,"0 values of month in sample 2023-07 outside [1, 8]"
+cps,"age 2023-07 in [0, 85]",True,0.0,"0 values of age 2023-07 outside [0, 85]"
+cps,weighted civilian population 16+ 2023-07,True,267002314.99769998,267.0 million; the published figure is between 265 and 275 million
+cps,"month in sample 2024-07 in [1, 8]",True,0.0,"0 values of month in sample 2024-07 outside [1, 8]"
+cps,"age 2024-07 in [0, 85]",True,0.0,"0 values of age 2024-07 outside [0, 85]"
+cps,weighted civilian population 16+ 2024-07,True,268644200.9958,268.6 million; the published figure is between 265 and 275 million
+cps,"month in sample 2025-07 in [1, 8]",True,0.0,"0 values of month in sample 2025-07 outside [1, 8]"
+cps,"age 2025-07 in [0, 85]",True,0.0,"0 values of age 2025-07 outside [0, 85]"
+cps,weighted civilian population 16+ 2025-07,True,273785313.99230003,273.8 million; the published figure is between 265 and 275 million
+cps,"month in sample 2026-07 in [1, 8]",True,0.0,"0 values of month in sample 2026-07 outside [1, 8]"
+cps,"age 2026-07 in [0, 85]",True,0.0,"0 values of age 2026-07 outside [0, 85]"
+cps,weighted civilian population 16+ 2026-07,True,275282345.9855,275.3 million; the published figure is between 265 and 275 million
+cps,"month in sample 2022-06 in [1, 8]",True,0.0,"0 values of month in sample 2022-06 outside [1, 8]"
+cps,"age 2022-06 in [0, 85]",True,0.0,"0 values of age 2022-06 outside [0, 85]"
+cps,weighted civilian population 16+ 2022-06,True,263834550.0241,263.8 million; the published figure is between 265 and 275 million
+cps,"month in sample 2023-06 in [1, 8]",True,0.0,"0 values of month in sample 2023-06 outside [1, 8]"
+cps,"age 2023-06 in [0, 85]",True,0.0,"0 values of age 2023-06 outside [0, 85]"
+cps,weighted civilian population 16+ 2023-06,True,266800905.002,266.8 million; the published figure is between 265 and 275 million
+cps,"month in sample 2024-06 in [1, 8]",True,0.0,"0 values of month in sample 2024-06 outside [1, 8]"
+cps,"age 2024-06 in [0, 85]",True,0.0,"0 values of age 2024-06 outside [0, 85]"
+cps,weighted civilian population 16+ 2024-06,True,268438303.9972,268.4 million; the published figure is between 265 and 275 million
+cps,"month in sample 2025-06 in [1, 8]",True,0.0,"0 values of month in sample 2025-06 outside [1, 8]"
+cps,"age 2025-06 in [0, 85]",True,0.0,"0 values of age 2025-06 outside [0, 85]"
+cps,weighted civilian population 16+ 2025-06,True,273584954.98590004,273.6 million; the published figure is between 265 and 275 million
+cps,"month in sample 2026-06 in [1, 8]",True,0.0,"0 values of month in sample 2026-06 outside [1, 8]"
+cps,"age 2026-06 in [0, 85]",True,0.0,"0 values of age 2026-06 outside [0, 85]"
+cps,weighted civilian population 16+ 2026-06,True,275166159.0101,275.2 million; the published figure is between 265 and 275 million
+cps,"month in sample 2022-03 in [1, 8]",True,0.0,"0 values of month in sample 2022-03 outside [1, 8]"
+cps,"age 2022-03 in [0, 85]",True,0.0,"0 values of age 2022-03 outside [0, 85]"
+cps,weighted civilian population 16+ 2022-03,True,263444159.0,263.4 million; the published figure is between 265 and 275 million
+cps,"month in sample 2023-03 in [1, 8]",True,0.0,"0 values of month in sample 2023-03 outside [1, 8]"
+cps,"age 2023-03 in [0, 85]",True,0.0,"0 values of age 2023-03 outside [0, 85]"
+cps,weighted civilian population 16+ 2023-03,True,266271875.99830002,266.3 million; the published figure is between 265 and 275 million
+cps,"month in sample 2024-03 in [1, 8]",True,0.0,"0 values of month in sample 2024-03 outside [1, 8]"
+cps,"age 2024-03 in [0, 85]",True,0.0,"0 values of age 2024-03 outside [0, 85]"
+cps,weighted civilian population 16+ 2024-03,True,267884189.9986,267.9 million; the published figure is between 265 and 275 million
 cps,"month in sample 2025-03 in [1, 8]",True,0.0,"0 values of month in sample 2025-03 outside [1, 8]"
 cps,"age 2025-03 in [0, 85]",True,0.0,"0 values of age 2025-03 outside [0, 85]"
-cps,weighted civilian population 16+ 2025-03,True,52480081.0,52.5 million; the published figure is between 265 and 275 million
-cps,employed persons on a scored occupation coverage at least 90%,True,1.0,100.0% of employed persons on a scored occupation covered
+cps,weighted civilian population 16+ 2025-03,True,273022835.0088,273.0 million; the published figure is between 265 and 275 million
+cps,"month in sample 2026-03 in [1, 8]",True,0.0,"0 values of month in sample 2026-03 outside [1, 8]"
+cps,"age 2026-03 in [0, 85]",True,0.0,"0 values of age 2026-03 outside [0, 85]"
+cps,weighted civilian population 16+ 2026-03,True,274858097.00680006,274.9 million; the published figure is between 265 and 275 million
+cps,"month in sample 2022-05 in [1, 8]",True,0.0,"0 values of month in sample 2022-05 outside [1, 8]"
+cps,"age 2022-05 in [0, 85]",True,0.0,"0 values of age 2022-05 outside [0, 85]"
+cps,weighted civilian population 16+ 2022-05,True,263678636.00989997,263.7 million; the published figure is between 265 and 275 million
+cps,"month in sample 2023-05 in [1, 8]",True,0.0,"0 values of month in sample 2023-05 outside [1, 8]"
+cps,"age 2023-05 in [0, 85]",True,0.0,"0 values of age 2023-05 outside [0, 85]"
+cps,weighted civilian population 16+ 2023-05,True,266618230.9996,266.6 million; the published figure is between 265 and 275 million
+cps,"month in sample 2024-05 in [1, 8]",True,0.0,"0 values of month in sample 2024-05 outside [1, 8]"
+cps,"age 2024-05 in [0, 85]",True,0.0,"0 values of age 2024-05 outside [0, 85]"
+cps,weighted civilian population 16+ 2024-05,True,268247739.9835,268.2 million; the published figure is between 265 and 275 million
+cps,"month in sample 2025-05 in [1, 8]",True,0.0,"0 values of month in sample 2025-05 outside [1, 8]"
+cps,"age 2025-05 in [0, 85]",True,0.0,"0 values of age 2025-05 outside [0, 85]"
+cps,weighted civilian population 16+ 2025-05,True,273384772.9951,273.4 million; the published figure is between 265 and 275 million
+cps,"month in sample 2026-05 in [1, 8]",True,0.0,"0 values of month in sample 2026-05 outside [1, 8]"
+cps,"age 2026-05 in [0, 85]",True,0.0,"0 values of age 2026-05 outside [0, 85]"
+cps,weighted civilian population 16+ 2026-05,True,275053951.9792,275.1 million; the published figure is between 265 and 275 million
+cps,"month in sample 2022-11 in [1, 8]",True,0.0,"0 values of month in sample 2022-11 outside [1, 8]"
+cps,"age 2022-11 in [0, 85]",True,0.0,"0 values of age 2022-11 outside [0, 85]"
+cps,weighted civilian population 16+ 2022-11,True,264707834.0152,264.7 million; the published figure is between 265 and 275 million
+cps,"month in sample 2023-11 in [1, 8]",True,0.0,"0 values of month in sample 2023-11 outside [1, 8]"
+cps,"age 2023-11 in [0, 85]",True,0.0,"0 values of age 2023-11 outside [0, 85]"
+cps,weighted civilian population 16+ 2023-11,True,267822019.99780002,267.8 million; the published figure is between 265 and 275 million
+cps,"month in sample 2024-11 in [1, 8]",True,0.0,"0 values of month in sample 2024-11 outside [1, 8]"
+cps,"age 2024-11 in [0, 85]",True,0.0,"0 values of age 2024-11 outside [0, 85]"
+cps,weighted civilian population 16+ 2024-11,True,269463188.99810004,269.5 million; the published figure is between 265 and 275 million
+cps,"month in sample 2025-11 in [1, 8]",True,0.0,"0 values of month in sample 2025-11 outside [1, 8]"
+cps,"age 2025-11 in [0, 85]",True,0.0,"0 values of age 2025-11 outside [0, 85]"
+cps,weighted civilian population 16+ 2025-11,True,274632651.0011,274.6 million; the published figure is between 265 and 275 million
+cps,"month in sample 2022-10 in [1, 8]",True,0.0,"0 values of month in sample 2022-10 outside [1, 8]"
+cps,"age 2022-10 in [0, 85]",True,0.0,"0 values of age 2022-10 outside [0, 85]"
+cps,weighted civilian population 16+ 2022-10,True,264535169.00759998,264.5 million; the published figure is between 265 and 275 million
+cps,"month in sample 2023-10 in [1, 8]",True,0.0,"0 values of month in sample 2023-10 outside [1, 8]"
+cps,"age 2023-10 in [0, 85]",True,0.0,"0 values of age 2023-10 outside [0, 85]"
+cps,weighted civilian population 16+ 2023-10,True,267642080.0115,267.6 million; the published figure is between 265 and 275 million
+cps,"month in sample 2024-10 in [1, 8]",True,0.0,"0 values of month in sample 2024-10 outside [1, 8]"
+cps,"age 2024-10 in [0, 85]",True,0.0,"0 values of age 2024-10 outside [0, 85]"
+cps,weighted civilian population 16+ 2024-10,True,269288750.9936,269.3 million; the published figure is between 265 and 275 million
+cps,"month in sample 2022-09 in [1, 8]",True,0.0,"0 values of month in sample 2022-09 outside [1, 8]"
+cps,"age 2022-09 in [0, 85]",True,0.0,"0 values of age 2022-09 outside [0, 85]"
+cps,weighted civilian population 16+ 2022-09,True,264355644.0079,264.4 million; the published figure is between 265 and 275 million
+cps,"month in sample 2023-09 in [1, 8]",True,0.0,"0 values of month in sample 2023-09 outside [1, 8]"
+cps,"age 2023-09 in [0, 85]",True,0.0,"0 values of age 2023-09 outside [0, 85]"
+cps,weighted civilian population 16+ 2023-09,True,267427696.9987,267.4 million; the published figure is between 265 and 275 million
+cps,"month in sample 2024-09 in [1, 8]",True,0.0,"0 values of month in sample 2024-09 outside [1, 8]"
+cps,"age 2024-09 in [0, 85]",True,0.0,"0 values of age 2024-09 outside [0, 85]"
+cps,weighted civilian population 16+ 2024-09,True,269079967.01600003,269.1 million; the published figure is between 265 and 275 million
+cps,"month in sample 2025-09 in [1, 8]",True,0.0,"0 values of month in sample 2025-09 outside [1, 8]"
+cps,"age 2025-09 in [0, 85]",True,0.0,"0 values of age 2025-09 outside [0, 85]"
+cps,weighted civilian population 16+ 2025-09,True,274225708.9995,274.2 million; the published figure is between 265 and 275 million
+cps,employed persons on a scored occupation coverage at least 90%,True,0.9713553483944312,97.1% of employed persons on a scored occupation covered
 cps,nonnegative cell employment,True,0.0,0 negative values in cell employment
 cps,nonnegative gauge,True,0.0,0 negative values in gauge
+postings,job-ad task rows,True,942926.0,"942,926 rows, 833 occupations, 121 months"
+postings,"average exposure of tasks named in ads in [0.0, 1.0]",True,0.0,"0 values of average exposure of tasks named in ads outside [0.0, 1.0]"
+postings,occupations in the asked-exposure reading,True,362.0,362 occupations with complete task lists in all 121 months
+postings,step at the release against the sixteen months before,True,-0.001157192446603233,-0.0012 with standard error 0.0004; 36% of earlier windows as negative

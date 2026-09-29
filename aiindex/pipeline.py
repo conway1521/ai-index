@@ -94,6 +94,35 @@ def field_exposure_from_acs(fod_occ: pd.DataFrame, measures: pd.DataFrame) -> pd
     return out
 
 
+def clearinghouse_cip_families(path) -> pd.DataFrame:
+    """The Clearinghouse CIP group enrolment workbook, reshaped to one row per term and two-digit CIP family.
+
+    The workbook gives fall enrolment by major field family (two-digit CIP)
+    and group (four-digit) for one award level and institution type; the
+    family totals are kept, and the CIP code comes from the workbook itself,
+    so no label mapping is needed.
+    """
+    raw = pd.read_excel(path, sheet_name=0, header=None)
+    years = raw.iloc[1]
+    title = str(raw.iloc[0, 0])
+    head = raw.index[raw[0].astype(str).str.startswith("Award Level")][0]
+    body = raw.iloc[head + 1:]
+    body = body[body[3].astype(str).str.strip().eq("Total") & body[1].astype(str).str.fullmatch(r"\d{1,2}")]
+    rows = []
+    for col in range(5, raw.shape[1]):
+        if str(raw.iloc[head, col]).strip() != "Enrollment" or pd.isna(years[col]):
+            continue
+        for _, r in body.iterrows():
+            value = pd.to_numeric(r[col], errors="coerce")        # "*" marks a cell the Clearinghouse suppresses
+            if pd.isna(value):
+                continue
+            rows.append({"term": f"Fall {int(years[col])}", "major_field": str(r[2]).strip(),
+                         "cip2": str(r[1]).strip().zfill(2), "enrolment": float(value), "population": title})
+    out = pd.DataFrame(rows)
+    checks.nonnegative(out["enrolment"], LAYER, "Clearinghouse CIP family enrolment")
+    return out
+
+
 def enrolment_by_exposure(nsc: pd.DataFrame, field_exposure: pd.DataFrame,
                           measure: str, cut_quantile: float = 2 / 3) -> pd.DataFrame:
     """Clearinghouse enrolment by term, split by the exposure of the field.
@@ -110,7 +139,8 @@ def enrolment_by_exposure(nsc: pd.DataFrame, field_exposure: pd.DataFrame,
     rows = []
     unmapped = set()
     for _, row in nsc.iterrows():
-        cips = NSC_FIELD_TO_CIP2.get(row["major_field"])
+        given = str(row["cip2"]).zfill(2) if "cip2" in nsc and pd.notna(row.get("cip2")) else None
+        cips = [given] if given else NSC_FIELD_TO_CIP2.get(row["major_field"])
         if not cips:
             unmapped.add(row["major_field"])
             continue

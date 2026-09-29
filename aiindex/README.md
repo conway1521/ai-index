@@ -26,7 +26,14 @@ repository, cloned beside this one or pointed to by `SKILLS_DNA_ROOT`.
     python -m aiindex.build
     python -m pytest aiindex/tests
 
-`COLLECT.md` lists every input to place by hand, with its source.
+`COLLECT.md` lists every input to place by hand, with its source. Most of
+them are attached to the dated data releases of the paper repository, and
+
+    python -m aiindex.place_release
+
+fetches each one, checks it against the release manifest and links it where
+the loaders read it. It needs `GITHUB_TOKEN` with read access to the paper
+repository when the files are not already on disk.
 
 The build fetches every input from its official host, falls back to a
 committed copy when the host refuses, and writes `output/manifest.json`
@@ -44,13 +51,15 @@ regenerates the same files.
 
 Three workflows, in `.github/workflows/`:
 
-- `build.yml` rebuilds the index weekly and on demand. It begins by asking
+- `build.yml` rebuilds the index on demand; its weekly schedule is paused
+  until a run can place the data releases on the runner, since a runner
+  without them would rebuild from copies and commit that. It begins by asking
   every publisher whether it will serve a GitHub runner, reports the answer
   into the run summary, and then rebuilds, tests and commits whatever
   changed in `aiindex/output` and `site/data`. The raw inputs are cached
   between runs, so only a new release is fetched.
 - `tests.yml` runs the suite on every push.
-- `pages.yml` publishes `site/` and the mockup. GitHub serves Pages from a
+- `pages.yml` publishes `site/`, whose `index.html` is the page. GitHub serves Pages from a
   private repository only on a paid plan; on the free plan this one fails
   until the repository is public.
 
@@ -74,14 +83,15 @@ that input `mirror` in the manifest.
 
 | Layer | Module | Ran on | Notes |
 |---|---|---|---|
-| Spine | `spine.py` | real files (copies) | O*NET-SOC, Census 2018, CIP 2020 and SOC 2010 crosswalks with coverage reported |
-| Wage bill | `wagebill.py` | OEWS 2012 to 2025 (copies) | state files to 2024, national 2025; 2012 to 2018 carried onto the 2018 SOC |
-| Exposure | `exposure.py` | Eloundou and Felten (authors' files), Anthropic observed exposure (copy, hash-verified) | three measures; state and pipeline tables are written once per measure |
-| Usage | `usage.py`, `aei.py`, `openai.py` | Anthropic releases of September 2025 to June 2026 and OpenAI Signals to June 2026 (copies) | three Anthropic raw tables, two monthly slices, OpenAI by activity under two allocation rules; WildChat not reachable |
+| Spine | `spine.py` | official crosswalks, O*NET 30.3 | O*NET-SOC, Census 2018, CIP 2020 and SOC 2010 crosswalks with coverage reported |
+| Wage bill | `wagebill.py` | OEWS May 2025 official, 2012 to 2024 copies | 2019 and 2020 hybrid codes carried onto the 2018 SOC through the BLS table; 2012 to 2018 carried onto the 2018 SOC |
+| Exposure | `exposure.py` | Eloundou and Felten (authors' files), Anthropic observed exposure | three measures; state and pipeline tables are written once per measure |
+| Usage | `usage.py`, `aei.py`, `openai.py` | Anthropic releases of September 2025 to the June 2026 monthly file, OpenAI Signals to June 2026 | the June file publishes 88 and 94 percent of use, so the headline reach comes from the latest release that publishes all of it; Signals activity codes translated onto O*NET 30.3 by title |
 | Outcomes | `outcomes.py` | real panel | the paper's test as a series with a 95th percentile threshold |
-| CPS gauge | `cps.py` | real layouts, synthetic months | drop the Census monthly files into `data/raw/cps` and rerun |
-| State | `state.py`, `btos.py` | real (copies) | BTOS to December 2025; Anthropic state usage per worker for three releases |
-| Pipeline | `pipeline.py`, `ipeds.py`, `acs.py` | IPEDS 2023 and 2024, ACS one state, NCES crosswalk | Clearinghouse appendix is a fixture until fetched |
+| CPS gauge | `cps.py` | 55 Census months, January 2022 to August 2026 | October 2025 was not collected |
+| Job ads | `postings.py` | NLx aggregates, September 2015 to September 2025 | the paper's Appendix B code; each occupation-month lists its top fifty tasks |
+| State | `state.py`, `btos.py` | official BTOS through cycle 202619 | Anthropic state usage per worker |
+| Pipeline | `pipeline.py`, `ipeds.py`, `acs.py` | IPEDS 2023 to 2025, ACS 2024 national, Clearinghouse fall 2019 to 2024 | Clearinghouse by two-digit CIP family, undergraduate four-year |
 | Capacity | `capacity.py` | fixture | the flows repository's matrix drops in on its schema |
 
 ## Units, checked at every step

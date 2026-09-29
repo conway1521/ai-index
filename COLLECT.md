@@ -1,5 +1,13 @@
 # Files to collect by hand
 
+Everything below except the flows matrix is now attached to the data
+releases of the paper repository (`data-2026-10-01` and its two addenda),
+each file recorded with its hash in that repository's `data/raw` manifests.
+`python -m aiindex.place_release` puts them where the build reads them. The
+sections below remain the record of where each file comes from, and the
+route for the next vintage: download, attach to a new dated release, add it
+to the manifest and to `place_release.PLACES`.
+
 Everything below goes under `aiindex/data/raw/`. A file placed there with no
 `.source` sidecar beside it is treated as the publisher's release and graded
 "real" in the manifest on the next build. Keep the publisher's file name

@@ -41,8 +41,41 @@ def activity_shares(month: str | None = None,
     return block[["month", "iwa_id", "activity_share"]]
 
 
+def iwa_crosswalk() -> dict[str, str]:
+    """Signals' intermediate activity codes, from O*NET 30.2, onto the codes of the release in use.
+
+    Release 30.3 renumbered the intermediate and detailed work activities. The
+    detailed activity titles did not change, so each 30.2 detailed activity is
+    matched to its 30.3 namesake by title, and a 30.2 intermediate activity
+    takes the 30.3 intermediate activity its detailed activities fall under.
+    Under 30.2 itself the map is empty and the codes pass through.
+    """
+    from . import onet_release  # noqa: F401  (configures src.onet for the release on disk)
+    import sys
+    sys.path.insert(0, str(config.PAPER_ROOT))
+    from src import onet
+    if onet.ONET_RELEASE <= "30_2":
+        return {}
+    official, mirrors = sources.ONET_30_2_DWA
+    path, _ = fetch.get("onet_30_2_dwa_reference", "crosswalks/onet_30_2_dwa_reference.txt", official, mirrors=mirrors,
+                        notes="O*NET 30.2 DWA Reference, kept to translate Signals activity codes")
+    old = pd.read_csv(path, sep="\t", dtype=str)
+    new = onet.read_file("GWAs to IWAs to DWAs.txt")
+    norm = lambda s: s.str.lower().str.replace(r"[^a-z0-9 ]", "", regex=True).str.strip()
+    old["key"], new["key"] = norm(old["DWA Title"]), norm(new["DWA Element Name"])
+    joined = old.merge(new[["key", "IWA Element ID"]], on="key", how="inner")
+    checks.coverage(float(joined["DWA ID"].nunique()), float(old["DWA ID"].nunique()), LAYER,
+                    "30.2 detailed activities found by title in the release in use", minimum=0.95)
+    ambiguous = int((joined.groupby("IWA ID")["IWA Element ID"].nunique() > 1).sum())
+    checks.note(LAYER, "30.2 intermediate activities spanning several new ones", f"{ambiguous}", ambiguous)
+    return joined.groupby("IWA ID")["IWA Element ID"].agg(lambda s: s.value_counts().index[0]).to_dict()
+
+
 def usage_table(values: pd.DataFrame, month: str | None = None, rule: str = "dollar") -> pd.DataFrame:
     shares = activity_shares(month)
+    crosswalk = iwa_crosswalk()
+    if crosswalk:
+        shares["iwa_id"] = shares["iwa_id"].map(crosswalk).fillna(shares["iwa_id"])
     allocated = usage.allocate_activity_shares(shares[["iwa_id", "activity_share"]], values, rule)
     allocated["platform"] = PLATFORM
     allocated["release"] = f"{shares['month'].iloc[0]} ({rule} allocation)"

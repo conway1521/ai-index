@@ -19,6 +19,8 @@ enrolment, which the Clearinghouse reports by CIP family.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pandas as pd
 
 from . import checks, config, fetch, sources, spine
@@ -57,10 +59,13 @@ def person_file(path=None) -> pd.DataFrame:
     for file in files:
         if path is None:
             sidecar = Path(file).with_suffix(Path(file).suffix + ".source")
-            grade, source = sidecar.read_text().split("\n")[:2] if sidecar.exists() else ("real", sources.ACS_PUMS_TEST[0])
+            official = sources.ACS_PUMS_NATIONAL if Path(file).name.startswith("psam_pus") else sources.ACS_PUMS_TEST[0]
+            grade, source = sidecar.read_text().split("\n")[:2] if sidecar.exists() else ("real", official)
             from .manifest import MANIFEST
-            MANIFEST.record(f"acs:{Path(file).name}", Path(file), official_url=sources.ACS_PUMS_TEST[0], grade=grade, source_url=source)
-        frames.append(pd.read_csv(file, usecols=lambda c: c in USECOLS, dtype=str))
+            MANIFEST.record(f"acs:{Path(file).name}", Path(file), official_url=official, grade=grade, source_url=source)
+        # the national files name the state STATE where the state files name it ST
+        part = pd.read_csv(file, usecols=lambda c: c in USECOLS or c == "STATE", dtype=str)
+        frames.append(part.rename(columns={"STATE": "ST"}))
     raw = pd.concat(frames, ignore_index=True)
     for c in ("PWGTP", "AGEP", "SCHL", "FOD1P", "OCCP", "ESR"):
         raw[c] = pd.to_numeric(raw[c], errors="coerce")

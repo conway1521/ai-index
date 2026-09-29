@@ -52,7 +52,8 @@ def validate_usage(table: pd.DataFrame) -> pd.DataFrame:
     missing = [c for c in USAGE_COLUMNS if c not in table.columns]
     if missing:
         raise ValueError(f"usage table lacks {missing}; schema is {USAGE_COLUMNS}")
-    out = table[USAGE_COLUMNS].copy()
+    extra = ["usage_share_all"] if "usage_share_all" in table.columns else []
+    out = table[USAGE_COLUMNS + extra].copy()
     out["task_id"] = out["task_id"].astype(str)
     # Two statements can carry one identifier when a statement was reworded
     # between O*NET releases, so the modes are averaged with usage weights.
@@ -63,10 +64,15 @@ def validate_usage(table: pd.DataFrame) -> pd.DataFrame:
     for column in ("automation_share", "augmentation_share"):
         weight = grouped[f"_{column}_w"]
         grouped[column] = (grouped[f"_{column}_x"] / weight.replace(0.0, np.nan))
-    out = grouped[["platform", "release", "task_id", "usage_share", "automation_share", "augmentation_share"]].copy()
+    out = grouped[["platform", "release", "task_id", "usage_share", "automation_share", "augmentation_share"] + extra].copy()
     checks.nonnegative(out["usage_share"], LAYER, "usage share")
     totals = out.groupby(["platform", "release"])["usage_share"].transform("sum")
     out["usage_share"] = out["usage_share"] / totals
+    # a task's share of all use, published or not; where a release publishes all of its use this is the share itself
+    if extra:
+        out["usage_share_all"] = out["usage_share_all"].where(out["usage_share_all"] > 0, out["usage_share"])
+    else:
+        out["usage_share_all"] = out["usage_share"]
     checks.shares_sum_to_one(out, ["platform", "release"], "usage_share", LAYER)
     mode = out[["automation_share", "augmentation_share"]].dropna(how="all")
     if len(mode):
@@ -126,12 +132,25 @@ def readings(usage: pd.DataFrame, values: pd.DataFrame, task_bundles: pd.DataFra
     bill_by_bundle = (tasks[bundle_cols].multiply(tasks["value"], axis=0)).sum()
     bill_share = bill_by_bundle / bill_by_bundle.sum()
 
+    # Releases differ in how rare a task can be and still be published: the full monthly files leave
+    # out tasks below a reporting threshold, so reach, which counts every published task, is lower in
+    # them for that reason alone. Each release records the share of use it publishes, so readers of the
+    # table can tell the two kinds apart, and a second reach counts only the tasks that together make up
+    # three quarters of all use, largest first, which every release publishes in full.
+    MASS = 0.75
+
     reach_rows, landing_rows, occupation_rows = [], [], []
     for (platform, release), block in usage.groupby(["platform", "release"]):
         joined = tasks.merge(block, on="task_id", how="left")
         used = joined["usage_share"].fillna(0.0) > 0
         tasks_used = int(joined.loc[used, "task_id"].nunique())
         reached = float(joined.loc[used, "value"].sum())
+        of_all = block.set_index("task_id")["usage_share_all"] if "usage_share_all" in block and block["usage_share_all"].notna().any() \
+            else block.set_index("task_id")["usage_share"]
+        of_all = of_all.groupby(level=0).sum().sort_values(ascending=False)
+        top = set(of_all.index[(of_all.cumsum() - of_all) < MASS])
+        published = min(1.0, float(of_all.sum()))
+        reached_mass = float(joined.loc[joined["task_id"].isin(top) & used, "value"].sum())
         auto = joined["automation_share"].fillna(0.0)
         aug = joined["augmentation_share"].fillna(0.0)
         delegated = float((joined["value"] * auto * used).sum())
@@ -146,6 +165,8 @@ def readings(usage: pd.DataFrame, values: pd.DataFrame, task_bundles: pd.DataFra
             "tasks_used": tasks_used, "tasks_valued": int(tasks["task_id"].nunique()),
             "wage_bill_usd": total_bill,
             "reach_usd": reached, "reach_share": reached / total_bill,
+            "published_use": published,
+            "tasks_three_quarters": len(top), "reach_share_three_quarters": reached_mass / total_bill,
             "delegated_usd": delegated, "delegated_share": delegated / total_bill,
             "augmented_usd": augmented, "augmented_share": augmented / total_bill,
             "usage_share_matched": matched_usage,

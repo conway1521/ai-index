@@ -93,12 +93,26 @@ def _open_records(path: Path) -> bytes:
     return path.read_bytes()
 
 
-def read_month(path: Path, positions: dict[str, tuple[int, int]]) -> pd.DataFrame:
-    """One month's persons, the variables the gauge needs, weights in persons."""
-    payload = _open_records(path)
-    colspecs = [(positions[v][0] - 1, positions[v][1]) for v in VARIABLES]
-    frame = pd.read_fwf(io.BytesIO(payload), colspecs=colspecs, names=VARIABLES,
-                        dtype=str, header=None)
+def _read_csv(path: Path) -> pd.DataFrame:
+    """A month released as CSV, as the Census Bureau now publishes them; names vary in case between months."""
+    wanted = set(VARIABLES) | set(ALIASES)
+    frame = pd.read_csv(path, usecols=lambda c: c.upper() in wanted, dtype=str)
+    frame.columns = [ALIASES.get(c.upper(), c.upper()) for c in frame.columns]
+    return frame[VARIABLES]
+
+
+def read_month(path: Path, positions: dict[str, tuple[int, int]] | None = None) -> pd.DataFrame:
+    """One month's persons, the variables the gauge needs, weights in persons.
+
+    A fixed-width month needs the year's layout; a CSV month carries its own names.
+    """
+    if path.suffix.lower() == ".csv":
+        frame = _read_csv(path)
+    else:
+        payload = _open_records(path)
+        colspecs = [(positions[v][0] - 1, positions[v][1]) for v in VARIABLES]
+        frame = pd.read_fwf(io.BytesIO(payload), colspecs=colspecs, names=VARIABLES,
+                            dtype=str, header=None)
     for column in VARIABLES:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     frame["weight"] = frame["PWCMPWGT"].fillna(frame["PWSSWGT"]) / WEIGHT_SCALE

@@ -1,44 +1,44 @@
 {
-  "written_at": "2026-09-20T15:40:35+00:00",
+  "written_at": "2026-09-29T17:58:04+00:00",
   "files": {
     "onet_release": {
-      "path": "aiindex/data/raw/onet/onet_db_30_2_text.zip",
-      "official_url": "https://www.onetcenter.org/dl_files/database/db_30_2_text.zip",
-      "source_url": "https://raw.githubusercontent.com/pythonski/bottlenecks/master/db_30_2_text/",
-      "grade": "mirror",
-      "bytes": 13444123,
-      "sha256": "2608147c2d74f99f0e240debdc3486126c704ffce306a9457a4220c945f2a1b8",
-      "recorded_at": "2026-09-20T15:40:09+00:00",
-      "notes": "O*NET release 30.2"
+      "path": "aiindex/data/raw/onet/onet_db_30_3_text.zip",
+      "official_url": "https://www.onetcenter.org/dl_files/database/db_30_3_text.zip",
+      "source_url": "https://www.onetcenter.org/dl_files/database/db_30_3_text.zip",
+      "grade": "real",
+      "bytes": 13225021,
+      "sha256": "9fca26e446ae60dbdf0227719f6d649f9f1dec6f53e1476bf133e0d6468a9f24",
+      "recorded_at": "2026-09-29T17:54:52+00:00",
+      "notes": "O*NET release 30.3"
     },
     "crosswalk_onetsoc_2019_to_soc_2018": {
       "path": "aiindex/data/raw/crosswalks/onetsoc_2019_to_soc_2018.csv",
       "official_url": "https://www.onetcenter.org/taxonomy/2019/soc/2019_to_SOC_Crosswalk.csv",
-      "source_url": "https://raw.githubusercontent.com/ApprenticeshipStandardsDotOrg/ApprenticeshipStandardsDotOrg/main/lib/tasks/files/2019_to_SOC_Crosswalk.csv",
-      "grade": "mirror",
+      "source_url": "https://www.onetcenter.org/taxonomy/2019/soc/2019_to_SOC_Crosswalk.csv",
+      "grade": "real",
       "bytes": 91732,
       "sha256": "506fff0a3ca0d26137b9389322413022a4348bead559c4dd24edeb2cea86aa89",
-      "recorded_at": "2026-09-20T15:40:35+00:00",
+      "recorded_at": "2026-09-29T17:56:02+00:00",
       "notes": ""
     },
     "crosswalk_census_2018_to_soc": {
       "path": "aiindex/data/raw/crosswalks/census_2018_occupation_crosswalk.xlsx",
       "official_url": "https://www2.census.gov/programs-surveys/demo/guidance/industry-occupation/2018-occupation-code-list-and-crosswalk.xlsx",
-      "source_url": "https://raw.githubusercontent.com/avdluduvice/WidraLuduvice_BK/main/Data/2018-occupation-code-list-and-crosswalk.xlsx",
-      "grade": "mirror",
-      "bytes": 171452,
-      "sha256": "bc5176fd976363ffff7ec41ba3e2fc503b68d5f066fefdfbc43fcc6fafb1bcde",
-      "recorded_at": "2026-09-20T15:40:35+00:00",
+      "source_url": "https://www2.census.gov/programs-surveys/demo/guidance/industry-occupation/2018-occupation-code-list-and-crosswalk.xlsx",
+      "grade": "real",
+      "bytes": 160312,
+      "sha256": "fca2818d691c32777a4cd733a9ab77c8c5bd47adcacd7ac3aa149bebd45b5f7f",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
       "notes": ""
     },
     "crosswalk_cip_2020_to_soc_2018": {
       "path": "aiindex/data/raw/crosswalks/cip_2020_soc_2018.xlsx",
       "official_url": "https://nces.ed.gov/ipeds/cipcode/Files/CIP2020_SOC2018_Crosswalk.xlsx",
-      "source_url": "https://raw.githubusercontent.com/lrussell-research/CIP-NAICS-Crosswalk/main/CIP2020_SOC2018_Crosswalk.xlsx",
-      "grade": "mirror",
-      "bytes": 428756,
-      "sha256": "6375c4c25a53fc97f2b178d6b9e919718772359c294b8880a5f351b8e1a77feb",
-      "recorded_at": "2026-09-20T15:40:23+00:00",
+      "source_url": "https://nces.ed.gov/ipeds/cipcode/Files/CIP2020_SOC2018_Crosswalk.xlsx",
+      "grade": "real",
+      "bytes": 428901,
+      "sha256": "ba3d59a191b9d977a5c457a66b9348c4f2f7963aafacf72c0b80113b46bf0ab8",
+      "recorded_at": "2026-09-29T17:55:20+00:00",
       "notes": ""
     },
     "oews_national_2019": {
@@ -48,7 +48,7 @@
       "grade": "mirror",
       "bytes": 249801,
       "sha256": "e49bae66ebe30db52125c3afe850e6a7a159bcdb97644c16fd7936e18c14c787",
-      "recorded_at": "2026-09-20T15:38:54+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_national_2021": {
@@ -58,7 +58,7 @@
       "grade": "mirror",
       "bytes": 289346,
       "sha256": "8cb0b63b69a2405206d1bcee55c09f96768e68dca7b77f0abcf1f5a44b951e02",
-      "recorded_at": "2026-09-20T15:38:54+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_national_2022": {
@@ -68,7 +68,7 @@
       "grade": "mirror",
       "bytes": 283496,
       "sha256": "19aadce804696b04d3df63215b89e112a9956c7ea3da7d5e23bd4ab1ad8d6a99",
-      "recorded_at": "2026-09-20T15:38:54+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_national_2023": {
@@ -78,7 +78,7 @@
       "grade": "mirror",
       "bytes": 285018,
       "sha256": "9200eb0423feece690c2f7e9a20c3817b0e494cd7071cb455b3ebae579536d5a",
-      "recorded_at": "2026-09-20T15:38:54+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_national_2024": {
@@ -88,17 +88,17 @@
       "grade": "mirror",
       "bytes": 291056,
       "sha256": "a9bad3093703e28d7490cedb765b6730f4eaa4b37a7c8f68e866814167761f11",
-      "recorded_at": "2026-09-20T15:38:54+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_national_2025": {
-      "path": "aiindex/data/raw/oews/oesm25nat.zip",
+      "path": "aiindex/data/raw/oews/national_M2025_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/special-requests/oesm25nat.zip",
-      "source_url": "https://raw.githubusercontent.com/arieldklein/ai-employment-paper/main/data_raw/bls/oesm25nat.zip",
-      "grade": "mirror",
-      "bytes": 279525,
-      "sha256": "b5855a37f3e03e779f6fbf173d3bbc94aeeff33426aef32fa95ce6d025bab1af",
-      "recorded_at": "2026-09-20T15:38:54+00:00",
+      "source_url": "https://www.bls.gov/oes/special-requests/oesm25nat.zip",
+      "grade": "real",
+      "bytes": 289615,
+      "sha256": "852250997ceff9b721ff68f63e877d818f9c1ec8b1b69dd367958faedd5282b2",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2012": {
@@ -108,7 +108,7 @@
       "grade": "mirror",
       "bytes": 6137186,
       "sha256": "4a1b269e1cdd334913f0bbb677dac1607808fb305d6f90fb7758d4fc54d438e7",
-      "recorded_at": "2026-09-20T15:38:54+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2013": {
@@ -118,7 +118,7 @@
       "grade": "mirror",
       "bytes": 6150738,
       "sha256": "1337bdb1e563c4e573bc8e85edc3ede2d615c8be5e417966be401605604e92d5",
-      "recorded_at": "2026-09-20T15:38:55+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2014": {
@@ -128,7 +128,7 @@
       "grade": "mirror",
       "bytes": 6150861,
       "sha256": "d3d489ad475e19e12795f42aa39f6ec1bef5c2ef9ff44235b0385451258fa841",
-      "recorded_at": "2026-09-20T15:38:55+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2015": {
@@ -138,7 +138,7 @@
       "grade": "mirror",
       "bytes": 6139629,
       "sha256": "7f3f864d9ee84a571feccab6ae3f0f9fd8e075808388de3118b3e40366d5862f",
-      "recorded_at": "2026-09-20T15:38:56+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2016": {
@@ -148,7 +148,7 @@
       "grade": "mirror",
       "bytes": 6131463,
       "sha256": "62a2de4cd9fcc916543a34f0b79db83bd7ba6d105c35d0cf4abcdb1da0d61e3f",
-      "recorded_at": "2026-09-20T15:38:56+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2017": {
@@ -158,7 +158,7 @@
       "grade": "mirror",
       "bytes": 6037455,
       "sha256": "a0556f9048e1ce4dcf9bdc9d7360baec8e7dc7a8bd61718a061302ebbb353ec9",
-      "recorded_at": "2026-09-20T15:38:57+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2018": {
@@ -168,7 +168,7 @@
       "grade": "mirror",
       "bytes": 6026431,
       "sha256": "af5b01c16c8c7a9d4a34ba4b9b48e0d423f2ea0e9d90d98976b3d7726ee4fd35",
-      "recorded_at": "2026-09-20T15:38:57+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2019": {
@@ -178,7 +178,7 @@
       "grade": "mirror",
       "bytes": 6865479,
       "sha256": "cb3ec51766729bceb12ab39aebf490220a93bc5b5f8a385333a0084748341260",
-      "recorded_at": "2026-09-20T15:38:57+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2020": {
@@ -188,7 +188,7 @@
       "grade": "mirror",
       "bytes": 7191159,
       "sha256": "e0383294ca5eb0386ae4f29f7934cf2b9ba017ae06eff5ab8cd1053fbd9faa3e",
-      "recorded_at": "2026-09-20T15:38:58+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2021": {
@@ -198,7 +198,7 @@
       "grade": "mirror",
       "bytes": 7637487,
       "sha256": "11fde9789a6af027273c1767d0a497548562c6ffdcecca21cb0f83832a3687ba",
-      "recorded_at": "2026-09-20T15:38:58+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2022": {
@@ -208,7 +208,7 @@
       "grade": "mirror",
       "bytes": 7595871,
       "sha256": "e4546129234f3f86941b77884dc3e95e0bfc9d3af6595d57174181853e7e82bc",
-      "recorded_at": "2026-09-20T15:38:59+00:00",
+      "recorded_at": "2026-09-29T17:53:27+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2023": {
@@ -218,7 +218,7 @@
       "grade": "mirror",
       "bytes": 7628070,
       "sha256": "c2a0051146950d5afde33471b5a304e07b47a207baf5ae677e85761022a94fa7",
-      "recorded_at": "2026-09-20T15:38:59+00:00",
+      "recorded_at": "2026-09-29T17:53:28+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews_state_2024": {
@@ -228,197 +228,217 @@
       "grade": "mirror",
       "bytes": 7720116,
       "sha256": "904b7d452be92d354a8edae8d81a1883aba5a95b0f1535c3a426907644804650",
-      "recorded_at": "2026-09-20T15:39:00+00:00",
+      "recorded_at": "2026-09-29T17:53:28+00:00",
+      "notes": "BLS refuses automated requests; a committed copy of the release workbook"
+    },
+    "oews_state_2025": {
+      "path": "aiindex/data/raw/oews/state_M2025_dl.xlsx",
+      "official_url": "https://www.bls.gov/oes/special-requests/oesm25st.zip",
+      "source_url": "https://www.bls.gov/oes/special-requests/oesm25st.zip",
+      "grade": "real",
+      "bytes": 7675521,
+      "sha256": "e9590ec791fd2941341631f84ee6445d3df931c1ad5776b80ea07c9f89fba95d",
+      "recorded_at": "2026-09-29T17:53:28+00:00",
       "notes": "BLS refuses automated requests; a committed copy of the release workbook"
     },
     "oews:national_M2019_dl.xlsx": {
       "path": "aiindex/data/raw/oews/national_M2019_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/national_M2019_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/national_M2019_dl.xlsx",
       "grade": "mirror",
       "bytes": 249801,
       "sha256": "e49bae66ebe30db52125c3afe850e6a7a159bcdb97644c16fd7936e18c14c787",
-      "recorded_at": "2026-09-20T15:39:00+00:00",
+      "recorded_at": "2026-09-29T17:53:28+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:national_M2021_dl.xlsx": {
       "path": "aiindex/data/raw/oews/national_M2021_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/national_M2021_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/national_M2021_dl.xlsx",
       "grade": "mirror",
       "bytes": 289346,
       "sha256": "8cb0b63b69a2405206d1bcee55c09f96768e68dca7b77f0abcf1f5a44b951e02",
-      "recorded_at": "2026-09-20T15:39:00+00:00",
+      "recorded_at": "2026-09-29T17:53:28+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:national_M2022_dl.xlsx": {
       "path": "aiindex/data/raw/oews/national_M2022_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/national_M2022_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/national_M2022_dl.xlsx",
       "grade": "mirror",
       "bytes": 283496,
       "sha256": "19aadce804696b04d3df63215b89e112a9956c7ea3da7d5e23bd4ab1ad8d6a99",
-      "recorded_at": "2026-09-20T15:39:00+00:00",
+      "recorded_at": "2026-09-29T17:53:28+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:national_M2023_dl.xlsx": {
       "path": "aiindex/data/raw/oews/national_M2023_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/national_M2023_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/national_M2023_dl.xlsx",
       "grade": "mirror",
       "bytes": 285018,
       "sha256": "9200eb0423feece690c2f7e9a20c3817b0e494cd7071cb455b3ebae579536d5a",
-      "recorded_at": "2026-09-20T15:39:01+00:00",
+      "recorded_at": "2026-09-29T17:53:28+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:national_M2024_dl.xlsx": {
       "path": "aiindex/data/raw/oews/national_M2024_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/national_M2024_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/national_M2024_dl.xlsx",
       "grade": "mirror",
       "bytes": 291056,
       "sha256": "a9bad3093703e28d7490cedb765b6730f4eaa4b37a7c8f68e866814167761f11",
-      "recorded_at": "2026-09-20T15:39:01+00:00",
+      "recorded_at": "2026-09-29T17:53:29+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
-    "oews:oesm25nat.zip": {
-      "path": "aiindex/data/raw/oews/oesm25nat.zip",
+    "oews:national_M2025_dl.xlsx": {
+      "path": "aiindex/data/raw/oews/national_M2025_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/oesm25nat.zip",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/national_M2025_dl.xlsx",
       "grade": "mirror",
-      "bytes": 279525,
-      "sha256": "b5855a37f3e03e779f6fbf173d3bbc94aeeff33426aef32fa95ce6d025bab1af",
-      "recorded_at": "2026-09-20T15:39:01+00:00",
+      "bytes": 289615,
+      "sha256": "852250997ceff9b721ff68f63e877d818f9c1ec8b1b69dd367958faedd5282b2",
+      "recorded_at": "2026-09-29T17:53:29+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2012_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2012_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2012_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2012_dl.xlsx",
       "grade": "mirror",
       "bytes": 6137186,
       "sha256": "4a1b269e1cdd334913f0bbb677dac1607808fb305d6f90fb7758d4fc54d438e7",
-      "recorded_at": "2026-09-20T15:39:05+00:00",
+      "recorded_at": "2026-09-29T17:53:33+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2013_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2013_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2013_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2013_dl.xlsx",
       "grade": "mirror",
       "bytes": 6150738,
       "sha256": "1337bdb1e563c4e573bc8e85edc3ede2d615c8be5e417966be401605604e92d5",
-      "recorded_at": "2026-09-20T15:39:09+00:00",
+      "recorded_at": "2026-09-29T17:53:38+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2014_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2014_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2014_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2014_dl.xlsx",
       "grade": "mirror",
       "bytes": 6150861,
       "sha256": "d3d489ad475e19e12795f42aa39f6ec1bef5c2ef9ff44235b0385451258fa841",
-      "recorded_at": "2026-09-20T15:39:12+00:00",
+      "recorded_at": "2026-09-29T17:53:42+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2015_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2015_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2015_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2015_dl.xlsx",
       "grade": "mirror",
       "bytes": 6139629,
       "sha256": "7f3f864d9ee84a571feccab6ae3f0f9fd8e075808388de3118b3e40366d5862f",
-      "recorded_at": "2026-09-20T15:39:16+00:00",
+      "recorded_at": "2026-09-29T17:53:47+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2016_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2016_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2016_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2016_dl.xlsx",
       "grade": "mirror",
       "bytes": 6131463,
       "sha256": "62a2de4cd9fcc916543a34f0b79db83bd7ba6d105c35d0cf4abcdb1da0d61e3f",
-      "recorded_at": "2026-09-20T15:39:20+00:00",
+      "recorded_at": "2026-09-29T17:53:52+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2017_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2017_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2017_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2017_dl.xlsx",
       "grade": "mirror",
       "bytes": 6037455,
       "sha256": "a0556f9048e1ce4dcf9bdc9d7360baec8e7dc7a8bd61718a061302ebbb353ec9",
-      "recorded_at": "2026-09-20T15:39:23+00:00",
+      "recorded_at": "2026-09-29T17:53:56+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2018_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2018_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2018_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2018_dl.xlsx",
       "grade": "mirror",
       "bytes": 6026431,
       "sha256": "af5b01c16c8c7a9d4a34ba4b9b48e0d423f2ea0e9d90d98976b3d7726ee4fd35",
-      "recorded_at": "2026-09-20T15:39:27+00:00",
+      "recorded_at": "2026-09-29T17:54:00+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2019_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2019_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2019_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2019_dl.xlsx",
       "grade": "mirror",
       "bytes": 6865479,
       "sha256": "cb3ec51766729bceb12ab39aebf490220a93bc5b5f8a385333a0084748341260",
-      "recorded_at": "2026-09-20T15:39:32+00:00",
+      "recorded_at": "2026-09-29T17:54:05+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2020_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2020_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2020_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2020_dl.xlsx",
       "grade": "mirror",
       "bytes": 7191159,
       "sha256": "e0383294ca5eb0386ae4f29f7934cf2b9ba017ae06eff5ab8cd1053fbd9faa3e",
-      "recorded_at": "2026-09-20T15:39:36+00:00",
+      "recorded_at": "2026-09-29T17:54:11+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2021_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2021_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2021_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2021_dl.xlsx",
       "grade": "mirror",
       "bytes": 7637487,
       "sha256": "11fde9789a6af027273c1767d0a497548562c6ffdcecca21cb0f83832a3687ba",
-      "recorded_at": "2026-09-20T15:39:41+00:00",
+      "recorded_at": "2026-09-29T17:54:17+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2022_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2022_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2022_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2022_dl.xlsx",
       "grade": "mirror",
       "bytes": 7595871,
       "sha256": "e4546129234f3f86941b77884dc3e95e0bfc9d3af6595d57174181853e7e82bc",
-      "recorded_at": "2026-09-20T15:39:46+00:00",
+      "recorded_at": "2026-09-29T17:54:23+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2023_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2023_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2023_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2023_dl.xlsx",
       "grade": "mirror",
       "bytes": 7628070,
       "sha256": "c2a0051146950d5afde33471b5a304e07b47a207baf5ae677e85761022a94fa7",
-      "recorded_at": "2026-09-20T15:39:50+00:00",
+      "recorded_at": "2026-09-29T17:54:29+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "oews:state_M2024_dl.xlsx": {
       "path": "aiindex/data/raw/oews/state_M2024_dl.xlsx",
       "official_url": "https://www.bls.gov/oes/tables.htm",
-      "source_url": "/home/user/paper-skills-dna/aiindex/data/raw/oews/state_M2024_dl.xlsx",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2024_dl.xlsx",
       "grade": "mirror",
       "bytes": 7720116,
       "sha256": "904b7d452be92d354a8edae8d81a1883aba5a95b0f1535c3a426907644804650",
-      "recorded_at": "2026-09-20T15:39:55+00:00",
+      "recorded_at": "2026-09-29T17:54:35+00:00",
+      "notes": "fetched in a browser; BLS refuses automated requests"
+    },
+    "oews:state_M2025_dl.xlsx": {
+      "path": "aiindex/data/raw/oews/state_M2025_dl.xlsx",
+      "official_url": "https://www.bls.gov/oes/tables.htm",
+      "source_url": "/home/user/ai-index/aiindex/data/raw/oews/state_M2025_dl.xlsx",
+      "grade": "mirror",
+      "bytes": 7675521,
+      "sha256": "e9590ec791fd2941341631f84ee6445d3df931c1ad5776b80ea07c9f89fba95d",
+      "recorded_at": "2026-09-29T17:54:41+00:00",
       "notes": "fetched in a browser; BLS refuses automated requests"
     },
     "eloundou_full_labelset": {
@@ -428,7 +448,7 @@
       "grade": "real",
       "bytes": 3893248,
       "sha256": "094378905e1f3349e50a9a83dc69643a2ef227954d611c8316a46da08cb3d8de",
-      "recorded_at": "2026-09-20T15:39:56+00:00",
+      "recorded_at": "2026-09-29T17:54:42+00:00",
       "notes": "published archive at https://github.com/openai/GPTs-are-GPTs/archive/refs/heads/main.zip"
     },
     "felten_aioe": {
@@ -438,17 +458,17 @@
       "grade": "real",
       "bytes": 170359,
       "sha256": "c123b4c64840aff3568ae6c97256678719b88a74d45b6362dbefb5af34667b95",
-      "recorded_at": "2026-09-20T15:39:56+00:00",
+      "recorded_at": "2026-09-29T17:54:42+00:00",
       "notes": "published archive at https://github.com/AIOE-Data/AIOE/archive/refs/heads/main.zip"
     },
     "aei_labor:job_exposure.csv": {
       "path": "aiindex/data/raw/aei_labor_market/job_exposure.csv",
       "official_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex/resolve/main/labor_market_impacts/job_exposure.csv",
-      "source_url": "https://raw.githubusercontent.com/tkc88888888/EconomicIndex/main/labor_market_impacts/job_exposure.csv",
-      "grade": "mirror",
+      "source_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex/resolve/main/labor_market_impacts/job_exposure.csv",
+      "grade": "real",
       "bytes": 37176,
       "sha256": "4f0a3adf5feeb2ec5f5d02ab18cc5e851a2a4b8470bde84c0c9335017be12d68",
-      "recorded_at": "2026-09-20T15:39:56+00:00",
+      "recorded_at": "2026-09-29T17:54:42+00:00",
       "notes": "sha256 matches the Hugging Face file; observed exposure by six-digit SOC 2018"
     },
     "aei:release_2025_09_15/aei_raw_claude_ai_2025-08-04_to_2025-08-11.csv": {
@@ -458,7 +478,7 @@
       "grade": "mirror",
       "bytes": 18894517,
       "sha256": "c8ef9c5eee0c42febc73e358ecc7d2358e0a0ce3b50122c0c15ae8ec569aceff",
-      "recorded_at": "2026-09-20T15:40:02+00:00",
+      "recorded_at": "2026-09-29T17:54:48+00:00",
       "notes": ""
     },
     "aei:release_2026_01_15/aei_raw_claude_ai_2025-11-13_to_2025-11-20.csv": {
@@ -468,167 +488,707 @@
       "grade": "mirror",
       "bytes": 94086309,
       "sha256": "70dc16780061b84d3f34ddf7fe5c978d65c99a5ef58afd78f9315f886a6a5873",
-      "recorded_at": "2026-09-20T15:40:07+00:00",
+      "recorded_at": "2026-09-29T17:54:50+00:00",
       "notes": ""
     },
     "aei:release_2026_03_24/aei_raw_claude_ai_2026-02-05_to_2026-02-12.csv": {
       "path": "aiindex/data/raw/aei/release_2026_03_24/aei_raw_claude_ai_2026-02-05_to_2026-02-12.csv",
       "official_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
-      "source_url": "https://raw.githubusercontent.com/dioandre3/UMICH-STAT507/main/Final%20Project/Final%20Project/aei_raw_claude_ai_2026-02-05_to_2026-02-12.csv",
-      "grade": "mirror",
-      "bytes": 95592872,
-      "sha256": "98b290b43e0204fd2cd940bdec8d548e62f25fdf592505ffc251f9dfe53943c8",
-      "recorded_at": "2026-09-20T15:40:09+00:00",
+      "source_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      "grade": "real",
+      "bytes": 103287181,
+      "sha256": "69ebf6f9afc1e3be45caab172a84ae09e78bf41b97e1c310100d81c8a35a7433",
+      "recorded_at": "2026-09-29T17:54:52+00:00",
       "notes": ""
     },
-    "aei:release_2026_06_26/task_pct_2026-04.csv": {
-      "path": "aiindex/data/raw/aei/release_2026_06_26/task_pct_2026-04.csv",
+    "aei:release_2026_06_26/aei_claude_ai_2026-06-26.csv": {
+      "path": "aiindex/data/raw/aei/release_2026_06_26/aei_claude_ai_2026-06-26.csv",
       "official_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
-      "source_url": "https://raw.githubusercontent.com/theodorewright11/ai-workforce-exposure-dataset-construction-public/main/data/task_pct_v6_1.csv",
-      "grade": "mirror",
-      "bytes": 260746,
-      "sha256": "9d0040ad57fb26ba058d54cf40c110b881ecaabbb39eb264035fef764ec233e6",
-      "recorded_at": "2026-09-20T15:40:09+00:00",
-      "notes": ""
-    },
-    "aei:release_2026_06_26/task_pct_2026-05.csv": {
-      "path": "aiindex/data/raw/aei/release_2026_06_26/task_pct_2026-05.csv",
-      "official_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
-      "source_url": "https://raw.githubusercontent.com/theodorewright11/ai-workforce-exposure-dataset-construction-public/main/data/task_pct_v6_2.csv",
-      "grade": "mirror",
-      "bytes": 293587,
-      "sha256": "1a69518130bce8e4a575d9016828d4f6eca7d0dc894e072502de12cd379f0287",
-      "recorded_at": "2026-09-20T15:40:09+00:00",
+      "source_url": "https://huggingface.co/datasets/Anthropic/EconomicIndex",
+      "grade": "real",
+      "bytes": 219174671,
+      "sha256": "f974b358bce0e5a8417510c61da4342234cd0de9d9d0b62acf4c6dbcf8ec7b68",
+      "recorded_at": "2026-09-29T17:54:57+00:00",
       "notes": ""
     },
     "openai:usa_share_of_work_related_messages_by_onet_iwa_month.csv": {
       "path": "aiindex/data/raw/openai/usa_share_of_work_related_messages_by_onet_iwa_month.csv",
       "official_url": "https://openai.com/signals/data-download/",
-      "source_url": "https://raw.githubusercontent.com/prashgarg/global-automation-atlas/main/outputs/source_data/openai_observed_use/usa_share_of_work_related_messages_by_onet_iwa_month.csv",
-      "grade": "mirror",
+      "source_url": "https://openai.com/signals/data-download/",
+      "grade": "real",
       "bytes": 130620,
       "sha256": "97c9a3b9b1bb14df3f8c7d8bcdb48004c822a3d3cdac7feb821a1cbb65c8080e",
-      "recorded_at": "2026-09-20T15:40:11+00:00",
+      "recorded_at": "2026-09-29T17:54:59+00:00",
       "notes": "v2.0 download as committed by a third party"
+    },
+    "onet_30_2_dwa_reference": {
+      "path": "aiindex/data/raw/crosswalks/onet_30_2_dwa_reference.txt",
+      "official_url": "https://www.onetcenter.org/dl_files/database/db_30_2_text.zip",
+      "source_url": "https://raw.githubusercontent.com/pythonski/bottlenecks/master/db_30_2_text/DWA%20Reference.txt",
+      "grade": "mirror",
+      "bytes": 187201,
+      "sha256": "62b95bb1cfe9d89e3b18ea5522108835e535fab3d10168acbaef16e1e783bd82",
+      "recorded_at": "2026-09-29T17:54:59+00:00",
+      "notes": "O*NET 30.2 DWA Reference, kept to translate Signals activity codes"
     },
     "btos_State.xlsx": {
       "path": "aiindex/data/raw/btos/State.xlsx",
       "official_url": "https://www.census.gov/hfp/btos/data_downloads",
-      "source_url": "https://raw.githubusercontent.com/EIG-Research/ai-btos/main/data/raw/20251208/State.xlsx",
-      "grade": "mirror",
-      "bytes": 3415708,
-      "sha256": "58244e715e2a0c70d814995b38ba0fc2b77a4c3e795a58430347d69c920d439e",
-      "recorded_at": "2026-09-20T15:40:17+00:00",
+      "source_url": "https://www.census.gov/hfp/btos/data_downloads",
+      "grade": "real",
+      "bytes": 3990309,
+      "sha256": "2b602763d303806b6a265d33456ebc70decc0fdaf52253f213915a9dd1931c2e",
+      "recorded_at": "2026-09-29T17:55:08+00:00",
       "notes": "Census download workbook, biweekly cycles as columns"
     },
-    "acs_pums_test_state": {
-      "path": "aiindex/data/raw/acs/psam_p27_2022_1yr.csv",
-      "official_url": "https://www2.census.gov/programs-surveys/acs/data/pums/2022/1-Year/csv_pmn.zip",
-      "source_url": "https://media.githubusercontent.com/media/beeckcenter/climate-equity-workforce/main/raw_data/Minnesota%20-%20ACS%20PUMS%20-%20One-Year/psam_p27.csv",
-      "grade": "mirror",
-      "bytes": 41063175,
-      "sha256": "81815a814150b3defa560ca19121336d411ee76ae484263b7b01c69ecf8555d3",
-      "recorded_at": "2026-09-20T15:40:27+00:00",
-      "notes": "one state's one-year person file, a test of the join"
+    "acs:psam_pusa_2024.csv": {
+      "path": "aiindex/data/raw/acs/psam_pusa_2024.csv",
+      "official_url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pus.zip",
+      "source_url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pus.zip",
+      "grade": "real",
+      "bytes": 1226543489,
+      "sha256": "b1c2ba439cb7a65f85aa36821d18c1888ae4df77cfeec0facadc1c2cff74680c",
+      "recorded_at": "2026-09-29T17:55:23+00:00",
+      "notes": ""
     },
-    "ipeds_HD2023.csv": {
-      "path": "aiindex/data/raw/ipeds/HD2023.csv",
-      "official_url": "https://nces.ed.gov/ipeds/datacenter/data/HD2023.zip",
-      "source_url": "https://media.githubusercontent.com/media/ftrain/ipeds2/main/sources/IPEDS202324_csv/HD2023.csv",
-      "grade": "mirror",
-      "bytes": 4530883,
-      "sha256": "fe6247797a4813dc9ade4ddb27043f6081382f4dad88d3b3d1b3e3610fa3525e",
-      "recorded_at": "2026-09-20T15:40:28+00:00",
+    "acs:psam_pusb_2024.csv": {
+      "path": "aiindex/data/raw/acs/psam_pusb_2024.csv",
+      "official_url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pus.zip",
+      "source_url": "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pus.zip",
+      "grade": "real",
+      "bytes": 1178924624,
+      "sha256": "b0ee65a88f8acf7e768ef94da2794bc7af2be81bfae8d2742b130f4fded13c88",
+      "recorded_at": "2026-09-29T17:55:31+00:00",
+      "notes": ""
+    },
+    "ipeds_HD2025.csv": {
+      "path": "aiindex/data/raw/ipeds/HD2025.csv",
+      "official_url": "https://nces.ed.gov/ipeds/datacenter/data/HD2025.zip",
+      "source_url": "https://nces.ed.gov/ipeds/datacenter/data/HD2025.zip",
+      "grade": "real",
+      "bytes": 3631693,
+      "sha256": "3f48135a1de007d68f110635a18fe23e93c2ad85f760c08755827657fccb076f",
+      "recorded_at": "2026-09-29T17:55:47+00:00",
       "notes": ""
     },
     "ipeds_C2023_A.csv": {
       "path": "aiindex/data/raw/ipeds/C2023_A.csv",
       "official_url": "https://nces.ed.gov/ipeds/datacenter/data/C2023_A.zip",
-      "source_url": "https://media.githubusercontent.com/media/arijacob/chicago_majors/main/data/ipeds/raw/major_numbers/c2023_a/c2023_a.csv",
-      "grade": "mirror",
-      "bytes": 43050490,
-      "sha256": "0fcdf4f03fb061da3bf68eceb6b633edfa69c3f8d52bea97902ad6d59d3867bf",
-      "recorded_at": "2026-09-20T15:40:29+00:00",
+      "source_url": "https://nces.ed.gov/ipeds/datacenter/data/C2023_A.zip",
+      "grade": "real",
+      "bytes": 43074149,
+      "sha256": "e1f00b14bce93e8c3edd11aa241a716b9e529617f0ea0555abaff0e517ac094e",
+      "recorded_at": "2026-09-29T17:55:47+00:00",
       "notes": ""
     },
     "ipeds_C2024_A.csv": {
       "path": "aiindex/data/raw/ipeds/C2024_A.csv",
       "official_url": "https://nces.ed.gov/ipeds/datacenter/data/C2024_A.zip",
-      "source_url": "https://media.githubusercontent.com/media/arijacob/chicago_majors/main/data/ipeds/raw/major_numbers/C2024_A/c2024_a_RV.csv",
-      "grade": "mirror",
-      "bytes": 43679279,
-      "sha256": "07563c2975088b364b4a0c3a4edacfc9cdf101d8a0a8a9e1839ad6c5eb4a665a",
-      "recorded_at": "2026-09-20T15:40:32+00:00",
+      "source_url": "https://nces.ed.gov/ipeds/datacenter/data/C2024_A.zip",
+      "grade": "real",
+      "bytes": 43695893,
+      "sha256": "3aecc23bee6472b9984c8af92035654d279816a3226e005f0baebccad9b118b7",
+      "recorded_at": "2026-09-29T17:55:50+00:00",
+      "notes": ""
+    },
+    "ipeds_C2025_A.csv": {
+      "path": "aiindex/data/raw/ipeds/C2025_A.csv",
+      "official_url": "https://nces.ed.gov/ipeds/datacenter/data/C2025_A.zip",
+      "source_url": "https://nces.ed.gov/ipeds/datacenter/data/C2025_A.zip",
+      "grade": "real",
+      "bytes": 44524300,
+      "sha256": "239e38041e2bbf49323e61e8c72a2b11920f1ab24cea5b2090a97238b3777de5",
+      "recorded_at": "2026-09-29T17:55:52+00:00",
+      "notes": ""
+    },
+    "nsc_cip_group_enrolment": {
+      "path": "aiindex/data/raw/nsc/CTEEFall2024-CIPGroupEnrollment-UG4yr.xlsx",
+      "official_url": "https://nscresearchcenter.org/current-term-enrollment-estimates/",
+      "source_url": "https://nscresearchcenter.org/current-term-enrollment-estimates/",
+      "grade": "real",
+      "bytes": 48901,
+      "sha256": "5afcddbfd36dda82122952dac618f947842c9e306cbe513b412c0f6dd05eaff3",
+      "recorded_at": "2026-09-29T17:55:55+00:00",
       "notes": ""
     },
     "nsc_major_field": {
-      "path": "aiindex/tests/fixtures/nsc_major_field_fixture.csv",
+      "path": "aiindex/output/tables/nsc_cip_family_enrolment.csv",
       "official_url": "https://nscresearchcenter.org/current-term-enrollment-estimates/",
-      "source_url": "/home/user/paper-skills-dna/aiindex/tests/fixtures/nsc_major_field_fixture.csv",
-      "grade": "fixture",
-      "bytes": 879,
-      "sha256": "98f1047512e7824542a11ff6c1b83212b3a73c0228bdec8f11d004283756e919",
-      "recorded_at": "2026-09-20T15:40:34+00:00",
+      "source_url": "/home/user/ai-index/aiindex/output/tables/nsc_cip_family_enrolment.csv",
+      "grade": "real",
+      "bytes": 30205,
+      "sha256": "9e9bc57f0e6a06e485478038eb37029bbdbe1f431d0bab8693568e72ad9b5941",
+      "recorded_at": "2026-09-29T17:55:55+00:00",
       "notes": ""
     },
     "flows_transition_matrix": {
       "path": "aiindex/tests/fixtures/transition_matrix_fixture.csv",
       "official_url": "flows repository, unpublished",
-      "source_url": "/home/user/paper-skills-dna/aiindex/tests/fixtures/transition_matrix_fixture.csv",
+      "source_url": "/home/user/ai-index/aiindex/tests/fixtures/transition_matrix_fixture.csv",
       "grade": "fixture",
       "bytes": 13041,
       "sha256": "4190cf96f2cf19ee5d97592488299c9d23b07e22185f0290d3149f9e04228d73",
-      "recorded_at": "2026-09-20T15:40:34+00:00",
+      "recorded_at": "2026-09-29T17:55:55+00:00",
       "notes": "year by age band by origin by destination"
     },
     "flows_arrivals": {
       "path": "aiindex/tests/fixtures/arrivals_fixture.csv",
       "official_url": "flows repository, unpublished",
-      "source_url": "/home/user/paper-skills-dna/aiindex/tests/fixtures/arrivals_fixture.csv",
+      "source_url": "/home/user/ai-index/aiindex/tests/fixtures/arrivals_fixture.csv",
       "grade": "fixture",
       "bytes": 387,
       "sha256": "09a14daf466b69325e4046ecdfd64f12e57c494f6522d5e35b7ca79354b37dcd",
-      "recorded_at": "2026-09-20T15:40:34+00:00",
+      "recorded_at": "2026-09-29T17:55:55+00:00",
       "notes": ""
     },
-    "cps:apr25pub.dat": {
-      "path": "aiindex/tests/fixtures/cps/apr25pub.dat",
+    "cps:apr22pub.csv": {
+      "path": "aiindex/data/raw/cps/apr22pub.csv",
       "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
-      "source_url": "/home/user/paper-skills-dna/aiindex/tests/fixtures/cps/apr25pub.dat",
-      "grade": "fixture",
-      "bytes": 2868000,
-      "sha256": "70a55a65986b68f6cb22ac66d234a2fcd878200ad8f8aa0a2e8a7feba1acadd4",
-      "recorded_at": "2026-09-20T15:40:34+00:00",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 127001496,
+      "sha256": "f703c842b0247a051d827f856fe6a611df86fe452cf5d6b2a0a578dda5e33fab",
+      "recorded_at": "2026-09-29T17:55:55+00:00",
       "notes": ""
     },
-    "cps:feb25pub.dat": {
-      "path": "aiindex/tests/fixtures/cps/feb25pub.dat",
+    "cps:apr23pub.csv": {
+      "path": "aiindex/data/raw/cps/apr23pub.csv",
       "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
-      "source_url": "/home/user/paper-skills-dna/aiindex/tests/fixtures/cps/feb25pub.dat",
-      "grade": "fixture",
-      "bytes": 2868000,
-      "sha256": "5a062626331aba4a68d2d20cf222b3ba563c1b418758d7a67644823d7e5df174",
-      "recorded_at": "2026-09-20T15:40:34+00:00",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 122351545,
+      "sha256": "6c7d16f8181d3331409f76df31dec5ad478eef8e857da76cd1e2f7a717129ac9",
+      "recorded_at": "2026-09-29T17:55:55+00:00",
       "notes": ""
     },
-    "cps:jan25pub.dat": {
-      "path": "aiindex/tests/fixtures/cps/jan25pub.dat",
+    "cps:apr24pub.csv": {
+      "path": "aiindex/data/raw/cps/apr24pub.csv",
       "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
-      "source_url": "/home/user/paper-skills-dna/aiindex/tests/fixtures/cps/jan25pub.dat",
-      "grade": "fixture",
-      "bytes": 2868000,
-      "sha256": "421f5e9d43434e1a7274ab86881d7449b00a1a90540eb51a43a9cf68d7f1f639",
-      "recorded_at": "2026-09-20T15:40:34+00:00",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 122376359,
+      "sha256": "dc2d05a145b6443ccf54669e72e0ae80f3c251201d8e07eb1c5cca76eb012d23",
+      "recorded_at": "2026-09-29T17:55:56+00:00",
       "notes": ""
     },
-    "cps:mar25pub.dat": {
-      "path": "aiindex/tests/fixtures/cps/mar25pub.dat",
+    "cps:apr25pub.csv": {
+      "path": "aiindex/data/raw/cps/apr25pub.csv",
       "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
-      "source_url": "/home/user/paper-skills-dna/aiindex/tests/fixtures/cps/mar25pub.dat",
-      "grade": "fixture",
-      "bytes": 2868000,
-      "sha256": "dfd943e1cc17cb535f5f89b8a30a6a6bcbcc58fdf1f3d9d4fd435d4f8025f37f",
-      "recorded_at": "2026-09-20T15:40:34+00:00",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 119215747,
+      "sha256": "baa0aa5d30b1295ad0dd3fed3efcb43c6a26a81e99469b90a90e28f8b61464cd",
+      "recorded_at": "2026-09-29T17:55:56+00:00",
+      "notes": ""
+    },
+    "cps:apr26pub.csv": {
+      "path": "aiindex/data/raw/cps/apr26pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 116423173,
+      "sha256": "0957899d52d8aa1fa99fb60c473a5b162c9900c15e5896df3dfa42c85d9b7fcc",
+      "recorded_at": "2026-09-29T17:55:56+00:00",
+      "notes": ""
+    },
+    "cps:aug22pub.csv": {
+      "path": "aiindex/data/raw/cps/aug22pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 125806347,
+      "sha256": "e6a7d64249debea9c1f0df8389985c9151bd1fdb147f2890afe8880552f2eef8",
+      "recorded_at": "2026-09-29T17:55:56+00:00",
+      "notes": ""
+    },
+    "cps:aug23pub.csv": {
+      "path": "aiindex/data/raw/cps/aug23pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 123766437,
+      "sha256": "95a6a7f1153a2266be5f249f29d8aac8cc073f9ec2d0af7e2f584a556b3399f2",
+      "recorded_at": "2026-09-29T17:55:56+00:00",
+      "notes": ""
+    },
+    "cps:aug24pub.csv": {
+      "path": "aiindex/data/raw/cps/aug24pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 123868037,
+      "sha256": "290baa9e5dd184908bba421c92be2c2709145bf403e6c85c4205c9e5ff5c3eb1",
+      "recorded_at": "2026-09-29T17:55:56+00:00",
+      "notes": ""
+    },
+    "cps:aug25pub.csv": {
+      "path": "aiindex/data/raw/cps/aug25pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 121092969,
+      "sha256": "0d4fd26bc1272dc174eb53b4e19c48adc4de70addab1140351fb33791093e762",
+      "recorded_at": "2026-09-29T17:55:56+00:00",
+      "notes": ""
+    },
+    "cps:aug26pub.csv": {
+      "path": "aiindex/data/raw/cps/aug26pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 115976863,
+      "sha256": "a5eaedf74664aecc1ad15df14ef609891b6b2cab5b68a85246515f51dbba7e8f",
+      "recorded_at": "2026-09-29T17:55:56+00:00",
+      "notes": ""
+    },
+    "cps:dec22pub.csv": {
+      "path": "aiindex/data/raw/cps/dec22pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 122241154,
+      "sha256": "1e1e7e287f74bdeb80726814a7b4bc980a8092499d54eb653e0e867caeee5aa4",
+      "recorded_at": "2026-09-29T17:55:56+00:00",
+      "notes": ""
+    },
+    "cps:dec23pub.csv": {
+      "path": "aiindex/data/raw/cps/dec23pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 122139586,
+      "sha256": "2566d280aea7d910cebab630153b3ca35521b1a7de6dcf8f0d906e2c91de3655",
+      "recorded_at": "2026-09-29T17:55:57+00:00",
+      "notes": ""
+    },
+    "cps:dec24pub.csv": {
+      "path": "aiindex/data/raw/cps/dec24pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 123069050,
+      "sha256": "1594b15a7f36d126d04c2f5111f1f3406bc8d7497dd8fdc5b51a656f19841ea8",
+      "recorded_at": "2026-09-29T17:55:57+00:00",
+      "notes": ""
+    },
+    "cps:dec25pub.csv": {
+      "path": "aiindex/data/raw/cps/dec25pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 114867212,
+      "sha256": "b1a3866649643553bde9fc6d7ac24d64c51c8de5f3a41df0e6cc29f658279576",
+      "recorded_at": "2026-09-29T17:55:57+00:00",
+      "notes": ""
+    },
+    "cps:feb22pub.csv": {
+      "path": "aiindex/data/raw/cps/feb22pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 126138369,
+      "sha256": "0688168eacc988232dc41cf6580ca10a04b9981c885aba261776482b59d49ed7",
+      "recorded_at": "2026-09-29T17:55:57+00:00",
+      "notes": ""
+    },
+    "cps:feb23pub.csv": {
+      "path": "aiindex/data/raw/cps/feb23pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 119831451,
+      "sha256": "8bcc0d3e7a36c816bb458c3afaafb75882a09febf6cf9004e7e4654eec491622",
+      "recorded_at": "2026-09-29T17:55:57+00:00",
+      "notes": ""
+    },
+    "cps:feb24pub.csv": {
+      "path": "aiindex/data/raw/cps/feb24pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 122350888,
+      "sha256": "4096ae72cb4efd0716d6bdb0bf36b84e3001bc989b45142e8158dd29b133ded5",
+      "recorded_at": "2026-09-29T17:55:57+00:00",
+      "notes": ""
+    },
+    "cps:feb25pub.csv": {
+      "path": "aiindex/data/raw/cps/feb25pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 120765367,
+      "sha256": "5594f0c9eb551b9388fdc440ea43c7a90955d9d80b1e16ec8dab8974cb65e3da",
+      "recorded_at": "2026-09-29T17:55:57+00:00",
+      "notes": ""
+    },
+    "cps:feb26pub.csv": {
+      "path": "aiindex/data/raw/cps/feb26pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 116294293,
+      "sha256": "d81001c5e4e30f1dccf81c4a1881ce0b3d805b54c339c5e2248998cf183f044a",
+      "recorded_at": "2026-09-29T17:55:57+00:00",
+      "notes": ""
+    },
+    "cps:jan22pub.csv": {
+      "path": "aiindex/data/raw/cps/jan22pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 125814513,
+      "sha256": "bea6297cb4e30a9c6b96d3d59ca981dbf48a8aa076a35d6c4bd4b28a9d240865",
+      "recorded_at": "2026-09-29T17:55:57+00:00",
+      "notes": ""
+    },
+    "cps:jan23pub.csv": {
+      "path": "aiindex/data/raw/cps/jan23pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 121375693,
+      "sha256": "2147f0bf105e084be13f65664a6198c3733efb24d16ef403d3cb416ea137a5e2",
+      "recorded_at": "2026-09-29T17:55:58+00:00",
+      "notes": ""
+    },
+    "cps:jan24pub.csv": {
+      "path": "aiindex/data/raw/cps/jan24pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 121914518,
+      "sha256": "df2ffa2fc312e548cef6652e71d08deb4cffb49bc6de42636a53c2a126330f6b",
+      "recorded_at": "2026-09-29T17:55:58+00:00",
+      "notes": ""
+    },
+    "cps:jan25pub.csv": {
+      "path": "aiindex/data/raw/cps/jan25pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 121656259,
+      "sha256": "870aa4edb3b37b6b9b1a9e8d4faddbcf0a7228d81be46dd2551108d058800a6e",
+      "recorded_at": "2026-09-29T17:55:58+00:00",
+      "notes": ""
+    },
+    "cps:jan26pub.csv": {
+      "path": "aiindex/data/raw/cps/jan26pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 114488513,
+      "sha256": "a9dc6359757148073c237a093d56e8fae67632c87edf2f4f1faff206d13d26c7",
+      "recorded_at": "2026-09-29T17:55:58+00:00",
+      "notes": ""
+    },
+    "cps:jul22pub.csv": {
+      "path": "aiindex/data/raw/cps/jul22pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 124476402,
+      "sha256": "7604ea768bc8810adcd89ddbdeaea16af6b048abc52eaed2d45b9802fa04f61b",
+      "recorded_at": "2026-09-29T17:55:58+00:00",
+      "notes": ""
+    },
+    "cps:jul23pub.csv": {
+      "path": "aiindex/data/raw/cps/jul23pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 122904464,
+      "sha256": "e2e86a17a266b8a22bb8e11553a319991bd1f0b5a566531687efa3fa69fc1ff8",
+      "recorded_at": "2026-09-29T17:55:58+00:00",
+      "notes": ""
+    },
+    "cps:jul24pub.csv": {
+      "path": "aiindex/data/raw/cps/jul24pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 122733202,
+      "sha256": "f014f71bf767b06436dc960687d7c9928bc1858a5e192947ddbd9ea98a1d08fe",
+      "recorded_at": "2026-09-29T17:55:58+00:00",
+      "notes": ""
+    },
+    "cps:jul25pub.csv": {
+      "path": "aiindex/data/raw/cps/jul25pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 117433261,
+      "sha256": "595d9465b3ba6f2e441c38ec027a15d9ad2204ff53dc5cb59b0d4ea6440e7236",
+      "recorded_at": "2026-09-29T17:55:58+00:00",
+      "notes": ""
+    },
+    "cps:jul26pub.csv": {
+      "path": "aiindex/data/raw/cps/jul26pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 114607190,
+      "sha256": "e74e97a550eae30fe3353b39cd7a344bf6b98ed57f254ae49d9f2b841be0b45a",
+      "recorded_at": "2026-09-29T17:55:58+00:00",
+      "notes": ""
+    },
+    "cps:jun22pub.csv": {
+      "path": "aiindex/data/raw/cps/jun22pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 125676906,
+      "sha256": "9a35679d222734d74744535205bf63cc56e8af2f0b0ed21a1594c25a0c939057",
+      "recorded_at": "2026-09-29T17:55:59+00:00",
+      "notes": ""
+    },
+    "cps:jun23pub.csv": {
+      "path": "aiindex/data/raw/cps/jun23pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 122817087,
+      "sha256": "5034f9d139ef701dab68c47108e284d25b56be0f90cbf104565d3fef59a817be",
+      "recorded_at": "2026-09-29T17:55:59+00:00",
+      "notes": ""
+    },
+    "cps:jun24pub.csv": {
+      "path": "aiindex/data/raw/cps/jun24pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 122188904,
+      "sha256": "021c42c1f3db984a91f57036e82fb2b1465d9f1140bb115b4fcac324530c4e58",
+      "recorded_at": "2026-09-29T17:55:59+00:00",
+      "notes": ""
+    },
+    "cps:jun25pub.csv": {
+      "path": "aiindex/data/raw/cps/jun25pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 118185175,
+      "sha256": "7fb4c13bdc053ae35d22f4af6b0080769588e569aedd2a23725c82e809d0ac8f",
+      "recorded_at": "2026-09-29T17:55:59+00:00",
+      "notes": ""
+    },
+    "cps:jun26pub.csv": {
+      "path": "aiindex/data/raw/cps/jun26pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 115706160,
+      "sha256": "0b547c2d3e4f41a902d3a6dc8f3a170c8249851c8c8ad15a228fd7873dff4c18",
+      "recorded_at": "2026-09-29T17:55:59+00:00",
+      "notes": ""
+    },
+    "cps:mar22pub.csv": {
+      "path": "aiindex/data/raw/cps/mar22pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 123943486,
+      "sha256": "44a5f736a1167e40aa84c04454907e8d80a5271c8db8331536c8f24388ffa6e0",
+      "recorded_at": "2026-09-29T17:55:59+00:00",
+      "notes": ""
+    },
+    "cps:mar23pub.csv": {
+      "path": "aiindex/data/raw/cps/mar23pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 119109813,
+      "sha256": "9fe3cef04404e70dc26a2eead8c8ba27c0e57b99c7b96049a3750371f3f93b7f",
+      "recorded_at": "2026-09-29T17:55:59+00:00",
+      "notes": ""
+    },
+    "cps:mar24pub.csv": {
+      "path": "aiindex/data/raw/cps/mar24pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 118889255,
+      "sha256": "b0cd897654990765141d0c7b9e5bfd854b8fbfeef17afceea3c9e12048f4e37c",
+      "recorded_at": "2026-09-29T17:55:59+00:00",
+      "notes": ""
+    },
+    "cps:mar25pub.csv": {
+      "path": "aiindex/data/raw/cps/mar25pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 117815465,
+      "sha256": "c7ad5dad0e4955a73494eebce7a8379a7ae8ffe9c7869e7d29088394208418e2",
+      "recorded_at": "2026-09-29T17:55:59+00:00",
+      "notes": ""
+    },
+    "cps:mar26pub.csv": {
+      "path": "aiindex/data/raw/cps/mar26pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 113702231,
+      "sha256": "ebd30697c75b04e13504b19d6c5ca6a5597e1aa96ff2697a07edac7c975a9e9d",
+      "recorded_at": "2026-09-29T17:56:00+00:00",
+      "notes": ""
+    },
+    "cps:may22pub.csv": {
+      "path": "aiindex/data/raw/cps/may22pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 128492898,
+      "sha256": "6c326fece985e43e038be49d412e6fed57ace2d8bab489fe38f9cc56e74ba465",
+      "recorded_at": "2026-09-29T17:56:00+00:00",
+      "notes": ""
+    },
+    "cps:may23pub.csv": {
+      "path": "aiindex/data/raw/cps/may23pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 123205038,
+      "sha256": "959604fb41d16d0fc8e0bf69afd3811dcc48a830c48e56d340c8ca0f01e68fbb",
+      "recorded_at": "2026-09-29T17:56:00+00:00",
+      "notes": ""
+    },
+    "cps:may24pub.csv": {
+      "path": "aiindex/data/raw/cps/may24pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 121993073,
+      "sha256": "52325ed744400255dd60318bb363fc5fc534e92afed1b2e7e16e52068f631f95",
+      "recorded_at": "2026-09-29T17:56:00+00:00",
+      "notes": ""
+    },
+    "cps:may25pub.csv": {
+      "path": "aiindex/data/raw/cps/may25pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 118914115,
+      "sha256": "1d4acadbaf202e1a7ca52af4565d18f113e5177d781956cc2fa5c11d7dde8880",
+      "recorded_at": "2026-09-29T17:56:00+00:00",
+      "notes": ""
+    },
+    "cps:may26pub.csv": {
+      "path": "aiindex/data/raw/cps/may26pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 116970821,
+      "sha256": "9e8a8f5c019d376df332b50c6cdadd79f0f0225667022566cf85f1f6d6d7f886",
+      "recorded_at": "2026-09-29T17:56:00+00:00",
+      "notes": ""
+    },
+    "cps:nov22pub.csv": {
+      "path": "aiindex/data/raw/cps/nov22pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 123285584,
+      "sha256": "05e4d726715fd6f251b9d3b712fcb34075f241e8916b80f8c96af839d857432b",
+      "recorded_at": "2026-09-29T17:56:00+00:00",
+      "notes": ""
+    },
+    "cps:nov23pub.csv": {
+      "path": "aiindex/data/raw/cps/nov23pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 122515388,
+      "sha256": "3d52a93e7cdbfa9bac36ae947a3098aa1d971c165a030da8a700303a36e9c862",
+      "recorded_at": "2026-09-29T17:56:00+00:00",
+      "notes": ""
+    },
+    "cps:nov24pub.csv": {
+      "path": "aiindex/data/raw/cps/nov24pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 123083696,
+      "sha256": "23e5f8977d4cb0dfb5ae97653841cc2a0f690446c056941c30598394cf141553",
+      "recorded_at": "2026-09-29T17:56:00+00:00",
+      "notes": ""
+    },
+    "cps:nov25pub.csv": {
+      "path": "aiindex/data/raw/cps/nov25pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 114965564,
+      "sha256": "d2892720226bc62596b4aa55b1676b075125755bd312282c412d8cf56a4a3afa",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
+      "notes": ""
+    },
+    "cps:oct22pub.csv": {
+      "path": "aiindex/data/raw/cps/oct22pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 124185345,
+      "sha256": "3bb40ae9d932cdf15d77b8317ad6d9085c16ea0b9c80e9ff3b36b5400a174ae2",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
+      "notes": ""
+    },
+    "cps:oct23pub.csv": {
+      "path": "aiindex/data/raw/cps/oct23pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 124032818,
+      "sha256": "e63cb87b2be51d3fd5d9c4e65ea628c9904fd81bd26c79afcbea9c77eea1c22c",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
+      "notes": ""
+    },
+    "cps:oct24pub.csv": {
+      "path": "aiindex/data/raw/cps/oct24pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 122905720,
+      "sha256": "2d73a1b45ea281c0d1bfd723980e39e0c15dfc2e0dcd567da5e8320e78e11392",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
+      "notes": ""
+    },
+    "cps:sep22pub.csv": {
+      "path": "aiindex/data/raw/cps/sep22pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 124817391,
+      "sha256": "6609949ab65916a53c3fce8303996263cd6d983f7e3e3bfa6119b3ec51791c7b",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
+      "notes": ""
+    },
+    "cps:sep23pub.csv": {
+      "path": "aiindex/data/raw/cps/sep23pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 122123486,
+      "sha256": "8c0b99458f068d2ae67dec7aa990b1c78103c8ca42dd9144edd9558f3eee20df",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
+      "notes": ""
+    },
+    "cps:sep24pub.csv": {
+      "path": "aiindex/data/raw/cps/sep24pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 123127982,
+      "sha256": "e3edd475e1a0198fba986053602270cd760b44a8b8f1c42c76d52a202e5acf18",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
+      "notes": ""
+    },
+    "cps:sep25pub.csv": {
+      "path": "aiindex/data/raw/cps/sep25pub.csv",
+      "official_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "source_url": "https://www.census.gov/data/datasets/time-series/demo/cps/cps-basic.html",
+      "grade": "real",
+      "bytes": 120406251,
+      "sha256": "38373d1e321237edb9d1bc158ab1e4475246992d75537f7f3afd85091547db11",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
       "notes": ""
     },
     "cps_layout_2023": {
@@ -638,7 +1198,7 @@
       "grade": "mirror",
       "bytes": 166444,
       "sha256": "4895273cf2aa25db259a2f1432c130da3e10212dc92fad1aea96c728fc41d071",
-      "recorded_at": "2026-09-20T15:40:34+00:00",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
       "notes": ""
     },
     "cps_layout_2024": {
@@ -648,7 +1208,7 @@
       "grade": "mirror",
       "bytes": 167364,
       "sha256": "7065678e6e62562183c1076d6846efea74f3fdb7f323f42f50cdfd5250a49a9d",
-      "recorded_at": "2026-09-20T15:40:34+00:00",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
       "notes": ""
     },
     "cps_layout_2026": {
@@ -658,7 +1218,7 @@
       "grade": "mirror",
       "bytes": 167001,
       "sha256": "0c1acfbe3a669c204d32d36a458a12972c6a41c3311f02d4ff7b84e4b2885017",
-      "recorded_at": "2026-09-20T15:40:35+00:00",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
       "notes": ""
     },
     "cps_layout_2025": {
@@ -668,7 +1228,7 @@
       "grade": "mirror",
       "bytes": 167459,
       "sha256": "f846661ba077f89d5ccd5e28d385f78b22d8986a8cadcf73bfa7a70bac007470",
-      "recorded_at": "2026-09-20T15:40:35+00:00",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
       "notes": ""
     },
     "cps_layout_2022": {
@@ -678,8 +1238,28 @@
       "grade": "mirror",
       "bytes": 166305,
       "sha256": "ed98d01f7d301f32e750a2ba6c1e32756179c74f703a0703170997f1d514898f",
-      "recorded_at": "2026-09-20T15:40:35+00:00",
+      "recorded_at": "2026-09-29T17:56:01+00:00",
       "notes": ""
+    },
+    "nlx:job_tasks_Occ8.tsv": {
+      "path": "aiindex/data/raw/nlx/job_tasks_Occ8.tsv",
+      "official_url": "https://doi.org/10.5281/zenodo.22219027",
+      "source_url": "https://doi.org/10.5281/zenodo.22219027",
+      "grade": "real",
+      "bytes": 42449856,
+      "sha256": "b9b4a4d4f889479f632ea995638331f1a735319d5e4637a6adbfeb390182de54",
+      "recorded_at": "2026-09-29T17:57:00+00:00",
+      "notes": "aggregates of NLx job ads, Meisenbacher, Nestorov and Norlander, MIT licence"
+    },
+    "nlx:job_info_Occ8.tsv": {
+      "path": "aiindex/data/raw/nlx/job_info_Occ8.tsv",
+      "official_url": "https://doi.org/10.5281/zenodo.22219027",
+      "source_url": "https://doi.org/10.5281/zenodo.22219027",
+      "grade": "real",
+      "bytes": 2735739,
+      "sha256": "761a6060eb72c0048dfd820f203177b50da1f602a7ee6686b1b87abb7928780c",
+      "recorded_at": "2026-09-29T17:57:00+00:00",
+      "notes": "aggregates of NLx job ads, Meisenbacher, Nestorov and Norlander, MIT licence"
     }
   }
 }

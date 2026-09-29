@@ -1,4 +1,38 @@
-# Source audit, 20 September 2026
+# Source audit
+
+## Rebuild of 29 September 2026, on the data releases
+
+The inputs the publishers would not serve to a script were downloaded by
+hand, attached to the paper repository's releases `data-2026-10-01`,
+`data-2026-10-01-addendum` and `data-2026-10-01-addendum2`, and recorded
+there with their hashes; `python -m aiindex.place_release` links them where
+the loaders read them. The build read 78 inputs graded real, 46 graded
+mirror and 2 graded fixture, and all 443 checks passed.
+
+| Input | Now | What it changed |
+|---|---|---|
+| O*NET 30.3 | real | every layer on the paper's own release; Signals activity codes, which follow 30.2, are carried onto 30.3 through the detailed activity titles, all 2,087 of which match, each 30.2 intermediate activity landing on one 30.3 activity |
+| OEWS May 2025, national and state | real | the state layer gains 2025; 2012 to 2024 remain checked copies |
+| OEWS hybrid structure, May 2019 and 2020 | real, new | 11.8 and 12.5 percent of the 2019 and 2020 wage bills sat on hybrid codes and are now carried onto the 2018 SOC, a code spanning several split by their May 2021 national employment; the balanced panel rises from 653 to 661 occupations against the paper's 693 |
+| CPS basic monthly | real, new | 55 months as CSV, January 2022 to August 2026; October 2025 was not collected; weighted population 16 and over 263.2 million in January 2022 and 275.4 million in August 2026 |
+| Economic Index, June 2026 monthly file | real | the file omits tasks below a reporting threshold and publishes 88.4 and 94.3 percent of use in April and May 2026; reach counts every published task, so the headline reach comes from the latest release that publishes all of its use, March 2026, and a second reach, the wage share of the tasks making up three quarters of all use, is recorded for every release |
+| Economic Index labor market tables, Signals v2.0 | real | replace the copies |
+| BTOS | real | through cycle 202619; the calendar sheet now spells the reference start in full |
+| IPEDS | real | completions 2023 and 2024 in their revised release, 2025 provisional, institutions 2023 to 2025 |
+| ACS 2024 one-year, national | real, new | 340.1 million weighted persons, replacing the one-state test file |
+| Clearinghouse, fall 2024 CIP group enrolment | real, new | undergraduate four-year enrolment by two-digit CIP family, fall 2019 to 2024, read by code, so no label mapping is needed |
+| NLx job ads, aggregates by Meisenbacher, Nestorov and Norlander | real, new | the job-ads layer, run by the paper's Appendix B code; each occupation-month lists its fifty most frequent tasks |
+| Flows transition matrix | fixture | unchanged |
+
+One reading was built and kept off the page. The average exposure of the
+tasks named in ads, within occupations with complete task lists, falls from
+2023 to 2025 while the task-level gradient holds flat after the release; the
+average also moves with which tasks are named, and the difference is written
+to `postings_asked_exposure_monthly.csv` for inspection until it is
+understood.
+
+## The build of 20 September 2026
+
 
 What each layer reads, where the file came from on this build, and what
 stands between the build and the publisher's own release. Grades follow

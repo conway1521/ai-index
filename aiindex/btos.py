@@ -43,8 +43,11 @@ def load(name: str = "State.xlsx") -> pd.DataFrame:
     estimates = pd.read_excel(path, sheet_name="Response Estimates", dtype=str)
     errors = pd.read_excel(path, sheet_name="Response Standard Errors", dtype=str)
     dates = pd.read_excel(path, sheet_name="Collection and Reference Dates", dtype=str)
-    dates["Smpdt"] = dates["Smpdt"].astype(str)
-    calendar = dates.set_index("Smpdt")
+    # later workbooks spell the reference start in full and store the cycle code as a number
+    dates = dates.rename(columns={"Reference Period Start": "Ref Start", "Reference Period End": "Ref End"})
+    dates = dates.dropna(subset=["Smpdt"])
+    dates["Smpdt"] = dates["Smpdt"].astype(str).str.replace(r"\.0$", "", regex=True)
+    calendar = dates.drop_duplicates("Smpdt").set_index("Smpdt")
 
     by = estimates.columns[0]
     cycles = [c for c in estimates.columns if str(c).isdigit()]

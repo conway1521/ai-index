@@ -1,2 +1,2 @@
-mirror
-https://raw.githubusercontent.com/tkc88888888/EconomicIndex/main/labor_market_impacts/job_exposure.csv
+real
+https://huggingface.co/datasets/Anthropic/EconomicIndex/resolve/main/labor_market_impacts/job_exposure.csv

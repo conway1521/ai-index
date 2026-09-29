@@ -180,6 +180,58 @@ def ensure_files() -> list[tuple[Path, str]]:
     return got
 
 
+HYBRID_PATH = config.RAW_DIR / "crosswalks" / "oews_hybrid_2019_2020.xlsx"
+HYBRID_YEARS = (2019, 2020)
+
+
+def hybrid_codes(path: Path = HYBRID_PATH) -> pd.DataFrame:
+    """The BLS table linking the hybrid codes of the May 2019 and 2020 estimates to the 2018 SOC."""
+    raw = pd.read_excel(path, sheet_name=0, header=None, dtype=str)
+    start = raw.index[raw[0].astype(str).str.strip().eq("OES 2019 Estimates Code")][0]
+    table = raw.iloc[start + 1:, [0, 2]].rename(columns={0: "hybrid", 2: "soc_2018"})
+    table = table.apply(lambda c: c.astype(str).str.strip())
+    code = r"^\d{2}-\d{4}$"
+    return table[table["hybrid"].str.match(code) & table["soc_2018"].str.match(code)].drop_duplicates()
+
+
+def map_hybrid(panel: pd.DataFrame) -> pd.DataFrame:
+    """Carry the May 2019 and 2020 hybrid codes onto the 2018 SOC.
+
+    A hybrid code that is itself a 2018 code stays. One that names a single
+    2018 code is relabelled. One that spans several 2018 codes is split
+    across them in proportion to their national employment in May 2021, the
+    first release on the 2018 codes alone, and the share of each year's wage
+    bill that was split is recorded.
+    """
+    if not HYBRID_PATH.exists():
+        checks.note(LAYER, "hybrid codes", "the BLS hybrid table is not in hand; 2019 and 2020 keep only codes shared with 2018", 0)
+        return panel
+    table = hybrid_codes()
+    table = table[table["hybrid"] != table["soc_2018"]]
+    weights = panel[(panel["vintage"] == 2021) & (panel["scope"] == "national")].groupby("soc_code")["employment"].sum()
+    table["weight"] = table["soc_2018"].map(weights).fillna(0.0)
+    totals = table.groupby("hybrid")["weight"].transform("sum")
+    counts = table.groupby("hybrid")["soc_2018"].transform("count")
+    table["share"] = (table["weight"] / totals).where(totals > 0, 1.0 / counts)
+    years = panel["vintage"].isin(HYBRID_YEARS)
+    affected = years & panel["soc_code"].isin(table["hybrid"])
+    split = panel[affected].merge(table[["hybrid", "soc_2018", "share"]], left_on="soc_code", right_on="hybrid")
+    split["employment"] = split["employment"] * split["share"]
+    split["bill"] = split["bill"] * split["share"]
+    split["soc_code"] = split["soc_2018"]
+    split = split.drop(columns=["hybrid", "soc_2018", "share"])
+    for year in HYBRID_YEARS:
+        block = panel[panel["vintage"] == year]
+        if len(block):
+            share = float(block.loc[block["soc_code"].isin(table["hybrid"]), "bill"].sum() / block["bill"].sum())
+            checks.note(LAYER, f"wage bill on hybrid codes {year}", f"{share:.1%} carried onto 2018 codes through the BLS hybrid table", share)
+    out = pd.concat([panel[~affected], split[panel.columns]], ignore_index=True)
+    out = out.groupby(["vintage", "scope", "state_fips", "soc_code"], as_index=False).agg(
+        employment=("employment", "sum"), bill=("bill", "sum"), source_file=("source_file", "first"))
+    out["wage"] = out["bill"] / out["employment"]
+    return out[panel.columns]
+
+
 def harmonise(panel: pd.DataFrame, first_2018_year: int = 2019) -> pd.DataFrame:
     """Carry years on the 2010 SOC onto the 2018 coding, one-to-one codes only.
 
@@ -190,6 +242,7 @@ def harmonise(panel: pd.DataFrame, first_2018_year: int = 2019) -> pd.DataFrame:
     """
     from . import spine
 
+    panel = map_hybrid(panel)
     early = panel[panel["vintage"] < first_2018_year]
     late = panel[panel["vintage"] >= first_2018_year]
     if early.empty:

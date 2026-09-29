@@ -29,7 +29,7 @@ def completions(year: int) -> pd.DataFrame:
     official, mirrors = sources.IPEDS[name]
     path, _ = fetch.get(f"ipeds_{name}", f"ipeds/{name}", official, mirrors=mirrors)
     raw = pd.read_csv(path, dtype=str, encoding="latin-1")
-    raw.columns = [c.strip().upper() for c in raw.columns]
+    raw.columns = [c.replace("\ufeff", "").replace("ï»¿", "").strip().upper() for c in raw.columns]  # newer files open with a byte-order mark
     frame = pd.DataFrame({
         "unitid": raw["UNITID"].str.strip(),
         "cip_code": raw["CIPCODE"].str.strip(),
@@ -53,7 +53,7 @@ def institutions(year: int = 2023) -> pd.DataFrame:
     official, mirrors = sources.IPEDS[name]
     path, _ = fetch.get(f"ipeds_{name}", f"ipeds/{name}", official, mirrors=mirrors)
     raw = pd.read_csv(path, dtype=str, encoding="latin-1")
-    raw.columns = [c.strip().upper() for c in raw.columns]
+    raw.columns = [c.replace("\ufeff", "").replace("ï»¿", "").strip().upper() for c in raw.columns]  # newer files open with a byte-order mark
     out = pd.DataFrame({"unitid": raw["UNITID"].str.strip(), "state": raw["STABBR"].str.strip(),
                         "state_fips": raw["FIPS"].str.strip().str.zfill(2) if "FIPS" in raw else None,
                         "name": raw["INSTNM"]})

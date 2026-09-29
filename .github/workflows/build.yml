@@ -8,10 +8,13 @@ name: build
 # reports into the run summary whatever the build then does.
 
 on:
-  schedule:
-    # Mondays, 11:00 UTC. The sources arrive on their own clocks, from
-    # biweekly to yearly, so a weekly pass catches each one soon after it lands.
-    - cron: "0 11 * * 1"
+  # The weekly schedule is paused. Most inputs now come from the dated data
+  # releases of the paper repository, and a runner without them would rebuild
+  # from copies and stand-ins and commit that over the published readings.
+  # Restore the schedule once a run places the release with PAPER_REPO_TOKEN
+  # and the release files fit the runner's disk:
+  #   schedule:
+  #     - cron: "0 11 * * 1"
   workflow_dispatch:
   push:
     paths:
@@ -116,6 +119,15 @@ jobs:
           restore-keys: |
             raw-${{ hashFiles('aiindex/sources.py') }}-
             raw-
+
+      - name: Place the data release
+        # The files the publishers will not serve to a script, fetched from the
+        # paper repository's releases and checked against their manifests.
+        if: steps.ready.outputs.ok == 'true'
+        env:
+          SKILLS_DNA_ROOT: ${{ github.workspace }}/paper-skills-dna
+          GITHUB_TOKEN: ${{ secrets.PAPER_REPO_TOKEN }}
+        run: python -m aiindex.place_release
 
       - name: Build
         if: steps.ready.outputs.ok == 'true'

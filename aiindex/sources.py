@@ -17,7 +17,7 @@ LFS = "https://media.githubusercontent.com/media"
 # OEWS national files: BLS name, official URL, mirrors. State 2025 is not yet
 # mirrored anywhere and national 2013, 2014, 2017 and 2018 were not found.
 OEWS_NATIONAL = {
-    2025: ("oesm25nat.zip", "https://www.bls.gov/oes/special-requests/oesm25nat.zip",
+    2025: ("national_M2025_dl.xlsx", "https://www.bls.gov/oes/special-requests/oesm25nat.zip",
            (f"{RAW}/arieldklein/ai-employment-paper/main/data_raw/bls/oesm25nat.zip",)),
     2024: ("national_M2024_dl.xlsx", "https://www.bls.gov/oes/special-requests/oesm24nat.zip",
            (f"{RAW}/germanr/occ-exposure/main/rawdata/bls/national_M2024_dl.xlsx",
@@ -42,9 +42,15 @@ OEWS_STATE.update({
            (f"{RAW}/KHALEDRABBAH/US-Unemployment-Dashboard/main/Data/state_M{year}_dl.xlsx",))
     for year in range(2012, 2020)
 })
+# May 2025 state estimates: placed by hand from the BLS release, no copy committed anywhere.
+OEWS_STATE[2025] = ("state_M2025_dl.xlsx", "https://www.bls.gov/oes/special-requests/oesm25st.zip", ())
 
 ONET_FILES_BASE = f"{RAW}/pythonski/bottlenecks/master/db_30_2_text"
 ONET_RELEASE = "30_2"
+# The O*NET 30.2 detailed work activity reference, kept after the move to 30.3 because
+# Signals still codes intermediate activities on the 30.2 identifiers; titles link the two.
+ONET_30_2_DWA = ("https://www.onetcenter.org/dl_files/database/db_30_2_text.zip",
+                 (f"{RAW}/pythonski/bottlenecks/master/db_30_2_text/DWA%20Reference.txt",))
 ONET_FILES = [
     "Abilities to Work Activities.txt", "Abilities.txt", "Content Model Reference.txt",
     "DWA Reference.txt", "IWA Reference.txt", "Job Zones.txt", "Knowledge.txt",
@@ -72,7 +78,13 @@ IPEDS = {
                     (f"{LFS}/arijacob/chicago_majors/main/data/ipeds/raw/major_numbers/c2023_a/c2023_a.csv",)),
     "HD2023.csv": ("https://nces.ed.gov/ipeds/datacenter/data/HD2023.zip",
                    (f"{LFS}/ftrain/ipeds2/main/sources/IPEDS202324_csv/HD2023.csv",)),
+    # placed by hand from NCES; 2025 completions are the provisional release
+    "C2025_A.csv": ("https://nces.ed.gov/ipeds/datacenter/data/C2025_A.zip", ()),
+    "HD2024.csv": ("https://nces.ed.gov/ipeds/datacenter/data/HD2024.zip", ()),
+    "HD2025.csv": ("https://nces.ed.gov/ipeds/datacenter/data/HD2025.zip", ()),
 }
+
+ACS_PUMS_NATIONAL = "https://www2.census.gov/programs-surveys/acs/data/pums/2024/1-Year/csv_pus.zip"
 
 # One state's ACS one-year person file, used to test the field-of-degree link
 # before the full national extract is in hand.

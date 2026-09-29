@@ -214,13 +214,19 @@ def _from_monthly_table(frame: pd.DataFrame, release: str, geography: str = "GLO
         auto = part[part["metric"].str.contains("automation")].groupby("task_id")["value"].sum()
         aug = part[part["metric"].str.contains("augmentation")].groupby("task_id")["value"].sum()
         scale = 100.0 if usage.sum() > 1.5 else 1.0
-        table = pd.DataFrame({"usage_share": usage / scale})
+        # The full monthly file omits tasks below the publisher's reporting threshold, so the published
+        # task shares cover less than all use; the coverage is recorded and the shares are read as shares
+        # of published use, which is what the landing measures describe.
+        covered = float(usage.sum() / scale)
+        checks.within(pd.Series([covered]), 0.8, 1.0 + 1e-2, LAYER, f"published task share of use {release} {month}")
+        checks.note(LAYER, f"use on tasks above the reporting threshold {release} {month}", f"{covered:.1%}", covered)
+        table = pd.DataFrame({"usage_share": usage / scale / covered, "usage_share_all": usage / scale})
         table["automation_share"] = (auto / 100.0).reindex(table.index)
         table["augmentation_share"] = (aug / 100.0).reindex(table.index)
         table = table.reset_index()
         table["platform"], table["release"] = PLATFORM, f"{release} ({month})"
         checks.close(float(table["usage_share"].sum()), 1.0, 1e-2, LAYER, f"task usage shares sum to one {release} {month}")
-        tables.append(table[["platform", "release", "task_id", "usage_share", "automation_share", "augmentation_share"]])
+        tables.append(table[["platform", "release", "task_id", "usage_share", "usage_share_all", "automation_share", "augmentation_share"]])
     return pd.concat(tables, ignore_index=True)
 
 
