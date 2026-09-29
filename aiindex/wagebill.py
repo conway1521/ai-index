@@ -92,8 +92,11 @@ def load(directory: Path = OEWS_DIR, grade: str = "real") -> pd.DataFrame:
         frame = read_release(path)
         if frame is None:
             continue
-        MANIFEST.record(f"oews:{path.name}", path, official_url=OFFICIAL, grade=grade,
-                        source_url=None if grade == "real" else str(path),
+        # a file's own sidecar grades it where there is one, as for a release placed by place_release
+        sidecar = path.with_suffix(path.suffix + ".source")
+        graded, source = sidecar.read_text().split("\n")[:2] if sidecar.exists() else (grade, None)
+        MANIFEST.record(f"oews:{path.name}", path, official_url=OFFICIAL, grade=graded,
+                        source_url=source or (None if graded == "real" else str(path)),
                         notes="fetched in a browser; BLS refuses automated requests")
         frames.append(frame)
     if not frames:

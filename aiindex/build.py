@@ -304,7 +304,7 @@ def main() -> None:
     checks.write()
     MANIFEST.write()
     try:
-        print(f"  site readings: {export_site()}")
+        print(f"  site readings: {export_site(release)}")
     except FileNotFoundError as error:
         SKIPPED["site"] = str(error)
     report = {
@@ -345,7 +345,7 @@ def _joined(items: list[str]) -> str:
     return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " and " + items[-1]
 
 
-def export_site() -> Path:
+def export_site(release: str) -> Path:
     """Write the readings the front page shows, from the built tables.
 
     The page reads ``site/data/readings.json`` and shows what it carries: the
@@ -441,7 +441,7 @@ def export_site() -> Path:
                 {"n": f"{top['concentration']:.1f}×", "view": "bridge",
                  "s": (f"is the weight of that use on {top['bundle'].lower()}, measured against their share of pay and the most of any skill group, "
                        f"while {low['bundle'].lower()} receive {low['concentration']:.1f} times their share."),
-                 "src": f"Anthropic Economic Index, {_published(latest['release'])} · O*NET 30.2",
+                 "src": f"Anthropic Economic Index, {_published(latest['release'])} · O*NET {release}",
                  "tables": ["usage_landing.csv"]},
                 {"n": f"{core:.1f}%", "view": "bridge",
                  "s": (f"of wages are paid for the tasks that together make up three quarters of all that use, "

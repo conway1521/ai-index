@@ -1,5 +1,5 @@
 {
-  "seconds": 279,
+  "seconds": 309,
   "onet_release": "30.3",
   "grades": {
     "onet_release": "real",
@@ -31,7 +31,7 @@
     "oews:national_M2022_dl.xlsx": "mirror",
     "oews:national_M2023_dl.xlsx": "mirror",
     "oews:national_M2024_dl.xlsx": "mirror",
-    "oews:national_M2025_dl.xlsx": "mirror",
+    "oews:national_M2025_dl.xlsx": "real",
     "oews:state_M2012_dl.xlsx": "mirror",
     "oews:state_M2013_dl.xlsx": "mirror",
     "oews:state_M2014_dl.xlsx": "mirror",
@@ -45,7 +45,7 @@
     "oews:state_M2022_dl.xlsx": "mirror",
     "oews:state_M2023_dl.xlsx": "mirror",
     "oews:state_M2024_dl.xlsx": "mirror",
-    "oews:state_M2025_dl.xlsx": "mirror",
+    "oews:state_M2025_dl.xlsx": "real",
     "eloundou_full_labelset": "real",
     "felten_aioe": "real",
     "aei_labor:job_exposure.csv": "real",

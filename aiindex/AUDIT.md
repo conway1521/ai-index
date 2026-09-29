@@ -6,8 +6,12 @@ The inputs the publishers would not serve to a script were downloaded by
 hand, attached to the paper repository's releases `data-2026-10-01`,
 `data-2026-10-01-addendum` and `data-2026-10-01-addendum2`, and recorded
 there with their hashes; `python -m aiindex.place_release` links them where
-the loaders read them. The build read 78 inputs graded real, 46 graded
-mirror and 2 graded fixture, and all 443 checks passed.
+the loaders read them. The build read 80 inputs graded real, 44 graded
+mirror and 2 graded fixture, and all 443 checks passed. The mirrors are
+OEWS 2012 to 2024, the two earliest usage releases, the CPS record layouts,
+which the CSV months do not use, and the O*NET 30.2 activity reference that
+translates the Signals codes; the fixtures are the flows matrix and its
+arrivals, which no number on the page reads.
 
 | Input | Now | What it changed |
 |---|---|---|
