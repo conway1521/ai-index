@@ -147,3 +147,7 @@ bill under either allocation rule, which is the coarseness of the
 activity grain and not a finding about breadth of use. The three exposure
 measures correlate at 0.85 (Eloundou and Felten), 0.64 and 0.54 with
 Anthropic's observed exposure.
+
+## The three-quarters reach and ties (2026-10-12)
+
+The reach counted on the tasks making up three quarters of use sorts tasks by their share of use. The June 2026 monthly release rounds shares to two decimals, so many tasks tie at the 75 per cent boundary, and before 2026-10-12 the sort was not stable, so which tied tasks fell inside depended on the order rows arrived in. Fetching the September 2025 statement list from Hugging Face changed that order and moved the May 2026 reading from 3.1 to 3.2 per cent, with the number of tasks unchanged at 243. Ties are now broken by task identifier, which makes the reading reproducible. The reading should be quoted to the nearest percentage point, since the choice among tied tasks moves it by about a tenth of a point.

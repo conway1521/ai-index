@@ -147,7 +147,10 @@ def readings(usage: pd.DataFrame, values: pd.DataFrame, task_bundles: pd.DataFra
         reached = float(joined.loc[used, "value"].sum())
         of_all = block.set_index("task_id")["usage_share_all"] if "usage_share_all" in block and block["usage_share_all"].notna().any() \
             else block.set_index("task_id")["usage_share"]
-        of_all = of_all.groupby(level=0).sum().sort_values(ascending=False)
+        # largest first, ties broken by task identifier, so that the cut does not
+        # depend on the order rows arrive in (the June 2026 release rounds shares to
+        # two decimals, and many tasks tie at the boundary)
+        of_all = of_all.groupby(level=0).sum().sort_index().sort_values(ascending=False, kind="stable")
         top = set(of_all.index[(of_all.cumsum() - of_all) < MASS])
         published = min(1.0, float(of_all.sum()))
         reached_mass = float(joined.loc[joined["task_id"].isin(top) & used, "value"].sum())
