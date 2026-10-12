@@ -1,5 +1,5 @@
 {
-  "built": "29 September 2026",
+  "built": "12 October 2026",
   "lede": "The tasks people bring to AI models account for <a href=\"#bridge\" data-view=\"bridge\">23 percent of US wages</a>, <a href=\"#city\" data-view=\"city\">pay has stayed within its usual range</a> while the mix of jobs has shifted more than in any three years since 2013, and <a href=\"#telescope\" data-view=\"valley\">42 percent of new degrees</a> are in fields that lead to the most exposed jobs.",
   "meaning": [
     "The tasks people bring to AI models are paid about a quarter of all the wages in the United States, while pay across the skills behind them has moved no further over the last three years than in an ordinary stretch of the record, so these models already reach a wide share of paid work and there is no sign yet that employers pay for those skills differently.",
@@ -36,7 +36,7 @@
           ]
         },
         {
-          "n": "3.1%",
+          "n": "3.2%",
           "view": "bridge",
           "s": "of wages are paid for the tasks that together make up three quarters of all that use, 243 tasks in the June 2026 record, against 1.8 percent in the September 2025 release.",
           "src": "Anthropic Economic Index, June 2026 · OEWS wages, May 2025",

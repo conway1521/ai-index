@@ -36,11 +36,11 @@ wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicat
 wagebill,nonnegative employment national_M2025_dl.xlsx,True,0.0,0 negative values in employment national_M2025_dl.xlsx
 wagebill,nonnegative wage national_M2025_dl.xlsx,True,0.0,0 negative values in wage national_M2025_dl.xlsx
 wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
-wagebill,nonnegative employment state_M2012_dl.xlsx,True,0.0,0 negative values in employment state_M2012_dl.xlsx
-wagebill,nonnegative wage state_M2012_dl.xlsx,True,0.0,0 negative values in wage state_M2012_dl.xlsx
+wagebill,nonnegative employment state_M2012_dl.xls,True,0.0,0 negative values in employment state_M2012_dl.xls
+wagebill,nonnegative wage state_M2012_dl.xls,True,0.0,0 negative values in wage state_M2012_dl.xls
 wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
-wagebill,nonnegative employment state_M2013_dl.xlsx,True,0.0,0 negative values in employment state_M2013_dl.xlsx
-wagebill,nonnegative wage state_M2013_dl.xlsx,True,0.0,0 negative values in wage state_M2013_dl.xlsx
+wagebill,nonnegative employment state_M2013_dl.xls,True,0.0,0 negative values in employment state_M2013_dl.xls
+wagebill,nonnegative wage state_M2013_dl.xls,True,0.0,0 negative values in wage state_M2013_dl.xls
 wagebill,"unique key ['vintage', 'state_fips', 'soc_code']",True,0.0,"0 duplicate rows on ['vintage', 'state_fips', 'soc_code']"
 wagebill,nonnegative employment state_M2014_dl.xlsx,True,0.0,0 negative values in employment state_M2014_dl.xlsx
 wagebill,nonnegative wage state_M2014_dl.xlsx,True,0.0,0 negative values in wage state_M2014_dl.xlsx
