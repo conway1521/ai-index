@@ -142,3 +142,9 @@ OPENAI_FILES = {
         (f"{RAW}/prashgarg/global-automation-atlas/main/outputs/source_data/openai_observed_use/usa_share_of_messages_by_onet_iwa_month.csv",),
         "v2.0 download as committed by a third party"),
 }
+
+
+# Copies that an ai-data release supersedes. place_release removes them with
+# their sidecars, and the fetch steps leave them out.
+SUPERSEDED = ["oews/oesm25nat.zip", "oews/state_M2012_dl.xlsx", "oews/state_M2013_dl.xlsx", "onet/onet_db_30_2_text.zip", "acs/psam_p27_2022_1yr.csv",
+              "aei/release_2026_06_26/task_pct_2026-04.csv", "aei/release_2026_06_26/task_pct_2026-05.csv"]

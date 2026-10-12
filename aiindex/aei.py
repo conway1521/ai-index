@@ -253,10 +253,10 @@ def ensure_files() -> None:
     placed from an ai-data release, is reused without a network call, and a
     file a release supersedes is skipped.
     """
-    from . import fetch, place_release, sources
+    from . import fetch, sources
     for relative, (official, mirrors, note) in sources.AEI_FILES.items():
         # a file an ai-data release supersedes stays out, as place_release leaves it
-        if f"aei/{relative}" in place_release.SUPERSEDED:
+        if f"aei/{relative}" in sources.SUPERSEDED:
             continue
         fetch.get(f"aei:{relative}", f"aei/{relative}", official, mirrors=mirrors, notes=note)
 

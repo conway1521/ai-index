@@ -58,9 +58,8 @@ PLACES = {
     # BLS OEWS national files read by the index; 2020 is summed from the states
     OEWS_NATIONAL: {f"national_M{y}_dl.xlsx": f"oews/national_M{y}_dl.xlsx" for y in (2019, 2021, 2022, 2023, 2024)},
 }
-# copies the release supersedes, removed with their sidecars
-SUPERSEDED = ["oews/oesm25nat.zip", "oews/state_M2012_dl.xlsx", "oews/state_M2013_dl.xlsx", "onet/onet_db_30_2_text.zip", "acs/psam_p27_2022_1yr.csv",
-              "aei/release_2026_06_26/task_pct_2026-04.csv", "aei/release_2026_06_26/task_pct_2026-05.csv"]
+# copies the release supersedes, removed with their sidecars (kept in sources, which needs no ai-data)
+from .sources import SUPERSEDED  # noqa: E402
 
 
 def _link(source: Path, target: Path) -> None:
