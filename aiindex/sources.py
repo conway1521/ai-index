@@ -32,16 +32,17 @@ OEWS_NATIONAL = {
            (f"{RAW}/burnssa/ai-labor-research/master/data/oes/oesm19nat/national_M2019_dl.xlsx",)),
 }
 
+# State files for May 2012 to May 2024 come from the ai-data release
+# data-2026-10-12-oews, placed by place_release under the names BLS gives them
+# (.xls for 2012 and 2013). They replace copies fetched from third-party
+# repositories, which held the same data, checked year by year on 2026-10-12.
+# No mirror is listed: a build without the release placed stops rather than
+# read a copy.
 OEWS_STATE = {
-    year: (f"state_M{year}_dl.xlsx", f"https://www.bls.gov/oes/special-requests/oesm{year % 100:02d}st.zip",
-           (f"{RAW}/Soorej30/wage_analysis/main/data/oesm{year % 100:02d}st/state_M{year}_dl.xlsx",))
-    for year in range(2020, 2025)
+    year: (f"state_M{year}_dl.{'xls' if year <= 2013 else 'xlsx'}",
+           f"https://www.bls.gov/oes/special-requests/oesm{year % 100:02d}st.zip", ())
+    for year in range(2012, 2025)
 }
-OEWS_STATE.update({
-    year: (f"state_M{year}_dl.xlsx", f"https://www.bls.gov/oes/special-requests/oesm{year % 100:02d}st.zip",
-           (f"{RAW}/KHALEDRABBAH/US-Unemployment-Dashboard/main/Data/state_M{year}_dl.xlsx",))
-    for year in range(2012, 2020)
-})
 # May 2025 state estimates: placed by hand from the BLS release, no copy committed anywhere.
 OEWS_STATE[2025] = ("state_M2025_dl.xlsx", "https://www.bls.gov/oes/special-requests/oesm25st.zip", ())
 

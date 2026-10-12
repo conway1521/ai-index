@@ -27,6 +27,7 @@ from aidata import release  # noqa: E402
 
 RAW = config.RAW_DIR
 MAIN, CPS_A, CPS_B = "data-2026-10-01", "data-2026-10-01-addendum", "data-2026-10-01-addendum2"
+OEWS = "data-2026-10-12-oews"
 
 # release file -> where the index reads it; a None target keeps the file out of the index
 PLACES = {
@@ -51,9 +52,12 @@ PLACES = {
         "job_tasks.tsv": "nlx/job_tasks.tsv", "job_info.tsv": "nlx/job_info.tsv", "job_info_State.tsv": "nlx/job_info_State.tsv",
     },
     CPS_B: {"CTEEFall2024-CIPGroupEnrollment-UG4yr.xlsx": "nsc/CTEEFall2024-CIPGroupEnrollment-UG4yr.xlsx"},
+    # BLS OEWS state files, May 2012 to May 2024, under the names BLS gives them
+    OEWS: {f"state_M{y}_dl.{'xls' if y <= 2013 else 'xlsx'}": f"oews/state_M{y}_dl.{'xls' if y <= 2013 else 'xlsx'}"
+           for y in range(2012, 2025)},
 }
 # copies the release supersedes, removed with their sidecars
-SUPERSEDED = ["oews/oesm25nat.zip", "onet/onet_db_30_2_text.zip", "acs/psam_p27_2022_1yr.csv",
+SUPERSEDED = ["oews/oesm25nat.zip", "oews/state_M2012_dl.xlsx", "oews/state_M2013_dl.xlsx", "onet/onet_db_30_2_text.zip", "acs/psam_p27_2022_1yr.csv",
               "aei/release_2026_06_26/task_pct_2026-04.csv", "aei/release_2026_06_26/task_pct_2026-05.csv"]
 
 
