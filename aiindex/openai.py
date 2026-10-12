@@ -41,6 +41,21 @@ def activity_shares(month: str | None = None,
     return block[["month", "iwa_id", "activity_share"]]
 
 
+def _dwa_reference(path) -> pd.DataFrame:
+    """The 30.2 DWA Reference table, from the text file or from inside the release zip.
+
+    The official source is the whole 30.2 text release, a zip, while a mirror
+    may hold the bare table, so the file is read according to what it is.
+    """
+    import io
+    import zipfile
+    if zipfile.is_zipfile(path):
+        with zipfile.ZipFile(path) as archive:
+            member = next(n for n in archive.namelist() if n.endswith("/DWA Reference.txt"))
+            return pd.read_csv(io.BytesIO(archive.read(member)), sep="\t", dtype=str)
+    return pd.read_csv(path, sep="\t", dtype=str)
+
+
 def iwa_crosswalk() -> dict[str, str]:
     """Signals' intermediate activity codes, from O*NET 30.2, onto the codes of the release in use.
 
@@ -59,7 +74,7 @@ def iwa_crosswalk() -> dict[str, str]:
     official, mirrors = sources.ONET_30_2_DWA
     path, _ = fetch.get("onet_30_2_dwa_reference", "crosswalks/onet_30_2_dwa_reference.txt", official, mirrors=mirrors,
                         notes="O*NET 30.2 DWA Reference, kept to translate Signals activity codes")
-    old = pd.read_csv(path, sep="\t", dtype=str)
+    old = _dwa_reference(path)
     new = onet.read_file("GWAs to IWAs to DWAs.txt")
     norm = lambda s: s.str.lower().str.replace(r"[^a-z0-9 ]", "", regex=True).str.strip()
     old["key"], new["key"] = norm(old["DWA Title"]), norm(new["DWA Element Name"])
