@@ -20,7 +20,7 @@ Built 29 September 2026 against paper-skills-dna at commit df65a08 and
 O*NET 30.3, on the data releases of 28 September 2026, which now live in
 the ai-data repository.
 Every layer runs on the publishers' files except the flows matrix, which is
-still a fixture, and the national OEWS files for 2019 and 2021 to 2024, which are checked copies (the state files for 2012 to 2024 come from the ai-data release data-2026-10-12-oews since 2026-10-12); 443 checks
+still a fixture (every OEWS file comes from the ai-data releases data-2026-10-12-oews and data-2026-10-12-oews-national since 2026-10-12); 443 checks
 pass. See `aiindex/README.md` for each layer, `aiindex/AUDIT.md` for every
 source and `docs/data-licences.md` for what may be republished. The page is
 `site/index.html`. The repository is public and Pages publishes `site/`,

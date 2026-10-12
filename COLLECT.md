@@ -19,7 +19,7 @@ Files marked "new" are ones the index has never run on.
 
 ## 1. OEWS wages and employment (BLS), replaces copies, plus one new file
 
-Done for the state files: May 2012 to May 2024 are in the `ai-data` release `data-2026-10-12-oews` (2026-10-12) and May 2025 in `data-2026-10-01`. Still to collect: the national files for 2019 and 2021 to 2024.
+Done for the state files: May 2012 to May 2024 are in the `ai-data` release `data-2026-10-12-oews` (2026-10-12) and May 2025 in `data-2026-10-01`. The national files for May 2010 to May 2024 are in `data-2026-10-12-oews-national`.
 
 Where: https://www.bls.gov/oes/tables.htm. Pick each year's "May" release,
 then "All data", then the National and the State zip. BLS refuses scripted

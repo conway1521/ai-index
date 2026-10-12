@@ -14,22 +14,14 @@ from __future__ import annotations
 RAW = "https://raw.githubusercontent.com"
 LFS = "https://media.githubusercontent.com/media"
 
-# OEWS national files: BLS name, official URL, mirrors. State 2025 is not yet
-# mirrored anywhere and national 2013, 2014, 2017 and 2018 were not found.
+# OEWS national files: BLS name and official URL. May 2019 and May 2021 to
+# May 2024 come from the ai-data release data-2026-10-12-oews-national and May
+# 2025 from data-2026-10-01, placed by place_release. They replace copies
+# fetched from third-party repositories, which were byte-identical (checked
+# 2026-10-12). National 2020 is still summed from the states.
 OEWS_NATIONAL = {
-    2025: ("national_M2025_dl.xlsx", "https://www.bls.gov/oes/special-requests/oesm25nat.zip",
-           (f"{RAW}/arieldklein/ai-employment-paper/main/data_raw/bls/oesm25nat.zip",)),
-    2024: ("national_M2024_dl.xlsx", "https://www.bls.gov/oes/special-requests/oesm24nat.zip",
-           (f"{RAW}/germanr/occ-exposure/main/rawdata/bls/national_M2024_dl.xlsx",
-            f"{RAW}/victoriano/future-of-work-data/main/data/raw/OEWS/national_M2024_dl.xlsx")),
-    2023: ("national_M2023_dl.xlsx", "https://www.bls.gov/oes/special-requests/oesm23nat.zip",
-           (f"{RAW}/augw999/ai-labor-market-impact_analysis/main/national_M2023_dl.xlsx",)),
-    2022: ("national_M2022_dl.xlsx", "https://www.bls.gov/oes/special-requests/oesm22nat.zip",
-           (f"{RAW}/augw999/ai-labor-market-impact_analysis/main/national_M2022_dl.xlsx",)),
-    2021: ("national_M2021_dl.xlsx", "https://www.bls.gov/oes/special-requests/oesm21nat.zip",
-           (f"{RAW}/augw999/ai-labor-market-impact_analysis/main/national_M2021_dl.xlsx",)),
-    2019: ("national_M2019_dl.xlsx", "https://www.bls.gov/oes/special-requests/oesm19nat.zip",
-           (f"{RAW}/burnssa/ai-labor-research/master/data/oes/oesm19nat/national_M2019_dl.xlsx",)),
+    year: (f"national_M{year}_dl.xlsx", f"https://www.bls.gov/oes/special-requests/oesm{year % 100:02d}nat.zip", ())
+    for year in (2019, 2021, 2022, 2023, 2024, 2025)
 }
 
 # State files for May 2012 to May 2024 come from the ai-data release

@@ -27,7 +27,7 @@ from aidata import release  # noqa: E402
 
 RAW = config.RAW_DIR
 MAIN, CPS_A, CPS_B = "data-2026-10-01", "data-2026-10-01-addendum", "data-2026-10-01-addendum2"
-OEWS = "data-2026-10-12-oews"
+OEWS, OEWS_NATIONAL = "data-2026-10-12-oews", "data-2026-10-12-oews-national"
 
 # release file -> where the index reads it; a None target keeps the file out of the index
 PLACES = {
@@ -55,6 +55,8 @@ PLACES = {
     # BLS OEWS state files, May 2012 to May 2024, under the names BLS gives them
     OEWS: {f"state_M{y}_dl.{'xls' if y <= 2013 else 'xlsx'}": f"oews/state_M{y}_dl.{'xls' if y <= 2013 else 'xlsx'}"
            for y in range(2012, 2025)},
+    # BLS OEWS national files read by the index; 2020 is summed from the states
+    OEWS_NATIONAL: {f"national_M{y}_dl.xlsx": f"oews/national_M{y}_dl.xlsx" for y in (2019, 2021, 2022, 2023, 2024)},
 }
 # copies the release supersedes, removed with their sidecars
 SUPERSEDED = ["oews/oesm25nat.zip", "oews/state_M2012_dl.xlsx", "oews/state_M2013_dl.xlsx", "onet/onet_db_30_2_text.zip", "acs/psam_p27_2022_1yr.csv",
