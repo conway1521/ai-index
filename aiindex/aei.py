@@ -245,8 +245,25 @@ def read_release_file(path: Path) -> pd.DataFrame | None:
     return None
 
 
+def ensure_files() -> None:
+    """Fetch the releases listed in sources.AEI_FILES, Hugging Face first.
+
+    Among them is the task statement list of September 2025, which the joins
+    of the later raw tables fall back on. A file already in place, as one
+    placed from an ai-data release, is reused without a network call, and a
+    file a release supersedes is skipped.
+    """
+    from . import fetch, place_release, sources
+    for relative, (official, mirrors, note) in sources.AEI_FILES.items():
+        # a file an ai-data release supersedes stays out, as place_release leaves it
+        if f"aei/{relative}" in place_release.SUPERSEDED:
+            continue
+        fetch.get(f"aei:{relative}", f"aei/{relative}", official, mirrors=mirrors, notes=note)
+
+
 def usage_tables() -> list[pd.DataFrame] | None:
     AEI_DIR.mkdir(parents=True, exist_ok=True)
+    ensure_files()
     files = sorted(p for p in AEI_DIR.rglob("*.csv")
                    if not p.name.startswith(".") and "onet_task_statements" not in p.name)
     tables = []
