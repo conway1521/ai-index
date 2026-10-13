@@ -438,6 +438,7 @@ cps,weighted civilian population 16+ 2025-09,True,274225708.9995,274.2 million; 
 cps,employed persons on a scored occupation coverage at least 90%,True,0.9713553483944312,97.1% of employed persons on a scored occupation covered
 cps,nonnegative cell employment,True,0.0,0 negative values in cell employment
 cps,nonnegative gauge,True,0.0,0 negative values in gauge
+cps,"young-worker gauge, last twelve months against the rest",True,-0.0844,-0.0844 against a threshold of 0.0277
 postings,job-ad task rows,True,942926.0,"942,926 rows, 833 occupations, 121 months"
 postings,"average exposure of tasks named in ads in [0.0, 1.0]",True,0.0,"0 values of average exposure of tasks named in ads outside [0.0, 1.0]"
 postings,occupations in the asked-exposure reading,True,362.0,362 occupations with complete task lists in all 121 months
