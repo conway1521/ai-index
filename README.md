@@ -1,6 +1,6 @@
-# aiindex
+# Cross Bearings
 
-A public index of where AI usage has reached the labour market, built on
+Cross Bearings is a public index of where AI usage has reached the labour market, built on
 the paper's machinery. Three layers, each in its own units and never added
 together:
 
