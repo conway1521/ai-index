@@ -24,7 +24,11 @@ still a fixture (every OEWS file comes from the ai-data releases data-2026-10-12
 pass. See `aiindex/README.md` for each layer, `aiindex/AUDIT.md` for every
 source and `docs/data-licences.md` for what may be republished. The page is
 `site/index.html`. The repository is public and Pages publishes `site/`,
-so the page can be linked to, and it carries no name yet.
+so the page can be linked to, and it carries no name yet. Since 13 October
+2026 each view has its own headline and three readings, each with a paragraph
+under it, the valley adding Clearinghouse enrolment and the CPS young-worker
+gauge with its test; the page uses one typeface, lists its sources and not its
+tables, and has no weather or fog switches.
 
 ## Dependency
 

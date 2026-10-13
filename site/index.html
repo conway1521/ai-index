@@ -2,16 +2,17 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Index Mockup</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Libre+Franklin:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<title>Where AI has reached US work</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap">
 <style>
 :root{
   --paper:#FCFCF9; --ink:#141414; --ink-2:#4A4A46; --ink-3:#6E6E68; --hair:#C9C9C2; --wash:#F1F1EC;
   --orange:#C8472B; --gold:#C9A227; --cream:#E9DFC4; --sandstone:#C98F5A; --glass:#5E6B75; --rose:#D4566E; --green:#7FA36B; --sky:#9FB7C9;
   --wash-a:.38; --blend:multiply;
-  --display:"Fraunces",Georgia,"Times New Roman",serif;
-  --body:"Libre Franklin","Helvetica Neue",Arial,sans-serif;
-  --mono:"IBM Plex Mono",Menlo,Consolas,monospace;
+  /* one typeface for the whole page, the drawing's labels included */
+  --display:"Newsreader",Georgia,"Times New Roman",serif;
+  --body:var(--display);
+  --mono:var(--display);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){ --paper:#101010; --ink:#ECECE6; --ink-2:#B9B9B2; --ink-3:#7E7E78; --hair:#3A3A36; --wash:#181816; --cream:#B9AE8E; --wash-a:.55; --blend:screen; }
@@ -19,7 +20,7 @@
 :root[data-theme="dark"]{ --paper:#101010; --ink:#ECECE6; --ink-2:#B9B9B2; --ink-3:#7E7E78; --hair:#3A3A36; --wash:#181816; --cream:#B9AE8E; --wash-a:.55; --blend:screen; }
 
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:0 40px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;font-variant-numeric:lining-nums;padding-inline:16px;padding-block:0 40px}
 .wrap{max-width:1240px;margin:0 auto}
 header.top{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-block:18px 8px;border-bottom:1px solid var(--ink)}
 .brand{font-family:var(--display);font-size:22px;font-weight:600}
@@ -259,12 +260,29 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .src b{color:var(--ink);font-weight:500}
 .coin .close{margin-top:12px;font-family:var(--mono);font-size:12px;background:transparent;border:1px solid var(--ink);color:var(--ink);padding:5px 12px;cursor:pointer}
 
+/* the reading: text runs the full width of the page, in sentence case, with no letter-spacing, and the
+   drawing's labels use the same face as the prose */
+body *{letter-spacing:0 !important;text-transform:none !important}
+.lede,.meaning,.how,.reading .lens,.series p,.foot,.strap,.sources p,.about p{max-width:none}
+.item{grid-template-columns:120px minmax(0,1fr)}
+.item .more{grid-column:2;font-size:16px;line-height:1.6;color:var(--ink-2);margin:8px 0 0}
+.meaning summary,.how summary{list-style:revert;font-size:15px}
+.meaning summary::before,.how summary::before{content:none}
+.sub{font-size:17px;line-height:1.55;color:var(--ink-2);margin:10px 0 0}
+.sources,.about{margin-top:26px;border-top:1px solid var(--ink);padding-top:14px}
+.sources h3,.about h3,.series h3{font-family:var(--display);font-size:18px;font-weight:600;color:var(--ink);margin:0 0 8px}
+.sources h4{font-size:16px;font-weight:600;margin:14px 0 2px}
+.sources p,.about p{margin:0 0 10px;color:var(--ink-2);font-size:15px;line-height:1.6}
+.sources p b{color:var(--ink);font-weight:600}
+.stamp,.stamp .obs,.cad,.notes,.from,.item .cite,.caption p,.coin .k,.vig .u{font-size:13px}
+.cad{white-space:normal;margin-top:6px}
+.series{display:block}
 @media (forced-colors: active){.scene path,.scene circle,.scene rect{stroke:CanvasText}.scene text{fill:CanvasText}.hot:focus-visible .hit{stroke:Highlight}}
 @media (prefers-reduced-motion: reduce){.fogline,.bank,.cloud,.deck,.rain,.rainsheet,.sheet,.crest,.crownblock,.bart,.star,.lens,.avlight,.shiplight,.navlight,.strobe,.carlight{animation:none !important}.stage>svg,.zoom,.viewer,.beam,.mask-in{transition:none}}
 @media (max-width:820px){
   /* On a phone the drawing is a picture and the figures beneath it are the way in: the labels in the
      drawing go, the filters go, and the three views become three cards to tap. */
-  .item{grid-template-columns:1fr}.item .n{font-size:38px;margin-bottom:6px}.item .cite{grid-column:1}.item .s{font-size:17px}.lede{font-size:19px}.series{grid-template-columns:1fr}.cad{white-space:normal}
+  .item{grid-template-columns:1fr}.item .n{font-size:38px;margin-bottom:6px}.item .cite,.item .more{grid-column:1}.item .s{font-size:17px}.lede{font-size:19px}.series{grid-template-columns:1fr}.cad{white-space:normal}
   .scene .cap,.scene .mark,.scene .detail{display:none}   /* the drawing keeps its shape; the view buttons move into a row under it */
   .viewnav{position:static;aspect-ratio:auto;display:flex;justify-content:space-between;gap:8px;margin-top:8px}
   .viewnav .edge,.viewnav .home{position:static;width:auto;min-height:44px;padding:0}
@@ -280,8 +298,9 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 <a class="skip" href="#reading">Skip to the readings</a>
 <div class="wrap">
   <header class="top">
-    <div class="brand">[ name to come ] <small>MOCKUP</small></div>
+    <div class="brand">[ name to come ]</div>
   </header>
+  <p class="sub">Any one source on AI and work is a glimpse through fog: what people bring to AI models, what has happened to pay and jobs, what employers ask for in their job ads, and what students choose to study. Read together, they show where AI has reached work in the United States and where it has not yet, and each new release clears a little more of the view.</p>
   <p class="lede" id="lede"></p>
   <details class="meaning" id="meaning"><summary>What does this mean</summary><div id="meaning-body"></div></details>
 
@@ -339,19 +358,19 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
           <path class="hit" d="M800 300 L1600 120 L1600 480 Z"/><path class="hit" d="M1000 120 h560 v200 h-560 Z"/>
           <text x="1540" y="160" text-anchor="end" class="cap">The city</text>
           <text x="1540" y="188" text-anchor="end" class="mark" id="mark-city"></text>
-          <g class="detail"><text x="1540" y="210" text-anchor="end">what has moved · pay and jobs, tested against their own history</text></g>
+          <g class="detail"><text x="1540" y="210" text-anchor="end">what has moved: pay, jobs and job ads, tested against their own history</text></g>
         </g>
         <g class="hot" id="hot-bridge" tabindex="0" role="button" aria-label="The bridge: where usage lands">
           <path class="hit" d="M800 300 L0 120 L0 480 Z"/><path class="hit" d="M40 120 h560 v200 h-560 Z"/>
           <text x="110" y="160" class="cap">The bridge</text>
           <text x="110" y="188" class="mark" id="mark-bridge"></text>
-          <g class="detail"><text x="110" y="210">where usage lands · the tasks people bring, carried across to their pay</text></g>
+          <g class="detail"><text x="110" y="210">where usage lands: the tasks people bring, set against the wages paid for them</text></g>
         </g>
-        <g class="hot" id="hot-tele" tabindex="0" role="button" aria-label="The telescope: the pipeline">
+        <g class="hot" id="hot-tele" tabindex="0" role="button" aria-label="The telescope: training and first jobs">
           <path class="hit" d="M760 200 h140 v400 h-140 Z"/><path class="hit" d="M860 400 h290 v84 h-290 Z"/>
           <text x="872" y="424" class="cap">The telescope</text>
           <text x="872" y="446" class="mark" id="mark-valley"></text>
-          <g class="detail"><text x="872" y="466">the pipeline · looking south, to the campuses</text></g>
+          <g class="detail"><text x="872" y="466">training and first jobs, looking south to the campuses</text></g>
         </g>
       </g></g>
       <g id="fognear" class="fog scene"></g>
@@ -369,13 +388,13 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
       </g>
     </svg>
 
-    <div class="caption" id="caption"><h1 id="cap-h">Three views from one point</h1><p id="cap-p">choose a view · the beam turns to it</p></div>
+    <div class="caption" id="caption"><h1 id="cap-h">Three views from one point</h1><p id="cap-p">Choose a view, and the beam turns to it.</p></div>
 
     <p class="sr" id="announce" aria-live="polite"></p>
 
     <div class="coin" id="coin" role="dialog" aria-modal="true" aria-labelledby="coin-h" hidden>
       <div class="card">
-        <div class="k">Coin dropped · where the numbers come from</div>
+        <div class="k">Where the numbers come from</div>
         <h3 id="coin-h">Three kinds of source, three buildings</h3>
         <div class="vig" id="vig"></div>
         <div class="src" id="src">Choose a building.</div>
@@ -390,11 +409,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     <button class="edge right" id="edge-right" hidden><span></span></button>
   </div>
   <div class="bar">
-  <div class="stamp"><span class="obs" id="obs"></span><br>figures from the latest build</div>
-  <div class="ctl">
-    <label title="the sky from the airport's latest observation"><input type="checkbox" id="tg-aw" checked> Artificial Weather</label>
-    <label title="the fog, drawn"><input type="checkbox" id="tg-ak" checked> Artificial Karl</label>
-  </div>
+  <div class="stamp"><span class="obs" id="obs"></span> <span id="built">Figures from the latest build.</span></div>
   </div>
   </div>
 
@@ -407,33 +422,33 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 
   <section class="series">
     <div>
-      <h3>Adds to a series with every release</h3>
-      <p>Each source arrives on its own clock and each arrival is a new point, so the index is always the most recent dataset that exists, and the series lengthens rather than restarts.</p>
+      <h3>A series that grows with every release</h3>
+      <p>Each source is published on its own schedule, and each release adds a point, so the page always shows the most recent data that exist and every series grows longer with time.</p>
       <p class="notes" id="notes"></p>
       <svg class="strip" viewBox="0 0 900 96" role="img" aria-label="Releases on a timeline"><line x1="20" y1="60" x2="880" y2="60" class="axis"/><g id="ticks"></g></svg>
     </div>
-    <div class="cad"><b>biweekly</b> firm adoption, Census<br><b>monthly</b> OpenAI Signals · CPS young-worker gauge<br><b>each release</b> Anthropic Economic Index<br><b>yearly</b> OEWS pay and jobs · IPEDS · ACS</div>
+    <div class="cad">Firm adoption from the Census Bureau arrives every two weeks; OpenAI Signals and the young-worker gauge monthly; the Anthropic Economic Index with each of its releases; and pay, jobs, degrees and enrolment once a year.</div>
   </section>
 
-  <section class="tables" id="tables">
-    <h3>The tables</h3>
-    <p>Every figure on this page is a cell in one of these files, written by the build from the publishers' releases and never edited by hand. Each view names the tables it reads; the checks file records what each table was tested for and the value it measured.</p>
-    <dl id="table-list"></dl>
+  <section class="sources" id="sources">
+    <h3>Sources</h3>
+    <div id="source-list"></div>
   </section>
 
-  <div class="lab"><span>for exploring, not part of the page</span> <span>sky</span><span id="lab-sky"></span> <span>hour</span><span id="lab-hour"></span></div>
-
-  <p class="foot">Ink on paper, one splash of colour in each view, a little life now and then, a gull, a plane on the approach, a rocket out of the south, a robotaxi that meets a hydrant, a gust, and the sky drawn from the latest observation at the airport: the description and visibility pick one of eight presets, wind sets how fast the fog and cloud drift and which way, by the heading of the view you are looking along, and rain falls slanted by it. The light follows San Francisco's clock: the sun rises over the city and sets past the bridge, the drawing turns to white ink on black after dark, and the moon is drawn at its phase. Nothing in the drawing encodes a number from the index; those sit beneath it in their own units, with the file each came from.</p>
+  <section class="about">
+    <h3>About the drawing</h3>
+    <p>The drawing is the view from the lighthouse at Point Bonita, at the mouth of the Golden Gate, looking across to the bridge and the city and, through the coin telescope, south down the peninsula to the campuses. The weather is the latest observation at San Francisco International Airport (station KSFO), published by the National Weather Service: its description and visibility set the sky and the fog, its wind sets how fast and which way they drift, and rain falls when the station reports it. When the observation cannot be reached, a sample foggy morning is drawn and the line under the frame says so. The sun and the moon are placed for the time in San Francisco from the standard formulas for their positions, the moon is drawn at its phase, and the drawing turns to light ink on dark after sunset. The boats, planes, trains, whales and gulls are invented, and nothing in the drawing encodes a number from the index: the numbers sit beneath it, each in its own units, with the source it came from.</p>
+  </section>
 </div>
 
 <script type="application/json" id="readings">{
-  "built": "29 September 2026",
+  "built": "13 October 2026",
   "lede": "The tasks people bring to AI models account for <a href=\"#bridge\" data-view=\"bridge\">23 percent of US wages<\/a>, <a href=\"#city\" data-view=\"city\">pay has stayed within its usual range<\/a> while the mix of jobs has shifted more than in any three years since 2013, and <a href=\"#telescope\" data-view=\"valley\">42 percent of new degrees<\/a> are in fields that lead to the most exposed jobs.",
   "meaning": [
     "The tasks people bring to AI models are paid about a quarter of all the wages in the United States, while pay across the skills behind them has moved no further over the last three years than in an ordinary stretch of the record, so these models already reach a wide share of paid work and there is no sign yet that employers pay for those skills differently.",
     "The reading that stands out is the mix of work: over the last three years employment has moved toward jobs that draw on arts and humanities by more than in any three-year stretch since 2013, although a record of thirteen years produces a shift that size by chance about one time in eleven, and the same test was passed in 2020, when the pandemic reshuffled employment, so the next release of the wage tables will show whether it holds.",
     "What employers ask for moved before the models did: within occupations, job ads named the tasks the models can do less often from 2020 to the third quarter of 2022, and the release itself added a step of 2.6 standard errors against the 5.4 needed to stand out from an ordinary month.",
-    "Degrees are the slow channel and the one policy can count: 41.8 percent of new bachelor's degrees in 2025 went to the most exposed third of fields, against 40.7 percent in 2024, and people who move into those jobs from other occupations will join the count once the flows between occupations are published."
+    "Degrees and first jobs change slowly, and they are the part that policy can count: 41.8 percent of new bachelor's degrees in 2025 went to the most exposed third of fields, against 40.7 percent in 2024, enrolment in those fields has edged up, and young workers' employment in the most exposed jobs, against older workers', is 16 percent below its 2022 level."
   ],
   "notes": [
     "new data coming",
@@ -442,14 +457,15 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   ],
   "views": {
     "bridge": {
-      "capline": "23% of wages go to tasks people bring to AI models · March 2026",
+      "capline": "23% of wages go to tasks people bring to AI models; March 2026",
       "mark": "23% of wages in tasks people bring",
       "items": [
         {
           "n": "23%",
           "view": "bridge",
           "s": "of all the wages paid in the United States go to work on the tasks people bring to AI models, in the usage record the Anthropic Economic Index published in March 2026, against 18 percent in its September 2025 release, and 6 percent go to tasks people hand over to the model entirely, on the June 2026 record.",
-          "src": "Anthropic Economic Index, March 2026 · OEWS wages, May 2025",
+          "src": "Anthropic Economic Index, March 2026; OEWS wages, May 2025",
+          "more": "A task counts once any use of it is published, so this reading measures how widely use spreads across paid work and says nothing about how much of that work the models do. It rose from 18 percent in September 2025 to 23 percent in March 2026 as more tasks appeared in the record. The June 2026 file leaves out tasks below a reporting threshold, so the reading stays on the last release that publishes every task.",
           "tables": [
             "usage_reach.csv"
           ]
@@ -458,7 +474,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
           "n": "2.5×",
           "view": "bridge",
           "s": "is the weight of that use on complex problem solving skills, measured against their share of pay and the most of any skill group, while physical abilities receive 0.3 times their share.",
-          "src": "Anthropic Economic Index, March 2026 · O*NET 30.3",
+          "src": "Anthropic Economic Index, March 2026; O*NET 30.3",
+          "more": "Each skill group's share of use is set against its share of pay, so a value above one means the group draws more use than its weight in wages. Of the twenty-five groups, the most use falls on complex problem solving skills and the least on physical abilities.",
           "tables": [
             "usage_landing.csv"
           ]
@@ -467,23 +484,26 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
           "n": "3.1%",
           "view": "bridge",
           "s": "of wages are paid for the tasks that together make up three quarters of all that use, 243 tasks in the June 2026 record, against 1.8 percent in the September 2025 release.",
-          "src": "Anthropic Economic Index, June 2026 · OEWS wages, May 2025",
+          "src": "Anthropic Economic Index, June 2026; OEWS wages, May 2025",
+          "more": "Use is concentrated: 243 tasks account for three quarters of it. Counting only those tasks gives a reading that the reporting threshold cannot move, and its move from 1.8 to 3.1 percent means the work people bring most often now sits in tasks that carry more of the wage bill.",
           "tables": [
             "usage_reach.csv"
           ]
         }
       ],
-      "how": "Each conversation in the usage record is matched to the O*NET tasks it touches, each task is weighted by the wages paid for it in the latest OEWS release, and the share moves with every usage release, every few months, for the one platform whose record the index reads so far. A task counts as reached when any use of it is published, so the headline comes from the latest release that publishes every task, and the tasks making up three quarters of use are counted in every release alike, since no release leaves any of them out."
+      "how": "Each conversation in the usage record is matched to the O*NET tasks it touches, each task is weighted by the wages paid for it in the latest OEWS release, and the share moves with every usage release, every few months, for the one platform whose record the index reads so far. A task counts as reached when any use of it is published, so the headline comes from the latest release that publishes every task, and the tasks making up three quarters of use are counted in every release alike, since no release leaves any of them out.",
+      "headline": "The tasks people bring to AI models carry 23 percent of US wages, and that use falls hardest on complex problem solving skills, at 2.5 times their share of pay."
     },
     "city": {
-      "capline": "pay 2.9, 6.1 needed · jobs mix 8.1, 6.6 needed · job ads 2.6, 5.4 needed",
-      "mark": "pay 2.9 of 6.1 needed · jobs 8.1 of 6.6",
+      "capline": "pay 2.9, 6.1 needed; jobs mix 8.1, 6.6 needed; job ads 2.6, 5.4 needed",
+      "mark": "pay 2.9 of 6.1 needed; jobs 8.1 of 6.6",
       "items": [
         {
           "n": "2.9",
           "view": "city",
           "s": "standard errors is the largest change in pay across the twenty-five skill groups over the last three years, a fall in the pay of mental processes, where 6.1 would be needed to stand out from each group's own record since 2013, and seven of the ten earlier three-year stretches in that record moved as far or further.",
           "src": "OEWS, May 2012 to May 2025, occupations present in every year",
+          "more": "Each of the twenty-five skill groups is tested against its own changes since 2013, so a group whose pay has always moved a lot needs a larger change to stand out. The test runs again with each spring release of the wage tables, and it measures pay across whole occupations, so a rise for new hires and a fall for people already in the job would largely cancel in it.",
           "tables": [
             "outcomes_pay_series_balanced.csv",
             "outcomes_pay_changes.csv"
@@ -494,6 +514,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
           "view": "city",
           "s": "standard errors is the largest shift in the mix of skills in employment over the last three years, toward work that draws on arts and humanities, past the 6.6 needed to stand out and further than any of the ten earlier three-year stretches since 2013, although a record of thirteen years produces a shift that size by chance about one time in eleven, and the same test was passed in 2020.",
           "src": "OEWS, May 2012 to May 2025, occupations present in every year",
+          "more": "The mix of jobs is each skill group's share of employment, so it moves when people move between occupations, which can happen before pay changes at all. It is tested in the same way as pay, against each group's own record, and about one stretch in eleven of a record this long moves this far by chance.",
           "tables": [
             "outcomes_quantity_series_balanced.csv"
           ]
@@ -502,7 +523,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
           "n": "2.6",
           "view": "city",
           "s": "standard errors is the step, at the release of language models, in how much job ads within each occupation ask for the tasks those models can do, measured against the sixteen months before, where 5.4 would be needed to stand out from the same step at each earlier month, and the larger fall came before the release, from 2020 to the third quarter of 2022.",
-          "src": "NLx job ads, September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander · Eloundou task measure",
+          "src": "NLx job ads, September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander; Eloundou task measure",
+          "more": "The aggregates count, for each occupation and month, how many ads name each O*NET task. Within occupations, ads named the tasks the models can do less often from 2020 and reached their lowest point in the third quarter of 2022, so the change in what employers ask for came with the pandemic years and before the technology.",
           "tables": [
             "postings_step_at_release.csv",
             "postings_gradient_quarterly.csv",
@@ -510,24 +532,49 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
           ]
         }
       ],
-      "how": "For each skill group the index takes the last three yearly changes in pay, and in the share of employment, and sets them against that group's own changes since 2013: a change stands out when it passes the level only the most extreme three-year stretches in the record reached, and both the reading and that level are recalculated with each spring release of the wage tables. The job-ad reading compares, within each occupation and month, the share of ads naming each task with that task's exposure, and sets the change at the release against the same change placed at every earlier month."
+      "how": "For each skill group the index takes the last three yearly changes in pay, and in the share of employment, and sets them against that group's own changes since 2013: a change stands out when it passes the level only the most extreme three-year stretches in the record reached, and both the reading and that level are recalculated with each spring release of the wage tables. The job-ad reading compares, within each occupation and month, the share of ads naming each task with that task's exposure, and sets the change at the release against the same change placed at every earlier month.",
+      "headline": "Pay has stayed within its usual range, the mix of jobs has shifted more than in any three years since 2013, and job ads turned away from the tasks the models can do in 2020 to the third quarter of 2022, before the models were released."
     },
     "valley": {
-      "capline": "41.8% of new degrees in the most exposed fields · 2025",
+      "capline": "41.8% of new degrees and 53.1% of enrolment in exposed fields; young workers 16% below 2022 in exposed jobs",
       "mark": "41.8% of new degrees in exposed fields",
       "items": [
         {
           "n": "41.8%",
           "view": "valley",
           "s": "of new bachelor's degrees in 2025 went to the third of fields whose graduates hold the jobs most exposed to AI models, with each field scored by where its graduates actually work, against 40.7 percent in 2024.",
-          "src": "IPEDS completions, 2025 · field exposure from ACS and the Eloundou task measure",
+          "src": "IPEDS completions, 2025; field exposure from ACS and the Eloundou task measure",
+          "more": "Each field of study is scored by the exposure of the jobs its graduates hold in the American Community Survey, so a field counts as exposed because of where its graduates work. The share moves once a year, with each completions file.",
           "tables": [
             "pipeline_completions_by_state.csv",
             "pipeline_field_exposure_crosswalk.csv"
           ]
+        },
+        {
+          "n": "53.1%",
+          "view": "valley",
+          "s": "of undergraduates at four-year institutions in fall 2024 were enrolled in the third of field families whose graduates hold the most exposed jobs, against 52.4 percent in fall 2019.",
+          "src": "National Student Clearinghouse, Fall 2019 to Fall 2024; field exposure from ACS and the Eloundou task measure",
+          "more": "Enrolment shows the students still in college, three or four years ahead of their degrees, so it is the first place a change in what people choose to study would appear. So far the share in exposed fields has edged up.",
+          "tables": [
+            "pipeline_enrolment_by_exposure.csv",
+            "nsc_cip_family_enrolment.csv"
+          ]
+        },
+        {
+          "n": "16%",
+          "view": "valley",
+          "s": "is how far the employment of 22 to 27 year olds in the most exposed third of jobs, set against their employment in other jobs, has fallen since 2022 beyond the same change for workers aged 35 to 54, as of August 2026.",
+          "src": "Current Population Survey, January 2022 to August 2026",
+          "more": "The gauge sets young workers' employment in the most exposed jobs against their employment in other jobs, and divides by the same ratio for workers aged 35 to 54, so it moves only when young workers' place in exposed work changes relative to older workers'. Over the last twelve months it sits 8.4 points below the months before, where reshuffling the months moves it by at most 2.8. The monthly samples are small and the series starts in January 2022, so it does not show whether the fall began before the release of language models.",
+          "tables": [
+            "cps_young_worker_gauge.csv",
+            "cps_young_worker_test.csv"
+          ]
         }
       ],
-      "how": "Degrees come from the IPEDS completions file and each field of study is scored by the exposure of the occupations its graduates hold, on the task measure of Eloundou and coauthors, so the share moves once a year, and people who arrive in exposed jobs from other occupations will join this view when the flows between occupations are published."
+      "how": "Degrees come from the IPEDS completions file and enrolment from the Clearinghouse, and each field is scored by the exposure of the occupations its graduates hold, on the task measure of Eloundou and coauthors. Young workers come from the monthly Current Population Survey, with occupations scored the same way. People who move into exposed jobs from other occupations will join this view when the flows between occupations are published.",
+      "headline": "42 percent of new degrees and 53 percent of four-year enrolment are in fields that lead to the most exposed jobs, while young workers' employment in those jobs, against older workers', is 16 percent below its 2022 level."
     }
   },
   "releases": [
@@ -1063,45 +1110,35 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   $("#viewer-tap").addEventListener("click", ()=>go("valley"));
   $("#viewer-tap").addEventListener("keydown", e=>{ if (e.key==="Enter"||e.key===" "){ e.preventDefault(); go("valley"); } });
   const R = {
-    home:  { cap:["Three views from one point", "choose a view · the beam turns to it"], title:"The readings", left:null, right:null, tables:[] },
-    city:  { cap:["The city · what has moved"], title:"What has moved", left:["bridge","turn to the bridge"], right:["valley","raise the telescope"],
+    home:  { cap:["Three views from one point", "Choose a view, and the beam turns to it."], title:"The readings", left:null, right:null, tables:[] },
+    city:  { cap:["The city: what has moved"], title:"What has moved", left:["bridge","turn to the bridge"], right:["valley","raise the telescope"],
              tables:["outcomes_pay_series_balanced.csv","outcomes_quantity_series_balanced.csv","outcomes_pay_changes.csv"] },
-    bridge:{ cap:["The bridge · where usage lands"], title:"Where usage lands", left:["valley","raise the telescope"], right:["city","turn to the city"],
+    bridge:{ cap:["The bridge: where usage lands"], title:"Where usage lands", left:["valley","raise the telescope"], right:["city","turn to the city"],
              tables:["usage_reach.csv","usage_landing.csv","usage_by_occupation.csv"] },
-    valley:{ cap:["The telescope · the pipeline"], title:"The pipeline", left:["city","turn to the city"], right:["bridge","turn to the bridge"],
+    valley:{ cap:["The telescope: training and first jobs"], title:"Training and first jobs", left:["city","turn to the city"], right:["bridge","turn to the bridge"],
              tables:["pipeline_completions_by_state.csv","pipeline_enrolment_by_exposure.csv","pipeline_field_exposure_crosswalk.csv","capacity_education_channel.csv"] },
   };
   // the words and numbers: the build writes them into readings.json from its tables, and the page carries the last build's copy
   // so it reads the same before, or without, the fetch
   const READ = JSON.parse($("#readings").textContent);
-  if (READ.built) document.querySelector(".stamp").lastChild.textContent = `figures from the ${READ.built} build`;
-  const TABLE_DIR = "data/tables/";
-  const COMMON = ["wagebill_national.csv","exposure_by_occupation.csv","state_exposure.csv","state_adoption_btos.csv","cps_young_worker_gauge.csv"];
+  if (READ.built) $("#built").textContent = `Figures from the build of ${READ.built}.`;
   function marks(){ for (const v of ["bridge", "city", "valley"]) $("#mark-"+v).textContent = READ.views[v].mark; }
   const esc = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
   const VIEWNAME = { bridge:"the bridge", city:"the city", valley:"the telescope" }, VIEWHASH = { bridge:"bridge", city:"city", valley:"telescope" };
   // the opening sentence and what follows it; the lede is the build's own markup, its clauses linked to the views
   function top(){ $("#lede").innerHTML = READ.lede;
     $("#meaning-body").replaceChildren(...READ.meaning.map(t => { const p = document.createElement("p"); p.textContent = t; return p; }));
-    $("#notes").textContent = READ.notes.join(" · "); marks(); }
+    $("#notes").textContent = READ.notes.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(". ") + "."; marks(); }
   function item(it, link){
     const n = link ? `<a class="n" href="#${VIEWHASH[it.view]}" data-view="${it.view}" aria-label="${esc(it.n)}: open ${VIEWNAME[it.view]}">${esc(it.n)}</a>` : `<span class="n">${esc(it.n)}</span>`;
-    return `<div class="item">${n} <span class="s">${esc(it.s)}</span><span class="cite">${esc(it.src)}${it.tables ? " · " + tableLinks(it.tables) : ""}</span></div>`; }
+    return `<div class="item">${n} <span class="s">${esc(it.s)}</span>${!link && it.more ? `<p class="more">${esc(it.more)}</p>` : ""}<span class="cite">${esc(it.src)}</span></div>`; }
   // a number or a clause that names a view turns the drawing to it
   for (const host of ["#lede", "#items"]) $(host).addEventListener("click", e=>{ const a = e.target.closest("a[data-view]"); if (!a) return; e.preventDefault(); fromFigure(a.dataset.view); });
-  function tableLinks(list){ return list.map(t => `<a href="${TABLE_DIR}${t}">${t}</a>`).join(" · "); }
-  (function tableList(){
-    const dl = $("#table-list");
-    for (const [name, view] of [["The bridge","bridge"],["The city","city"],["The telescope","valley"]]){
-      dl.insertAdjacentHTML("beforeend", `<dt>${name}</dt><dd>${tableLinks(R[view].tables)}</dd>`); }
-    dl.insertAdjacentHTML("beforeend", `<dt>Beneath all three</dt><dd>${tableLinks(COMMON)}</dd>`);
-    dl.insertAdjacentHTML("beforeend", `<dt>The checks</dt><dd><a href="data/checks.csv">checks.csv</a> · <a href="data/manifest.json">manifest.json</a></dd>`);
-  })();
   const edgeL = $("#edge-left"), edgeR = $("#edge-right"), home = $("#btn-home");
   // The real page reads readings.json written by the build; the mockup carries the same numbers embedded.
   fetch("data/readings.json").then(r=>r.ok ? r.json() : null).then(j=>{ if (!j) return;
     Object.assign(READ, j); top();
-    document.querySelector(".stamp").lastChild.textContent = `figures from the ${j.built} build`;
+    $("#built").textContent = `Figures from the build of ${j.built}.`;
     go(stage.dataset.view, true); }).catch(()=>{});
   let timer = null;
   function fromFigure(view){ const r = stage.getBoundingClientRect(), seen = Math.min(r.bottom, innerHeight) - Math.max(r.top, 0), off = seen < r.height*.6;
@@ -1133,7 +1170,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     marks();
     const V = READ.views, list = view === "home" ? [V.bridge.items[0], V.city.items[0], V.city.items[1], V.valley.items[0]] : V[view].items;
     $("#items").innerHTML = list.map(it => item(it, view === "home")).join("");
-    $("#r-from").innerHTML = view === "home" ? "each number is a cell of a table, and the tables are listed <a href=\"#tables\">below</a>" : "";
+    $("#r-from").textContent = "";
+    $("#lede").innerHTML = view === "home" ? READ.lede : esc((READ.views[view] || {}).headline || "");
     edgeL.hidden = !r.left; edgeR.hidden = !r.right; home.hidden = (view==="home");
     if (r.left){ edgeL.querySelector("span").textContent = r.left[1]; edgeL.onclick = ()=>go(r.left[0]); }
     if (r.right){ edgeR.querySelector("span").textContent = r.right[1]; edgeR.onclick = ()=>go(r.right[0]); }
@@ -1143,7 +1181,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     // who cannot see the turn hears it; a keyboard stays in the stage, on the way back or on the view it came from
     const first = view === "home" ? null : READ.views[view].items[0], lead = first ? ` ${first.n} ${first.s}` : "";
     $("#announce").textContent = r.cap[0] + "." + lead;
-    document.title = view === "home" ? BASE_TITLE : `${r.cap[0]} · ${first.n} · ${BASE_TITLE}`;
+    document.title = view === "home" ? BASE_TITLE : `${r.cap[0]} | ${BASE_TITLE}`;
     const prev = lastFrom;
     if (keyed) requestAnimationFrame(()=>{ const t = view === "home" ? $("#hot-" + ({bridge:"bridge", city:"city", valley:"tele"}[prev] || "city")) : home; t && t.focus({preventScroll:true}); });
     lastFrom = view;
@@ -1167,13 +1205,14 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 
   /* ---------- the coin card: three buildings ---------- */
   const SOURCES = [
-    { key:"civic", name:"City Hall", unit:"statistical agencies", draw:(g)=>{ cityhall(g, 60, 86); tint(g, domePath(60, 86-44, 44, 24), "var(--glass)").style.opacity = ".3"; },
+    { key:"civic", name:"City Hall", unit:"statistical agencies", heading:"Pay, jobs, job ads and occupations", draw:(g)=>{ cityhall(g, 60, 86); tint(g, domePath(60, 86-44, 44, 24), "var(--glass)").style.opacity = ".3"; },
       text:"<b>OEWS</b>, wages and employment by occupation, BLS, May 2012 to May 2025. <b>BTOS</b>, firms using AI, Census Bureau, biweekly since September 2023. <b>CPS</b> basic monthly, Census Bureau, January 2022 to August 2026. <b>O*NET 30.3</b>, tasks, ratings and skills, the Department of Labor. Crosswalks from the Census Bureau, NCES and BLS. <b>NLx job ads</b>, the tasks named in the ads of the National Labor Exchange, monthly from September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander." },
-    { key:"campus", name:"The campanile", unit:"the training pipeline", draw:(g)=>{ campanile(g, 60, 82, 60); blob(g, 46, 22, 28, 60, "var(--cream)", 15); el("path", {d:"M 20 82 L 100 82", class:"thin"}, g); },
+    { key:"campus", name:"The campanile", unit:"education", heading:"Degrees, enrolment and young workers", draw:(g)=>{ campanile(g, 60, 82, 60); blob(g, 46, 22, 28, 60, "var(--cream)", 15); el("path", {d:"M 20 82 L 100 82", class:"thin"}, g); },
       text:"<b>IPEDS</b> completions by field and institution, NCES, 2023 to 2025. <b>National Student Clearinghouse</b> undergraduate enrolment at four-year institutions by field family, fall 2019 to fall 2024. <b>ACS</b> 2024 field of degree against occupation, the observed link from what people studied to what they do. Fields are scored by where their graduates work." },
-    { key:"labs", name:"The labs on the shore", unit:"usage", draw:(g)=>{ labs(g, 22, 82, 1); blob(g, 50, 16, 40, 66, "var(--glass)", 27).style.opacity = "0.25"; el("path", {d:"M 10 82 L 112 82 M 10 88 q 20 3 40 0 q 20 -3 40 0", class:"hair"}, g); },
+    { key:"labs", name:"The labs on the shore", unit:"usage", heading:"Use of AI models", draw:(g)=>{ labs(g, 22, 82, 1); blob(g, 50, 16, 40, 66, "var(--glass)", 27).style.opacity = "0.25"; el("path", {d:"M 10 82 L 112 82 M 10 88 q 20 3 40 0 q 20 -3 40 0", class:"hair"}, g); },
       text:"<b>Anthropic Economic Index</b>, usage by O*NET task with the automation and augmentation split, releases from September 2025 to the June 2026 monthly file. <b>OpenAI Signals v2.0</b>, work-related messages by work activity, monthly to June 2026, allocated to tasks by dollars. Each sees its own users only, so both are shown and never averaged." },
   ];
+  $("#source-list").innerHTML = SOURCES.map(s => `<h4>${s.heading}</h4><p>${s.text}</p>`).join("");
   const vig = $("#vig"), src = $("#src");
   for (const s of SOURCES){
     const b = document.createElement("button"); b.setAttribute("aria-expanded","false");
@@ -1414,7 +1453,8 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
     const age = (Date.now() - o.time.getTime())/60000;
     stage.classList.toggle("stale", age > 90);
     const dir = ["N","NE","E","SE","S","SW","W","NW"][Math.round(((o.wind_from%360)+360)%360/45)%8];
-    $("#obs").innerHTML = `<b>${sfClock(now)} in San Francisco</b> · ${o.station} ${sfClock(o.time)} · ${o.text.toLowerCase()} · wind ${dir} ${o.wind_kmh} km/h${o.temp_c != null ? ` · ${o.temp_c}°C` : ""}${o.sample ? " · sample observation" : age > 90 ? " · last observation" : ""}`;
+    const wind = {N:"north",NE:"north-east",E:"east",SE:"south-east",S:"south",SW:"south-west",W:"west",NW:"north-west"}[dir];
+    $("#obs").innerHTML = `<b>${sfClock(now)} in San Francisco</b>. The sky is drawn from ${o.sample ? "a sample observation, since the airport's could not be reached" : `the ${o.station} observation at ${sfClock(o.time)}${age > 90 ? ", the last one published" : ""}`}: ${o.text.toLowerCase()}, wind from the ${wind} at ${o.wind_kmh} km/h${o.temp_c != null ? `, ${o.temp_c}°C` : ""}.`;
   }
   let skyReady = false, fitTitle = "";
   /* The slow things, the fog, the swell, the crests, the cloud and its deck, the banks in fog, all move a few pixels a second.
@@ -1531,15 +1571,6 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
   setInterval(()=>{ const b = $("#obs b"); if (b && !document.hidden) b.textContent = `${sfClock(sfNow())} in San Francisco`; }, 30000);
   fetchObservation().then(o=>{ if (o){ LIVE = o; if (!FORCED) OBS = o; drawSky(OBS, stage.dataset.view); } });
   setInterval(()=>{ fetchObservation().then(o=>{ if (o){ LIVE = o; if (!FORCED) OBS = o; } drawSky(OBS, stage.dataset.view); }); }, 600e3);
-  // the exploring strip: force a sky or an hour, for looking, not for the page
-  (function lab(){
-    const skies = ["live","clear","light cloud","overcast","fog","thick fog","rain","wind","storm"], hours = [["now",null],["dawn",()=>twilight(false)],["morning",9],["midday",12.5],["afternoon",16],["dusk",()=>twilight(true)],["night",22.5]];
-    const row = (host, items, pick) => items.forEach(([label, v]) => { const b = document.createElement("button"); b.textContent = label; b.setAttribute("aria-pressed", "false"); b.onclick = ()=>{ pick(typeof v === "function" ? v() : v); host.querySelectorAll("button").forEach(x=>{ x.classList.toggle("on", x===b); x.setAttribute("aria-pressed", String(x===b)); }); drawSky(OBS, stage.dataset.view); }; host.appendChild(b); });
-    row($("#lab-sky"), skies.map(k=>[k,k]), k=>{ FORCED = k === "live" ? null : k; OBS = FORCED ? skyFor(FORCED) : LIVE; });
-    row($("#lab-hour"), hours, h=>{ HOUR = h; });
-  })();
-  $("#tg-aw").addEventListener("change", e=>{ stage.dataset.aw = e.target.checked ? "on":"off"; drawSky(OBS, stage.dataset.view); });
-  $("#tg-ak").addEventListener("change", e=>{ stage.dataset.ak = e.target.checked ? "on":"off"; });
 
   /* ---------- the life on the bay: one thing at a time, now and then ----------
      Gulls cross any view. A plane on the approach crosses high. A rocket
@@ -1802,7 +1833,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
         return { T: t1 + t2 + t3, at: t => t < t1 ? v0*t + .5*A*t*t : t < t1 + t2 ? da + vp*(t - t1) : da + (d - da - dd) + (u => vp*u - .5*A*u*u)(Math.min(t - t1 - t2, t3)) }; };
       const inn = prof(OUT - TERM, VM, 0), out = prof(OUT - TERM, 0, VM), total = inn.T + DWELL + out.T;
       sfTrainUntil = performance.now() + total*1000 + 1000;
-      const [, gy] = toScreen(V, 0, CITY.y), holder = el("g", {}), g = el("g", {class:"hair"}, holder), P = "fill:var(--paper)"; life.prepend(holder);
+      const [, gy] = toScreen(V, 0, CITY.y), holder = el("g", {}), g = el("g", {class:"hair", style:"opacity:1"}, holder), P = "fill:var(--paper)"; life.prepend(holder);
       // a locomotive at each end with its nose sloped outward, the double-deck cars between them, so whichever way it runs it leads with a head
       for (let i=0;i<N;i++){ const x = i*(CL + GAP), north = i === 0, south = i === N - 1;
         const d = north ? `M ${x} 0 L ${x} -2.4 L ${x + 2.4} -4.8 L ${x + CL} -4.8 L ${x + CL} 0 Z`
