@@ -1,4 +1,4 @@
-# AI Work Index
+# AI at Work
 
 A public index of where AI usage has reached the labour market. One
 product, one repository. It depends on the paper repository
@@ -24,8 +24,8 @@ still a fixture (every OEWS file comes from the ai-data releases data-2026-10-12
 pass. See `aiindex/README.md` for each layer, `aiindex/AUDIT.md` for every
 source and `docs/data-licences.md` for what may be republished. The page is
 `site/index.html`. The repository is public and Pages publishes `site/`,
-so the page can be linked to. Its working name is AI Work Index, a one-line change in
-the page and the READMEs when a final name is chosen. Since 14 October 2026 the page shows three
+so the page can be linked to. Its name is AI at Work, with the line "Three indices: use, jobs and training" beside it in
+the header. Since 14 October 2026 the page shows three
 indices side by side and never added together, use, jobs and training, each a tile above the drawing
 and three cards below it; every card has a title, one figure, a sentence and its series over time,
 with the test threshold drawn where there is one, and the full sentence, paragraph, source and values
