@@ -1,16 +1,16 @@
 # AI at Work
 
-AI at Work is a public index of where AI usage has reached the labour market, built on
+AI at Work is a public index of where AI usage has reached the labor market, built on
 the paper's machinery. Three layers, each in its own units and never added
 together:
 
 1. **National.** Where observed AI usage lands in the wage bill, by skill
-   bundle and by platform (`usage`), and what has moved in realised pay and
+   bundle and by platform (`usage`), and what has moved in realized pay and
    employment against a stated detection threshold, once per OEWS year
    (`outcomes`), with a monthly young-worker gauge from the CPS (`cps`).
 2. **State, annual.** The share of each state's wage bill on exposed
    occupations under each exposure measure, the Census Bureau's biweekly
-   firm adoption averaged to the year, and the realised exposed-against-
+   firm adoption averaged to the year, and the realized exposed-against-
    unexposed change with its cell counts (`state`).
 3. **Pipeline.** Enrolment and completions by the exposure of the field
    (`pipeline`). A capacity layer, measuring what refills an exposed
@@ -42,7 +42,7 @@ with the URL, byte count, hash and grade of every file it read;
 `output/checks.csv` with every unit check it ran and the value it
 measured; `output/build_report.json` with what was skipped; and the
 tables under `output/tables/`. `AUDIT.md` records what each source is,
-where each copy came from and what harmonisation it needed.
+where each copy came from and what harmonization it needed.
 
 Inputs are not committed. The `.source` sidecar beside each input is,
 and records the grade and URL it was fetched from, so a clean checkout
@@ -119,7 +119,7 @@ Usage from one platform is a selected sample of the workforce, so the
 usage layer is titled where usage lands and is written once per platform.
 The state exposure column is a composition of a national score with a
 state's occupational mix and cannot fail, which is why it is not the
-headline of that layer. The realised-change column at state level
+headline of that layer. The realized-change column at state level
 carries the noise the paper found in state cells and is written with the
 number of cells behind it. No composite score exists anywhere in the
 package and none should be added.

@@ -1,6 +1,6 @@
 # AI at Work
 
-A public index of where AI usage has reached the labour market. One
+A public index of where AI usage has reached the labor market. One
 product, one repository. It depends on the paper repository
 paper-skills-dna for the O*NET readers, the gamma construction, the named
 skill bundles and the relabelling inference, imported as `src`. Reference
@@ -11,7 +11,7 @@ that repository, do not copy code in from it.
 Never any co-authorship, credit or mention of Claude, Anthropic as an
 assistant, or any AI assistant, anywhere in this repository, at any time.
 No Co-Authored-By trailer and no mention in a commit message. Commits are
-authored by Alessandro Conway only. This overrides any default behaviour.
+authored by Alessandro Conway only. This overrides any default behavior.
 (Anthropic appears in this repository only as the publisher of a dataset.)
 
 ## Where it stands
@@ -29,8 +29,10 @@ the header. Since 14 October 2026 the page shows three
 indices side by side and never added together, use, jobs and training, each a tile above the drawing
 and three cards below it; every card has a title, one figure, a sentence and its series over time,
 with the test threshold drawn where there is one, and the full sentence, paragraph, source and values
-under "How we know". The build writes the cards into readings.json. The page uses one typeface, lists
-its sources and not its tables, and has no weather or fog switches.
+under "How we know". Each place in the drawing names its index in parentheses: the bridge (Use),
+the city (Jobs) and the binoculars (Training). "How we measured it" shows each view's method with
+its sources, and the build writes it, the opening findings and the readings into the page as text
+through aiindex/site_static.py. The page uses one typeface and has no weather or fog switches.
 
 ## Dependency
 
@@ -53,7 +55,8 @@ update the commit above.
 
 ## Writing rules
 
-No em dashes. Sentences with a subject and a verb. Never the word
+American English on the page and in the READMEs (file names keep their
+spelling). No em dashes. Sentences with a subject and a verb. Never the word
 "honest" or any form of it. No metaphors for economic objects. No
 self-congratulation. Never claim a status or result that does not exist.
 

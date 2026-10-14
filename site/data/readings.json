@@ -1,11 +1,11 @@
 {
   "built": "14 October 2026",
-  "lede": "The tasks people bring to AI models account for <a href=\"#bridge\" data-view=\"bridge\">23 percent of US wages</a>, <a href=\"#city\" data-view=\"city\">pay has stayed within its usual range</a> while the mix of jobs has shifted more than in any three years since 2013, and <a href=\"#telescope\" data-view=\"valley\">42 percent of new degrees</a> are in fields that lead to the most exposed jobs.",
+  "lede": "The tasks people bring to AI models account for <a href=\"#bridge\" data-view=\"bridge\">23 percent of US wages</a>, <a href=\"#city\" data-view=\"city\">pay has stayed within its usual range</a> while the mix of jobs has shifted more than in any three years since 2013, and <a href=\"#binoculars\" data-view=\"valley\">42 percent of new degrees</a> are in fields that lead to the most exposed jobs.",
   "meaning": [
     "The tasks people bring to AI models are paid about a quarter of all the wages in the United States, while pay across the skills behind them has moved no further over the last three years than in an ordinary stretch of the record, so these models already reach a wide share of paid work and there is no sign yet that employers pay for those skills differently.",
     "The reading that stands out is the mix of work: over the last three years employment has moved toward jobs that draw on arts and humanities by more than in any three-year stretch since 2013, although a record of thirteen years produces a shift that size by chance about one time in eleven, and the same test was passed in 2020, when the pandemic reshuffled employment, so the next release of the wage tables will show whether it holds.",
     "What employers ask for moved before the models did: within occupations, job ads named the tasks the models can do less often from 2020 to the third quarter of 2022, and the release itself added a step of 2.6 standard errors against the 5.4 needed to stand out from an ordinary month.",
-    "Degrees and first jobs change slowly, and they are the part that policy can count: 41.8 percent of new bachelor's degrees in 2025 went to the most exposed third of fields, against 40.7 percent in 2024, enrolment in those fields has edged up, and young workers' employment in the most exposed jobs, against older workers', is 16 percent below its 2022 level."
+    "Degrees and first jobs change slowly, and they are the part that policy can count: 41.8 percent of new bachelor's degrees in 2025 went to the most exposed third of fields, against 40.7 percent in 2024, enrollment in those fields has edged up, and young workers' employment in the most exposed jobs, against older workers', is 16 percent below its 2022 level."
   ],
   "notes": [
     "new data coming",
@@ -287,7 +287,7 @@
       "headline": "Pay has stayed within its usual range, the mix of jobs has shifted more than in any three years since 2013, and job ads turned away from the tasks the models can do in 2020 to the third quarter of 2022, before the models were released."
     },
     "valley": {
-      "capline": "41.8% of new degrees and 53.1% of enrolment in exposed fields; young workers 16% below 2022 in exposed jobs",
+      "capline": "41.8% of new degrees and 53.1% of enrollment in exposed fields; young workers 16% below 2022 in exposed jobs",
       "mark": "41.8% of new degrees in exposed fields",
       "items": [
         {
@@ -324,12 +324,12 @@
           "view": "valley",
           "s": "of undergraduates at four-year institutions in fall 2024 were enrolled in the third of field families whose graduates hold the most exposed jobs, against 52.4 percent in fall 2019.",
           "src": "National Student Clearinghouse, Fall 2019 to Fall 2024; field exposure from ACS and the Eloundou task measure",
-          "more": "Enrolment shows the students still in college, three or four years ahead of their degrees, so it is the first place a change in what people choose to study would appear. So far the share in exposed fields has edged up.",
+          "more": "Enrollment shows the students still in college, three or four years ahead of their degrees, so it is the first place a change in what people choose to study would appear. So far the share in exposed fields has edged up.",
           "tables": [
             "pipeline_enrolment_by_exposure.csv",
             "nsc_cip_family_enrolment.csv"
           ],
-          "title": "Enrolment in exposed fields",
+          "title": "Enrollment in exposed fields",
           "big": "53.1%",
           "note": "Of four-year undergraduates in fall 2024, against 52.4% in fall 2019.",
           "series": {
@@ -350,7 +350,7 @@
               53.1298
             ],
             "fmt": "pct1",
-            "unit": "% of enrolment",
+            "unit": "% of enrollment",
             "threshold": null
           }
         },
@@ -484,10 +484,10 @@
           }
         }
       ],
-      "how": "Degrees come from the IPEDS completions file and enrolment from the Clearinghouse, and each field is scored by the exposure of the occupations its graduates hold, on the task measure of Eloundou and coauthors. Young workers come from the monthly Current Population Survey, with occupations scored the same way. People who move into exposed jobs from other occupations will join this view when the flows between occupations are published.",
+      "how": "Degrees come from the IPEDS completions file and enrollment from the Clearinghouse, and each field is scored by the exposure of the occupations its graduates hold, on the task measure of Eloundou and coauthors. Young workers come from the monthly Current Population Survey, with occupations scored the same way. People who move into exposed jobs from other occupations will join this view when the flows between occupations are published.",
       "index": "Training",
       "index_line": "What people study, and whether young workers still get exposed jobs",
-      "headline": "42 percent of new degrees and 53 percent of four-year enrolment are in fields that lead to the most exposed jobs, while young workers' employment in those jobs, against older workers', is 16 percent below its 2022 level."
+      "headline": "42 percent of new degrees and 53 percent of four-year enrollment are in fields that lead to the most exposed jobs, while young workers' employment in those jobs, against older workers', is 16 percent below its 2022 level."
     }
   },
   "releases": [

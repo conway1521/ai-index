@@ -535,7 +535,7 @@ def export_site(release: str) -> Path:
                     f"and sets the change at the release against the same change placed at every earlier month."),
         },
         "valley": {
-            "capline": (f"{degrees:.1f}% of new degrees and {enrolled:.1f}% of enrolment in exposed fields; "
+            "capline": (f"{degrees:.1f}% of new degrees and {enrolled:.1f}% of enrollment in exposed fields; "
                         f"young workers {young:.0f}% below 2022 in exposed jobs"),
             "mark": f"{degrees:.1f}% of new degrees in exposed fields",
             "items": [
@@ -553,7 +553,7 @@ def export_site(release: str) -> Path:
                        f"families whose graduates hold the most exposed jobs, against {enrolled_first:.1f} percent in "
                        f"{str(e_first['term']).lower()}."),
                  "src": f"National Student Clearinghouse, {e_first['term']} to {e_last['term']} · field exposure from ACS and the Eloundou task measure",
-                 "more": ("Enrolment shows the students still in college, three or four years ahead of their degrees, so it is the first "
+                 "more": ("Enrollment shows the students still in college, three or four years ahead of their degrees, so it is the first "
                           "place a change in what people choose to study would appear. So far the share in exposed fields has "
                           + ("edged up." if enrolled >= enrolled_first else "fallen.")),
                  "tables": ["pipeline_enrolment_by_exposure.csv", "nsc_cip_family_enrolment.csv"]},
@@ -571,7 +571,7 @@ def export_site(release: str) -> Path:
                              "began before the release of language models.")),
                  "tables": ["cps_young_worker_gauge.csv"] + (["cps_young_worker_test.csv"] if gtest is not None else [])},
             ],
-            "how": ("Degrees come from the IPEDS completions file and enrolment from the Clearinghouse, and each field is scored by the "
+            "how": ("Degrees come from the IPEDS completions file and enrollment from the Clearinghouse, and each field is scored by the "
                     "exposure of the occupations its graduates hold, on the task measure of Eloundou and coauthors. Young workers come "
                     "from the monthly Current Population Survey, with occupations scored the same way. People who move into exposed "
                     "jobs from other occupations will join this view when the flows between occupations are published."),
@@ -586,7 +586,7 @@ def export_site(release: str) -> Path:
                 + (f" while the mix of jobs has shifted more than in any three years since {since}" if qty_record else
                    " while the mix of jobs has moved past its usual range" if qty_out else ""))
     lede = (f'The tasks people bring to AI models account for <a href="#bridge" data-view="bridge">{wages} percent of US wages</a>, {city}, '
-            f'and <a href="#telescope" data-view="valley">{degrees:.0f} percent of new degrees</a> are in fields that lead to the most exposed jobs.')
+            f'and <a href="#binoculars" data-view="valley">{degrees:.0f} percent of new degrees</a> are in fields that lead to the most exposed jobs.')
 
     # Each view is one index, laid out the way a single index is: a title, one big figure, a sentence, and its series over
     # time. The full sentence, the paragraph and the source stay under each card for anyone who wants the method.
@@ -635,9 +635,9 @@ def export_site(release: str) -> Path:
             {"title": "New degrees in exposed fields", "big": f"{degrees:.1f}%",
              "note": (f"Of bachelor's degrees in {year}, up from {before:.1f}% in {year - 1}." if before is not None else f"Of bachelor's degrees in {year}."),
              "series": series(list(share.index), share.to_numpy() * 100, "pct1", unit="% of degrees")},
-            {"title": "Enrolment in exposed fields", "big": f"{enrolled:.1f}%",
+            {"title": "Enrollment in exposed fields", "big": f"{enrolled:.1f}%",
              "note": f"Of four-year undergraduates in {str(e_last['term']).lower()}, against {enrolled_first:.1f}% in {str(e_first['term']).lower()}.",
-             "series": series(enrol["term"].str.replace("Fall ", ""), enrol["share_exposed"] * 100, "pct1", unit="% of enrolment")},
+             "series": series(enrol["term"].str.replace("Fall ", ""), enrol["share_exposed"] * 100, "pct1", unit="% of enrollment")},
             {"title": "Young workers in exposed jobs", "big": f"−{young:.0f}%",
              "note": "Employment of 22 to 27 year olds in the most exposed jobs, against older workers, since 2022.",
              "series": series(young_series["period"], young_series["v"], "pct0s", unit="% against 2022")},
@@ -656,7 +656,7 @@ def export_site(release: str) -> Path:
                     ", the mix of jobs has moved past its usual range" if qty_out else "")
                  + (f", and job ads turned away from the tasks the models can do in 2020 to {low_when}, before the models were released."
                     if fell_before else ", and job ads show no step beyond their usual range at the release of language models.")),
-        "valley": (f"{degrees:.0f} percent of new degrees and {enrolled:.0f} percent of four-year enrolment are in fields that lead to "
+        "valley": (f"{degrees:.0f} percent of new degrees and {enrolled:.0f} percent of four-year enrollment are in fields that lead to "
                    f"the most exposed jobs, while young workers' employment in those jobs, against older workers', is "
                    f"{young:.0f} percent below its 2022 level."),
     }
@@ -690,7 +690,7 @@ def export_site(release: str) -> Path:
     meaning.append(f"Degrees and first jobs change slowly, and they are the part that policy can count: {degrees:.1f} percent of new bachelor's "
                    f"degrees in {year} went to the most exposed third of fields"
                    + (f", against {before:.1f} percent in {year - 1}" if before is not None else "")
-                   + f", enrolment in those fields has {'edged up' if enrolled >= enrolled_first else 'fallen'}, and young workers' employment in the most exposed jobs, against older "
+                   + f", enrollment in those fields has {'edged up' if enrolled >= enrolled_first else 'fallen'}, and young workers' employment in the most exposed jobs, against older "
                    f"workers', is {young:.0f} percent below its 2022 level.")
 
     notes = ["new data coming", f"next wage tables: spring {int(pay['year']) + 2}"]
