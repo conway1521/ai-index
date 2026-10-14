@@ -353,73 +353,160 @@ _PLAIN = {
 }
 
 
-# Published research beside each card: whether it is consistent with the reading, finds differently, or is
-# background for it. Each entry is checked against the published version, the current one where it was revised.
-def _study(stance: str, cite: str, url: str, text: str) -> dict:
-    return {"stance": stance, "cite": cite, "url": url, "text": text}
+# Published work the page draws on, one entry per study, with the link checked against the current version. Each card
+# names the studies that bear on it and how: consistent with its reading, finding differently, background to it, or the
+# method or data it is built on. The full list is printed on the page, grouped by the question each line of work asks.
+_STUDIES = {
+    "alm": ("Autor, Levy and Murnane (2003), Quarterly Journal of Economics", "https://doi.org/10.1162/003355303322552801", "tasks",
+            "Jobs are bundles of tasks, and technology substitutes for some and complements others."),
+    "aa": ("Acemoglu and Autor (2011), Handbook of Labor Economics", "https://doi.org/10.1016/S0169-7218(11)02410-5", "tasks",
+           "The task framework became the standard account of how technology moves wages and employment."),
+    "ar18": ("Acemoglu and Restrepo (2018), American Economic Review", "https://doi.org/10.1257/aer.20160696", "tasks",
+             "Automation displaces labor from tasks while productivity gains and new tasks bring it back."),
+    "ar19": ("Acemoglu and Restrepo (2019), Journal of Economic Perspectives", "https://doi.org/10.1257/jep.33.2.3", "tasks",
+             "An exposed task can lose labor without its occupation shrinking, because new tasks reinstate work."),
+    "ar22": ("Acemoglu and Restrepo (2022), Econometrica", "https://doi.org/10.3982/ECTA19815", "tasks",
+             "Automation of tasks accounts for much of the rise in US wage inequality."),
+    "acemoglu25": ("Acemoglu (2025), Economic Policy", "https://doi.org/10.1093/epolic/eiae042", "tasks",
+                   "The gains from AI depend on the share of tasks it affects and the cost it saves on them, not on technical exposure alone."),
+    "km": ("Katz and Murphy (1992), Quarterly Journal of Economics", "https://doi.org/10.2307/2118323", "tasks",
+           "Skill prices can be read off relative wages and relative supplies."),
+    "felten": ("Felten, Raj and Seamans (2021), Strategic Management Journal", "https://doi.org/10.1002/smj.3286", "exposure",
+               "Score exposure by linking AI applications to the abilities each occupation uses."),
+    "webb": ("Webb (2020), working paper", "https://www.michaelwebb.co/webb_ai.pdf", "exposure",
+             "Scores exposure by the overlap between patent text and task descriptions."),
+    "bmr": ("Brynjolfsson, Mitchell and Rock (2018), AEA Papers and Proceedings", "https://doi.org/10.1257/pandp.20181019", "exposure",
+            "Rate tasks for how suitable they are for machine learning."),
+    "eloundou": ("Eloundou, Manning, Mishkin and Rock (2024), Science", "https://doi.org/10.1126/science.adj0998", "exposure",
+                 "Rate tasks for what language models can do; counting complementary software, just over 46% of jobs have more than half their tasks exposed."),
+    "handa": ("Handa and coauthors (2025), Anthropic", "https://arxiv.org/abs/2503.04761", "exposure",
+              "Measure observed use from millions of Claude conversations sorted into O*NET tasks."),
+    "bls": ("Bureau of Labor Statistics (2026), AI exposure categories", "https://www.bls.gov/emp/publications/ai-exposure-categories.htm", "exposure",
+            "Combines five exposure measures across 831 occupations and keeps what AI could do apart from what people use it for."),
+    "yale": ("Yale Budget Lab (2026)", "https://budgetlab.yale.edu/topic/artificial-intelligence", "exposure",
+             "Exposure measures broadly agree, less so among the most exposed jobs, and there are no significant employment or wage effects so far."),
+    "gmyrek": ("Gmyrek, Berg and Bescond (2025), Polish Journal of Economics", "https://econpapers.repec.org/article/sghgosnar/y_3a2025_3ai_3a3_3ap_3a6-30.htm", "exposure",
+               "Worldwide, clerical work is the only broad group highly exposed, and augmentation is more likely than automation."),
+    "hk": ("Hershbein and Kahn (2018), American Economic Review", "https://doi.org/10.1257/aer.20161570", "ads",
+           "Skill requirements in job ads rose within firms and occupations after the Great Recession."),
+    "atalay": ("Atalay, Phongthiengtham, Sotelo and Tannenbaum (2020), AEJ: Applied Economics", "https://doi.org/10.1257/app.20190070", "ads",
+               "Newspaper ads show the task content of occupations changing over half a century."),
+    "dn": ("Deming and Noray (2020), Quarterly Journal of Economics", "https://doi.org/10.1093/qje/qjaa021", "ads",
+           "Skill requirements change fastest in technical jobs."),
+    "hemelt": ("Hemelt, Hershbein, Martin and Stange (2023), Labour Economics", "https://www.iza.org/publications/dp/14964", "ads",
+               "Link college majors to the skills employers ask for, using nearly all online job ads."),
+    "mnn": ("Meisenbacher, Nestorov and Norlander (2025), working paper and data", "https://arxiv.org/abs/2510.01470", "ads",
+            "Public aggregates of the National Labor Exchange: the tasks, skills and AI content of job ads by occupation."),
+    "bbg": ("Berman, Bound and Griliches (1994), Quarterly Journal of Economics", "https://doi.org/10.2307/2118467", "ads",
+            "The decomposition into change within occupations and change in the mix of occupations."),
+    "chen": ("Chen, Srinivasan and Zakerinia (2025), Harvard Business School", "https://www.library.hbs.edu/working-knowledge/enhance-or-eliminate-how-ai-will-likely-change-these-jobs", "ads",
+             "Postings for structured, repetitive occupations fell 13% after ChatGPT's launch, while analytical, technical and creative roles rose 20%."),
+    "revelio25": ("Revelio Labs (December 2025 newsletter)", "https://www.reveliolabs.com/news/", "ads",
+                  "The share of AI-exposed tasks in job postings fell from 29% in early 2022 to 25.5% by early 2025."),
+    "revelio26": ("Revelio Labs AI Labor Market Tracker (August 2026)", "https://www.reveliolabs.com/news/ai-and-work/introduction-the-revelio-ai-labor-market-tracker", "effects",
+                  "Employment in the most AI-exposed jobs is down against the least exposed since November 2022, by 19% for workers aged 22 to 25."),
+    "dallas": ("Dodini and Smith (2026), Federal Reserve Bank of Dallas", "https://www.dallasfed.org/research/economics/2026/0901", "ads",
+               "Job openings fell after ChatGPT in occupations whose tasks AI can automate, mostly in Texas, with effects on recent graduates and students."),
+    "lw": ("Liu and Webber (2026), Federal Reserve Board", "https://www.federalreserve.gov/econres/notes/feds-notes/ai-adoption-and-firms-job-posting-behavior-20260327.html", "ads",
+           "No reduction in job postings at firms or industries that adopted more AI."),
+    "engberg": ("Engberg and coauthors (2026), Applied Economics Letters", "https://ratio.se/publikationer/artificial-intelligence-hiring-and-employment-job-postings-evidence-from-sweden-2", "ads",
+                "Swedish establishments more exposed to AI hired more, including for roles that do not use AI."),
+    "rinz": ("Rinz (2026), Federal Reserve Bank of Cleveland", "https://doi.org/10.26509/frbc-wp-202624", "effects",
+             "Postings in more exposed occupations declined before ChatGPT and leveled off after it; small earnings losses for incumbents from late 2024."),
+    "stefanik": ("Štefánik, Lyócsa and Bilka (2023), Social Science Computer Review", "https://doi.org/10.1177/08944393221085705", "ads",
+                 "Counts of online job ads improve forecasts of vacancies, employment and unemployment."),
+    "tsvetkova": ("Tsvetkova and coauthors (2024), OECD", "https://doi.org/10.1787/c17cae09-en", "ads",
+                  "Online postings match official statistics less well by occupation and sector than by region."),
+    "humlum": ("Humlum and Vestergaard (2025), NBER Working Paper 33777", "https://www.nber.org/papers/w33777", "effects",
+               "Small effects of AI chatbots on earnings and hours among exposed workers in Denmark."),
+    "canaries": ("Brynjolfsson, Chandar and Chen (2026 revision), Stanford Digital Economy Lab",
+                 "https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/", "effects",
+                 "Employment of workers aged 22 to 25 in the most AI-exposed occupations is 19% below where it would be had it kept pace with less-exposed peers."),
+    "hampole": ("Hampole, Papanikolaou, Schmidt and Seegmiller (2025), NBER Working Paper 33509", "https://www.nber.org/papers/w33509", "effects",
+                "Occupations whose tasks are more exposed to AI see lower demand afterward; overall employment effects are modest."),
+    "fm": ("Freund and Mann (2026), Minneapolis Fed Institute Working Paper 114", "https://doi.org/10.21034/iwp.114", "organization",
+           "Occupations bundle tasks and automating one shifts weight to the rest: gains at moderate exposure, losses in the most exposed jobs."),
+    "korv": ("Krusell, Ohanian, Ríos-Rull and Violante (2000), Econometrica", "https://doi.org/10.1111/1468-0262.00150", "organization",
+             "Capital complements skilled labor, so cheaper equipment raises the skill premium."),
+    "card": ("Card (2009), American Economic Review", "https://doi.org/10.1257/aer.99.2.1", "organization",
+             "Substitution between skill groups determines how a change in supply moves relative wages."),
+    "sahin": ("Şahin, Song, Topa and Violante (2014), American Economic Review", "https://doi.org/10.1257/aer.104.11.3529", "matching",
+              "Mismatch unemployment measures how far job seekers sit in different occupations from vacancies."),
+}
+_THEMES = [("tasks", "Tasks and technology"), ("exposure", "Measuring exposure to AI"), ("ads", "What job ads show"),
+           ("effects", "Early effects of AI on work"), ("organization", "How work is organized"), ("matching", "Matching workers and jobs")]
 
-_RINZ = ("Rinz (2026), Federal Reserve Bank of Cleveland", "https://doi.org/10.26509/frbc-wp-202624")
-_DALLAS = ("Dodini and Smith (2026), Federal Reserve Bank of Dallas", "https://www.dallasfed.org/research/economics/2026/0901")
-_HANDA = ("Handa and coauthors (2025), Anthropic", "https://arxiv.org/abs/2503.04761")
+
+def _study(stance: str, key: str, text: str | None = None) -> dict:
+    cite, url, _, summary = _STUDIES[key]
+    return {"stance": stance, "cite": cite, "url": url, "text": text or summary}
+
+
 _RESEARCH = {
     ("bridge", 0): [
-        _study("consistent", *_HANDA, "In the first report on these data, about 36% of occupations used AI for at least a quarter of their tasks."),
-        _study("background", "Eloundou, Manning, Mishkin and Rock (2024), Science", "https://doi.org/10.1126/science.adj0998",
-               "Measure what language models could do rather than what people use them for: counting complementary software, "
-               "just over 46% of jobs have more than half their tasks exposed."),
+        _study("consistent", "handa", "In the first report on these data, about 36% of occupations used AI for at least a quarter of their tasks."),
+        _study("background", "eloundou"),
+        _study("background", "bls"),
+        _study("method", "aa", "The task framework, which is why use is measured task by task and weighted by what each task is paid."),
     ],
     ("bridge", 1): [
-        _study("consistent", *_HANDA, "Software development and writing tasks make up nearly half of all use."),
+        _study("consistent", "handa", "Software development and writing tasks make up nearly half of all use."),
+        _study("background", "gmyrek"),
+        _study("background", "felten", "Score exposure from abilities, one of several measures whose disagreements this page's research compares."),
     ],
     ("bridge", 2): [
-        _study("background", "Acemoglu (2025), Economic Policy", "https://doi.org/10.1093/epolic/eiae042",
-               "The economic gains from AI depend on the share of tasks it actually affects and the cost it saves on them, "
-               "not on technical exposure alone."),
+        _study("background", "acemoglu25"),
     ],
     ("city", 0): [
-        _study("consistent", "Humlum and Vestergaard (2025), NBER Working Paper 33777", "https://www.nber.org/papers/w33777",
-               "Small effects of AI chatbots on earnings and hours among exposed workers in Denmark."),
-        _study("consistent", *_RINZ, "A small fall in real earnings, under 1%, for workers who stayed in more exposed US jobs from "
-               "the second half of 2024, after the last year of these wage tables."),
+        _study("consistent", "humlum"),
+        _study("consistent", "yale", "Finds no statistically or economically significant employment or wage effects of AI so far."),
+        _study("consistent", "rinz", "A small fall in real earnings, under 1%, for workers who stayed in more exposed US jobs from the second half of "
+               "2024, after the last year of these wage tables."),
+        _study("background", "fm"),
+        _study("background", "ar22"),
+        _study("method", "km", "Skill prices read off relative wages, the approach behind pay by skill group."),
+        _study("method", "alm"),
     ],
     ("city", 1): [
-        _study("background", "Hampole, Papanikolaou, Schmidt and Seegmiller (2025), NBER Working Paper 33509",
-               "https://www.nber.org/papers/w33509",
-               "Occupations whose tasks are more exposed to AI see lower demand afterward, while overall employment effects are "
-               "modest because firms that adopt AI grow."),
-        _study("background", "Acemoglu and Restrepo (2019), Journal of Economic Perspectives", "https://doi.org/10.1257/jep.33.2.3",
-               "Automation moves work out of some tasks while new tasks bring it back, so an exposed occupation need not shrink."),
+        _study("background", "hampole"),
+        _study("background", "ar19"),
+        _study("background", "card"),
     ],
     ("city", 2): [
-        _study("consistent", *_RINZ, "The same timing in commercial job-ad data: ads in more exposed occupations were declining "
-               "before ChatGPT and leveled off after it."),
-        _study("consistent", "Liu and Webber (2026), Federal Reserve Board", 
-               "https://www.federalreserve.gov/econres/notes/feds-notes/ai-adoption-and-firms-job-posting-behavior-20260327.html",
-               "No reduction in job postings at firms or industries that adopted more AI."),
-        _study("different", *_DALLAS, "Job openings fell after ChatGPT's release in occupations whose tasks AI can automate, "
-               "mostly in Texas. The comparison is across occupations; this index compares tasks within the same occupation."),
-        _study("different", "Chen, Srinivasan and Zakerinia (2025), Harvard Business School",
-               "https://www.library.hbs.edu/working-knowledge/enhance-or-eliminate-how-ai-will-likely-change-these-jobs",
-               "Postings for structured, repetitive occupations fell 13% after ChatGPT's launch, while analytical, technical "
-               "and creative roles rose 20%. This too compares across occupations."),
+        _study("consistent", "rinz", "The same timing in commercial job-ad data: ads in more exposed occupations were declining before ChatGPT and "
+               "leveled off after it."),
+        _study("consistent", "lw"),
+        _study("consistent", "engberg"),
+        _study("different", "dallas", "Job openings fell after ChatGPT's release in occupations whose tasks AI can automate, mostly in Texas. The "
+               "comparison is across occupations; this index compares tasks within the same occupation."),
+        _study("different", "chen", "Postings for structured, repetitive occupations fell 13% after ChatGPT's launch, while analytical, technical and "
+               "creative roles rose 20%. This too compares across occupations."),
+        _study("different", "revelio25", "The share of AI-exposed tasks in job postings fell from 29% in early 2022 to 25.5% by early 2025, which "
+               "Revelio reads as firms removing automatable duties from the jobs they post."),
+        _study("background", "hk"),
+        _study("background", "atalay"),
+        _study("background", "tsvetkova"),
+        _study("method", "mnn"),
+        _study("method", "bbg"),
     ],
     ("valley", 0): [
-        _study("background", "Hemelt, Hershbein, Martin and Stange (2023), Labour Economics", "https://www.iza.org/publications/dp/14964",
-               "Link college majors to the skills employers ask for, using nearly all online job ads."),
+        _study("background", "hemelt"),
+        _study("method", "eloundou", "The exposure measure used to score fields of study, jobs and tasks across this page."),
     ],
     ("valley", 1): [
-        _study("different", *_DALLAS, "Weaker demand for AI-exposed occupations led students at Texas universities to change what "
-               "they study."),
+        _study("different", "dallas", "Weaker demand for AI-exposed occupations led students at Texas universities to change what they study."),
     ],
     ("valley", 2): [
-        _study("consistent", "Brynjolfsson, Chandar and Chen (2026 revision), Stanford Digital Economy Lab",
-               "https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/",
-               "Employment of workers aged 22 to 25 in the most AI-exposed occupations is 19% below where it would be had it kept "
-               "pace with less-exposed peers, in ADP payroll data."),
-        _study("consistent", *_DALLAS, "The fall in openings for AI-exposed occupations hurt recent graduates of Texas universities."),
+        _study("consistent", "canaries"),
+        _study("consistent", "revelio26"),
+        _study("consistent", "dallas", "The fall in openings for AI-exposed occupations hurt recent graduates of Texas universities."),
     ],
 }
 
+
+def _literature() -> list[dict]:
+    return [{"theme": title, "studies": [{"cite": c, "url": u, "text": t} for c, u, th, t in _STUDIES.values() if th == key]}
+            for key, title in _THEMES]
 
 def _words(n: int) -> str:
     """Small counts in words, as they read in a sentence; larger ones as numerals."""
@@ -787,6 +874,7 @@ def export_site(release: str) -> Path:
         "meaning": meaning,
         "notes": notes,
         "views": views,
+        "literature": _literature(),
         "releases": [{"date": str(r), "reach": round(float(x), 3), "published_use": round(float(p), 3)}
                  for r, x, p in zip(anthropic["release"], anthropic["reach_share"], anthropic["published_use"])],
     }
