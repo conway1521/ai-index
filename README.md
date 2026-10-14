@@ -115,3 +115,10 @@ headline of that layer. The realized-change column at state level
 carries the noise the paper found in state cells and is written with the
 number of cells behind it. No composite score exists anywhere in the
 package and none should be added.
+
+## Licence
+
+The text, charts and tables the index publishes are licensed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), credited to
+Alessandro Conway. The data keep their publishers' terms, listed in
+`docs/data-licences.md`.

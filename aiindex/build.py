@@ -353,6 +353,74 @@ _PLAIN = {
 }
 
 
+# Published research beside each card: whether it is consistent with the reading, finds differently, or is
+# background for it. Each entry is checked against the published version, the current one where it was revised.
+def _study(stance: str, cite: str, url: str, text: str) -> dict:
+    return {"stance": stance, "cite": cite, "url": url, "text": text}
+
+_RINZ = ("Rinz (2026), Federal Reserve Bank of Cleveland", "https://doi.org/10.26509/frbc-wp-202624")
+_DALLAS = ("Dodini and Smith (2026), Federal Reserve Bank of Dallas", "https://www.dallasfed.org/research/economics/2026/0901")
+_HANDA = ("Handa and coauthors (2025), Anthropic", "https://arxiv.org/abs/2503.04761")
+_RESEARCH = {
+    ("bridge", 0): [
+        _study("consistent", *_HANDA, "In the first report on these data, about 36% of occupations used AI for at least a quarter of their tasks."),
+        _study("background", "Eloundou, Manning, Mishkin and Rock (2024), Science", "https://doi.org/10.1126/science.adj0998",
+               "Measure what language models could do rather than what people use them for: counting complementary software, "
+               "just over 46% of jobs have more than half their tasks exposed."),
+    ],
+    ("bridge", 1): [
+        _study("consistent", *_HANDA, "Software development and writing tasks make up nearly half of all use."),
+    ],
+    ("bridge", 2): [
+        _study("background", "Acemoglu (2025), Economic Policy", "https://doi.org/10.1093/epolic/eiae042",
+               "The economic gains from AI depend on the share of tasks it actually affects and the cost it saves on them, "
+               "not on technical exposure alone."),
+    ],
+    ("city", 0): [
+        _study("consistent", "Humlum and Vestergaard (2025), NBER Working Paper 33777", "https://www.nber.org/papers/w33777",
+               "Small effects of AI chatbots on earnings and hours among exposed workers in Denmark."),
+        _study("consistent", *_RINZ, "A small fall in real earnings, under 1%, for workers who stayed in more exposed US jobs from "
+               "the second half of 2024, after the last year of these wage tables."),
+    ],
+    ("city", 1): [
+        _study("background", "Hampole, Papanikolaou, Schmidt and Seegmiller (2025), NBER Working Paper 33509",
+               "https://www.nber.org/papers/w33509",
+               "Occupations whose tasks are more exposed to AI see lower demand afterward, while overall employment effects are "
+               "modest because firms that adopt AI grow."),
+        _study("background", "Acemoglu and Restrepo (2019), Journal of Economic Perspectives", "https://doi.org/10.1257/jep.33.2.3",
+               "Automation moves work out of some tasks while new tasks bring it back, so an exposed occupation need not shrink."),
+    ],
+    ("city", 2): [
+        _study("consistent", *_RINZ, "The same timing in commercial job-ad data: ads in more exposed occupations were declining "
+               "before ChatGPT and leveled off after it."),
+        _study("consistent", "Liu and Webber (2026), Federal Reserve Board", 
+               "https://www.federalreserve.gov/econres/notes/feds-notes/ai-adoption-and-firms-job-posting-behavior-20260327.html",
+               "No reduction in job postings at firms or industries that adopted more AI."),
+        _study("different", *_DALLAS, "Job openings fell after ChatGPT's release in occupations whose tasks AI can automate, "
+               "mostly in Texas. The comparison is across occupations; this index compares tasks within the same occupation."),
+        _study("different", "Chen, Srinivasan and Zakerinia (2025), Harvard Business School",
+               "https://www.library.hbs.edu/working-knowledge/enhance-or-eliminate-how-ai-will-likely-change-these-jobs",
+               "Postings for structured, repetitive occupations fell 13% after ChatGPT's launch, while analytical, technical "
+               "and creative roles rose 20%. This too compares across occupations."),
+    ],
+    ("valley", 0): [
+        _study("background", "Hemelt, Hershbein, Martin and Stange (2023), Labour Economics", "https://www.iza.org/publications/dp/14964",
+               "Link college majors to the skills employers ask for, using nearly all online job ads."),
+    ],
+    ("valley", 1): [
+        _study("different", *_DALLAS, "Weaker demand for AI-exposed occupations led students at Texas universities to change what "
+               "they study."),
+    ],
+    ("valley", 2): [
+        _study("consistent", "Brynjolfsson, Chandar and Chen (2026 revision), Stanford Digital Economy Lab",
+               "https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/",
+               "Employment of workers aged 22 to 25 in the most AI-exposed occupations is 19% below where it would be had it kept "
+               "pace with less-exposed peers, in ADP payroll data."),
+        _study("consistent", *_DALLAS, "The fall in openings for AI-exposed occupations hurt recent graduates of Texas universities."),
+    ],
+}
+
+
 def _words(n: int) -> str:
     """Small counts in words, as they read in a sentence; larger ones as numerals."""
     return _SMALL[n] if 0 <= n < len(_SMALL) else str(n)
@@ -481,7 +549,6 @@ def export_site(release: str) -> Path:
     shift_pts = abs(float(gtest["observed_shift"])) * 100 if gtest is not None else None
     draws = int(gtest["draws"]) if gtest is not None else 0
     as_large = round(float(gtest["p_two_sided"]) * draws) if gtest is not None else 0
-    rinz = "Rinz (2026), Federal Reserve Bank of Cleveland Working Paper 26-24"
     pay_big = "Unusual change" if pay_out else "No unusual change"
     mix_big = (f"Largest shift since {since}" if qty_record else "Unusual shift" if qty_out else "No unusual shift")
     ads_big = "Fell before ChatGPT" if fell_before and not asks_out else "Changed at ChatGPT's release" if asks_out else "No change at ChatGPT's release"
@@ -504,9 +571,6 @@ def export_site(release: str) -> Path:
                           f"The June 2026 file leaves out rarely used tasks, so this figure uses {_published(latest['release'])}, the most "
                           f"recent file that lists them all. Tasks people hand to Claude to do entirely account for "
                           f"{round(float(split['delegated_share']) * 100)}% of US wages."),
-                 "related": ("Eloundou, Manning, Mishkin and Rock (2024, Science) measure what language models could do, rather than "
-                             "what people use them for: once complementary software is counted, over 46% of jobs have at least half "
-                             "their tasks exposed."),
                  "tech": ("Each occupation's OEWS wage bill is split across its O*NET tasks by frequency-weighted task shares, so "
                           "task values sum exactly to the occupation's bill. Reach is the share of the national wage bill in tasks with "
                           "any published usage; delegated reach scales each task by the share of its usage classed as automation. "
@@ -532,8 +596,6 @@ def export_site(release: str) -> Path:
                  "more": (f"Because no release leaves the most-used tasks out, this figure can be compared across every release, the June "
                           f"2026 file included. Its rise means the work people use AI for most is moving toward tasks that make up "
                           + ("more" if core > core_first else "less") + " of total US pay."),
-                 "related": ("Acemoglu (2025, Economic Policy) argues that the gains from AI depend on the share of tasks it actually "
-                             "affects and the cost it saves on them, not on technical exposure alone."),
                  "tech": ("The core is the smallest set of tasks covering 75% of usage in each release. The June 2026 file "
                           "withholds tasks below a reporting threshold, which affects reach but not the core."),
                  "src": f"Anthropic Economic Index, {_published(newest['release'])}; OEWS wages, May {int(pay['year'])}",
@@ -572,17 +634,16 @@ def export_site(release: str) -> Path:
                           f"since {since}, and call a change unusual only if it is bigger than 95% of the changes we get when we shuffle "
                           f"the years at random. These are averages over whole occupations, so a raise for new hires and a cut for "
                           f"people already in the job would cancel out."),
-                 "related": (f"Humlum and Vestergaard (2025, NBER working paper) find small effects of AI chatbots on earnings and hours "
-                             f"among exposed workers in Denmark. {rinz}, finds a small fall in real earnings, under 1%, for workers who "
-                             f"stayed in more exposed US jobs from the second half of 2024, after the last year of these wage tables."),
                  "tech": (f"Relative pay is each bundle's log pay growth against the employment-weighted average, estimated for every "
                           f"annual transition from {since - 1} ({int(pay['transitions_available'])} transitions) on a balanced panel of "
                           f"occupations. The statistic is the largest, across the 25 bundles, of the mean of the last three transitions "
                           f"standardized by the bundle's own year-to-year variability. Its reference distribution relabels which three "
                           f"transitions are treated, using consecutive triples only, since pay changes are autocorrelated; the dashed "
-                          f"line is that distribution's 95th percentile (p = {float(pay['p_largest_consecutive']):.2f} for the latest period)."),
+                          f"line is that distribution's 95th percentile, and the chart divides the statistic by it, so 1.0 marks the line "
+                          f"(p = {float(pay['p_largest_consecutive']):.2f} for the latest period)."),
                  "src": f"OEWS, May {since - 1} to May {int(pay['year'])}, occupations present in every year",
-                 "series": series(pay_all["year"], pay_all["largest_statistic"], "num1", pay_all["threshold_95"], "size of the biggest move in any skill's pay"),
+                 "series": series(pay_all["year"], pay_all["largest_statistic"] / pay_all["threshold_95"], "x1", [1.0] * len(pay_all),
+                                  "biggest move in any skill's pay, as a multiple of the unusual level"),
                  "tables": ["outcomes_pay_series_balanced.csv", "outcomes_pay_changes.csv"]},
                 {"title": "Mix of jobs", "big": mix_big,
                  "note": ((f"Between {start} and {end}, employment moved {shift_word} jobs that rely heavily on {mix_field}." if qty_record else
@@ -596,14 +657,13 @@ def export_site(release: str) -> Path:
                  "more": ("We measure how much of all US employment goes to each of the same 25 skill groups. That share changes "
                           "when people move between occupations, which can happen before pay changes at all. It is tested the same "
                           "way as pay, against each group's own history."),
-                 "related": ("Hampole, Papanikolaou, Schmidt and Seegmiller (2025, NBER working paper) find that exposure to AI "
-                             "predicts lower later demand for the labor of exposed occupations."),
                  "tech": (f"The same statistic on employment-weighted bundle intensity. With {int(qty['transitions_available'])} "
                           f"transitions there are {windows} consecutive triples, so the smallest attainable p is 1/{windows}; the "
                           f"latest period attains it (p = {float(qty['p_largest_consecutive']):.2f}). The test cannot yet separate an "
                           f"AI effect from the post-pandemic reallocation of employment."),
                  "src": f"OEWS, May {since - 1} to May {int(qty['year'])}, occupations present in every year",
-                 "series": series(qty_all["year"], qty_all["largest_statistic"], "num1", qty_all["threshold_95"], "size of the biggest shift in employment"),
+                 "series": series(qty_all["year"], qty_all["largest_statistic"] / qty_all["threshold_95"], "x1", [1.0] * len(qty_all),
+                                  "biggest shift in employment, as a multiple of the unusual level"),
                  "tables": ["outcomes_quantity_series_balanced.csv"]},
                 {"title": "Job ads for tasks AI can do", "big": ads_big,
                  "note": ((f"From 2020 to {low_when}, job ads in the same occupation asked less and less often for tasks AI can do. "
@@ -615,10 +675,6 @@ def export_site(release: str) -> Path:
                           f"whether tasks AI can do lost ground to other tasks in the same occupation, and whether anything changed at "
                           f"ChatGPT's release. In {_words(int(asks['earlier_at_least']))} of the {_words(int(asks['earlier_windows']))} "
                           f"earlier months, the same comparison showed a change at least as large as the one at the release."),
-                 "related": (f"{rinz}, finds the same timing in commercial job-ad data: ads in more exposed occupations were declining "
-                             f"before ChatGPT and leveled off after it. Revelio Labs (Munyikwa, 2025) finds that 84% of the 2022 to 2025 "
-                             f"fall in exposed tasks in job listings came from which occupations were hiring. The Dallas Fed (Dodini and Smith, 2026) reads a fall in postings in more exposed occupations "
-                             f"as an early sign of automation."),
                  "tech": (f"The paper's Appendix B: the gradient of a task's share of its occupation's ads on the task's Eloundou "
                           f"exposure, by quarter against 2019, so the comparison is within occupation by construction. The step at "
                           f"the release is measured against the sixteen months before it and set against the same step placed at "
@@ -650,8 +706,6 @@ def export_site(release: str) -> Path:
                  "more": ("Degrees by field come from the Education Department's IPEDS completions files. We score each field by the AI "
                           "exposure of the jobs its graduates actually hold, using the Census Bureau's American Community Survey and the "
                           "exposure measure of Eloundou, Manning, Mishkin and Rock (2023)."),
-                 "related": ("Hemelt, Hershbein, Martin and Stange (2023, Labour Economics) link college majors to the skills employers "
-                             "ask for, using nearly all online job ads."),
                  "tech": ("Fields are six-digit CIP codes scored by the employment-weighted Eloundou exposure of the occupations "
                           "ACS 2024 degree holders in each field actually work in, which measures where graduates go instead of where "
                           "programs say they lead. Exposed fields are the top third of fields by that score."),
@@ -669,7 +723,7 @@ def export_site(release: str) -> Path:
                 {"title": "Young workers in exposed jobs", "big": f"−{young:.0f}%",
                  "note": (f"Since 2022, workers aged 22 to 27 have lost ground in the jobs most exposed to AI, by {young:.0f}% compared "
                           f"with workers aged 35 to 54."
-                          + (" It is the strongest signal on this page." if gtest is not None and as_large == 0 else "")),
+),
                  "more": ("From the Census Bureau's monthly Current Population Survey. For each age group we divide employment in the most "
                           "exposed third of jobs by employment in all other jobs, then compare the young group's ratio with the older "
                           "group's. "
@@ -678,8 +732,6 @@ def export_site(release: str) -> Path:
                                 f"In {draws:,} random reorderings of the months, {as_large} produced a gap that large. ")
                              if gtest is not None else "")
                           + "The data start in January 2022, so they can't show whether the decline began before ChatGPT."),
-                 "related": ("Brynjolfsson, Chandar and Chen (2025, Stanford Digital Economy Lab working paper) find a 13% relative decline in "
-                             "employment for workers aged 22 to 25 in the most AI-exposed occupations, using payroll data."),
                  "tech": ("The gauge is (E_young,exposed / E_young,other) / (E_prime,exposed / E_prime,other), with composited CPS "
                           "weights, exposed meaning the top third of occupations on the Eloundou measure, Census codes mapped to SOC "
                           "with OEWS employment weights, and the series indexed to 2022. The permutation relabels which months count "
@@ -695,9 +747,10 @@ def export_site(release: str) -> Path:
                     "scored the same way."),
         },
     }
-    for view in views.values():
-        for entry in view["items"]:
-            entry["view"] = next(k for k, v in views.items() if v is view)
+    for key, view in views.items():
+        for i, entry in enumerate(view["items"]):
+            entry["view"] = key
+            entry["research"] = _RESEARCH.get((key, i), [])
 
     # the opening paragraph: one sentence per index, each linked to its view
     lede = (f'Tasks people use AI for make up <a href="#bridge" data-view="bridge">{wages}% of US wages</a>. '
@@ -714,9 +767,10 @@ def export_site(release: str) -> Path:
             "The mix of jobs has shifted, " if qty_out else "The mix of jobs is within its usual range, ")
          + ("and job ads moved away from tasks AI can do before ChatGPT came out." if fell_before else
             "and job ads show no change at ChatGPT's release.")),
-        ("Training: Students haven't turned away from exposed fields. "
-         + ("Young workers losing ground in exposed jobs is the clearest signal on the page." if gtest is not None and as_large == 0 else
-            "Young workers have lost ground in exposed jobs since 2022.")),
+        (("Training: The share of degrees and enrollment in exposed fields has risen slightly, so students have not moved "
+          "away from them. " if (before is None or degrees >= before) and enrolled >= enrolled_first else
+          "Training: The share of degrees or enrollment in exposed fields has fallen. ")
+         + f"Young workers' place in exposed jobs, against older workers', is {young:.0f}% lower than in 2022."),
     ]
     notes = ["new data coming soon"]
 

@@ -37,7 +37,10 @@ Since 15 October 2026 every sentence on the page is plain language: the tests be
 city are described by what they compare (seven of ten earlier periods moved as much; a 1 in
 11 chance), never by test statistics or "standard errors", and cards whose finding connects
 to published work carry a "Related research" line in How we know, drawn from the papers the
-working papers cite.
+working papers cite. Since 15 October 2026 each card lists published research with its stance
+(consistent, finds differently, background) and a link, from the table `_RESEARCH` in build.py,
+checked against the current published version; the page brings together public data, research and
+theory on AI and work, and its footer carries the CC BY 4.0 licence and the build date.
 
 ## Dependency
 
