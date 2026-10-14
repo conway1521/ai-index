@@ -33,6 +33,11 @@ under "How we know". Each place in the drawing names its index in parentheses: t
 the city (Jobs) and the binoculars (Training). "How we measured it" shows each view's method with
 its sources, and the build writes it, the opening findings and the readings into the page as text
 through aiindex/site_static.py. The page uses one typeface and has no weather or fog switches.
+Since 15 October 2026 every sentence on the page is plain language: the tests behind the
+city are described by what they compare (seven of ten earlier periods moved as much; a 1 in
+11 chance), never by test statistics or "standard errors", and cards whose finding connects
+to published work carry a "Related research" line in How we know, drawn from the papers the
+working papers cite.
 
 ## Dependency
 

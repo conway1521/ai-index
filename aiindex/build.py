@@ -435,161 +435,8 @@ def export_site(release: str) -> Path:
     odds = round(1 / float(qty["p_largest_consecutive"])) if qty["p_largest_consecutive"] > 0 else None
     toward = "toward" if int(qty["largest_direction"]) > 0 else "away from"
 
-    def further(row) -> str:
-        n, of = int(row["earlier_windows_at_least"]), int(row["consecutive_relabellings"]) - 1
-        return (f"and no earlier three-year stretch in that record moved as far" if n == 0 else
-                f"and {_words(n)} of the {_words(of)} earlier three-year stretches in that record moved as far or further")
-
-    pay_sentence = (f"standard errors is the largest change in pay across the twenty-five skill groups over the last three years, "
-                    f"a {'rise' if int(pay['largest_direction']) > 0 else 'fall'} in the pay of {name(pay['largest_bundle'])}, "
-                    f"where {pay['threshold_95']:.1f} would be needed to stand out from each group's own record since {since}, {further(pay)}.")
-    if qty_out:
-        qty_sentence = (f"standard errors is the largest shift in the mix of skills in employment over the last three years, "
-                        f"{toward} work that draws on {name(qty['largest_bundle'])}, past the {qty['threshold_95']:.1f} needed to stand out"
-                        + (f" and further than any of the {_words(others)} earlier three-year stretches since {since}" if qty_record else "")
-                        + (f", although a record of {_words(int(qty['transitions_available']))} years produces a shift that size by chance "
-                           f"about one time in {_words(odds)}" if odds else "")
-                        + (f", and the same test was passed in {_joined([str(y) for y in flagged])}" if flagged else "") + ".")
-    else:
-        qty_sentence = (f"standard errors is the largest shift in the mix of skills in employment over the last three years, "
-                        f"in work that draws on {name(qty['largest_bundle'])}, where {qty['threshold_95']:.1f} would be needed to stand out, {further(qty)}.")
-
-    views = {
-        "bridge": {
-            "capline": f"{wages}% of wages go to tasks people bring to AI models · {_published(latest['release'])}",
-            "mark": f"{wages}% of wages in tasks people bring",
-            "items": [
-                {"n": f"{wages}%", "view": "bridge",
-                 "s": (f"of all the wages paid in the United States go to work on the tasks people bring to AI models, in the usage record "
-                       f"the Anthropic Economic Index published in {_published(latest['release'])}, against {round(float(first['reach_share']) * 100)} percent "
-                       f"in its {_published(first['release'])} release, and {round(float(split['delegated_share']) * 100)} percent go to tasks people hand "
-                       f"over to the model entirely, on the {_published(split['release'])} record."),
-                 "src": f"Anthropic Economic Index, {_published(latest['release'])} · OEWS wages, May {int(pay['year'])}",
-                 "more": (f"A task counts once any use of it is published, so this reading measures how widely use spreads across paid work "
-                          f"and says nothing about how much of that work the models do. It rose from {round(float(first['reach_share']) * 100)} "
-                          f"percent in {_published(first['release'])} to {wages} percent in {_published(latest['release'])} as more tasks appeared "
-                          f"in the record. The June 2026 file leaves out tasks below a reporting threshold, so the reading stays on the last "
-                          f"release that publishes every task."),
-                 "tables": ["usage_reach.csv"]},
-                {"n": f"{top['concentration']:.1f}×", "view": "bridge",
-                 "s": (f"is the weight of that use on {top['bundle'].lower()}, measured against their share of pay and the most of any skill group, "
-                       f"while {low['bundle'].lower()} receive {low['concentration']:.1f} times their share."),
-                 "src": f"Anthropic Economic Index, {_published(latest['release'])} · O*NET {release}",
-                 "more": (f"Each skill group's share of use is set against its share of pay, so a value above one means the group draws more "
-                          f"use than its weight in wages. Of the twenty-five groups, the most use falls on {top['bundle'].lower()} and the "
-                          f"least on {low['bundle'].lower()}."),
-                 "tables": ["usage_landing.csv"]},
-                {"n": f"{core:.1f}%", "view": "bridge",
-                 "s": (f"of wages are paid for the tasks that together make up three quarters of all that use, "
-                       f"{int(newest['tasks_three_quarters'])} tasks in the {_published(newest['release'])} record, "
-                       f"against {core_first:.1f} percent in the {_published(anthropic.iloc[0]['release'])} release."),
-                 "src": f"Anthropic Economic Index, {_published(newest['release'])} · OEWS wages, May {int(pay['year'])}",
-                 "more": (f"Use is concentrated: {int(newest['tasks_three_quarters'])} tasks account for three quarters of it. Counting only those tasks gives a "
-                          f"reading that the reporting threshold cannot move, and its move from {core_first:.1f} to {core:.1f} percent means "
-                          f"the work people bring most often now sits in tasks that carry "
-                          + ("more" if core > core_first else "less") + " of the wage bill."),
-                 "tables": ["usage_reach.csv"]},
-            ],
-            "how": ("Each conversation in the usage record is matched to the O*NET tasks it touches, each task is weighted by the wages paid "
-                    "for it in the latest OEWS release, and the share moves with every usage release, every few months, for the one platform "
-                    "whose record the index reads so far. A task counts as reached when any use of it is published, so the headline comes from the latest release that publishes every task, and the tasks making up three quarters of use are counted in every release alike, since no release leaves any of them out."),
-        },
-        "city": {
-            "capline": (f"pay {pay['largest_statistic']:.1f}, {pay['threshold_95']:.1f} needed · jobs mix {qty['largest_statistic']:.1f}, "
-                        f"{qty['threshold_95']:.1f} needed · job ads {asks['statistic']:.1f}, {asks['threshold_95']:.1f} needed"),
-            "mark": f"pay {pay['largest_statistic']:.1f} of {pay['threshold_95']:.1f} needed · jobs {qty['largest_statistic']:.1f} of {qty['threshold_95']:.1f}",
-            "items": [
-                {"n": f"{pay['largest_statistic']:.1f}", "view": "city", "s": pay_sentence,
-                 "src": f"OEWS, May {since - 1} to May {int(pay['year'])}, occupations present in every year",
-                 "more": (f"Each of the twenty-five skill groups is tested against its own changes since {since}, so a group whose pay has "
-                          f"always moved a lot needs a larger change to stand out. The test runs again with each spring release of the wage "
-                          f"tables, and it measures pay across whole occupations, so a rise for new hires and a fall for people already in "
-                          f"the job would largely cancel in it."),
-                 "tables": ["outcomes_pay_series_balanced.csv", "outcomes_pay_changes.csv"]},
-                {"n": f"{qty['largest_statistic']:.1f}", "view": "city", "s": qty_sentence,
-                 "src": f"OEWS, May {since - 1} to May {int(qty['year'])}, occupations present in every year",
-                 "more": ("The mix of jobs is each skill group's share of employment, so it moves when people move between occupations, "
-                          "which can happen before pay changes at all. It is tested in the same way as pay, against each group's own record"
-                          + (f", and about one stretch in {_words(odds)} of a record this long moves this far by chance." if odds else ".")),
-                 "tables": ["outcomes_quantity_series_balanced.csv"]},
-                {"n": f"{asks['statistic']:.1f}", "view": "city",
-                 "s": (f"standard errors is the step, at the release of language models, in how much job ads within each occupation ask "
-                       f"for the tasks those models can do, measured against the sixteen months before, "
-                       + (f"past the {asks['threshold_95']:.1f} needed to stand out from the same step at each earlier month"
-                          if asks_out else
-                          f"where {asks['threshold_95']:.1f} would be needed to stand out from the same step at each earlier month")
-                       + (f", and the larger fall came before the release, from 2020 to {low_when}." if fell_before else ".")),
-                 "src": "NLx job ads, September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander · Eloundou task measure",
-                 "more": ("The aggregates count, for each occupation and month, how many ads name each O*NET task. "
-                          + (f"Within occupations, ads named the tasks the models can do less often from 2020 and reached their lowest "
-                             f"point in {low_when}, so the change in what employers ask for came with the pandemic years and before the "
-                             f"technology." if fell_before else
-                             "Within occupations, the share of ads naming the tasks the models can do shows no fall before the release "
-                             "larger than its later movements.")),
-                 "tables": ["postings_step_at_release.csv", "postings_gradient_quarterly.csv", "postings_release_bound.csv"]},
-            ],
-            "how": (f"For each skill group the index takes the last three yearly changes in pay, and in the share of employment, and sets them "
-                    f"against that group's own changes since {since}: a change stands out when it passes the level only the most extreme three-year "
-                    f"stretches in the record reached, and both the reading and that level are recalculated with each spring release of the wage tables. "
-                    f"The job-ad reading compares, within each occupation and month, the share of ads naming each task with that task's exposure, "
-                    f"and sets the change at the release against the same change placed at every earlier month."),
-        },
-        "valley": {
-            "capline": (f"{degrees:.1f}% of new degrees and {enrolled:.1f}% of enrollment in exposed fields; "
-                        f"young workers {young:.0f}% below 2022 in exposed jobs"),
-            "mark": f"{degrees:.1f}% of new degrees in exposed fields",
-            "items": [
-                {"n": f"{degrees:.1f}%", "view": "valley",
-                 "s": (f"of new bachelor's degrees in {year} went to the third of fields whose graduates hold the jobs most exposed to AI models, "
-                       f"with each field scored by where its graduates actually work"
-                       + (f", against {before:.1f} percent in {year - 1}." if before is not None else ".")),
-                 "src": f"IPEDS completions, {year} · field exposure from ACS and the Eloundou task measure",
-                 "more": ("Each field of study is scored by the exposure of the jobs its graduates hold in the American Community Survey, "
-                          "so a field counts as exposed because of where its graduates work. The share moves once a year, with each "
-                          "completions file."),
-                 "tables": ["pipeline_completions_by_state.csv", "pipeline_field_exposure_crosswalk.csv"]},
-                {"n": f"{enrolled:.1f}%", "view": "valley",
-                 "s": (f"of undergraduates at four-year institutions in {str(e_last['term']).lower()} were enrolled in the third of field "
-                       f"families whose graduates hold the most exposed jobs, against {enrolled_first:.1f} percent in "
-                       f"{str(e_first['term']).lower()}."),
-                 "src": f"National Student Clearinghouse, {e_first['term']} to {e_last['term']} · field exposure from ACS and the Eloundou task measure",
-                 "more": ("Enrollment shows the students still in college, three or four years ahead of their degrees, so it is the first "
-                          "place a change in what people choose to study would appear. So far the share in exposed fields has "
-                          + ("edged up." if enrolled >= enrolled_first else "fallen.")),
-                 "tables": ["pipeline_enrolment_by_exposure.csv", "nsc_cip_family_enrolment.csv"]},
-                {"n": f"{young:.0f}%", "view": "valley",
-                 "s": (f"is how far the employment of 22 to 27 year olds in the most exposed third of jobs, set against their employment in "
-                       f"other jobs, has fallen since 2022 beyond the same change for workers aged 35 to 54, as of {g_when}."),
-                 "src": f"Current Population Survey, January 2022 to {g_when}",
-                 "more": (("The gauge sets young workers' employment in the most exposed jobs against their employment in other jobs, "
-                           "and divides by the same ratio for workers aged 35 to 54, so it moves only when young workers' place in "
-                           "exposed work changes relative to older workers'. "
-                           + (f"Over the last twelve months it sits {abs(float(gtest['observed_shift'])) * 100:.1f} points "
-                              f"{'below' if float(gtest['observed_shift']) < 0 else 'above'} the months before, where reshuffling the months "
-                              f"moves it by at most {float(gtest['threshold_95']) * 100:.1f}. " if gtest is not None else "")
-                           + "The monthly samples are small and the series starts in January 2022, so it does not show whether the fall "
-                             "began before the release of language models.")),
-                 "tables": ["cps_young_worker_gauge.csv"] + (["cps_young_worker_test.csv"] if gtest is not None else [])},
-            ],
-            "how": ("Degrees come from the IPEDS completions file and enrollment from the Clearinghouse, and each field is scored by the "
-                    "exposure of the occupations its graduates hold, on the task measure of Eloundou and coauthors. Young workers come "
-                    "from the monthly Current Population Survey, with occupations scored the same way. People who move into exposed "
-                    "jobs from other occupations will join this view when the flows between occupations are published."),
-        },
-    }
-
-    # the opening sentence stays short enough for two or three lines: one clause per view, the detail is in the readings below
-    if not pay_out and not qty_out:
-        city = '<a href="#city" data-view="city">pay and the mix of jobs have stayed within their usual range</a>'
-    else:
-        city = ('<a href="#city" data-view="city">pay ' + ("has moved past" if pay_out else "has stayed within") + ' its usual range</a>'
-                + (f" while the mix of jobs has shifted more than in any three years since {since}" if qty_record else
-                   " while the mix of jobs has moved past its usual range" if qty_out else ""))
-    lede = (f'The tasks people bring to AI models account for <a href="#bridge" data-view="bridge">{wages} percent of US wages</a>, {city}, '
-            f'and <a href="#binoculars" data-view="valley">{degrees:.0f} percent of new degrees</a> are in fields that lead to the most exposed jobs.')
-
-    # Each view is one index, laid out the way a single index is: a title, one big figure, a sentence, and its series over
-    # time. The full sentence, the paragraph and the source stay under each card for anyone who wants the method.
+    # The words on the page. Every sentence is written for a reader who has not seen the method: what moved, by how much,
+    # and the one thing that limits it. The tests behind the city are described by what they compare, never by their units.
     def series(x, y, fmt, threshold=None, unit=""):
         return {"x": [str(v) for v in x], "y": [round(float(v), 4) for v in y], "fmt": fmt, "unit": unit,
                 "threshold": None if threshold is None else [round(float(v), 4) for v in threshold]}
@@ -597,105 +444,207 @@ def export_site(release: str) -> Path:
         tag = str(release)
         return _published(tag) + (f" ({datetime.strptime(tag.split('(')[1][:7], '%Y-%m').strftime('%b')})"
                                    if "(" in tag and len(tag.split("(")[1].rstrip(")")) == 7 else "")
-    top_name = top["bundle"]
-    top_path = landing[(landing["platform"] == "anthropic") & (landing["bundle"] == top_name)
+    def pct(x, digits=0):
+        return f"{x * 100:.{digits}f}%"
+
+    first_share = round(float(first["reach_share"]) * 100)
+    top_name, low_name = top["bundle"].lower(), low["bundle"].lower()
+    top_path = landing[(landing["platform"] == "anthropic") & (landing["bundle"] == top["bundle"])
                        & landing["release"].isin(complete["release"])].sort_values("release")
-    stat_word = lambda row: "Past its normal range" if row["largest_statistic"] >= row["threshold_95"] else "Within its normal range"
     young_series = gauge.assign(v=(gauge["young_relative_to_prime"] - 1) * 100)
-    cards = {
-        "bridge": ("Use", "How much of paid work is in the tasks people bring to AI", [
-            {"title": "Share of US wages in tasks people bring to AI", "big": f"{wages}%",
-             "note": f"Up from {round(float(first['reach_share']) * 100)}% in the {_published(first['release'])} release.",
-             "series": series([label(r) for r in complete["release"]], complete["reach_share"] * 100, "pct0", unit="% of wages")},
-            {"title": "Where use is concentrated", "big": f"{top['concentration']:.1f}×",
-             "note": f"Use on {top_name.lower()} against their share of pay, the most of any skill group.",
-             "series": series([label(r) for r in top_path["release"]], top_path["concentration"], "x1", unit="times share of pay")},
-            {"title": "Wages in the core of use", "big": f"{core:.1f}%",
-             "note": f"The {int(newest['tasks_three_quarters'])} tasks that make up three quarters of all use, up from {core_first:.1f}%.",
-             "series": series([label(r) for r in anthropic["release"]], anthropic["reach_share_three_quarters"] * 100, "pct1", unit="% of wages")},
-        ]),
-        "city": ("Jobs", "Whether pay, the mix of jobs and job ads have moved", [
-            {"title": "Pay across skill groups", "big": stat_word(pay),
-             "note": f"The biggest three-year move in any skill group is {pay['largest_statistic']:.1f}, where {pay['threshold_95']:.1f} would count as unusual.",
-             "series": series(pay_all["year"], pay_all["largest_statistic"], "num1", pay_all["threshold_95"], "biggest move, standard errors")},
-            {"title": "Mix of jobs", "big": stat_word(qty),
-             "note": (f"The biggest shift is {qty['largest_statistic']:.1f} against {qty['threshold_95']:.1f}, {toward} {name(qty['largest_bundle'])}"
-                      + (f", the largest since {since}" if qty_record else "")
-                      + (f"; a record this long gives a shift that size about one time in {_words(odds)}." if odds else ".")),
-             "series": series(qty_all["year"], qty_all["largest_statistic"], "num1", qty_all["threshold_95"], "biggest shift, standard errors")},
-            {"title": "Job ads for tasks AI can do",
-             "big": ("Fell before AI" if fell_before and not asks_out else
-                     "Moved at the release" if asks_out else "No change beyond the usual"),
-             "note": (f"Within occupations, ads named these tasks less often from 2020 to {low_when}; the step at the release is "
-                      f"{asks['statistic']:.1f} where {asks['threshold_95']:.1f} would stand out"
-                      + (f", and by {last_when} ads had made up {made_up * 100:.0f}% of the fall." if made_up >= 0.25 else ".")),
-             "series": series(list(grad.index), grad.to_numpy() * 100, "pp2", unit="points against 2019")},
-        ]),
-        "valley": ("Training", "What people study, and whether young workers still get exposed jobs", [
-            {"title": "New degrees in exposed fields", "big": f"{degrees:.1f}%",
-             "note": (f"Of bachelor's degrees in {year}, up from {before:.1f}% in {year - 1}." if before is not None else f"Of bachelor's degrees in {year}."),
-             "series": series(list(share.index), share.to_numpy() * 100, "pct1", unit="% of degrees")},
-            {"title": "Enrollment in exposed fields", "big": f"{enrolled:.1f}%",
-             "note": f"Of four-year undergraduates in {str(e_last['term']).lower()}, against {enrolled_first:.1f}% in {str(e_first['term']).lower()}.",
-             "series": series(enrol["term"].str.replace("Fall ", ""), enrol["share_exposed"] * 100, "pct1", unit="% of enrollment")},
-            {"title": "Young workers in exposed jobs", "big": f"−{young:.0f}%",
-             "note": "Employment of 22 to 27 year olds in the most exposed jobs, against older workers, since 2022.",
-             "series": series(young_series["period"], young_series["v"], "pct0s", unit="% against 2022")},
-        ]),
+    start, end = int(pay["year"]) - 3, int(pay["year"])
+    earlier = int(pay["consecutive_relabellings"]) - 1
+    pay_moved = "rise" if int(pay["largest_direction"]) > 0 else "fall"
+    mix_field = name(qty["largest_bundle"])
+    shift_word = "toward" if int(qty["largest_direction"]) > 0 else "away from"
+    tasks_core = int(newest["tasks_three_quarters"])
+    shift_pts = abs(float(gtest["observed_shift"])) * 100 if gtest is not None else None
+    draws = int(gtest["draws"]) if gtest is not None else 0
+    as_large = round(float(gtest["p_two_sided"]) * draws) if gtest is not None else 0
+    rinz = "Rinz (2026), Federal Reserve Bank of Cleveland Working Paper 26-24"
+    pay_big = "Unusual change" if pay_out else "No unusual change"
+    mix_big = (f"Largest shift since {since}" if qty_record else "Unusual shift" if qty_out else "No unusual shift")
+    ads_big = "Fell before ChatGPT" if fell_before and not asks_out else "Changed at ChatGPT's release" if asks_out else "No change at ChatGPT's release"
+
+    views = {
+        "bridge": {
+            "index": "Use", "index_line": "How much of the country's paid work people use AI for",
+            "capline": f"{wages}% of US wages are in tasks people use AI for; {_published(latest['release'])}",
+            "mark": f"{wages}% of US wages are in tasks people use AI for",
+            "headline": (f"Tasks people use AI for make up {wages}% of US wages, and the heaviest use, relative to pay, "
+                         f"is on {top_name}."),
+            "items": [
+                {"title": "Share of US wages in tasks people use AI for", "big": f"{wages}%",
+                 "note": (f"Up from {first_share}% in {_published(first['release'])}. A task counts once people use Claude for it at all, "
+                          f"so this shows how widely AI use has spread across paid work, but not how much of that work AI does."),
+                 "more": (f"The Anthropic Economic Index sorts conversations with Claude into the job tasks the Labor Department lists for "
+                          f"each occupation (O*NET). We add up what US workers earn on the tasks that appear, using the BLS wage tables. "
+                          f"The June 2026 file leaves out rarely used tasks, so this figure uses {_published(latest['release'])}, the most "
+                          f"recent file that lists them all. Tasks people hand to Claude to do entirely account for "
+                          f"{round(float(split['delegated_share']) * 100)}% of US wages."),
+                 "src": f"Anthropic Economic Index, {_published(latest['release'])}; OEWS wages, May {int(pay['year'])}",
+                 "series": series([label(r) for r in complete["release"]], complete["reach_share"] * 100, "pct0", unit="% of US wages"),
+                 "tables": ["usage_reach.csv"]},
+                {"title": "Where AI use is heaviest", "big": f"{top['concentration']:.1f}×",
+                 "note": (f"{top_name.capitalize()} account for {pct(top['usage_share_on_bundle'], 1)} of AI use but only "
+                          f"{pct(top['wage_bill_share_on_bundle'], 1)} of US wages, {top['concentration']:.1f} times as much use as "
+                          f"their share of pay. {low_name.capitalize()} get the least, {low['concentration']:.1f} times."),
+                 "more": (f"We sort job tasks into 25 skill groups and compare each group's share of AI use with its share of US wages. "
+                          f"A value above 1 means people use AI on that group's tasks more than its share of pay alone would lead you to expect."),
+                 "src": f"Anthropic Economic Index, {_published(latest['release'])}; O*NET {release}",
+                 "series": series([label(r) for r in top_path["release"]], top_path["concentration"], "x1", unit="AI use relative to share of pay"),
+                 "tables": ["usage_landing.csv"]},
+                {"title": "Wages in the most-used tasks", "big": f"{core:.1f}%",
+                 "note": (f"Three quarters of all AI use comes from just {tasks_core} tasks. Those tasks account for {core:.1f}% of US wages, "
+                          f"up from {core_first:.1f}% in {_published(anthropic.iloc[0]['release'])}."),
+                 "more": (f"Because no release leaves the most-used tasks out, this figure can be compared across every release, the June "
+                          f"2026 file included. Its rise means the work people use AI for most is moving toward tasks that make up "
+                          + ("more" if core > core_first else "less") + " of total US pay."),
+                 "src": f"Anthropic Economic Index, {_published(newest['release'])}; OEWS wages, May {int(pay['year'])}",
+                 "series": series([label(r) for r in anthropic["release"]], anthropic["reach_share_three_quarters"] * 100, "pct1", unit="% of US wages"),
+                 "tables": ["usage_reach.csv"]},
+            ],
+            "how": ("The Anthropic Economic Index sorts conversations with Claude into the job tasks that O*NET lists for each occupation. "
+                    "We weight each task by what US workers earn doing it, from the latest BLS wage tables, and update the figures with "
+                    "each new release of the index, every few months. Only one platform's data are used so far."),
+        },
+        "city": {
+            "index": "Jobs", "index_line": "Whether pay, jobs and hiring have changed",
+            "capline": (f"Pay: {pay_big.lower()}. Job mix: {mix_big.lower()}. Job ads: {ads_big[0].lower() + ads_big[1:]}."),
+            "mark": f"Pay: {pay_big.lower()}. Job mix: {mix_big.lower()}.",
+            "headline": (("Pay has changed more than usual" if pay_out else "Pay hasn't changed more than usual")
+                         + (f", the mix of jobs has shifted more than at any time since {since}" if qty_record else
+                            ", the mix of jobs has shifted more than usual" if qty_out else "")
+                         + (", and job ads turned away from tasks AI can do before ChatGPT came out." if fell_before else
+                            ", and job ads show no change at ChatGPT's release.")),
+            "items": [
+                {"title": "Pay across skill groups", "big": pay_big,
+                 "note": (f"The largest pay change in any skill group between {start} and {end}, a {pay_moved} for jobs that rely heavily on "
+                          f"{name(pay['largest_bundle'])}, was smaller than the largest change in {_words(int(pay['earlier_windows_at_least']))} "
+                          f"of the {_words(earlier)} earlier three-year periods since {since}."
+                          if not pay_out else
+                          f"Pay for jobs that rely heavily on {name(pay['largest_bundle'])} changed more between {start} and {end} than in almost "
+                          f"any earlier three-year period since {since}."),
+                 "more": (f"For each of 25 skill groups, we compare the pay change over the last three years with that group's own "
+                          f"changes since {since}. We count a change as unusual only if it is larger than 95% of the changes we get by "
+                          f"reshuffling the years at random. The figures use average pay across whole occupations, so a raise for new "
+                          f"hires and a cut for people already in the job would cancel out."),
+                 "related": (f"{rinz}, finds that from the second half of 2024, workers who stayed in more exposed jobs saw a small fall "
+                             f"in real earnings, under 1%. That is after the last year of these wage tables."),
+                 "src": f"OEWS, May {since - 1} to May {int(pay['year'])}, occupations present in every year",
+                 "series": series(pay_all["year"], pay_all["largest_statistic"], "num1", pay_all["threshold_95"], "size of the largest change"),
+                 "tables": ["outcomes_pay_series_balanced.csv", "outcomes_pay_changes.csv"]},
+                {"title": "Mix of jobs", "big": mix_big,
+                 "note": ((f"Between {start} and {end}, employment moved {shift_word} jobs that rely heavily on {mix_field}, more than in any "
+                           f"three-year period since {since}." if qty_record else
+                           f"Between {start} and {end}, employment moved {shift_word} jobs that rely heavily on {mix_field} more than usual." if qty_out else
+                           f"Between {start} and {end}, the largest shift was {shift_word} jobs that rely heavily on {mix_field}, within the usual range.")
+                          + (f" With only {_words(int(qty['transitions_available']))} years of data, there is about a 1 in {odds} chance "
+                             f"of a shift this large even if nothing has changed" if qty_out and odds else "")
+                          + (f", and the pandemic also caused an unusual shift, in {_joined([str(y) for y in flagged])}." if qty_out and odds and flagged else
+                             "." if qty_out and odds else "")
+                          + (f" The spring {int(pay['year']) + 2} wage tables will show whether it lasts." if qty_out else "")),
+                 "more": ("The mix of jobs is each skill group's share of total employment, so it changes when people move between "
+                          "occupations, which can happen before pay changes at all. It is tested the same way as pay, against each "
+                          "group's own history."),
+                 "src": f"OEWS, May {since - 1} to May {int(qty['year'])}, occupations present in every year",
+                 "series": series(qty_all["year"], qty_all["largest_statistic"], "num1", qty_all["threshold_95"], "size of the largest shift"),
+                 "tables": ["outcomes_quantity_series_balanced.csv"]},
+                {"title": "Job ads for tasks AI can do", "big": ads_big,
+                 "note": ((f"From 2020 to {low_when}, job ads in the same occupation asked less and less often for tasks AI can do. "
+                           f"ChatGPT's release in November 2022 brought no further drop" if fell_before and not asks_out else
+                           f"Job ads changed at ChatGPT's release in November 2022 more than at almost any earlier month" if asks_out else
+                           "Job ads show no change at ChatGPT's release in November 2022")
+                          + (f", and by {last_when} ads had recovered {made_up * 100:.0f}% of the decline." if made_up >= 0.25 else ".")),
+                 "more": (f"The National Labor Exchange (NLx) data count how often ads in each occupation name each O*NET task. We check "
+                          f"whether tasks AI can do lost ground to other tasks in the same occupation, and whether anything changed at "
+                          f"ChatGPT's release. In {_words(int(asks['earlier_at_least']))} of the {_words(int(asks['earlier_windows']))} "
+                          f"earlier months, the same comparison showed a change at least as large as the one at the release."),
+                 "related": (f"{rinz}, finds the same timing in commercial job-ad data: ads in more exposed occupations were declining "
+                             f"before ChatGPT and leveled off after it."),
+                 "src": "NLx job ads, September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander; Eloundou task measure",
+                 "series": series(list(grad.index), grad.to_numpy() * 100, "pp2", unit="share of ads, change since 2019 (points)"),
+                 "tables": ["postings_step_at_release.csv", "postings_gradient_quarterly.csv", "postings_release_bound.csv"]},
+            ],
+            "how": (f"For each of 25 skill groups, we compare the change in pay, and in the share of employment, over the last three "
+                    f"years with that group's own history since {since}. A change counts as unusual only if it is larger than 95% of the "
+                    f"changes we get by reshuffling the years at random. Both are recalculated each spring, when BLS publishes new wage "
+                    f"tables. For job ads, we measure how often ads in each occupation name each task, and check whether tasks AI can "
+                    f"do lost ground at ChatGPT's release more than at earlier months."),
+        },
+        "valley": {
+            "index": "Training", "index_line": "What students choose, and whether young workers still get exposed jobs",
+            "capline": (f"{degrees:.1f}% of new degrees and {enrolled:.1f}% of enrollment are in exposed fields; "
+                        f"young workers down {young:.0f}% in exposed jobs since 2022"),
+            "mark": f"{degrees:.1f}% of new degrees are in exposed fields",
+            "headline": (f"{degrees:.0f}% of new degrees and {enrolled:.0f}% of four-year enrollment are in the fields most exposed "
+                         f"to AI, and young workers have lost ground in exposed jobs since 2022."),
+            "items": [
+                {"title": "New degrees in exposed fields", "big": f"{degrees:.1f}%",
+                 "note": (f"{degrees:.1f}% of {year} bachelor's degrees went to the third of fields whose graduates hold the most "
+                          f"AI-exposed jobs" + (f", up from {before:.1f}% in {year - 1}." if before is not None else ".")),
+                 "more": ("Degrees by field come from the Education Department's IPEDS completions files. We score each field by the AI "
+                          "exposure of the jobs its graduates actually hold, using the Census Bureau's American Community Survey and the "
+                          "exposure measure of Eloundou, Manning, Mishkin and Rock (2023)."),
+                 "src": f"IPEDS completions, {year}; field exposure from ACS and the Eloundou task measure",
+                 "series": series(list(share.index), share.to_numpy() * 100, "pct1", unit="% of bachelor's degrees"),
+                 "tables": ["pipeline_completions_by_state.csv", "pipeline_field_exposure_crosswalk.csv"]},
+                {"title": "Enrollment in exposed fields", "big": f"{enrolled:.1f}%",
+                 "note": (f"{enrolled:.1f}% of four-year undergraduates in {str(e_last['term']).lower()} were in those fields, "
+                          f"{'up' if enrolled >= enrolled_first else 'down'} from {enrolled_first:.1f}% in {str(e_first['term']).lower()}. "
+                          f"Students choose fields years before they graduate, so a turn away from exposed fields would show up here first."),
+                 "more": "Enrollment by field comes from the National Student Clearinghouse and is scored the same way as degrees.",
+                 "src": f"National Student Clearinghouse, {e_first['term']} to {e_last['term']}; field exposure from ACS and the Eloundou task measure",
+                 "series": series(enrol["term"].str.replace("Fall ", ""), enrol["share_exposed"] * 100, "pct1", unit="% of four-year undergraduates"),
+                 "tables": ["pipeline_enrolment_by_exposure.csv", "nsc_cip_family_enrolment.csv"]},
+                {"title": "Young workers in exposed jobs", "big": f"−{young:.0f}%",
+                 "note": (f"Since 2022, workers aged 22 to 27 have lost ground in the jobs most exposed to AI, by {young:.0f}% compared "
+                          f"with workers aged 35 to 54."
+                          + (" It is the strongest signal on this page." if gtest is not None and as_large == 0 else "")),
+                 "more": ("From the Census Bureau's monthly Current Population Survey. For each age group we divide employment in the most "
+                          "exposed third of jobs by employment in all other jobs, then compare the young group's ratio with the older "
+                          "group's. "
+                          + (f"Over the last 12 months the gap was {shift_pts:.1f} points wider than in the months before. "
+                             + (f"In {draws:,} random reorderings of the months, none produced a gap that large. " if as_large == 0 else
+                                f"In {draws:,} random reorderings of the months, {as_large} produced a gap that large. ")
+                             if gtest is not None else "")
+                          + "The data start in January 2022, so they can't show whether the decline began before ChatGPT."),
+                 "related": ("Brynjolfsson, Chandar and Chen (2025), Stanford Digital Economy Lab, find a 13% relative decline in "
+                             "employment for workers aged 22 to 25 in the most AI-exposed occupations, using payroll data."),
+                 "src": f"Current Population Survey, January 2022 to {g_when}",
+                 "series": series(young_series["period"], young_series["v"], "pct0s", unit="% change since 2022, against ages 35 to 54"),
+                 "tables": ["cps_young_worker_gauge.csv"] + (["cps_young_worker_test.csv"] if gtest is not None else [])},
+            ],
+            "how": ("We score each field of study by the AI exposure of the jobs its graduates hold, using the Census Bureau's American "
+                    "Community Survey and the exposure measure of Eloundou and coauthors. Degrees come from IPEDS and enrollment from "
+                    "the National Student Clearinghouse. Young workers come from the monthly Current Population Survey, with jobs "
+                    "scored the same way."),
+        },
     }
-    for view, (index, line, specs) in cards.items():
-        views[view]["index"], views[view]["index_line"] = index, line
-        for entry, spec in zip(views[view]["items"], specs):
-            entry.update(spec)
+    for view in views.values():
+        for entry in view["items"]:
+            entry["view"] = next(k for k, v in views.items() if v is view)
 
-    headlines = {
-        "bridge": (f"The tasks people bring to AI models account for {wages} percent of US wages, and that use is heaviest on "
-                   f"{top['bundle'].lower()}, at {top['concentration']:.1f} times their share of pay."),
-        "city": ("Pay " + ("has moved past" if pay_out else "has stayed within") + " its usual range"
-                 + (f", the mix of jobs has shifted more than in any three years since {since}" if qty_record else
-                    ", the mix of jobs has moved past its usual range" if qty_out else "")
-                 + (f", and job ads turned away from the tasks the models can do in 2020 to {low_when}, before the models were released."
-                    if fell_before else ", and job ads show no step beyond their usual range at the release of language models.")),
-        "valley": (f"{degrees:.0f} percent of new degrees and {enrolled:.0f} percent of four-year enrollment are in fields that lead to "
-                   f"the most exposed jobs, while young workers' employment in those jobs, against older workers', is "
-                   f"{young:.0f} percent below its 2022 level."),
-    }
-    for view, line in headlines.items():
-        views[view]["headline"] = line
+    # the opening paragraph: one sentence per index, each linked to its view
+    lede = (f'Tasks people use AI for make up <a href="#bridge" data-view="bridge">{wages}% of US wages</a>. '
+            + ('<a href="#city" data-view="city">Pay has changed more than usual</a>' if pay_out else
+               '<a href="#city" data-view="city">Pay hasn\'t changed more than usual</a>')
+            + (f", but the mix of jobs has shifted more than at any time since {since}. " if qty_record else
+               ", but the mix of jobs has shifted more than usual. " if qty_out else ". ")
+            + f'And <a href="#binoculars" data-view="valley">{degrees:.0f}% of new degrees</a> are in fields that lead to the jobs most exposed to AI.')
 
-    meaning = []
-    if not pay_out:
-        meaning.append(f"The tasks people bring to AI models are paid about {_fraction(wages / 100)} of all the wages in the United States, while pay "
-                       f"across the skills behind them has moved no further over the last three years than in an ordinary stretch of the record, "
-                       f"so these models already reach a wide share of paid work and there is no sign yet that employers pay for those skills differently.")
-    else:
-        meaning.append(f"The tasks people bring to AI models are paid about {_fraction(wages / 100)} of all the wages in the United States, and pay "
-                       f"for {name(pay['largest_bundle'])} has moved past its usual range over the last three years, which makes it the reading to watch.")
-    if qty_out:
-        covid = set(flagged) and set(flagged) <= {2020, 2021}
-        meaning.append(f"The reading that stands out is the mix of work: over the last three years employment has moved {toward} jobs that draw "
-                       f"on {name(qty['largest_bundle'])}"
-                       + (f" by more than in any three-year stretch since {since}" if qty_record else " past its usual range")
-                       + (f", although a record of {_words(int(qty['transitions_available']))} years produces a shift that size by chance about one time "
-                          f"in {_words(odds)}" if odds else "")
-                       + (f", and the same test was passed in {_joined([str(y) for y in flagged])}" + (", when the pandemic reshuffled employment" if covid else "") if flagged else "")
-                       + ", so the next release of the wage tables will show whether it holds.")
-    meaning.append(f"What employers ask for moved before the models did: within occupations, job ads named the tasks the models can do less often "
-                   f"from 2020 to {low_when}, and the release itself added a step of {asks['statistic']:.1f} standard errors"
-                   + (f", past the {asks['threshold_95']:.1f} needed to stand out, so the next months of ads will show whether it holds."
-                      if asks_out else f" against the {asks['threshold_95']:.1f} needed to stand out from an ordinary month.")
-                   if fell_before else
-                   f"Within occupations, job ads moved at the release of language models by {asks['statistic']:.1f} standard errors against "
-                   f"the {asks['threshold_95']:.1f} needed to stand out from an ordinary month.")
-    meaning.append(f"Degrees and first jobs change slowly, and they are the part that policy can count: {degrees:.1f} percent of new bachelor's "
-                   f"degrees in {year} went to the most exposed third of fields"
-                   + (f", against {before:.1f} percent in {year - 1}" if before is not None else "")
-                   + f", enrollment in those fields has {'edged up' if enrolled >= enrolled_first else 'fallen'}, and young workers' employment in the most exposed jobs, against older "
-                   f"workers', is {young:.0f} percent below its 2022 level.")
-
-    notes = ["new data coming", f"next wage tables: spring {int(pay['year']) + 2}"]
-    if qty_record:
-        notes.append(f"jobs mix: largest shift since {since}")
+    meaning = [
+        f"Use: AI use already covers tasks worth {wages}% of US pay, but most of it comes from a few hundred tasks.",
+        ("Jobs: " + ("AI hasn't shown up in pay. " if not pay_out else "Pay has changed more than usual. ")
+         + ("The mix of jobs has shifted more than usual, though chance can't yet be ruled out, " if qty_out and odds and odds < 20 else
+            "The mix of jobs has shifted, " if qty_out else "The mix of jobs is within its usual range, ")
+         + ("and job ads moved away from tasks AI can do before ChatGPT came out." if fell_before else
+            "and job ads show no change at ChatGPT's release.")),
+        ("Training: Students haven't turned away from exposed fields. "
+         + ("Young workers losing ground in exposed jobs is the clearest signal on the page." if gtest is not None and as_large == 0 else
+            "Young workers have lost ground in exposed jobs since 2022.")),
+    ]
+    notes = [f"the next BLS wage tables are due in spring {int(pay['year']) + 2}"]
 
     # the page reads as prose: lists inside a line are separated by semicolons, never by middle dots
     for view in views.values():

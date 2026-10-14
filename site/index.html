@@ -323,7 +323,8 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 .card summary{font-size:14px;color:var(--ink-2);cursor:pointer;padding:6px 0;min-height:24px}
 .card details p{font-size:15px;line-height:1.6;color:var(--ink-2);margin:4px 0 10px}
 .card details p.s{color:var(--ink)}
-.card details .cite,.card details .vals{font-size:13px;color:var(--ink-3)}
+.card details .cite{font-size:13px;color:var(--ink-3)}
+.card details .rel b{font-weight:600;color:var(--ink)}
 @media (forced-colors: active){.scene path,.scene circle,.scene rect{stroke:CanvasText}.scene text{fill:CanvasText}.hot:focus-visible .hit{stroke:Highlight}}
 @media (prefers-reduced-motion: reduce){.fogline,.bank,.cloud,.deck,.rain,.rainsheet,.sheet,.crest,.crownblock,.bart,.star,.lens,.avlight,.shiplight,.navlight,.strobe,.carlight{animation:none !important}.stage>svg,.zoom,.viewer,.beam,.mask-in{transition:none}}
 @media (max-width:820px){
@@ -351,7 +352,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     <div class="brand">AI at Work <small>Three indices: use, jobs and training</small></div>
   </header>
   <p class="sub">Any one source on AI and work is a glimpse through fog. This page keeps three indices side by side: use, from the tasks people bring to AI models; jobs, from pay, the mix of work and job ads; and training, from what students study and whether young workers still find exposed jobs. Read together they show where AI has reached work in the United States and where it has not yet, and each new release clears a little more of the view.</p>
-  <p class="lede" id="lede">The tasks people bring to AI models account for <a href="#bridge" data-view="bridge">23 percent of US wages</a>, <a href="#city" data-view="city">pay has stayed within its usual range</a> while the mix of jobs has shifted more than in any three years since 2013, and <a href="#binoculars" data-view="valley">42 percent of new degrees</a> are in fields that lead to the most exposed jobs.</p>
+  <p class="lede" id="lede">Tasks people use AI for make up <a href="#bridge" data-view="bridge">23% of US wages</a>. <a href="#city" data-view="city">Pay hasn't changed more than usual</a>, but the mix of jobs has shifted more than at any time since 2013. And <a href="#binoculars" data-view="valley">42% of new degrees</a> are in fields that lead to the jobs most exposed to AI.</p>
   <noscript><p class="sub">The drawing and the charts need JavaScript. The three headline findings are in the sentence above, the sources are listed at the foot of the page, and every table behind them is in the <a href="https://github.com/conway1521/ai-index">repository</a>.</p></noscript>
   <details class="meaning" id="meaning"><summary>What does this mean</summary><div id="meaning-body"></div></details>
   <nav class="indices" id="indices" aria-label="The three indices"></nav>
@@ -410,19 +411,19 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           <path class="hit" d="M800 300 L1600 120 L1600 480 Z"/><path class="hit" d="M1000 120 h560 v200 h-560 Z"/>
           <text x="1540" y="160" text-anchor="end" class="cap">The city (Jobs)</text>
           <text x="1540" y="188" text-anchor="end" class="mark" id="mark-city"></text>
-          <g class="detail"><text x="1540" y="210" text-anchor="end">what has moved: pay, jobs and job ads, tested against their own history</text></g>
+          <g class="detail"><text x="1540" y="210" text-anchor="end">pay, the mix of jobs and job ads, each compared with its own past</text></g>
         </g>
         <g class="hot" id="hot-bridge" tabindex="0" role="button" aria-label="The bridge: where usage lands">
           <path class="hit" d="M800 300 L0 120 L0 480 Z"/><path class="hit" d="M40 120 h560 v200 h-560 Z"/>
           <text x="110" y="160" class="cap">The bridge (Use)</text>
           <text x="110" y="188" class="mark" id="mark-bridge"></text>
-          <g class="detail"><text x="110" y="210">where usage lands: the tasks people bring, set against the wages paid for them</text></g>
+          <g class="detail"><text x="110" y="210">the tasks people use AI for, weighted by the wages paid for them</text></g>
         </g>
         <g class="hot" id="hot-tele" tabindex="0" role="button" aria-label="The binoculars (Training): what people study and first jobs">
           <path class="hit" d="M760 200 h140 v400 h-140 Z"/><path class="hit" d="M860 400 h290 v84 h-290 Z"/>
           <text x="872" y="424" class="cap">The binoculars (Training)</text>
           <text x="872" y="446" class="mark" id="mark-valley"></text>
-          <g class="detail"><text x="872" y="466">training and first jobs, looking south to the campuses</text></g>
+          <g class="detail"><text x="872" y="466">what students study and where young workers find jobs</text></g>
         </g>
       </g></g>
       <g id="fognear" class="fog scene"></g>
@@ -480,15 +481,15 @@ body *{letter-spacing:0 !important;text-transform:none !important}
       <p class="notes" id="notes"></p>
       <svg class="strip" viewBox="0 0 900 96" role="img" aria-label="Releases on a timeline"><line x1="20" y1="60" x2="880" y2="60" class="axis"/><g id="ticks"></g></svg>
     </div>
-    <div class="cad">Firm adoption from the Census Bureau arrives every two weeks; OpenAI Signals and the young-worker gauge monthly; the Anthropic Economic Index with each of its releases; and pay, jobs, degrees and enrollment once a year.</div>
+    <div class="cad">The Census Bureau publishes firm adoption every two weeks; OpenAI Signals and the Current Population Survey come out monthly; the Anthropic Economic Index updates with each release; and pay, jobs, degrees and enrollment update once a year.</div>
   </section>
 
   <section class="sources" id="sources">
     <h3>How we measured it</h3>
     <div id="source-list">
-      <div data-key="labs" data-view="bridge"><h4>The bridge (Use)</h4><p class="how">Each conversation in the usage record is matched to the O*NET tasks it touches, each task is weighted by the wages paid for it in the latest OEWS release, and the share moves with every usage release, every few months, for the one platform whose record the index reads so far. A task counts as reached when any use of it is published, so the headline comes from the latest release that publishes every task, and the tasks making up three quarters of use are counted in every release alike, since no release leaves any of them out.</p><p class="src-text"><b>Anthropic Economic Index</b>, usage by O*NET task with the automation and augmentation split, releases from September 2025 to the June 2026 monthly file. <b>OpenAI Signals v2.0</b>, work-related messages by work activity, monthly to June 2026, allocated to tasks by dollars. Each sees its own users only, so both are shown and never averaged.</p></div>
-      <div data-key="civic" data-view="city"><h4>The city (Jobs)</h4><p class="how">For each skill group the index takes the last three yearly changes in pay, and in the share of employment, and sets them against that group&#x27;s own changes since 2013: a change stands out when it passes the level only the most extreme three-year stretches in the record reached, and both the reading and that level are recalculated with each spring release of the wage tables. The job-ad reading compares, within each occupation and month, the share of ads naming each task with that task&#x27;s exposure, and sets the change at the release against the same change placed at every earlier month.</p><p class="src-text"><b>OEWS</b>, wages and employment by occupation, BLS, May 2012 to May 2025. <b>BTOS</b>, firms using AI, Census Bureau, biweekly cycles from November 2025 to September 2026. <b>CPS</b> basic monthly, Census Bureau, January 2022 to August 2026. <b>O*NET 30.3</b>, tasks, ratings and skills, the Department of Labor. Crosswalks from the Census Bureau, NCES and BLS. <b>NLx job ads</b>, the tasks named in the ads of the National Labor Exchange, monthly from September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander.</p></div>
-      <div data-key="campus" data-view="valley"><h4>The binoculars (Training)</h4><p class="how">Degrees come from the IPEDS completions file and enrollment from the Clearinghouse, and each field is scored by the exposure of the occupations its graduates hold, on the task measure of Eloundou and coauthors. Young workers come from the monthly Current Population Survey, with occupations scored the same way. People who move into exposed jobs from other occupations will join this view when the flows between occupations are published.</p><p class="src-text"><b>IPEDS</b> completions by field and institution, NCES, 2023 to 2025. <b>National Student Clearinghouse</b> undergraduate enrollment at four-year institutions by field family, fall 2019 to fall 2024. <b>ACS</b> 2024 field of degree against occupation, the observed link from what people studied to what they do. Fields are scored by where their graduates work.</p></div>
+      <div data-key="labs" data-view="bridge"><h4>The bridge (Use)</h4><p class="how">The Anthropic Economic Index sorts conversations with Claude into the job tasks that O*NET lists for each occupation. We weight each task by what US workers earn doing it, from the latest BLS wage tables, and update the figures with each new release of the index, every few months. Only one platform&#x27;s data are used so far.</p><p class="src-text"><b>Anthropic Economic Index</b>, usage by O*NET task with the automation and augmentation split, releases from September 2025 to the June 2026 monthly file. <b>OpenAI Signals v2.0</b>, work-related messages by work activity, monthly to June 2026, allocated to tasks by dollars. Each platform sees only its own users, so the two are never averaged, and the cards show the Anthropic data.</p></div>
+      <div data-key="civic" data-view="city"><h4>The city (Jobs)</h4><p class="how">For each of 25 skill groups, we compare the change in pay, and in the share of employment, over the last three years with that group&#x27;s own history since 2013. A change counts as unusual only if it is larger than 95% of the changes we get by reshuffling the years at random. Both are recalculated each spring, when BLS publishes new wage tables. For job ads, we measure how often ads in each occupation name each task, and check whether tasks AI can do lost ground at ChatGPT&#x27;s release more than at earlier months.</p><p class="src-text"><b>OEWS</b>, wages and employment by occupation, BLS, May 2012 to May 2025. <b>BTOS</b>, firms using AI, Census Bureau, biweekly cycles from November 2025 to September 2026. <b>CPS</b> basic monthly, Census Bureau, January 2022 to August 2026. <b>O*NET 30.3</b>, tasks, ratings and skills, the Department of Labor. Crosswalks from the Census Bureau, NCES and BLS. <b>NLx job ads</b>, the tasks named in the ads of the National Labor Exchange, monthly from September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander.</p></div>
+      <div data-key="campus" data-view="valley"><h4>The binoculars (Training)</h4><p class="how">We score each field of study by the AI exposure of the jobs its graduates hold, using the Census Bureau&#x27;s American Community Survey and the exposure measure of Eloundou and coauthors. Degrees come from IPEDS and enrollment from the National Student Clearinghouse. Young workers come from the monthly Current Population Survey, with jobs scored the same way.</p><p class="src-text"><b>IPEDS</b> completions by field and institution, NCES, 2023 to 2025. <b>National Student Clearinghouse</b> undergraduate enrollment at four-year institutions by field family, fall 2019 to fall 2024. <b>ACS</b> 2024 field of degree against occupation, the observed link from what people studied to what they do. Fields are scored by where their graduates work.</p></div>
     </div>
   </section>
 
@@ -500,35 +501,29 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 
 <script type="application/json" id="readings">{
   "built": "14 October 2026",
-  "lede": "The tasks people bring to AI models account for <a href=\"#bridge\" data-view=\"bridge\">23 percent of US wages<\/a>, <a href=\"#city\" data-view=\"city\">pay has stayed within its usual range<\/a> while the mix of jobs has shifted more than in any three years since 2013, and <a href=\"#binoculars\" data-view=\"valley\">42 percent of new degrees<\/a> are in fields that lead to the most exposed jobs.",
+  "lede": "Tasks people use AI for make up <a href=\"#bridge\" data-view=\"bridge\">23% of US wages<\/a>. <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual<\/a>, but the mix of jobs has shifted more than at any time since 2013. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees<\/a> are in fields that lead to the jobs most exposed to AI.",
   "meaning": [
-    "The tasks people bring to AI models are paid about a quarter of all the wages in the United States, while pay across the skills behind them has moved no further over the last three years than in an ordinary stretch of the record, so these models already reach a wide share of paid work and there is no sign yet that employers pay for those skills differently.",
-    "The reading that stands out is the mix of work: over the last three years employment has moved toward jobs that draw on arts and humanities by more than in any three-year stretch since 2013, although a record of thirteen years produces a shift that size by chance about one time in eleven, and the same test was passed in 2020, when the pandemic reshuffled employment, so the next release of the wage tables will show whether it holds.",
-    "What employers ask for moved before the models did: within occupations, job ads named the tasks the models can do less often from 2020 to the third quarter of 2022, and the release itself added a step of 2.6 standard errors against the 5.4 needed to stand out from an ordinary month.",
-    "Degrees and first jobs change slowly, and they are the part that policy can count: 41.8 percent of new bachelor's degrees in 2025 went to the most exposed third of fields, against 40.7 percent in 2024, enrollment in those fields has edged up, and young workers' employment in the most exposed jobs, against older workers', is 16 percent below its 2022 level."
+    "Use: AI use already covers tasks worth 23% of US pay, but most of it comes from a few hundred tasks.",
+    "Jobs: AI hasn't shown up in pay. The mix of jobs has shifted more than usual, though chance can't yet be ruled out, and job ads moved away from tasks AI can do before ChatGPT came out.",
+    "Training: Students haven't turned away from exposed fields. Young workers losing ground in exposed jobs is the clearest signal on the page."
   ],
   "notes": [
-    "new data coming",
-    "next wage tables: spring 2027",
-    "jobs mix: largest shift since 2013"
+    "the next BLS wage tables are due in spring 2027"
   ],
   "views": {
     "bridge": {
-      "capline": "23% of wages go to tasks people bring to AI models; March 2026",
-      "mark": "23% of wages in tasks people bring",
+      "index": "Use",
+      "index_line": "How much of the country's paid work people use AI for",
+      "capline": "23% of US wages are in tasks people use AI for; March 2026",
+      "mark": "23% of US wages are in tasks people use AI for",
+      "headline": "Tasks people use AI for make up 23% of US wages, and the heaviest use, relative to pay, is on complex problem solving skills.",
       "items": [
         {
-          "n": "23%",
-          "view": "bridge",
-          "s": "of all the wages paid in the United States go to work on the tasks people bring to AI models, in the usage record the Anthropic Economic Index published in March 2026, against 18 percent in its September 2025 release, and 6 percent go to tasks people hand over to the model entirely, on the June 2026 record.",
-          "src": "Anthropic Economic Index, March 2026; OEWS wages, May 2025",
-          "more": "A task counts once any use of it is published, so this reading measures how widely use spreads across paid work and says nothing about how much of that work the models do. It rose from 18 percent in September 2025 to 23 percent in March 2026 as more tasks appeared in the record. The June 2026 file leaves out tasks below a reporting threshold, so the reading stays on the last release that publishes every task.",
-          "tables": [
-            "usage_reach.csv"
-          ],
-          "title": "Share of US wages in tasks people bring to AI",
+          "title": "Share of US wages in tasks people use AI for",
           "big": "23%",
-          "note": "Up from 18% in the September 2025 release.",
+          "note": "Up from 18% in September 2025. A task counts once people use Claude for it at all, so this shows how widely AI use has spread across paid work, but not how much of that work AI does.",
+          "more": "The Anthropic Economic Index sorts conversations with Claude into the job tasks the Labor Department lists for each occupation (O*NET). We add up what US workers earn on the tasks that appear, using the BLS wage tables. The June 2026 file leaves out rarely used tasks, so this figure uses March 2026, the most recent file that lists them all. Tasks people hand to Claude to do entirely account for 6% of US wages.",
+          "src": "Anthropic Economic Index, March 2026; OEWS wages, May 2025",
           "series": {
             "x": [
               "September 2025",
@@ -541,22 +536,20 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               23.2137
             ],
             "fmt": "pct0",
-            "unit": "% of wages",
+            "unit": "% of US wages",
             "threshold": null
-          }
+          },
+          "tables": [
+            "usage_reach.csv"
+          ],
+          "view": "bridge"
         },
         {
-          "n": "2.5×",
-          "view": "bridge",
-          "s": "is the weight of that use on complex problem solving skills, measured against their share of pay and the most of any skill group, while physical abilities receive 0.3 times their share.",
-          "src": "Anthropic Economic Index, March 2026; O*NET 30.3",
-          "more": "Each skill group's share of use is set against its share of pay, so a value above one means the group draws more use than its weight in wages. Of the twenty-five groups, the most use falls on complex problem solving skills and the least on physical abilities.",
-          "tables": [
-            "usage_landing.csv"
-          ],
-          "title": "Where use is concentrated",
+          "title": "Where AI use is heaviest",
           "big": "2.5×",
-          "note": "Use on complex problem solving skills against their share of pay, the most of any skill group.",
+          "note": "Complex problem solving skills account for 0.9% of AI use but only 0.3% of US wages, 2.5 times as much use as their share of pay. Physical abilities get the least, 0.3 times.",
+          "more": "We sort job tasks into 25 skill groups and compare each group's share of AI use with its share of US wages. A value above 1 means people use AI on that group's tasks more than its share of pay alone would lead you to expect.",
+          "src": "Anthropic Economic Index, March 2026; O*NET 30.3",
           "series": {
             "x": [
               "September 2025",
@@ -569,22 +562,20 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               2.515
             ],
             "fmt": "x1",
-            "unit": "times share of pay",
+            "unit": "AI use relative to share of pay",
             "threshold": null
-          }
+          },
+          "tables": [
+            "usage_landing.csv"
+          ],
+          "view": "bridge"
         },
         {
-          "n": "3.1%",
-          "view": "bridge",
-          "s": "of wages are paid for the tasks that together make up three quarters of all that use, 243 tasks in the June 2026 record, against 1.8 percent in the September 2025 release.",
-          "src": "Anthropic Economic Index, June 2026; OEWS wages, May 2025",
-          "more": "Use is concentrated: 243 tasks account for three quarters of it. Counting only those tasks gives a reading that the reporting threshold cannot move, and its move from 1.8 to 3.1 percent means the work people bring most often now sits in tasks that carry more of the wage bill.",
-          "tables": [
-            "usage_reach.csv"
-          ],
-          "title": "Wages in the core of use",
+          "title": "Wages in the most-used tasks",
           "big": "3.1%",
-          "note": "The 243 tasks that make up three quarters of all use, up from 1.8%.",
+          "note": "Three quarters of all AI use comes from just 243 tasks. Those tasks account for 3.1% of US wages, up from 1.8% in September 2025.",
+          "more": "Because no release leaves the most-used tasks out, this figure can be compared across every release, the June 2026 file included. Its rise means the work people use AI for most is moving toward tasks that make up more of total US pay.",
+          "src": "Anthropic Economic Index, June 2026; OEWS wages, May 2025",
           "series": {
             "x": [
               "September 2025",
@@ -601,33 +592,31 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               3.131
             ],
             "fmt": "pct1",
-            "unit": "% of wages",
+            "unit": "% of US wages",
             "threshold": null
-          }
+          },
+          "tables": [
+            "usage_reach.csv"
+          ],
+          "view": "bridge"
         }
       ],
-      "how": "Each conversation in the usage record is matched to the O*NET tasks it touches, each task is weighted by the wages paid for it in the latest OEWS release, and the share moves with every usage release, every few months, for the one platform whose record the index reads so far. A task counts as reached when any use of it is published, so the headline comes from the latest release that publishes every task, and the tasks making up three quarters of use are counted in every release alike, since no release leaves any of them out.",
-      "index": "Use",
-      "index_line": "How much of paid work is in the tasks people bring to AI",
-      "headline": "The tasks people bring to AI models account for 23 percent of US wages, and that use is heaviest on complex problem solving skills, at 2.5 times their share of pay."
+      "how": "The Anthropic Economic Index sorts conversations with Claude into the job tasks that O*NET lists for each occupation. We weight each task by what US workers earn doing it, from the latest BLS wage tables, and update the figures with each new release of the index, every few months. Only one platform's data are used so far."
     },
     "city": {
-      "capline": "pay 2.9, 6.1 needed; jobs mix 8.1, 6.6 needed; job ads 2.6, 5.4 needed",
-      "mark": "pay 2.9 of 6.1 needed; jobs 8.1 of 6.6",
+      "index": "Jobs",
+      "index_line": "Whether pay, jobs and hiring have changed",
+      "capline": "Pay: no unusual change. Job mix: largest shift since 2013. Job ads: fell before ChatGPT.",
+      "mark": "Pay: no unusual change. Job mix: largest shift since 2013.",
+      "headline": "Pay hasn't changed more than usual, the mix of jobs has shifted more than at any time since 2013, and job ads turned away from tasks AI can do before ChatGPT came out.",
       "items": [
         {
-          "n": "2.9",
-          "view": "city",
-          "s": "standard errors is the largest change in pay across the twenty-five skill groups over the last three years, a fall in the pay of mental processes, where 6.1 would be needed to stand out from each group's own record since 2013, and seven of the ten earlier three-year stretches in that record moved as far or further.",
-          "src": "OEWS, May 2012 to May 2025, occupations present in every year",
-          "more": "Each of the twenty-five skill groups is tested against its own changes since 2013, so a group whose pay has always moved a lot needs a larger change to stand out. The test runs again with each spring release of the wage tables, and it measures pay across whole occupations, so a rise for new hires and a fall for people already in the job would largely cancel in it.",
-          "tables": [
-            "outcomes_pay_series_balanced.csv",
-            "outcomes_pay_changes.csv"
-          ],
           "title": "Pay across skill groups",
-          "big": "Within its normal range",
-          "note": "The biggest three-year move in any skill group is 2.9, where 6.1 would count as unusual.",
+          "big": "No unusual change",
+          "note": "The largest pay change in any skill group between 2022 and 2025, a fall for jobs that rely heavily on mental processes, was smaller than the largest change in seven of the ten earlier three-year periods since 2013.",
+          "more": "For each of 25 skill groups, we compare the pay change over the last three years with that group's own changes since 2013. We count a change as unusual only if it is larger than 95% of the changes we get by reshuffling the years at random. The figures use average pay across whole occupations, so a raise for new hires and a cut for people already in the job would cancel out.",
+          "related": "Rinz (2026), Federal Reserve Bank of Cleveland Working Paper 26-24, finds that from the second half of 2024, workers who stayed in more exposed jobs saw a small fall in real earnings, under 1%. That is after the last year of these wage tables.",
+          "src": "OEWS, May 2012 to May 2025, occupations present in every year",
           "series": {
             "x": [
               "2018",
@@ -650,7 +639,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               2.851
             ],
             "fmt": "num1",
-            "unit": "biggest move, standard errors",
+            "unit": "size of the largest change",
             "threshold": [
               4.79,
               4.565,
@@ -661,20 +650,19 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               6.168,
               6.13
             ]
-          }
+          },
+          "tables": [
+            "outcomes_pay_series_balanced.csv",
+            "outcomes_pay_changes.csv"
+          ],
+          "view": "city"
         },
         {
-          "n": "8.1",
-          "view": "city",
-          "s": "standard errors is the largest shift in the mix of skills in employment over the last three years, toward work that draws on arts and humanities, past the 6.6 needed to stand out and further than any of the ten earlier three-year stretches since 2013, although a record of thirteen years produces a shift that size by chance about one time in eleven, and the same test was passed in 2020.",
-          "src": "OEWS, May 2012 to May 2025, occupations present in every year",
-          "more": "The mix of jobs is each skill group's share of employment, so it moves when people move between occupations, which can happen before pay changes at all. It is tested in the same way as pay, against each group's own record, and about one stretch in eleven of a record this long moves this far by chance.",
-          "tables": [
-            "outcomes_quantity_series_balanced.csv"
-          ],
           "title": "Mix of jobs",
-          "big": "Past its normal range",
-          "note": "The biggest shift is 8.1 against 6.6, toward arts and humanities, the largest since 2013; a record this long gives a shift that size about one time in eleven.",
+          "big": "Largest shift since 2013",
+          "note": "Between 2022 and 2025, employment moved toward jobs that rely heavily on arts and humanities, more than in any three-year period since 2013. With only thirteen years of data, there is about a 1 in 11 chance of a shift this large even if nothing has changed, and the pandemic also caused an unusual shift, in 2020. The spring 2027 wage tables will show whether it lasts.",
+          "more": "The mix of jobs is each skill group's share of total employment, so it changes when people move between occupations, which can happen before pay changes at all. It is tested the same way as pay, against each group's own history.",
+          "src": "OEWS, May 2012 to May 2025, occupations present in every year",
           "series": {
             "x": [
               "2018",
@@ -697,7 +685,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               8.132
             ],
             "fmt": "num1",
-            "unit": "biggest shift, standard errors",
+            "unit": "size of the largest shift",
             "threshold": [
               7.414,
               8.172,
@@ -708,22 +696,19 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               4.711,
               6.612
             ]
-          }
+          },
+          "tables": [
+            "outcomes_quantity_series_balanced.csv"
+          ],
+          "view": "city"
         },
         {
-          "n": "2.6",
-          "view": "city",
-          "s": "standard errors is the step, at the release of language models, in how much job ads within each occupation ask for the tasks those models can do, measured against the sixteen months before, where 5.4 would be needed to stand out from the same step at each earlier month, and the larger fall came before the release, from 2020 to the third quarter of 2022.",
-          "src": "NLx job ads, September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander; Eloundou task measure",
-          "more": "The aggregates count, for each occupation and month, how many ads name each O*NET task. Within occupations, ads named the tasks the models can do less often from 2020 and reached their lowest point in the third quarter of 2022, so the change in what employers ask for came with the pandemic years and before the technology.",
-          "tables": [
-            "postings_step_at_release.csv",
-            "postings_gradient_quarterly.csv",
-            "postings_release_bound.csv"
-          ],
           "title": "Job ads for tasks AI can do",
-          "big": "Fell before AI",
-          "note": "Within occupations, ads named these tasks less often from 2020 to the third quarter of 2022; the step at the release is 2.6 where 5.4 would stand out, and by the third quarter of 2025 ads had made up 68% of the fall.",
+          "big": "Fell before ChatGPT",
+          "note": "From 2020 to the third quarter of 2022, job ads in the same occupation asked less and less often for tasks AI can do. ChatGPT's release in November 2022 brought no further drop, and by the third quarter of 2025 ads had recovered 68% of the decline.",
+          "more": "The National Labor Exchange (NLx) data count how often ads in each occupation name each O*NET task. We check whether tasks AI can do lost ground to other tasks in the same occupation, and whether anything changed at ChatGPT's release. In 25 of the 55 earlier months, the same comparison showed a change at least as large as the one at the release.",
+          "related": "Rinz (2026), Federal Reserve Bank of Cleveland Working Paper 26-24, finds the same timing in commercial job-ad data: ads in more exposed occupations were declining before ChatGPT and leveled off after it.",
+          "src": "NLx job ads, September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander; Eloundou task measure",
           "series": {
             "x": [
               "2020Q1",
@@ -776,33 +761,32 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               -0.205
             ],
             "fmt": "pp2",
-            "unit": "points against 2019",
+            "unit": "share of ads, change since 2019 (points)",
             "threshold": null
-          }
+          },
+          "tables": [
+            "postings_step_at_release.csv",
+            "postings_gradient_quarterly.csv",
+            "postings_release_bound.csv"
+          ],
+          "view": "city"
         }
       ],
-      "how": "For each skill group the index takes the last three yearly changes in pay, and in the share of employment, and sets them against that group's own changes since 2013: a change stands out when it passes the level only the most extreme three-year stretches in the record reached, and both the reading and that level are recalculated with each spring release of the wage tables. The job-ad reading compares, within each occupation and month, the share of ads naming each task with that task's exposure, and sets the change at the release against the same change placed at every earlier month.",
-      "index": "Jobs",
-      "index_line": "Whether pay, the mix of jobs and job ads have moved",
-      "headline": "Pay has stayed within its usual range, the mix of jobs has shifted more than in any three years since 2013, and job ads turned away from the tasks the models can do in 2020 to the third quarter of 2022, before the models were released."
+      "how": "For each of 25 skill groups, we compare the change in pay, and in the share of employment, over the last three years with that group's own history since 2013. A change counts as unusual only if it is larger than 95% of the changes we get by reshuffling the years at random. Both are recalculated each spring, when BLS publishes new wage tables. For job ads, we measure how often ads in each occupation name each task, and check whether tasks AI can do lost ground at ChatGPT's release more than at earlier months."
     },
     "valley": {
-      "capline": "41.8% of new degrees and 53.1% of enrollment in exposed fields; young workers 16% below 2022 in exposed jobs",
-      "mark": "41.8% of new degrees in exposed fields",
+      "index": "Training",
+      "index_line": "What students choose, and whether young workers still get exposed jobs",
+      "capline": "41.8% of new degrees and 53.1% of enrollment are in exposed fields; young workers down 16% in exposed jobs since 2022",
+      "mark": "41.8% of new degrees are in exposed fields",
+      "headline": "42% of new degrees and 53% of four-year enrollment are in the fields most exposed to AI, and young workers have lost ground in exposed jobs since 2022.",
       "items": [
         {
-          "n": "41.8%",
-          "view": "valley",
-          "s": "of new bachelor's degrees in 2025 went to the third of fields whose graduates hold the jobs most exposed to AI models, with each field scored by where its graduates actually work, against 40.7 percent in 2024.",
-          "src": "IPEDS completions, 2025; field exposure from ACS and the Eloundou task measure",
-          "more": "Each field of study is scored by the exposure of the jobs its graduates hold in the American Community Survey, so a field counts as exposed because of where its graduates work. The share moves once a year, with each completions file.",
-          "tables": [
-            "pipeline_completions_by_state.csv",
-            "pipeline_field_exposure_crosswalk.csv"
-          ],
           "title": "New degrees in exposed fields",
           "big": "41.8%",
-          "note": "Of bachelor's degrees in 2025, up from 40.7% in 2024.",
+          "note": "41.8% of 2025 bachelor's degrees went to the third of fields whose graduates hold the most AI-exposed jobs, up from 40.7% in 2024.",
+          "more": "Degrees by field come from the Education Department's IPEDS completions files. We score each field by the AI exposure of the jobs its graduates actually hold, using the Census Bureau's American Community Survey and the exposure measure of Eloundou, Manning, Mishkin and Rock (2023).",
+          "src": "IPEDS completions, 2025; field exposure from ACS and the Eloundou task measure",
           "series": {
             "x": [
               "2023",
@@ -815,23 +799,21 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               41.7519
             ],
             "fmt": "pct1",
-            "unit": "% of degrees",
+            "unit": "% of bachelor's degrees",
             "threshold": null
-          }
+          },
+          "tables": [
+            "pipeline_completions_by_state.csv",
+            "pipeline_field_exposure_crosswalk.csv"
+          ],
+          "view": "valley"
         },
         {
-          "n": "53.1%",
-          "view": "valley",
-          "s": "of undergraduates at four-year institutions in fall 2024 were enrolled in the third of field families whose graduates hold the most exposed jobs, against 52.4 percent in fall 2019.",
-          "src": "National Student Clearinghouse, Fall 2019 to Fall 2024; field exposure from ACS and the Eloundou task measure",
-          "more": "Enrollment shows the students still in college, three or four years ahead of their degrees, so it is the first place a change in what people choose to study would appear. So far the share in exposed fields has edged up.",
-          "tables": [
-            "pipeline_enrolment_by_exposure.csv",
-            "nsc_cip_family_enrolment.csv"
-          ],
           "title": "Enrollment in exposed fields",
           "big": "53.1%",
-          "note": "Of four-year undergraduates in fall 2024, against 52.4% in fall 2019.",
+          "note": "53.1% of four-year undergraduates in fall 2024 were in those fields, up from 52.4% in fall 2019. Students choose fields years before they graduate, so a turn away from exposed fields would show up here first.",
+          "more": "Enrollment by field comes from the National Student Clearinghouse and is scored the same way as degrees.",
+          "src": "National Student Clearinghouse, Fall 2019 to Fall 2024; field exposure from ACS and the Eloundou task measure",
           "series": {
             "x": [
               "2019",
@@ -850,23 +832,22 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               53.1298
             ],
             "fmt": "pct1",
-            "unit": "% of enrollment",
+            "unit": "% of four-year undergraduates",
             "threshold": null
-          }
+          },
+          "tables": [
+            "pipeline_enrolment_by_exposure.csv",
+            "nsc_cip_family_enrolment.csv"
+          ],
+          "view": "valley"
         },
         {
-          "n": "16%",
-          "view": "valley",
-          "s": "is how far the employment of 22 to 27 year olds in the most exposed third of jobs, set against their employment in other jobs, has fallen since 2022 beyond the same change for workers aged 35 to 54, as of August 2026.",
-          "src": "Current Population Survey, January 2022 to August 2026",
-          "more": "The gauge sets young workers' employment in the most exposed jobs against their employment in other jobs, and divides by the same ratio for workers aged 35 to 54, so it moves only when young workers' place in exposed work changes relative to older workers'. Over the last twelve months it sits 8.4 points below the months before, where reshuffling the months moves it by at most 2.8. The monthly samples are small and the series starts in January 2022, so it does not show whether the fall began before the release of language models.",
-          "tables": [
-            "cps_young_worker_gauge.csv",
-            "cps_young_worker_test.csv"
-          ],
           "title": "Young workers in exposed jobs",
           "big": "−16%",
-          "note": "Employment of 22 to 27 year olds in the most exposed jobs, against older workers, since 2022.",
+          "note": "Since 2022, workers aged 22 to 27 have lost ground in the jobs most exposed to AI, by 16% compared with workers aged 35 to 54. It is the strongest signal on this page.",
+          "more": "From the Census Bureau's monthly Current Population Survey. For each age group we divide employment in the most exposed third of jobs by employment in all other jobs, then compare the young group's ratio with the older group's. Over the last 12 months the gap was 8.4 points wider than in the months before. In 1,000 random reorderings of the months, none produced a gap that large. The data start in January 2022, so they can't show whether the decline began before ChatGPT.",
+          "related": "Brynjolfsson, Chandar and Chen (2025), Stanford Digital Economy Lab, find a 13% relative decline in employment for workers aged 22 to 25 in the most AI-exposed occupations, using payroll data.",
+          "src": "Current Population Survey, January 2022 to August 2026",
           "series": {
             "x": [
               "2022-03",
@@ -979,15 +960,17 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               -15.9537
             ],
             "fmt": "pct0s",
-            "unit": "% against 2022",
+            "unit": "% change since 2022, against ages 35 to 54",
             "threshold": null
-          }
+          },
+          "tables": [
+            "cps_young_worker_gauge.csv",
+            "cps_young_worker_test.csv"
+          ],
+          "view": "valley"
         }
       ],
-      "how": "Degrees come from the IPEDS completions file and enrollment from the Clearinghouse, and each field is scored by the exposure of the occupations its graduates hold, on the task measure of Eloundou and coauthors. Young workers come from the monthly Current Population Survey, with occupations scored the same way. People who move into exposed jobs from other occupations will join this view when the flows between occupations are published.",
-      "index": "Training",
-      "index_line": "What people study, and whether young workers still get exposed jobs",
-      "headline": "42 percent of new degrees and 53 percent of four-year enrollment are in fields that lead to the most exposed jobs, while young workers' employment in those jobs, against older workers', is 16 percent below its 2022 level."
+      "how": "We score each field of study by the AI exposure of the jobs its graduates hold, using the Census Bureau's American Community Survey and the exposure measure of Eloundou and coauthors. Degrees come from IPEDS and enrollment from the National Student Clearinghouse. Young workers come from the monthly Current Population Survey, with jobs scored the same way."
     }
   },
   "releases": [
@@ -1577,13 +1560,15 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     return { svg: `<svg viewBox="0 0 ${W} ${H}" ${compact ? 'aria-hidden="true"' : `role="img" tabindex="0" aria-label="${esc(label)}"`}>${g}</svg>`, X, Y, W, n, f };
   }
   const CHARTS = new WeakMap();
+  // a figure such as 23%, 2.5× or −16% is set large; a verdict in words is set at reading size
+  const isFigure = t => /^[−+-]?[\d.,]+[%×]?$/.test(String(t).trim());
   function card(it){
     const sr = it.series, p = sr ? plot(sr) : null, f = p && p.f;
     const key = sr && sr.threshold ? `<svg viewBox="0 0 24 8" width="24" height="8" aria-hidden="true"><line class="th" x1="0" x2="24" y1="4" y2="4"/></svg> unusual above the dashed line` : "";
-    return `<div class="card"><div class="t">${esc(it.title)}</div><div class="big${/\d/.test(it.big) ? "" : " word"}">${esc(it.big)}</div><p class="note">${esc(it.note)}</p>`
+    return `<div class="card"><div class="t">${esc(it.title)}</div><div class="big${isFigure(it.big) ? "" : " word"}">${esc(it.big)}</div><p class="note">${esc(it.note)}</p>`
       + (p ? `<div class="chart">${p.svg}<div class="tip" hidden></div></div>` : "")
       + `<div class="key">${key}</div>`
-      + `<details><summary>How we know</summary><p class="s">${esc(it.n)} ${esc(it.s)}</p>${it.more ? `<p>${esc(it.more)}</p>` : ""}`
+      + `<details><summary>How we know</summary>${it.more ? `<p>${esc(it.more)}</p>` : ""}${it.related ? `<p class="rel"><b>Related research.</b> ${esc(it.related)}</p>` : ""}`
       + `<p class="cite">${esc(it.src)}</p></details></div>`; }
   // hover or arrow keys show each point
   function wire(host, list){
@@ -1608,7 +1593,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   function tiles(){
     $("#indices").innerHTML = ORDER.map(v => { const V = READ.views[v], it = V.items[0];
       return `<button class="tile" type="button" data-view="${v}" aria-label="${esc(`${V.index}: ${it.title}, ${it.big}. Open ${VIEWNAME[v]}`)}"><div class="tx"><div class="ix">${esc(V.index)} <span>(${VIEWNAME[v]})</span></div>`
-        + `<div class="big${/\d/.test(it.big) ? "" : " word"}">${esc(it.big)}</div><div class="t">${esc(it.title)}</div></div>${it.series ? plot(it.series, true).svg : ""}</button>`; }).join("");
+        + `<div class="big${isFigure(it.big) ? "" : " word"}">${esc(it.big)}</div><div class="t">${esc(it.title)}</div></div>${it.series ? plot(it.series, true).svg : ""}</button>`; }).join("");
     markTile(stage.dataset.view); }
   function markTile(view){ document.querySelectorAll(".tile").forEach(b => b.setAttribute("aria-current", String(b.dataset.view === view))); }
   $("#indices").addEventListener("click", e => { const b = e.target.closest(".tile"); if (b) fromFigure(b.dataset.view); });
