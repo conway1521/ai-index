@@ -508,7 +508,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     "Training: Students haven't turned away from exposed fields. Young workers losing ground in exposed jobs is the clearest signal on the page."
   ],
   "notes": [
-    "the next BLS wage tables are due in spring 2027"
+    "new data coming soon"
   ],
   "views": {
     "bridge": {
@@ -523,6 +523,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "big": "23%",
           "note": "Up from 18% in September 2025. A task counts once people use Claude for it at all, so this shows how widely AI use has spread across paid work, but not how much of that work AI does.",
           "more": "The Anthropic Economic Index sorts conversations with Claude into the job tasks the Labor Department lists for each occupation (O*NET). We add up what US workers earn on the tasks that appear, using the BLS wage tables. The June 2026 file leaves out rarely used tasks, so this figure uses March 2026, the most recent file that lists them all. Tasks people hand to Claude to do entirely account for 6% of US wages.",
+          "related": "Eloundou, Manning, Mishkin and Rock (2024, Science) measure what language models could do, rather than what people use them for: once complementary software is counted, over 46% of jobs have at least half their tasks exposed.",
           "src": "Anthropic Economic Index, March 2026; OEWS wages, May 2025",
           "series": {
             "x": [
@@ -575,6 +576,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "big": "3.1%",
           "note": "Three quarters of all AI use comes from just 243 tasks. Those tasks account for 3.1% of US wages, up from 1.8% in September 2025.",
           "more": "Because no release leaves the most-used tasks out, this figure can be compared across every release, the June 2026 file included. Its rise means the work people use AI for most is moving toward tasks that make up more of total US pay.",
+          "related": "Acemoglu (2025, Economic Policy) argues that the gains from AI depend on the share of tasks it actually affects and the cost it saves on them, not on technical exposure alone.",
           "src": "Anthropic Economic Index, June 2026; OEWS wages, May 2025",
           "series": {
             "x": [
@@ -611,11 +613,11 @@ body *{letter-spacing:0 !important;text-transform:none !important}
       "headline": "Pay hasn't changed more than usual, the mix of jobs has shifted more than at any time since 2013, and job ads turned away from tasks AI can do before ChatGPT came out.",
       "items": [
         {
-          "title": "Pay across skill groups",
+          "title": "Pay for different skills",
           "big": "No unusual change",
-          "note": "The largest pay change in any skill group between 2022 and 2025, a fall for jobs that rely heavily on mental processes, was smaller than the largest change in seven of the ten earlier three-year periods since 2013.",
-          "more": "For each of 25 skill groups, we compare the pay change over the last three years with that group's own changes since 2013. We count a change as unusual only if it is larger than 95% of the changes we get by reshuffling the years at random. The figures use average pay across whole occupations, so a raise for new hires and a cut for people already in the job would cancel out.",
-          "related": "Rinz (2026), Federal Reserve Bank of Cleveland Working Paper 26-24, finds that from the second half of 2024, workers who stayed in more exposed jobs saw a small fall in real earnings, under 1%. That is after the last year of these wage tables.",
+          "note": "If AI were changing what employers pay for, pay for some skills would be moving faster than usual. Between 2022 and 2025, none was. The biggest move, a drop in pay for analyzing information and making decisions, was smaller than the biggest move in seven of the ten earlier three-year periods since 2013.",
+          "more": "Every occupation uses a mix of 25 skill groups, from working with people to complex problem solving, as described in O*NET. From the wages BLS publishes for each occupation, we estimate what employers pay for each skill group. For each group, we compare the change over the last three years with its own changes since 2013, and call a change unusual only if it is bigger than 95% of the changes we get when we shuffle the years at random. These are averages over whole occupations, so a raise for new hires and a cut for people already in the job would cancel out.",
+          "related": "Humlum and Vestergaard (2025, NBER working paper) find small effects of AI chatbots on earnings and hours among exposed workers in Denmark. Rinz (2026), Federal Reserve Bank of Cleveland Working Paper 26-24, finds a small fall in real earnings, under 1%, for workers who stayed in more exposed US jobs from the second half of 2024, after the last year of these wage tables.",
           "src": "OEWS, May 2012 to May 2025, occupations present in every year",
           "series": {
             "x": [
@@ -639,7 +641,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               2.851
             ],
             "fmt": "num1",
-            "unit": "size of the largest change",
+            "unit": "size of the biggest move in any skill's pay",
             "threshold": [
               4.79,
               4.565,
@@ -660,8 +662,9 @@ body *{letter-spacing:0 !important;text-transform:none !important}
         {
           "title": "Mix of jobs",
           "big": "Largest shift since 2013",
-          "note": "Between 2022 and 2025, employment moved toward jobs that rely heavily on arts and humanities, more than in any three-year period since 2013. With only thirteen years of data, there is about a 1 in 11 chance of a shift this large even if nothing has changed, and the pandemic also caused an unusual shift, in 2020. The spring 2027 wage tables will show whether it lasts.",
-          "more": "The mix of jobs is each skill group's share of total employment, so it changes when people move between occupations, which can happen before pay changes at all. It is tested the same way as pay, against each group's own history.",
+          "note": "Between 2022 and 2025, employment moved toward jobs that rely heavily on arts and humanities knowledge, more than in any three-year period since 2013. With only thirteen years of data, there is about a 1 in 11 chance of a shift this large even if nothing has changed, and the pandemic also caused an unusual shift, in 2020. The spring 2027 wage tables will show whether it lasts.",
+          "more": "We measure how much of all US employment goes to each of the same 25 skill groups. That share changes when people move between occupations, which can happen before pay changes at all. It is tested the same way as pay, against each group's own history.",
+          "related": "Hampole, Papanikolaou, Schmidt and Seegmiller (2025, NBER working paper) find that exposure to AI predicts lower later demand for the labor of exposed occupations.",
           "src": "OEWS, May 2012 to May 2025, occupations present in every year",
           "series": {
             "x": [
@@ -685,7 +688,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               8.132
             ],
             "fmt": "num1",
-            "unit": "size of the largest shift",
+            "unit": "size of the biggest shift in employment",
             "threshold": [
               7.414,
               8.172,
@@ -707,7 +710,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "big": "Fell before ChatGPT",
           "note": "From 2020 to the third quarter of 2022, job ads in the same occupation asked less and less often for tasks AI can do. ChatGPT's release in November 2022 brought no further drop, and by the third quarter of 2025 ads had recovered 68% of the decline.",
           "more": "The National Labor Exchange (NLx) data count how often ads in each occupation name each O*NET task. We check whether tasks AI can do lost ground to other tasks in the same occupation, and whether anything changed at ChatGPT's release. In 25 of the 55 earlier months, the same comparison showed a change at least as large as the one at the release.",
-          "related": "Rinz (2026), Federal Reserve Bank of Cleveland Working Paper 26-24, finds the same timing in commercial job-ad data: ads in more exposed occupations were declining before ChatGPT and leveled off after it.",
+          "related": "Rinz (2026), Federal Reserve Bank of Cleveland Working Paper 26-24, finds the same timing in commercial job-ad data: ads in more exposed occupations were declining before ChatGPT and leveled off after it. Revelio Labs (Munyikwa, 2025) finds that 84% of the 2022 to 2025 fall in exposed tasks in job listings came from which occupations were hiring. The Dallas Fed (Dodini and Smith, 2026) reads a fall in postings in more exposed occupations as an early sign of automation.",
           "src": "NLx job ads, September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander; Eloundou task measure",
           "series": {
             "x": [
@@ -786,6 +789,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "big": "41.8%",
           "note": "41.8% of 2025 bachelor's degrees went to the third of fields whose graduates hold the most AI-exposed jobs, up from 40.7% in 2024.",
           "more": "Degrees by field come from the Education Department's IPEDS completions files. We score each field by the AI exposure of the jobs its graduates actually hold, using the Census Bureau's American Community Survey and the exposure measure of Eloundou, Manning, Mishkin and Rock (2023).",
+          "related": "Hemelt, Hershbein, Martin and Stange (2023, Labour Economics) link college majors to the skills employers ask for, using nearly all online job ads.",
           "src": "IPEDS completions, 2025; field exposure from ACS and the Eloundou task measure",
           "series": {
             "x": [
@@ -846,7 +850,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "big": "−16%",
           "note": "Since 2022, workers aged 22 to 27 have lost ground in the jobs most exposed to AI, by 16% compared with workers aged 35 to 54. It is the strongest signal on this page.",
           "more": "From the Census Bureau's monthly Current Population Survey. For each age group we divide employment in the most exposed third of jobs by employment in all other jobs, then compare the young group's ratio with the older group's. Over the last 12 months the gap was 8.4 points wider than in the months before. In 1,000 random reorderings of the months, none produced a gap that large. The data start in January 2022, so they can't show whether the decline began before ChatGPT.",
-          "related": "Brynjolfsson, Chandar and Chen (2025), Stanford Digital Economy Lab, find a 13% relative decline in employment for workers aged 22 to 25 in the most AI-exposed occupations, using payroll data.",
+          "related": "Brynjolfsson, Chandar and Chen (2025, Stanford Digital Economy Lab working paper) find a 13% relative decline in employment for workers aged 22 to 25 in the most AI-exposed occupations, using payroll data.",
           "src": "Current Population Survey, January 2022 to August 2026",
           "series": {
             "x": [
