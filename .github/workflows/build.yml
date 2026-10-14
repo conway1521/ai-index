@@ -175,7 +175,7 @@ jobs:
         run: |
           git config user.name "Alessandro Conway"
           git config user.email "48160659+conway1521@users.noreply.github.com"
-          git add aiindex/output site/data
+          git add aiindex/output site/data site/index.html
           if git diff --staged --quiet; then
             echo "Nothing changed." >> "$GITHUB_STEP_SUMMARY"
           else

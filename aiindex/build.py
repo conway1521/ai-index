@@ -20,7 +20,7 @@ from pathlib import Path
 import pandas as pd
 
 from . import (acs, btos, capacity, checks, config, cps, exposure, ipeds, onet_release, postings,
-               openai, outcomes, pipeline, spine, state, usage, wagebill)
+               openai, outcomes, pipeline, spine, state, usage, wagebill, site_static)
 from .manifest import MANIFEST
 
 sys.path.insert(0, str(config.PAPER_ROOT))
@@ -716,6 +716,7 @@ def export_site(release: str) -> Path:
     out = config.REPO_ROOT / "site" / "data" / "readings.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(readings, indent=2, ensure_ascii=False))
+    site_static.write(readings=out)
     return out
 
 

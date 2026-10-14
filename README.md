@@ -12,9 +12,9 @@ together:
    occupations under each exposure measure, the Census Bureau's biweekly
    firm adoption averaged to the year, and the realised exposed-against-
    unexposed change with its cell counts (`state`).
-3. **Pipeline and capacity.** Enrolment and completions by the exposure of
-   the field (`pipeline`), and what refills an exposed occupation, the
-   education channel at its measured size beside the lateral channel
+3. **Pipeline.** Enrolment and completions by the exposure of the field
+   (`pipeline`). A capacity layer, measuring what refills an exposed
+   occupation, is in progress on fixture data and is not shown on the site
    (`capacity`).
 
 ## Running
@@ -34,7 +34,7 @@ with the URL, byte count, hash and grade of every file it read;
 `output/checks.csv` with every unit check it ran and the value it
 measured; `output/build_report.json` with what was skipped; and the
 tables under `output/tables/`. `AUDIT.md` records what each source is,
-where tonight's copy came from and what harmonisation it needed.
+where each copy came from and what harmonisation it needed.
 
 Inputs are not committed. The `.source` sidecar beside each input is,
 and records the grade and URL it was fetched from, so a clean checkout
@@ -73,17 +73,24 @@ that input `mirror` in the manifest.
 
 ## Where each layer stands
 
+Grades are as recorded in `aiindex/output/build_report.json` and
+`aiindex/output/manifest.json` for the latest build: every input is graded
+`real` except the two flows files behind the capacity layer, which are
+fixtures. The raw files come from the dated releases in the ai-data
+repository, each checked against the sha256 recorded when its release was assembled.
+
 | Layer | Module | Ran on | Notes |
 |---|---|---|---|
-| Spine | `spine.py` | real files (copies) | O*NET-SOC, Census 2018, CIP 2020 and SOC 2010 crosswalks with coverage reported |
-| Wage bill | `wagebill.py` | OEWS 2012 to 2025 (copies) | state files to 2024, national 2025; 2012 to 2018 carried onto the 2018 SOC |
-| Exposure | `exposure.py` | Eloundou and Felten (authors' files), Anthropic observed exposure (copy, hash-verified) | three measures; state and pipeline tables are written once per measure |
-| Usage | `usage.py`, `aei.py`, `openai.py` | Anthropic releases of September 2025 to June 2026 and OpenAI Signals to June 2026 (copies) | three Anthropic raw tables, two monthly slices, OpenAI by activity under two allocation rules; WildChat not reachable |
-| Outcomes | `outcomes.py` | real panel | the paper's test as a series with a 95th percentile threshold |
-| CPS gauge | `cps.py` | real layouts, synthetic months | drop the Census monthly files into `data/raw/cps` and rerun |
-| State | `state.py`, `btos.py` | real (copies) | BTOS to December 2025; Anthropic state usage per worker for three releases |
-| Pipeline | `pipeline.py`, `ipeds.py`, `acs.py` | IPEDS 2023 and 2024, ACS one state, NCES crosswalk | Clearinghouse appendix is a fixture until fetched |
-| Capacity | `capacity.py` | fixture | the flows repository's matrix drops in on its schema |
+| Spine | `spine.py` | real: O*NET 30.3 and the O*NET-SOC 2019, Census 2018 and CIP 2020 crosswalks | coverage of every crosswalk is reported |
+| Wage bill | `wagebill.py` | real: OEWS May 2012 to May 2025 | national files for 2019 and 2021 to 2025, sums of the state files for the other years; 2012 to 2018 carried onto the 2018 SOC |
+| Exposure | `exposure.py` | real: Eloundou and Felten from the authors' published archives, Anthropic observed exposure checked against the Hugging Face file | three measures; state and pipeline tables are written once per measure |
+| Usage | `usage.py`, `aei.py`, `openai.py` | real: Anthropic Economic Index releases of September 2025, January 2026, March 2026 and June 2026; OpenAI Signals v2.0 to June 2026 | the June file publishes 88 and 94 percent of use, so the headline reach comes from the latest release that publishes all of it; OpenAI by activity under two allocation rules; WildChat not reachable |
+| Outcomes | `outcomes.py` | real: the OEWS panel above | the paper's test as a series with a 95th percentile threshold |
+| CPS gauge | `cps.py` | real: 55 CPS basic monthly files, January 2022 to August 2026 (October 2025 was not collected) | the last twelve months tested against reshuffled months |
+| Job ads | `postings.py` | real: NLx job-ad aggregates of Meisenbacher, Nestorov and Norlander (Zenodo), September 2015 to September 2025 | within-occupation exposure gradient by quarter against 2019, and the step at the release of language models |
+| State | `state.py`, `btos.py` | real: OEWS state files, BTOS biweekly cycles from November 2025 to September 2026, Anthropic state usage for three releases | BTOS averaged to the year |
+| Pipeline | `pipeline.py`, `ipeds.py`, `acs.py` | real: IPEDS completions 2023 to 2025, ACS 2024 national person files, the NCES CIP to SOC crosswalk, Clearinghouse enrolment by field family, fall 2019 to fall 2024 | fields scored by the occupations their graduates hold |
+| Capacity | `capacity.py` | **in progress**: fixture (`flows_transition_matrix`, `flows_arrivals`) | not shown on the site; the flows matrix drops in on its schema once it is published |
 
 ## Units, checked at every step
 

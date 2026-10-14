@@ -350,9 +350,10 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     <div class="brand">AI at Work <small>Three indices: use, jobs and training</small></div>
   </header>
   <p class="sub">Any one source on AI and work is a glimpse through fog. This page keeps three indices side by side: use, from the tasks people bring to AI models; jobs, from pay, the mix of work and job ads; and training, from what students study and whether young workers still find exposed jobs. Read together they show where AI has reached work in the United States and where it has not yet, and each new release clears a little more of the view.</p>
-  <nav class="indices" id="indices" aria-label="The three indices"></nav>
-  <p class="lede" id="lede"></p>
+  <p class="lede" id="lede">The tasks people bring to AI models account for <a href="#bridge" data-view="bridge">23 percent of US wages</a>, <a href="#city" data-view="city">pay has stayed within its usual range</a> while the mix of jobs has shifted more than in any three years since 2013, and <a href="#telescope" data-view="valley">42 percent of new degrees</a> are in fields that lead to the most exposed jobs.</p>
+  <noscript><p class="sub">The drawing and the charts need JavaScript. The three headline findings are in the sentence above, the sources are listed at the foot of the page, and every table behind them is in the <a href="https://github.com/conway1521/ai-index">repository</a>.</p></noscript>
   <details class="meaning" id="meaning"><summary>What does this mean</summary><div id="meaning-body"></div></details>
+  <nav class="indices" id="indices" aria-label="The three indices"></nav>
 
   <div class="frame">
   <div class="stage" id="stage" data-view="home" data-aw="on" data-ak="on">
@@ -475,6 +476,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     <div>
       <h3>A series that grows with every release</h3>
       <p>Each source is published on its own schedule, and each release adds a point, so the page always shows the most recent data that exist and every series grows longer with time.</p>
+      <p>A natural next layer would be data on what firms spend on AI, such as the Ramp AI Index, since it measures adoption where firms actually pay.</p>
       <p class="notes" id="notes"></p>
       <svg class="strip" viewBox="0 0 900 96" role="img" aria-label="Releases on a timeline"><line x1="20" y1="60" x2="880" y2="60" class="axis"/><g id="ticks"></g></svg>
     </div>
@@ -483,7 +485,11 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 
   <section class="sources" id="sources">
     <h3>Sources</h3>
-    <div id="source-list"></div>
+    <div id="source-list">
+      <div data-key="civic"><h4>Pay, jobs, job ads and occupations</h4><p><b>OEWS</b>, wages and employment by occupation, BLS, May 2012 to May 2025. <b>BTOS</b>, firms using AI, Census Bureau, biweekly cycles from November 2025 to September 2026. <b>CPS</b> basic monthly, Census Bureau, January 2022 to August 2026. <b>O*NET 30.3</b>, tasks, ratings and skills, the Department of Labor. Crosswalks from the Census Bureau, NCES and BLS. <b>NLx job ads</b>, the tasks named in the ads of the National Labor Exchange, monthly from September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander.</p></div>
+      <div data-key="campus"><h4>Degrees, enrolment and young workers</h4><p><b>IPEDS</b> completions by field and institution, NCES, 2023 to 2025. <b>National Student Clearinghouse</b> undergraduate enrolment at four-year institutions by field family, fall 2019 to fall 2024. <b>ACS</b> 2024 field of degree against occupation, the observed link from what people studied to what they do. Fields are scored by where their graduates work.</p></div>
+      <div data-key="labs"><h4>Use of AI models</h4><p><b>Anthropic Economic Index</b>, usage by O*NET task with the automation and augmentation split, releases from September 2025 to the June 2026 monthly file. <b>OpenAI Signals v2.0</b>, work-related messages by work activity, monthly to June 2026, allocated to tasks by dollars. Each sees its own users only, so both are shown and never averaged.</p></div>
+    </div>
   </section>
 
   <section class="about">
@@ -1684,14 +1690,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 
   /* ---------- the coin card: three buildings ---------- */
   const SOURCES = [
-    { key:"civic", name:"City Hall", unit:"statistical agencies", heading:"Pay, jobs, job ads and occupations", draw:(g)=>{ cityhall(g, 60, 86); tint(g, domePath(60, 86-44, 44, 24), "var(--glass)").style.opacity = ".3"; },
-      text:"<b>OEWS</b>, wages and employment by occupation, BLS, May 2012 to May 2025. <b>BTOS</b>, firms using AI, Census Bureau, biweekly since September 2023. <b>CPS</b> basic monthly, Census Bureau, January 2022 to August 2026. <b>O*NET 30.3</b>, tasks, ratings and skills, the Department of Labor. Crosswalks from the Census Bureau, NCES and BLS. <b>NLx job ads</b>, the tasks named in the ads of the National Labor Exchange, monthly from September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander." },
-    { key:"campus", name:"The campanile", unit:"education", heading:"Degrees, enrolment and young workers", draw:(g)=>{ campanile(g, 60, 82, 60); blob(g, 46, 22, 28, 60, "var(--cream)", 15); el("path", {d:"M 20 82 L 100 82", class:"thin"}, g); },
-      text:"<b>IPEDS</b> completions by field and institution, NCES, 2023 to 2025. <b>National Student Clearinghouse</b> undergraduate enrolment at four-year institutions by field family, fall 2019 to fall 2024. <b>ACS</b> 2024 field of degree against occupation, the observed link from what people studied to what they do. Fields are scored by where their graduates work." },
-    { key:"labs", name:"The labs on the shore", unit:"usage", heading:"Use of AI models", draw:(g)=>{ labs(g, 22, 82, 1); blob(g, 50, 16, 40, 66, "var(--glass)", 27).style.opacity = "0.25"; el("path", {d:"M 10 82 L 112 82 M 10 88 q 20 3 40 0 q 20 -3 40 0", class:"hair"}, g); },
-      text:"<b>Anthropic Economic Index</b>, usage by O*NET task with the automation and augmentation split, releases from September 2025 to the June 2026 monthly file. <b>OpenAI Signals v2.0</b>, work-related messages by work activity, monthly to June 2026, allocated to tasks by dollars. Each sees its own users only, so both are shown and never averaged." },
+    { key:"civic", name:"City Hall", unit:"statistical agencies", draw:(g)=>{ cityhall(g, 60, 86); tint(g, domePath(60, 86-44, 44, 24), "var(--glass)").style.opacity = ".3"; } },
+    { key:"campus", name:"The campanile", unit:"education", draw:(g)=>{ campanile(g, 60, 82, 60); blob(g, 46, 22, 28, 60, "var(--cream)", 15); el("path", {d:"M 20 82 L 100 82", class:"thin"}, g); } },
+    { key:"labs", name:"The labs on the shore", unit:"usage", draw:(g)=>{ labs(g, 22, 82, 1); blob(g, 50, 16, 40, 66, "var(--glass)", 27).style.opacity = "0.25"; el("path", {d:"M 10 82 L 112 82 M 10 88 q 20 3 40 0 q 20 -3 40 0", class:"hair"}, g); } },
   ];
-  $("#source-list").innerHTML = SOURCES.map(s => `<h4>${s.heading}</h4><p>${s.text}</p>`).join("");
+  // the sources are written in the page itself, so they read without the script; the coin card takes its text from them
+  for (const s of SOURCES) s.text = $(`#source-list [data-key="${s.key}"] p`).innerHTML;
   const vig = $("#vig"), src = $("#src");
   for (const s of SOURCES){
     const b = document.createElement("button"); b.setAttribute("aria-expanded","false");

@@ -12,9 +12,9 @@ together:
    occupations under each exposure measure, the Census Bureau's biweekly
    firm adoption averaged to the year, and the realised exposed-against-
    unexposed change with its cell counts (`state`).
-3. **Pipeline and capacity.** Enrolment and completions by the exposure of
-   the field (`pipeline`), and what refills an exposed occupation, the
-   education channel at its measured size beside the lateral channel
+3. **Pipeline.** Enrolment and completions by the exposure of the field
+   (`pipeline`). A capacity layer, measuring what refills an exposed
+   occupation, is in progress on fixture data and is not shown on the site
    (`capacity`).
 
 ## Running
@@ -42,7 +42,7 @@ with the URL, byte count, hash and grade of every file it read;
 `output/checks.csv` with every unit check it ran and the value it
 measured; `output/build_report.json` with what was skipped; and the
 tables under `output/tables/`. `AUDIT.md` records what each source is,
-where tonight's copy came from and what harmonisation it needed.
+where each copy came from and what harmonisation it needed.
 
 Inputs are not committed. The `.source` sidecar beside each input is,
 and records the grade and URL it was fetched from, so a clean checkout
@@ -83,10 +83,14 @@ that input `mirror` in the manifest.
 
 ## Where each layer stands
 
+As graded in `output/build_report.json` for the latest build, every input is
+`real` except the two flows files behind the capacity layer, which are
+fixtures.
+
 | Layer | Module | Ran on | Notes |
 |---|---|---|---|
-| Spine | `spine.py` | official crosswalks, O*NET 30.3 | O*NET-SOC, Census 2018, CIP 2020 and SOC 2010 crosswalks with coverage reported |
-| Wage bill | `wagebill.py` | OEWS May 2025 official, 2012 to 2024 copies | 2019 and 2020 hybrid codes carried onto the 2018 SOC through the BLS table; 2012 to 2018 carried onto the 2018 SOC |
+| Spine | `spine.py` | real: official crosswalks, O*NET 30.3 | O*NET-SOC, Census 2018, CIP 2020 and SOC 2010 crosswalks with coverage reported |
+| Wage bill | `wagebill.py` | OEWS May 2012 to May 2025, all graded real | 2019 and 2020 hybrid codes carried onto the 2018 SOC through the BLS table; 2012 to 2018 carried onto the 2018 SOC |
 | Exposure | `exposure.py` | Eloundou and Felten (authors' files), Anthropic observed exposure | three measures; state and pipeline tables are written once per measure |
 | Usage | `usage.py`, `aei.py`, `openai.py` | Anthropic releases of September 2025 to the June 2026 monthly file, OpenAI Signals to June 2026 | the June file publishes 88 and 94 percent of use, so the headline reach comes from the latest release that publishes all of it; Signals activity codes translated onto O*NET 30.3 by title |
 | Outcomes | `outcomes.py` | real panel | the paper's test as a series with a 95th percentile threshold |
@@ -94,7 +98,7 @@ that input `mirror` in the manifest.
 | Job ads | `postings.py` | NLx aggregates, September 2015 to September 2025 | the paper's Appendix B code; each occupation-month lists its top fifty tasks |
 | State | `state.py`, `btos.py` | official BTOS through cycle 202619 | Anthropic state usage per worker |
 | Pipeline | `pipeline.py`, `ipeds.py`, `acs.py` | IPEDS 2023 to 2025, ACS 2024 national, Clearinghouse fall 2019 to 2024 | Clearinghouse by two-digit CIP family, undergraduate four-year |
-| Capacity | `capacity.py` | fixture | the flows repository's matrix drops in on its schema |
+| Capacity | `capacity.py` | **in progress**: fixture (`flows_transition_matrix`, `flows_arrivals`) | not shown on the site; the flows matrix drops in on its schema once it is published |
 
 ## Units, checked at every step
 
