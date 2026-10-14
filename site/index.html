@@ -2,7 +2,7 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cross Bearings: where AI has reached US work</title>
+<title>AI Work Index</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap">
 <style>
 :root{
@@ -277,6 +277,52 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 .stamp,.stamp .obs,.cad,.notes,.from,.item .cite,.caption p,.coin .k,.vig .u{font-size:13px}
 .cad{white-space:normal;margin-top:6px}
 .series{display:block}
+
+/* the three indices: a tile each above the drawing, and three cards each below it. Each card is one figure in its own
+   units with its line over time; the indices are never added together. */
+.indices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:18px}
+.tile{all:unset;box-sizing:border-box;cursor:pointer;display:block;border:1px solid var(--hair);padding:12px 14px 10px;background:var(--paper)}
+.tile:hover,.tile[aria-current="true"]{border-color:var(--ink)}
+.tile:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.tile .ix{font-size:15px;font-weight:600;color:var(--ink)}
+.tile .ix span{font-weight:400;color:var(--ink-3)}
+.tile .big{font-size:34px;line-height:1.1;margin-top:4px;font-variant-numeric:tabular-nums}
+.tile .t{font-size:14px;color:var(--ink-2);line-height:1.4;margin-top:2px}
+.tile svg{display:block;width:100%;height:40px;margin-top:6px}
+.group{margin-top:22px}
+.group:first-child{margin-top:8px}
+.group h3{font-size:19px;font-weight:600;margin:0 0 10px;line-height:1.3}
+.group h3 a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px;text-decoration-color:var(--ink-3)}
+.group h3 a:hover,.group h3 a:focus-visible{text-decoration-color:var(--ink)}
+.group h3 span{font-weight:400;color:var(--ink-2)}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{border-top:1px solid var(--ink);padding-top:10px;position:relative;min-width:0;display:flex;flex-direction:column}
+.card .note{flex:1}
+.card .t{font-size:16px;font-weight:600;line-height:1.35}
+.card .big{font-size:36px;line-height:1.15;margin-top:4px;font-variant-numeric:tabular-nums}
+.card .big.word{font-size:24px;line-height:1.25;margin-top:6px}
+.card .note{font-size:15px;line-height:1.5;color:var(--ink-2);margin:6px 0 0}
+.chart{position:relative;margin-top:10px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart svg:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.chart text{font-family:var(--body);font-size:12px;fill:var(--ink-3)}
+.chart .grid,.tile .grid{stroke:var(--hair);stroke-width:1}
+.chart .zero{stroke:var(--ink-3);stroke-width:1}
+.chart .line,.tile .line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chart .th,.card .key .th,.tile .th{fill:none;stroke:var(--ink-3);stroke-width:1;stroke-dasharray:4 3}
+.chart .dot,.tile .dot{fill:var(--ink);stroke:var(--paper);stroke-width:2}
+.chart .hx{stroke:var(--ink-3);stroke-width:1}
+.chart .hit{fill:transparent}
+.tip{position:absolute;top:0;pointer-events:none;background:var(--paper);border:1px solid var(--ink);padding:4px 8px;font-size:13px;line-height:1.4;color:var(--ink);white-space:nowrap;transform:translate(-50%,-100%);z-index:2}
+.tip[hidden]{display:none}
+.tip span{color:var(--ink-2)}
+.card .key{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3);margin-top:4px}
+.tile .big.word{font-size:22px;line-height:1.3;margin-top:6px}
+.card details{margin-top:8px}
+.card summary{font-size:14px;color:var(--ink-2);cursor:pointer;padding:6px 0;min-height:24px}
+.card details p{font-size:15px;line-height:1.6;color:var(--ink-2);margin:4px 0 10px}
+.card details p.s{color:var(--ink)}
+.card details .cite,.card details .vals{font-size:13px;color:var(--ink-3)}
 @media (forced-colors: active){.scene path,.scene circle,.scene rect{stroke:CanvasText}.scene text{fill:CanvasText}.hot:focus-visible .hit{stroke:Highlight}}
 @media (prefers-reduced-motion: reduce){.fogline,.bank,.cloud,.deck,.rain,.rainsheet,.sheet,.crest,.crownblock,.bart,.star,.lens,.avlight,.shiplight,.navlight,.strobe,.carlight{animation:none !important}.stage>svg,.zoom,.viewer,.beam,.mask-in{transition:none}}
 @media (max-width:820px){
@@ -292,15 +338,19 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   .wc{filter:none}
   .caption h1{font-size:16px}.caption p{display:none}
   .vig{grid-template-columns:1fr}.strap{font-size:13px}.tables dl{grid-template-columns:1fr}
+  .indices,.cards{grid-template-columns:1fr}.indices{gap:10px}
+  .tile{display:grid;grid-template-columns:minmax(0,1fr) 96px;column-gap:12px;align-items:center}.tile .big{font-size:28px}
+  .tile svg{grid-column:2;margin:0}
 }
 </style>
 
 <a class="skip" href="#reading">Skip to the readings</a>
 <div class="wrap">
   <header class="top">
-    <div class="brand">Cross Bearings</div>
+    <div class="brand">AI Work Index</div>
   </header>
-  <p class="sub">Any one source on AI and work is a glimpse through fog: what people bring to AI models, what has happened to pay and jobs, what employers ask for in their job ads, and what students choose to study. Read together, they show where AI has reached work in the United States and where it has not yet, and each new release clears a little more of the view.</p>
+  <p class="sub">Any one source on AI and work is a glimpse through fog. This page keeps three indices side by side: use, from the tasks people bring to AI models; jobs, from pay, the mix of work and job ads; and training, from what students study and whether young workers still find exposed jobs. Read together they show where AI has reached work in the United States and where it has not yet, and each new release clears a little more of the view.</p>
+  <nav class="indices" id="indices" aria-label="The three indices"></nav>
   <p class="lede" id="lede"></p>
   <details class="meaning" id="meaning"><summary>What does this mean</summary><div id="meaning-body"></div></details>
 
@@ -415,7 +465,8 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 
   <section class="reading three" id="reading">
     <h2 id="r-title" tabindex="-1"></h2>
-    <div class="items" id="items"></div>
+    <p class="lens" id="r-note"></p>
+    <div id="items"></div>
     <details class="how" id="r-how"><summary>How it is measured</summary><p id="r-lens"></p></details>
     <p class="from" id="r-from"></p>
   </section>
@@ -438,12 +489,11 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   <section class="about">
     <h3>About the drawing</h3>
     <p>The drawing is the view from the lighthouse at Point Bonita, at the mouth of the Golden Gate, looking across to the bridge and the city and, through the coin telescope, south down the peninsula to the campuses. The weather is the latest observation at San Francisco International Airport (station KSFO), published by the National Weather Service: its description and visibility set the sky and the fog, its wind sets how fast and which way they drift, and rain falls when the station reports it. When the observation cannot be reached, a sample foggy morning is drawn and the line under the frame says so. The sun and the moon are placed for the time in San Francisco from the standard formulas for their positions, the moon is drawn at its phase, and the drawing turns to light ink on dark after sunset. The boats, planes, trains, whales and gulls are invented, and nothing in the drawing encodes a number from the index: the numbers sit beneath it, each in its own units, with the source it came from.</p>
-    <p>The name comes from navigation. A sailor fixes a position by taking bearings on two or more landmarks and finding where the lines cross, since one bearing alone leaves the ship anywhere along a line, and this page reads its sources in the same way.</p>
   </section>
 </div>
 
 <script type="application/json" id="readings">{
-  "built": "13 October 2026",
+  "built": "14 October 2026",
   "lede": "The tasks people bring to AI models account for <a href=\"#bridge\" data-view=\"bridge\">23 percent of US wages<\/a>, <a href=\"#city\" data-view=\"city\">pay has stayed within its usual range<\/a> while the mix of jobs has shifted more than in any three years since 2013, and <a href=\"#telescope\" data-view=\"valley\">42 percent of new degrees<\/a> are in fields that lead to the most exposed jobs.",
   "meaning": [
     "The tasks people bring to AI models are paid about a quarter of all the wages in the United States, while pay across the skills behind them has moved no further over the last three years than in an ordinary stretch of the record, so these models already reach a wide share of paid work and there is no sign yet that employers pay for those skills differently.",
@@ -469,7 +519,25 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "more": "A task counts once any use of it is published, so this reading measures how widely use spreads across paid work and says nothing about how much of that work the models do. It rose from 18 percent in September 2025 to 23 percent in March 2026 as more tasks appeared in the record. The June 2026 file leaves out tasks below a reporting threshold, so the reading stays on the last release that publishes every task.",
           "tables": [
             "usage_reach.csv"
-          ]
+          ],
+          "title": "Share of US wages in tasks people bring to AI",
+          "big": "23%",
+          "note": "Up from 18% in the September 2025 release.",
+          "series": {
+            "x": [
+              "September 2025",
+              "January 2026",
+              "March 2026"
+            ],
+            "y": [
+              18.1432,
+              21.9086,
+              23.2137
+            ],
+            "fmt": "pct0",
+            "unit": "% of wages",
+            "threshold": null
+          }
         },
         {
           "n": "2.5×",
@@ -479,7 +547,25 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "more": "Each skill group's share of use is set against its share of pay, so a value above one means the group draws more use than its weight in wages. Of the twenty-five groups, the most use falls on complex problem solving skills and the least on physical abilities.",
           "tables": [
             "usage_landing.csv"
-          ]
+          ],
+          "title": "Where use is concentrated",
+          "big": "2.5×",
+          "note": "Use on complex problem solving skills against their share of pay, the most of any skill group.",
+          "series": {
+            "x": [
+              "September 2025",
+              "January 2026",
+              "March 2026"
+            ],
+            "y": [
+              2.9179,
+              2.6082,
+              2.515
+            ],
+            "fmt": "x1",
+            "unit": "times share of pay",
+            "threshold": null
+          }
         },
         {
           "n": "3.1%",
@@ -489,11 +575,35 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "more": "Use is concentrated: 243 tasks account for three quarters of it. Counting only those tasks gives a reading that the reporting threshold cannot move, and its move from 1.8 to 3.1 percent means the work people bring most often now sits in tasks that carry more of the wage bill.",
           "tables": [
             "usage_reach.csv"
-          ]
+          ],
+          "title": "Wages in the core of use",
+          "big": "3.1%",
+          "note": "The 243 tasks that make up three quarters of all use, up from 1.8%.",
+          "series": {
+            "x": [
+              "September 2025",
+              "January 2026",
+              "March 2026",
+              "June 2026 (Apr)",
+              "June 2026 (May)"
+            ],
+            "y": [
+              1.7854,
+              2.1108,
+              2.5417,
+              3.9069,
+              3.131
+            ],
+            "fmt": "pct1",
+            "unit": "% of wages",
+            "threshold": null
+          }
         }
       ],
       "how": "Each conversation in the usage record is matched to the O*NET tasks it touches, each task is weighted by the wages paid for it in the latest OEWS release, and the share moves with every usage release, every few months, for the one platform whose record the index reads so far. A task counts as reached when any use of it is published, so the headline comes from the latest release that publishes every task, and the tasks making up three quarters of use are counted in every release alike, since no release leaves any of them out.",
-      "headline": "The tasks people bring to AI models carry 23 percent of US wages, and that use falls hardest on complex problem solving skills, at 2.5 times their share of pay."
+      "index": "Use",
+      "index_line": "How much of paid work is in the tasks people bring to AI",
+      "headline": "The tasks people bring to AI models account for 23 percent of US wages, and that use is heaviest on complex problem solving skills, at 2.5 times their share of pay."
     },
     "city": {
       "capline": "pay 2.9, 6.1 needed; jobs mix 8.1, 6.6 needed; job ads 2.6, 5.4 needed",
@@ -508,7 +618,44 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "tables": [
             "outcomes_pay_series_balanced.csv",
             "outcomes_pay_changes.csv"
-          ]
+          ],
+          "title": "Pay across skill groups",
+          "big": "Within its normal range",
+          "note": "The biggest three-year move in any skill group is 2.9, where 6.1 would count as unusual.",
+          "series": {
+            "x": [
+              "2018",
+              "2019",
+              "2020",
+              "2021",
+              "2022",
+              "2023",
+              "2024",
+              "2025"
+            ],
+            "y": [
+              2.827,
+              4.729,
+              8.363,
+              3.819,
+              2.55,
+              4.003,
+              7.977,
+              2.851
+            ],
+            "fmt": "num1",
+            "unit": "biggest move, standard errors",
+            "threshold": [
+              4.79,
+              4.565,
+              7.37,
+              4.092,
+              3.903,
+              4.277,
+              6.168,
+              6.13
+            ]
+          }
         },
         {
           "n": "8.1",
@@ -518,7 +665,44 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "more": "The mix of jobs is each skill group's share of employment, so it moves when people move between occupations, which can happen before pay changes at all. It is tested in the same way as pay, against each group's own record, and about one stretch in eleven of a record this long moves this far by chance.",
           "tables": [
             "outcomes_quantity_series_balanced.csv"
-          ]
+          ],
+          "title": "Mix of jobs",
+          "big": "Past its normal range",
+          "note": "The biggest shift is 8.1 against 6.6, toward arts and humanities, the largest since 2013; a record this long gives a shift that size about one time in eleven.",
+          "series": {
+            "x": [
+              "2018",
+              "2019",
+              "2020",
+              "2021",
+              "2022",
+              "2023",
+              "2024",
+              "2025"
+            ],
+            "y": [
+              7.414,
+              3.862,
+              5.033,
+              4.54,
+              4.841,
+              3.31,
+              2.941,
+              8.132
+            ],
+            "fmt": "num1",
+            "unit": "biggest shift, standard errors",
+            "threshold": [
+              7.414,
+              8.172,
+              4.934,
+              5.422,
+              4.939,
+              4.728,
+              4.711,
+              6.612
+            ]
+          }
         },
         {
           "n": "2.6",
@@ -530,10 +714,70 @@ body *{letter-spacing:0 !important;text-transform:none !important}
             "postings_step_at_release.csv",
             "postings_gradient_quarterly.csv",
             "postings_release_bound.csv"
-          ]
+          ],
+          "title": "Job ads for tasks AI can do",
+          "big": "Fell before AI",
+          "note": "Within occupations, ads named these tasks less often from 2020 to the third quarter of 2022; the step at the release is 2.6 where 5.4 would stand out, and by the third quarter of 2025 ads had made up 68% of the fall.",
+          "series": {
+            "x": [
+              "2020Q1",
+              "2020Q2",
+              "2020Q3",
+              "2020Q4",
+              "2021Q1",
+              "2021Q2",
+              "2021Q3",
+              "2021Q4",
+              "2022Q1",
+              "2022Q2",
+              "2022Q3",
+              "2022Q4",
+              "2023Q1",
+              "2023Q2",
+              "2023Q3",
+              "2023Q4",
+              "2024Q1",
+              "2024Q2",
+              "2024Q3",
+              "2024Q4",
+              "2025Q1",
+              "2025Q2",
+              "2025Q3"
+            ],
+            "y": [
+              -0.0118,
+              -0.1017,
+              -0.106,
+              -0.1668,
+              -0.1095,
+              -0.1862,
+              -0.4314,
+              -0.4647,
+              -0.3711,
+              -0.5277,
+              -0.5826,
+              -0.4553,
+              -0.5729,
+              -0.5448,
+              -0.6202,
+              -0.6471,
+              -0.5431,
+              -0.5423,
+              -0.5392,
+              -0.5549,
+              -0.3984,
+              -0.2959,
+              -0.205
+            ],
+            "fmt": "pp2",
+            "unit": "points against 2019",
+            "threshold": null
+          }
         }
       ],
       "how": "For each skill group the index takes the last three yearly changes in pay, and in the share of employment, and sets them against that group's own changes since 2013: a change stands out when it passes the level only the most extreme three-year stretches in the record reached, and both the reading and that level are recalculated with each spring release of the wage tables. The job-ad reading compares, within each occupation and month, the share of ads naming each task with that task's exposure, and sets the change at the release against the same change placed at every earlier month.",
+      "index": "Jobs",
+      "index_line": "Whether pay, the mix of jobs and job ads have moved",
       "headline": "Pay has stayed within its usual range, the mix of jobs has shifted more than in any three years since 2013, and job ads turned away from the tasks the models can do in 2020 to the third quarter of 2022, before the models were released."
     },
     "valley": {
@@ -549,7 +793,25 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "tables": [
             "pipeline_completions_by_state.csv",
             "pipeline_field_exposure_crosswalk.csv"
-          ]
+          ],
+          "title": "New degrees in exposed fields",
+          "big": "41.8%",
+          "note": "Of bachelor's degrees in 2025, up from 40.7% in 2024.",
+          "series": {
+            "x": [
+              "2023",
+              "2024",
+              "2025"
+            ],
+            "y": [
+              40.3258,
+              40.6788,
+              41.7519
+            ],
+            "fmt": "pct1",
+            "unit": "% of degrees",
+            "threshold": null
+          }
         },
         {
           "n": "53.1%",
@@ -560,7 +822,31 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "tables": [
             "pipeline_enrolment_by_exposure.csv",
             "nsc_cip_family_enrolment.csv"
-          ]
+          ],
+          "title": "Enrolment in exposed fields",
+          "big": "53.1%",
+          "note": "Of four-year undergraduates in fall 2024, against 52.4% in fall 2019.",
+          "series": {
+            "x": [
+              "2019",
+              "2020",
+              "2021",
+              "2022",
+              "2023",
+              "2024"
+            ],
+            "y": [
+              52.3943,
+              51.8346,
+              51.6297,
+              52.2467,
+              52.971,
+              53.1298
+            ],
+            "fmt": "pct1",
+            "unit": "% of enrolment",
+            "threshold": null
+          }
         },
         {
           "n": "16%",
@@ -571,10 +857,130 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "tables": [
             "cps_young_worker_gauge.csv",
             "cps_young_worker_test.csv"
-          ]
+          ],
+          "title": "Young workers in exposed jobs",
+          "big": "−16%",
+          "note": "Employment of 22 to 27 year olds in the most exposed jobs, against older workers, since 2022.",
+          "series": {
+            "x": [
+              "2022-03",
+              "2022-04",
+              "2022-05",
+              "2022-06",
+              "2022-07",
+              "2022-08",
+              "2022-09",
+              "2022-10",
+              "2022-11",
+              "2022-12",
+              "2023-01",
+              "2023-02",
+              "2023-03",
+              "2023-04",
+              "2023-05",
+              "2023-06",
+              "2023-07",
+              "2023-08",
+              "2023-09",
+              "2023-10",
+              "2023-11",
+              "2023-12",
+              "2024-01",
+              "2024-02",
+              "2024-03",
+              "2024-04",
+              "2024-05",
+              "2024-06",
+              "2024-07",
+              "2024-08",
+              "2024-09",
+              "2024-10",
+              "2024-11",
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2025-03",
+              "2025-04",
+              "2025-05",
+              "2025-06",
+              "2025-07",
+              "2025-08",
+              "2025-09",
+              "2025-11",
+              "2025-12",
+              "2026-01",
+              "2026-02",
+              "2026-03",
+              "2026-04",
+              "2026-05",
+              "2026-06",
+              "2026-07",
+              "2026-08"
+            ],
+            "y": [
+              -2.2521,
+              -1.4169,
+              -0.5779,
+              -1.9485,
+              -1.8485,
+              -0.1622,
+              1.977,
+              3.3606,
+              2.3483,
+              0.6506,
+              -1.187,
+              -2.3498,
+              -2.2183,
+              -1.5794,
+              -2.3915,
+              -2.3826,
+              -2.4032,
+              -0.5496,
+              -1.8192,
+              -4.594,
+              -7.2691,
+              -8.6297,
+              -6.7079,
+              -4.8347,
+              -2.9376,
+              -1.1344,
+              0.0718,
+              0.3964,
+              -1.9726,
+              -4.112,
+              -5.8006,
+              -6.7841,
+              -8.4878,
+              -8.6329,
+              -8.2354,
+              -6.2501,
+              -6.93,
+              -7.6844,
+              -9.1262,
+              -7.2772,
+              -5.9563,
+              -4.9739,
+              -8.1586,
+              -10.1962,
+              -13.1845,
+              -12.6693,
+              -12.7637,
+              -12.3586,
+              -12.336,
+              -13.2373,
+              -12.7217,
+              -13.6356,
+              -15.9537
+            ],
+            "fmt": "pct0s",
+            "unit": "% against 2022",
+            "threshold": null
+          }
         }
       ],
       "how": "Degrees come from the IPEDS completions file and enrolment from the Clearinghouse, and each field is scored by the exposure of the occupations its graduates hold, on the task measure of Eloundou and coauthors. Young workers come from the monthly Current Population Survey, with occupations scored the same way. People who move into exposed jobs from other occupations will join this view when the flows between occupations are published.",
+      "index": "Training",
+      "index_line": "What people study, and whether young workers still get exposed jobs",
       "headline": "42 percent of new degrees and 53 percent of four-year enrolment are in fields that lead to the most exposed jobs, while young workers' employment in those jobs, against older workers', is 16 percent below its 2022 level."
     }
   },
@@ -1129,10 +1535,78 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   // the opening sentence and what follows it; the lede is the build's own markup, its clauses linked to the views
   function top(){ $("#lede").innerHTML = READ.lede;
     $("#meaning-body").replaceChildren(...READ.meaning.map(t => { const p = document.createElement("p"); p.textContent = t; return p; }));
-    $("#notes").textContent = READ.notes.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(". ") + "."; marks(); }
-  function item(it, link){
-    const n = link ? `<a class="n" href="#${VIEWHASH[it.view]}" data-view="${it.view}" aria-label="${esc(it.n)}: open ${VIEWNAME[it.view]}">${esc(it.n)}</a>` : `<span class="n">${esc(it.n)}</span>`;
-    return `<div class="item">${n} <span class="s">${esc(it.s)}</span>${!link && it.more ? `<p class="more">${esc(it.more)}</p>` : ""}<span class="cite">${esc(it.src)}</span></div>`; }
+    $("#notes").textContent = READ.notes.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(". ") + "."; marks(); tiles(); }
+  // The three indices. The build writes each card's title, figure, sentence and series; the page draws the line.
+  const FMT = { pct0: y => `${Math.round(y)}%`, pct1: y => `${y.toFixed(1)}%`, x1: y => `${y.toFixed(1)}×`, num1: y => y.toFixed(1),
+    pp2: y => (y < -0.005 ? "−" : "") + Math.abs(y).toFixed(2), pct0s: y => (y >= 0.5 ? "+" : y <= -0.5 ? "−" : "") + Math.abs(Math.round(y)) + "%" };
+  const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const xl = x => /^\d{4}-\d{2}$/.test(x) ? `${MON[+x.slice(5) - 1]} ${x.slice(0, 4)}` : /^\d{4}Q\d$/.test(x) ? `${x.slice(0, 4)} Q${x[5]}` : x;
+  function nice(span){ const e = Math.pow(10, Math.floor(Math.log10(span))), f = span / e; return (f < 1.5 ? 1 : f < 3.5 ? 2 : f < 7.5 ? 5 : 10) * e; }
+  // one line in ink on hairline guides; a dashed line where a test sets the level that would count as unusual
+  function plot(sr, compact){
+    const W = 320, H = compact ? 40 : 150, L = compact ? 3 : 44, R = compact ? 6 : 8, T = compact ? 6 : 24, B = compact ? 6 : 24;
+    const f = FMT[sr.fmt] || (y => String(y)), ys = sr.y.concat(sr.threshold || []);
+    let lo = Math.min(...ys), hi = Math.max(...ys);
+    if (lo < 0 || sr.fmt === "pp2" || sr.fmt === "pct0s"){ lo = Math.min(lo, 0); hi = Math.max(hi, 0); }
+    if (sr.fmt === "num1") lo = 0;
+    const pad = (hi - lo || Math.abs(hi) || 1) * 0.12; lo -= lo === 0 ? 0 : pad; hi += hi === 0 ? 0 : pad;
+    const n = sr.y.length, X = i => n === 1 ? (L + W - R) / 2 : L + i * (W - L - R) / (n - 1), Y = v => T + (hi - v) * (H - T - B) / (hi - lo);
+    const path = a => a.map((v, i) => `${i ? "L" : "M"}${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join("");
+    let g = "";
+    if (!compact){
+      const step = nice((hi - lo) / 3);
+      for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step){
+        const z = Math.abs(v) < step / 1e6, y = Y(v).toFixed(1);
+        g += `<line class="${z ? "zero" : "grid"}" x1="${L}" x2="${W - R}" y1="${y}" y2="${y}"/><text x="${L - 6}" y="${(+y + 4).toFixed(1)}" text-anchor="end">${esc(f(z ? 0 : v))}</text>`; }
+      g += `<text x="0" y="12">${esc(sr.unit)}</text>`;
+      g += `<text x="${X(0)}" y="${H - 4}" text-anchor="${n === 1 ? "middle" : "start"}">${esc(xl(sr.x[0]))}</text>`;
+      if (n > 1) g += `<text x="${X(n - 1)}" y="${H - 4}" text-anchor="end">${esc(xl(sr.x[n - 1]))}</text>`;
+    } else if (lo < 0 && hi > 0) g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}"/>`;
+    if (sr.threshold) g += `<path class="th" d="${path(sr.threshold)}"/>`;
+    g += `<path class="line" d="${path(sr.y)}"/>`;
+    if (!compact && n <= 8) g += sr.y.slice(0, -1).map((v, i) => `<circle class="dot" r="3" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}"/>`).join("");
+    g += `<circle class="dot" r="4" cx="${X(n - 1).toFixed(1)}" cy="${Y(sr.y[n - 1]).toFixed(1)}"/>`;
+    if (!compact) g += `<line class="hx" x1="0" x2="0" y1="${T}" y2="${H - B}" visibility="hidden"/><circle class="dot hd" r="4" visibility="hidden"/><rect class="hit" x="${L - 8}" y="0" width="${W - L - R + 16}" height="${H}"/>`;
+    const label = `${sr.unit}: ${xl(sr.x[0])} ${f(sr.y[0])}, ${xl(sr.x[n - 1])} ${f(sr.y[n - 1])}`;
+    return { svg: `<svg viewBox="0 0 ${W} ${H}" ${compact ? 'aria-hidden="true"' : `role="img" tabindex="0" aria-label="${esc(label)}"`}>${g}</svg>`, X, Y, W, n, f };
+  }
+  const CHARTS = new WeakMap();
+  function card(it){
+    const sr = it.series, p = sr ? plot(sr) : null, f = p && p.f;
+    const vals = sr ? sr.x.map((x, i) => `${xl(x)} ${f(sr.y[i])}` + (sr.threshold ? ` (unusual above ${f(sr.threshold[i])})` : "")).join("; ") : "";
+    const key = sr && sr.threshold ? `<svg viewBox="0 0 24 8" width="24" height="8" aria-hidden="true"><line class="th" x1="0" x2="24" y1="4" y2="4"/></svg> unusual above the dashed line` : "";
+    return `<div class="card"><div class="t">${esc(it.title)}</div><div class="big${/\d/.test(it.big) ? "" : " word"}">${esc(it.big)}</div><p class="note">${esc(it.note)}</p>`
+      + (p ? `<div class="chart">${p.svg}<div class="tip" hidden></div></div>` : "")
+      + (key ? `<div class="key">${key}</div>` : "")
+      + `<details><summary>How we know</summary><p class="s">${esc(it.n)} ${esc(it.s)}</p>${it.more ? `<p>${esc(it.more)}</p>` : ""}`
+      + `<p class="cite">${esc(it.src)}</p>${vals ? `<p class="vals">${esc(vals)}.</p>` : ""}</details></div>`; }
+  // hover or arrow keys show each point; nothing is shown only on hover, since every value is listed under the card
+  function wire(host, list){
+    host.querySelectorAll(".chart").forEach((el, k) => {
+      const it = list[k], sr = it.series, p = plot(sr), svg = el.querySelector("svg"), tip = el.querySelector(".tip");
+      const hx = svg.querySelector(".hx"), hd = svg.querySelector(".hd");
+      let at = -1;
+      const show = i => { at = Math.max(0, Math.min(p.n - 1, i)); const x = p.X(at), y = p.Y(sr.y[at]);
+        hx.setAttribute("x1", x); hx.setAttribute("x2", x); hx.setAttribute("visibility", "visible");
+        hd.setAttribute("cx", x); hd.setAttribute("cy", y); hd.setAttribute("visibility", "visible");
+        tip.innerHTML = `${esc(xl(sr.x[at]))}: <b>${esc(p.f(sr.y[at]))}</b>` + (sr.threshold ? ` <span>(unusual above ${esc(p.f(sr.threshold[at]))})</span>` : "");
+        const scale = svg.getBoundingClientRect().width / p.W, left = Math.max(60, Math.min(el.clientWidth - 60, x * scale));
+        tip.style.left = left + "px"; tip.style.top = (y * scale - 8) + "px"; tip.hidden = false; };
+      const hide = () => { at = -1; tip.hidden = true; hx.setAttribute("visibility", "hidden"); hd.setAttribute("visibility", "hidden"); };
+      svg.addEventListener("pointermove", e => { const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * p.W / r.width;
+        let best = 0; for (let i = 1; i < p.n; i++) if (Math.abs(p.X(i) - x) < Math.abs(p.X(best) - x)) best = i; show(best); });
+      svg.addEventListener("pointerleave", hide); svg.addEventListener("blur", hide);
+      svg.addEventListener("focus", () => show(p.n - 1));
+      svg.addEventListener("keydown", e => { if (e.key === "ArrowLeft" || e.key === "ArrowRight"){ e.preventDefault(); show((at < 0 ? p.n - 1 : at) + (e.key === "ArrowLeft" ? -1 : 1)); } else if (e.key === "Escape") hide(); });
+    }); }
+  const ORDER = ["bridge", "city", "valley"];
+  function tiles(){
+    $("#indices").innerHTML = ORDER.map(v => { const V = READ.views[v], it = V.items[0];
+      return `<button class="tile" type="button" data-view="${v}" aria-label="${esc(`${V.index}: ${it.title}, ${it.big}. Open ${VIEWNAME[v]}`)}"><div class="tx"><div class="ix">${esc(V.index)}</div>`
+        + `<div class="big${/\d/.test(it.big) ? "" : " word"}">${esc(it.big)}</div><div class="t">${esc(it.title)}</div></div>${it.series ? plot(it.series, true).svg : ""}</button>`; }).join("");
+    markTile(stage.dataset.view); }
+  function markTile(view){ document.querySelectorAll(".tile").forEach(b => b.setAttribute("aria-current", String(b.dataset.view === view))); }
+  $("#indices").addEventListener("click", e => { const b = e.target.closest(".tile"); if (b) fromFigure(b.dataset.view); });
   // a number or a clause that names a view turns the drawing to it
   for (const host of ["#lede", "#items"]) $(host).addEventListener("click", e=>{ const a = e.target.closest("a[data-view]"); if (!a) return; e.preventDefault(); fromFigure(a.dataset.view); });
   const edgeL = $("#edge-left"), edgeR = $("#edge-right"), home = $("#btn-home");
@@ -1148,7 +1622,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   const HASH = { bridge:"bridge", city:"city", valley:"telescope" }, BASE_TITLE = document.title;
   function go(view, quiet){
     clearTimeout(timer);
-    const keyed = stage.contains(document.activeElement) || (document.activeElement && document.activeElement.closest && document.activeElement.closest(".item, .lede"));
+    const keyed = stage.contains(document.activeElement) || (document.activeElement && document.activeElement.closest && document.activeElement.closest(".tile, .card, .lede"));
     stage.dataset.view = view;
     $("#life").replaceChildren(); $("#lifeback").replaceChildren(); taxiUntil = 0; rocketUntil = 0; ferryUntil = 0; sfTrainUntil = 0; bartRun++;                               // whatever was crossing the last view stays there
     beam.classList.add("moving"); clearTimeout(beamTimer); beamTimer = setTimeout(()=>beam.classList.remove("moving"), 1450);
@@ -1169,8 +1643,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     $("#cap-h").textContent = r.cap[0]; $("#cap-p").textContent = view === "home" ? r.cap[1] : READ.views[view].capline;
     $("#r-title").textContent = r.title; $("#r-how").hidden = view === "home"; if (view !== "home") $("#r-lens").textContent = READ.views[view].how;
     marks();
-    const V = READ.views, list = view === "home" ? [V.bridge.items[0], V.city.items[0], V.city.items[1], V.valley.items[0]] : V[view].items;
-    $("#items").innerHTML = list.map(it => item(it, view === "home")).join("");
+    const V = READ.views, host = $("#items"), shown = view === "home" ? ORDER : [view];
+    $("#r-title").textContent = view === "home" ? "The three indices" : V[view].index;
+    $("#r-note").textContent = view === "home" ? "Each index stays in its own units, a share of wages, a test against the normal range, or a share of degrees and of jobs, so the three sit side by side and are never added together." : V[view].index_line + ".";
+    host.innerHTML = shown.map(v => (view === "home" ? `<div class="group"><h3><a href="#${VIEWHASH[v]}" data-view="${v}">${esc(V[v].index)}</a> <span>${esc(V[v].index_line)}</span></h3>` : `<div class="group">`)
+      + `<div class="cards">${V[v].items.map(card).join("")}</div></div>`).join("");
+    shown.forEach((v, k) => wire(host.children[k], V[v].items)); markTile(view);
     $("#r-from").textContent = "";
     $("#lede").innerHTML = view === "home" ? READ.lede : esc((READ.views[view] || {}).headline || "");
     edgeL.hidden = !r.left; edgeR.hidden = !r.right; home.hidden = (view==="home");
@@ -1180,7 +1658,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     if (typeof drawSky === "function") drawSky(OBS, view);
     if (typeof direct === "function") direct(view);
     // who cannot see the turn hears it; a keyboard stays in the stage, on the way back or on the view it came from
-    const first = view === "home" ? null : READ.views[view].items[0], lead = first ? ` ${first.n} ${first.s}` : "";
+    const first = view === "home" ? null : READ.views[view].items[0], lead = first ? ` ${first.title}: ${first.big}.` : "";
     $("#announce").textContent = r.cap[0] + "." + lead;
     document.title = view === "home" ? BASE_TITLE : `${r.cap[0]} | ${BASE_TITLE}`;
     const prev = lastFrom;

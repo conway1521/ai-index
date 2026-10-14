@@ -417,6 +417,10 @@ def export_site(release: str) -> Path:
     low_when = f"the {ordinal[low_q[-1]]} quarter of {low_q[:4]}"
     fell_before = float(pre_release.min()) <= float(post_release.mean())
     asks_out = asks["statistic"] >= asks["threshold_95"]
+    # how much of the fall the latest quarter has made up, measured from the lowest quarter after the release
+    low_after = float(post_release.min())
+    made_up = (float(grad.iloc[-1]) - low_after) / -low_after if low_after < 0 else 0.0
+    last_when = f"the {ordinal[grad.index[-1][-1]]} quarter of {grad.index[-1][:4]}"
 
     wages = round(float(latest["reach_share"]) * 100)
     core = float(newest["reach_share_three_quarters"]) * 100
@@ -584,8 +588,68 @@ def export_site(release: str) -> Path:
     lede = (f'The tasks people bring to AI models account for <a href="#bridge" data-view="bridge">{wages} percent of US wages</a>, {city}, '
             f'and <a href="#telescope" data-view="valley">{degrees:.0f} percent of new degrees</a> are in fields that lead to the most exposed jobs.')
 
+    # Each view is one index, laid out the way a single index is: a title, one big figure, a sentence, and its series over
+    # time. The full sentence, the paragraph and the source stay under each card for anyone who wants the method.
+    def series(x, y, fmt, threshold=None, unit=""):
+        return {"x": [str(v) for v in x], "y": [round(float(v), 4) for v in y], "fmt": fmt, "unit": unit,
+                "threshold": None if threshold is None else [round(float(v), 4) for v in threshold]}
+    def label(release):
+        tag = str(release)
+        return _published(tag) + (f" ({datetime.strptime(tag.split('(')[1][:7], '%Y-%m').strftime('%b')})"
+                                   if "(" in tag and len(tag.split("(")[1].rstrip(")")) == 7 else "")
+    top_name = top["bundle"]
+    top_path = landing[(landing["platform"] == "anthropic") & (landing["bundle"] == top_name)
+                       & landing["release"].isin(complete["release"])].sort_values("release")
+    stat_word = lambda row: "Past its normal range" if row["largest_statistic"] >= row["threshold_95"] else "Within its normal range"
+    young_series = gauge.assign(v=(gauge["young_relative_to_prime"] - 1) * 100)
+    cards = {
+        "bridge": ("Use", "How much of paid work is in the tasks people bring to AI", [
+            {"title": "Share of US wages in tasks people bring to AI", "big": f"{wages}%",
+             "note": f"Up from {round(float(first['reach_share']) * 100)}% in the {_published(first['release'])} release.",
+             "series": series([label(r) for r in complete["release"]], complete["reach_share"] * 100, "pct0", unit="% of wages")},
+            {"title": "Where use is concentrated", "big": f"{top['concentration']:.1f}×",
+             "note": f"Use on {top_name.lower()} against their share of pay, the most of any skill group.",
+             "series": series([label(r) for r in top_path["release"]], top_path["concentration"], "x1", unit="times share of pay")},
+            {"title": "Wages in the core of use", "big": f"{core:.1f}%",
+             "note": f"The {int(newest['tasks_three_quarters'])} tasks that make up three quarters of all use, up from {core_first:.1f}%.",
+             "series": series([label(r) for r in anthropic["release"]], anthropic["reach_share_three_quarters"] * 100, "pct1", unit="% of wages")},
+        ]),
+        "city": ("Jobs", "Whether pay, the mix of jobs and job ads have moved", [
+            {"title": "Pay across skill groups", "big": stat_word(pay),
+             "note": f"The biggest three-year move in any skill group is {pay['largest_statistic']:.1f}, where {pay['threshold_95']:.1f} would count as unusual.",
+             "series": series(pay_all["year"], pay_all["largest_statistic"], "num1", pay_all["threshold_95"], "biggest move, standard errors")},
+            {"title": "Mix of jobs", "big": stat_word(qty),
+             "note": (f"The biggest shift is {qty['largest_statistic']:.1f} against {qty['threshold_95']:.1f}, {toward} {name(qty['largest_bundle'])}"
+                      + (f", the largest since {since}" if qty_record else "")
+                      + (f"; a record this long gives a shift that size about one time in {_words(odds)}." if odds else ".")),
+             "series": series(qty_all["year"], qty_all["largest_statistic"], "num1", qty_all["threshold_95"], "biggest shift, standard errors")},
+            {"title": "Job ads for tasks AI can do",
+             "big": ("Fell before AI" if fell_before and not asks_out else
+                     "Moved at the release" if asks_out else "No change beyond the usual"),
+             "note": (f"Within occupations, ads named these tasks less often from 2020 to {low_when}; the step at the release is "
+                      f"{asks['statistic']:.1f} where {asks['threshold_95']:.1f} would stand out"
+                      + (f", and by {last_when} ads had made up {made_up * 100:.0f}% of the fall." if made_up >= 0.25 else ".")),
+             "series": series(list(grad.index), grad.to_numpy() * 100, "pp2", unit="points against 2019")},
+        ]),
+        "valley": ("Training", "What people study, and whether young workers still get exposed jobs", [
+            {"title": "New degrees in exposed fields", "big": f"{degrees:.1f}%",
+             "note": (f"Of bachelor's degrees in {year}, up from {before:.1f}% in {year - 1}." if before is not None else f"Of bachelor's degrees in {year}."),
+             "series": series(list(share.index), share.to_numpy() * 100, "pct1", unit="% of degrees")},
+            {"title": "Enrolment in exposed fields", "big": f"{enrolled:.1f}%",
+             "note": f"Of four-year undergraduates in {str(e_last['term']).lower()}, against {enrolled_first:.1f}% in {str(e_first['term']).lower()}.",
+             "series": series(enrol["term"].str.replace("Fall ", ""), enrol["share_exposed"] * 100, "pct1", unit="% of enrolment")},
+            {"title": "Young workers in exposed jobs", "big": f"−{young:.0f}%",
+             "note": "Employment of 22 to 27 year olds in the most exposed jobs, against older workers, since 2022.",
+             "series": series(young_series["period"], young_series["v"], "pct0s", unit="% against 2022")},
+        ]),
+    }
+    for view, (index, line, specs) in cards.items():
+        views[view]["index"], views[view]["index_line"] = index, line
+        for entry, spec in zip(views[view]["items"], specs):
+            entry.update(spec)
+
     headlines = {
-        "bridge": (f"The tasks people bring to AI models carry {wages} percent of US wages, and that use falls hardest on "
+        "bridge": (f"The tasks people bring to AI models account for {wages} percent of US wages, and that use is heaviest on "
                    f"{top['bundle'].lower()}, at {top['concentration']:.1f} times their share of pay."),
         "city": ("Pay " + ("has moved past" if pay_out else "has stayed within") + " its usual range"
                  + (f", the mix of jobs has shifted more than in any three years since {since}" if qty_record else

@@ -1,5 +1,5 @@
 {
-  "built": "13 October 2026",
+  "built": "14 October 2026",
   "lede": "The tasks people bring to AI models account for <a href=\"#bridge\" data-view=\"bridge\">23 percent of US wages</a>, <a href=\"#city\" data-view=\"city\">pay has stayed within its usual range</a> while the mix of jobs has shifted more than in any three years since 2013, and <a href=\"#telescope\" data-view=\"valley\">42 percent of new degrees</a> are in fields that lead to the most exposed jobs.",
   "meaning": [
     "The tasks people bring to AI models are paid about a quarter of all the wages in the United States, while pay across the skills behind them has moved no further over the last three years than in an ordinary stretch of the record, so these models already reach a wide share of paid work and there is no sign yet that employers pay for those skills differently.",
@@ -25,7 +25,25 @@
           "more": "A task counts once any use of it is published, so this reading measures how widely use spreads across paid work and says nothing about how much of that work the models do. It rose from 18 percent in September 2025 to 23 percent in March 2026 as more tasks appeared in the record. The June 2026 file leaves out tasks below a reporting threshold, so the reading stays on the last release that publishes every task.",
           "tables": [
             "usage_reach.csv"
-          ]
+          ],
+          "title": "Share of US wages in tasks people bring to AI",
+          "big": "23%",
+          "note": "Up from 18% in the September 2025 release.",
+          "series": {
+            "x": [
+              "September 2025",
+              "January 2026",
+              "March 2026"
+            ],
+            "y": [
+              18.1432,
+              21.9086,
+              23.2137
+            ],
+            "fmt": "pct0",
+            "unit": "% of wages",
+            "threshold": null
+          }
         },
         {
           "n": "2.5×",
@@ -35,7 +53,25 @@
           "more": "Each skill group's share of use is set against its share of pay, so a value above one means the group draws more use than its weight in wages. Of the twenty-five groups, the most use falls on complex problem solving skills and the least on physical abilities.",
           "tables": [
             "usage_landing.csv"
-          ]
+          ],
+          "title": "Where use is concentrated",
+          "big": "2.5×",
+          "note": "Use on complex problem solving skills against their share of pay, the most of any skill group.",
+          "series": {
+            "x": [
+              "September 2025",
+              "January 2026",
+              "March 2026"
+            ],
+            "y": [
+              2.9179,
+              2.6082,
+              2.515
+            ],
+            "fmt": "x1",
+            "unit": "times share of pay",
+            "threshold": null
+          }
         },
         {
           "n": "3.1%",
@@ -45,11 +81,35 @@
           "more": "Use is concentrated: 243 tasks account for three quarters of it. Counting only those tasks gives a reading that the reporting threshold cannot move, and its move from 1.8 to 3.1 percent means the work people bring most often now sits in tasks that carry more of the wage bill.",
           "tables": [
             "usage_reach.csv"
-          ]
+          ],
+          "title": "Wages in the core of use",
+          "big": "3.1%",
+          "note": "The 243 tasks that make up three quarters of all use, up from 1.8%.",
+          "series": {
+            "x": [
+              "September 2025",
+              "January 2026",
+              "March 2026",
+              "June 2026 (Apr)",
+              "June 2026 (May)"
+            ],
+            "y": [
+              1.7854,
+              2.1108,
+              2.5417,
+              3.9069,
+              3.131
+            ],
+            "fmt": "pct1",
+            "unit": "% of wages",
+            "threshold": null
+          }
         }
       ],
       "how": "Each conversation in the usage record is matched to the O*NET tasks it touches, each task is weighted by the wages paid for it in the latest OEWS release, and the share moves with every usage release, every few months, for the one platform whose record the index reads so far. A task counts as reached when any use of it is published, so the headline comes from the latest release that publishes every task, and the tasks making up three quarters of use are counted in every release alike, since no release leaves any of them out.",
-      "headline": "The tasks people bring to AI models carry 23 percent of US wages, and that use falls hardest on complex problem solving skills, at 2.5 times their share of pay."
+      "index": "Use",
+      "index_line": "How much of paid work is in the tasks people bring to AI",
+      "headline": "The tasks people bring to AI models account for 23 percent of US wages, and that use is heaviest on complex problem solving skills, at 2.5 times their share of pay."
     },
     "city": {
       "capline": "pay 2.9, 6.1 needed; jobs mix 8.1, 6.6 needed; job ads 2.6, 5.4 needed",
@@ -64,7 +124,44 @@
           "tables": [
             "outcomes_pay_series_balanced.csv",
             "outcomes_pay_changes.csv"
-          ]
+          ],
+          "title": "Pay across skill groups",
+          "big": "Within its normal range",
+          "note": "The biggest three-year move in any skill group is 2.9, where 6.1 would count as unusual.",
+          "series": {
+            "x": [
+              "2018",
+              "2019",
+              "2020",
+              "2021",
+              "2022",
+              "2023",
+              "2024",
+              "2025"
+            ],
+            "y": [
+              2.827,
+              4.729,
+              8.363,
+              3.819,
+              2.55,
+              4.003,
+              7.977,
+              2.851
+            ],
+            "fmt": "num1",
+            "unit": "biggest move, standard errors",
+            "threshold": [
+              4.79,
+              4.565,
+              7.37,
+              4.092,
+              3.903,
+              4.277,
+              6.168,
+              6.13
+            ]
+          }
         },
         {
           "n": "8.1",
@@ -74,7 +171,44 @@
           "more": "The mix of jobs is each skill group's share of employment, so it moves when people move between occupations, which can happen before pay changes at all. It is tested in the same way as pay, against each group's own record, and about one stretch in eleven of a record this long moves this far by chance.",
           "tables": [
             "outcomes_quantity_series_balanced.csv"
-          ]
+          ],
+          "title": "Mix of jobs",
+          "big": "Past its normal range",
+          "note": "The biggest shift is 8.1 against 6.6, toward arts and humanities, the largest since 2013; a record this long gives a shift that size about one time in eleven.",
+          "series": {
+            "x": [
+              "2018",
+              "2019",
+              "2020",
+              "2021",
+              "2022",
+              "2023",
+              "2024",
+              "2025"
+            ],
+            "y": [
+              7.414,
+              3.862,
+              5.033,
+              4.54,
+              4.841,
+              3.31,
+              2.941,
+              8.132
+            ],
+            "fmt": "num1",
+            "unit": "biggest shift, standard errors",
+            "threshold": [
+              7.414,
+              8.172,
+              4.934,
+              5.422,
+              4.939,
+              4.728,
+              4.711,
+              6.612
+            ]
+          }
         },
         {
           "n": "2.6",
@@ -86,10 +220,70 @@
             "postings_step_at_release.csv",
             "postings_gradient_quarterly.csv",
             "postings_release_bound.csv"
-          ]
+          ],
+          "title": "Job ads for tasks AI can do",
+          "big": "Fell before AI",
+          "note": "Within occupations, ads named these tasks less often from 2020 to the third quarter of 2022; the step at the release is 2.6 where 5.4 would stand out, and by the third quarter of 2025 ads had made up 68% of the fall.",
+          "series": {
+            "x": [
+              "2020Q1",
+              "2020Q2",
+              "2020Q3",
+              "2020Q4",
+              "2021Q1",
+              "2021Q2",
+              "2021Q3",
+              "2021Q4",
+              "2022Q1",
+              "2022Q2",
+              "2022Q3",
+              "2022Q4",
+              "2023Q1",
+              "2023Q2",
+              "2023Q3",
+              "2023Q4",
+              "2024Q1",
+              "2024Q2",
+              "2024Q3",
+              "2024Q4",
+              "2025Q1",
+              "2025Q2",
+              "2025Q3"
+            ],
+            "y": [
+              -0.0118,
+              -0.1017,
+              -0.106,
+              -0.1668,
+              -0.1095,
+              -0.1862,
+              -0.4314,
+              -0.4647,
+              -0.3711,
+              -0.5277,
+              -0.5826,
+              -0.4553,
+              -0.5729,
+              -0.5448,
+              -0.6202,
+              -0.6471,
+              -0.5431,
+              -0.5423,
+              -0.5392,
+              -0.5549,
+              -0.3984,
+              -0.2959,
+              -0.205
+            ],
+            "fmt": "pp2",
+            "unit": "points against 2019",
+            "threshold": null
+          }
         }
       ],
       "how": "For each skill group the index takes the last three yearly changes in pay, and in the share of employment, and sets them against that group's own changes since 2013: a change stands out when it passes the level only the most extreme three-year stretches in the record reached, and both the reading and that level are recalculated with each spring release of the wage tables. The job-ad reading compares, within each occupation and month, the share of ads naming each task with that task's exposure, and sets the change at the release against the same change placed at every earlier month.",
+      "index": "Jobs",
+      "index_line": "Whether pay, the mix of jobs and job ads have moved",
       "headline": "Pay has stayed within its usual range, the mix of jobs has shifted more than in any three years since 2013, and job ads turned away from the tasks the models can do in 2020 to the third quarter of 2022, before the models were released."
     },
     "valley": {
@@ -105,7 +299,25 @@
           "tables": [
             "pipeline_completions_by_state.csv",
             "pipeline_field_exposure_crosswalk.csv"
-          ]
+          ],
+          "title": "New degrees in exposed fields",
+          "big": "41.8%",
+          "note": "Of bachelor's degrees in 2025, up from 40.7% in 2024.",
+          "series": {
+            "x": [
+              "2023",
+              "2024",
+              "2025"
+            ],
+            "y": [
+              40.3258,
+              40.6788,
+              41.7519
+            ],
+            "fmt": "pct1",
+            "unit": "% of degrees",
+            "threshold": null
+          }
         },
         {
           "n": "53.1%",
@@ -116,7 +328,31 @@
           "tables": [
             "pipeline_enrolment_by_exposure.csv",
             "nsc_cip_family_enrolment.csv"
-          ]
+          ],
+          "title": "Enrolment in exposed fields",
+          "big": "53.1%",
+          "note": "Of four-year undergraduates in fall 2024, against 52.4% in fall 2019.",
+          "series": {
+            "x": [
+              "2019",
+              "2020",
+              "2021",
+              "2022",
+              "2023",
+              "2024"
+            ],
+            "y": [
+              52.3943,
+              51.8346,
+              51.6297,
+              52.2467,
+              52.971,
+              53.1298
+            ],
+            "fmt": "pct1",
+            "unit": "% of enrolment",
+            "threshold": null
+          }
         },
         {
           "n": "16%",
@@ -127,10 +363,130 @@
           "tables": [
             "cps_young_worker_gauge.csv",
             "cps_young_worker_test.csv"
-          ]
+          ],
+          "title": "Young workers in exposed jobs",
+          "big": "−16%",
+          "note": "Employment of 22 to 27 year olds in the most exposed jobs, against older workers, since 2022.",
+          "series": {
+            "x": [
+              "2022-03",
+              "2022-04",
+              "2022-05",
+              "2022-06",
+              "2022-07",
+              "2022-08",
+              "2022-09",
+              "2022-10",
+              "2022-11",
+              "2022-12",
+              "2023-01",
+              "2023-02",
+              "2023-03",
+              "2023-04",
+              "2023-05",
+              "2023-06",
+              "2023-07",
+              "2023-08",
+              "2023-09",
+              "2023-10",
+              "2023-11",
+              "2023-12",
+              "2024-01",
+              "2024-02",
+              "2024-03",
+              "2024-04",
+              "2024-05",
+              "2024-06",
+              "2024-07",
+              "2024-08",
+              "2024-09",
+              "2024-10",
+              "2024-11",
+              "2024-12",
+              "2025-01",
+              "2025-02",
+              "2025-03",
+              "2025-04",
+              "2025-05",
+              "2025-06",
+              "2025-07",
+              "2025-08",
+              "2025-09",
+              "2025-11",
+              "2025-12",
+              "2026-01",
+              "2026-02",
+              "2026-03",
+              "2026-04",
+              "2026-05",
+              "2026-06",
+              "2026-07",
+              "2026-08"
+            ],
+            "y": [
+              -2.2521,
+              -1.4169,
+              -0.5779,
+              -1.9485,
+              -1.8485,
+              -0.1622,
+              1.977,
+              3.3606,
+              2.3483,
+              0.6506,
+              -1.187,
+              -2.3498,
+              -2.2183,
+              -1.5794,
+              -2.3915,
+              -2.3826,
+              -2.4032,
+              -0.5496,
+              -1.8192,
+              -4.594,
+              -7.2691,
+              -8.6297,
+              -6.7079,
+              -4.8347,
+              -2.9376,
+              -1.1344,
+              0.0718,
+              0.3964,
+              -1.9726,
+              -4.112,
+              -5.8006,
+              -6.7841,
+              -8.4878,
+              -8.6329,
+              -8.2354,
+              -6.2501,
+              -6.93,
+              -7.6844,
+              -9.1262,
+              -7.2772,
+              -5.9563,
+              -4.9739,
+              -8.1586,
+              -10.1962,
+              -13.1845,
+              -12.6693,
+              -12.7637,
+              -12.3586,
+              -12.336,
+              -13.2373,
+              -12.7217,
+              -13.6356,
+              -15.9537
+            ],
+            "fmt": "pct0s",
+            "unit": "% against 2022",
+            "threshold": null
+          }
         }
       ],
       "how": "Degrees come from the IPEDS completions file and enrolment from the Clearinghouse, and each field is scored by the exposure of the occupations its graduates hold, on the task measure of Eloundou and coauthors. Young workers come from the monthly Current Population Survey, with occupations scored the same way. People who move into exposed jobs from other occupations will join this view when the flows between occupations are published.",
+      "index": "Training",
+      "index_line": "What people study, and whether young workers still get exposed jobs",
       "headline": "42 percent of new degrees and 53 percent of four-year enrolment are in fields that lead to the most exposed jobs, while young workers' employment in those jobs, against older workers', is 16 percent below its 2022 level."
     }
   },

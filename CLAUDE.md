@@ -1,4 +1,4 @@
-# Cross Bearings
+# AI Work Index
 
 A public index of where AI usage has reached the labour market. One
 product, one repository. It depends on the paper repository
@@ -24,11 +24,13 @@ still a fixture (every OEWS file comes from the ai-data releases data-2026-10-12
 pass. See `aiindex/README.md` for each layer, `aiindex/AUDIT.md` for every
 source and `docs/data-licences.md` for what may be republished. The page is
 `site/index.html`. The repository is public and Pages publishes `site/`,
-so the page can be linked to, and its name is Cross Bearings. Since 13 October
-2026 each view has its own headline and three readings, each with a paragraph
-under it, the valley adding Clearinghouse enrolment and the CPS young-worker
-gauge with its test; the page uses one typeface, lists its sources and not its
-tables, and has no weather or fog switches.
+so the page can be linked to. Its working name is AI Work Index, a one-line change in
+the page and the READMEs when a final name is chosen. Since 14 October 2026 the page shows three
+indices side by side and never added together, use, jobs and training, each a tile above the drawing
+and three cards below it; every card has a title, one figure, a sentence and its series over time,
+with the test threshold drawn where there is one, and the full sentence, paragraph, source and values
+under "How we know". The build writes the cards into readings.json. The page uses one typeface, lists
+its sources and not its tables, and has no weather or fog switches.
 
 ## Dependency
 
