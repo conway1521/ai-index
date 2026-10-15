@@ -1,6 +1,6 @@
 {
   "built": "15 October 2026",
-  "lede": "Tasks people use Claude for make up <a href=\"#bridge\" data-view=\"bridge\">23% of US wages</a>. <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual</a>, and job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees</a> are in fields that lead to the jobs most exposed to language models.",
+  "lede": "<a href=\"#bridge\" data-view=\"bridge\">23% of US wages</a> are paid for tasks people also bring to AI models (Claude data). <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual</a>, and job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees</a> are in fields that lead to the jobs most exposed to language models.",
   "notes": [
     "new data coming soon"
   ],
@@ -9,12 +9,12 @@
       "index": "Use",
       "index_line": "How much of the country's paid work involves tasks people already use AI for, and how many firms use it",
       "why": "If AI is going to change work, it will start with the tasks people already bring to it and the firms that adopt it, so this index shows where change could come first.",
-      "capline": "23% of US wages are in tasks people use Claude for; 23.8% of firms use AI",
-      "mark": "23% of US wages are in tasks people use Claude for",
-      "headline": "Tasks people use Claude for make up 23% of US wages, 24% of US firms now use AI, and use relative to pay is heaviest on complex problem solving skills.",
+      "capline": "23% of US wages are paid for tasks people also bring to AI models (Claude data); 23.8% of firms use AI",
+      "mark": "23% of US wages are paid for tasks people also bring to AI",
+      "headline": "23% of US wages are paid for tasks people also bring to AI models (Claude data), 24% of US firms now use AI, and use relative to pay is heaviest on complex problem solving skills.",
       "items": [
         {
-          "title": "Share of US wages in tasks people use Claude for",
+          "title": "US wages paid for tasks people also bring to AI (Claude data)",
           "big": "23%",
           "note": "Up from 18% in September 2025. A task counts once anyone uses Claude for it, so part of that rise comes from each release covering more tasks (2,051 then, 2,525 now). The tasks behind three quarters of all use, a measure that more coverage does not move, rose from 1.8% to 3.1% of US wages.",
           "more": "The Anthropic Economic Index sorts conversations with Claude into the job tasks the Labor Department lists for each occupation (O*NET). We add up what US workers earn on the tasks that appear, using the BLS wage tables. The June 2026 file leaves out rarely used tasks, so this figure uses March 2026, the most recent file that lists them all. Tasks people hand to Claude to do entirely account for 6% of US wages. ChatGPT is not shown here: OpenAI publishes use by broad work activity, so every task under an activity would count and the figure would not be comparable.",
@@ -344,7 +344,7 @@
           "title": "Job ads for tasks AI can do",
           "big": "Fell before ChatGPT",
           "note": "From 2020 to the third quarter of 2022, job ads in the same occupation asked less and less often for tasks AI can do. ChatGPT's release in November 2022 brought no further drop, and by the third quarter of 2025 ads had recovered 68% of the decline.",
-          "more": "The National Labor Exchange (NLx) data count how often ads in each occupation name each O*NET task. We check whether tasks AI can do lost ground to other tasks in the same occupation, and whether anything changed at ChatGPT's release. In 25 of the 55 earlier months, the same comparison showed a change at least as large as the one at the release. Each occupation's ads list at most fifty tasks a month, so switch to complete task lists to see only the occupations where that limit never binds.",
+          "more": "The National Labor Exchange (NLx) data count how often ads in each occupation name each O*NET task. We check whether tasks AI can do lost ground to other tasks in the same occupation, and whether anything changed at ChatGPT's release. In 25 of the 55 earlier months, the same comparison showed a change at least as large as the one at the release. Each occupation's ads list at most fifty tasks a month, so switch to complete task lists to see only the occupations where that limit never binds. What drove the fall from 2020 to 2022 is not settled here. Because the comparison is within each occupation, a shift in which occupations were hiring cannot explain it, but changes inside occupations can: the move to remote work, hiring for jobs done in person during the pandemic, and changes in which employers and job boards feed the National Labor Exchange all fall in those years.",
           "tech": "From a working paper in progress by the author: the gradient of a task's share of its occupation's ads on the task's Eloundou exposure, by quarter against 2019, so the comparison is within occupation by construction, with 95% bands from standard errors clustered by occupation. The step at the release is measured against the sixteen months before it and set against the same step placed at each of 55 earlier months (p = 0.45, all occupations).",
           "src": "NLx job ads, September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander; Eloundou task measure",
           "series": {

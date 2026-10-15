@@ -752,12 +752,12 @@ def export_site(release: str) -> Path:
             "index": "Use", "index_line": "How much of the country's paid work involves tasks people already use AI for, and how many firms use it",
             "why": ("If AI is going to change work, it will start with the tasks people already bring to it and the firms that adopt it, "
                     "so this index shows where change could come first."),
-            "capline": f"{wages}% of US wages are in tasks people use Claude for; {firms_now:.1f}% of firms use AI",
-            "mark": f"{wages}% of US wages are in tasks people use Claude for",
-            "headline": (f"Tasks people use Claude for make up {wages}% of US wages, {firms_now:.0f}% of US firms now use AI, and "
+            "capline": f"{wages}% of US wages are paid for tasks people also bring to AI models (Claude data); {firms_now:.1f}% of firms use AI",
+            "mark": f"{wages}% of US wages are paid for tasks people also bring to AI",
+            "headline": (f"{wages}% of US wages are paid for tasks people also bring to AI models (Claude data), {firms_now:.0f}% of US firms now use AI, and "
                          f"use relative to pay is heaviest on {top_name}."),
             "items": [
-                {"title": "Share of US wages in tasks people use Claude for", "big": f"{wages}%",
+                {"title": "US wages paid for tasks people also bring to AI (Claude data)", "big": f"{wages}%",
                  "note": (f"Up from {first_share}% in {_published(first['release'])}. A task counts once anyone uses Claude for it, so part "
                           f"of that rise comes from each release covering more tasks ({int(first['tasks_used']):,} then, "
                           f"{int(latest['tasks_used']):,} now). The tasks behind three quarters of all use, a measure that more coverage "
@@ -875,7 +875,10 @@ def export_site(release: str) -> Path:
                           f"ChatGPT's release. In {_words(int(asks['earlier_at_least']))} of the {_words(int(asks['earlier_windows']))} "
                           f"earlier months, the same comparison showed a change at least as large as the one at the release. Each "
                           f"occupation's ads list at most fifty tasks a month, so switch to complete task lists to see only the "
-                          f"occupations where that limit never binds."),
+                          f"occupations where that limit never binds. What drove the fall from 2020 to 2022 is not settled here. Because the "
+                          f"comparison is within each occupation, a shift in which occupations were hiring cannot explain it, but changes "
+                          f"inside occupations can: the move to remote work, hiring for jobs done in person during the pandemic, and changes "
+                          f"in which employers and job boards feed the National Labor Exchange all fall in those years."),
                  "tech": (f"From a working paper in progress by the author: the gradient of a task's share of its occupation's ads on the task's Eloundou "
                           f"exposure, by quarter against 2019, so the comparison is within occupation by construction, with 95% bands from "
                           f"standard errors clustered by occupation. The step at the release is measured against the sixteen months before it "
@@ -966,7 +969,7 @@ def export_site(release: str) -> Path:
             entry["research"] = _RESEARCH.get((key, i), [])
 
     # the opening paragraph: one sentence per index, each linked to its view
-    lede = (f'Tasks people use Claude for make up <a href="#bridge" data-view="bridge">{wages}% of US wages</a>. '
+    lede = (f'<a href="#bridge" data-view="bridge">{wages}% of US wages</a> are paid for tasks people also bring to AI models (Claude data). '
             + ('<a href="#city" data-view="city">Pay has changed more than usual</a>' if pay_out else
                '<a href="#city" data-view="city">Pay hasn\'t changed more than usual</a>')
             + (", and job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. "
