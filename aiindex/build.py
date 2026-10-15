@@ -747,6 +747,7 @@ def export_site(release: str) -> Path:
     pay_big = "Unusual change" if pay_out else "No unusual change"
     mix_big = (f"Largest shift since {since}" if qty_record else "Unusual shift" if qty_out else "No unusual shift")
 
+    as_of = f"As of the {datetime.now(timezone.utc).strftime('%B %Y')} update"
     views = {
         "bridge": {
             "index": "Use", "index_line": "How much of the country's paid work involves tasks people already use AI for, and how many firms use it",
@@ -754,7 +755,7 @@ def export_site(release: str) -> Path:
                     "so this index shows where change could come first."),
             "capline": f"{wages}% of US wages are paid for tasks people also bring to AI models (Claude data); {firms_now:.1f}% of firms use AI",
             "mark": f"{wages}% of US wages are paid for tasks people also bring to AI",
-            "headline": (f"{wages}% of US wages are paid for tasks people also bring to AI models (Claude data), {firms_now:.0f}% of US firms now use AI, and "
+            "headline": (f"{as_of}, {wages}% of US wages are paid for tasks people also bring to AI models (Claude data), {firms_now:.0f}% of US firms now use AI, and "
                          f"use relative to pay is heaviest on {top_name}."),
             "items": [
                 {"title": "US wages paid for tasks people also bring to AI (Claude data)", "big": f"{wages}%",
@@ -813,10 +814,11 @@ def export_site(release: str) -> Path:
                     "in which kinds of jobs grow, and in the tasks job ads ask for."),
             "capline": (f"Job ads: {ads_big[0].lower() + ads_big[1:]}. Pay: {pay_big.lower()}. Job mix: {mix_big.lower()}."),
             "mark": f"Job ads: {ads_big[0].lower() + ads_big[1:]}. Pay: {pay_big.lower()}.",
-            "headline": (("Job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. "
+            "headline": (f"{as_of}, "
+                         + ("job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. "
                           if fell_before and not asks_out else
-                          "Job ads changed at ChatGPT's release more than at almost any earlier month. " if asks_out else
-                          "Job ads show no change at ChatGPT's release. ")
+                          "job ads changed at ChatGPT's release more than at almost any earlier month. " if asks_out else
+                          "job ads show no change at ChatGPT's release. ")
                          + ("Pay has changed more than usual" if pay_out else "Pay hasn't changed more than usual")
                          + (f", and the mix of jobs has shifted more than at any time since {since}, though chance can't yet be ruled out."
                             if qty_record else ", and the mix of jobs has shifted more than usual." if qty_out else ".")),
@@ -904,7 +906,7 @@ def export_site(release: str) -> Path:
             "capline": (f"{degrees:.1f}% of new degrees and {enrolled:.1f}% of enrollment are in exposed fields; "
                         f"young workers down {young:.0f}% in exposed jobs since 2022"),
             "mark": f"{degrees:.1f}% of new degrees are in exposed fields",
-            "headline": (f"{degrees:.0f}% of new degrees and {enrolled:.0f}% of four-year enrollment are in the fields most exposed "
+            "headline": (f"{as_of}, {degrees:.0f}% of new degrees and {enrolled:.0f}% of four-year enrollment are in the fields most exposed "
                          f"to language models"
                          + (", though on an earlier measure of AI exposure those shares are lower and falling"
                             if float(felten_degrees.iloc[-1]) < float(felten_degrees.iloc[-2]) else "")
@@ -969,7 +971,7 @@ def export_site(release: str) -> Path:
             entry["research"] = _RESEARCH.get((key, i), [])
 
     # the opening paragraph: one sentence per index, each linked to its view
-    lede = (f'<a href="#bridge" data-view="bridge">{wages}% of US wages</a> are paid for tasks people also bring to AI models (Claude data). '
+    lede = (f'{as_of}, <a href="#bridge" data-view="bridge">{wages}% of US wages</a> are paid for tasks people also bring to AI models (Claude data). '
             + ('<a href="#city" data-view="city">Pay has changed more than usual</a>' if pay_out else
                '<a href="#city" data-view="city">Pay hasn\'t changed more than usual</a>')
             + (", and job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. "
