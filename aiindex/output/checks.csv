@@ -248,7 +248,14 @@ pipeline,awards with an institution state coverage at least 98%,True,0.997209729
 pipeline,awards on a scored CIP coverage at least 80%,True,0.8694315047413846,86.9% of awards on a scored CIP covered
 pipeline,"share of awards in exposed fields in [0.0, 1.0]",True,0.0,"0 values of share of awards in exposed fields outside [0.0, 1.0]"
 pipeline,nonnegative awards,True,0.0,0 negative values in awards
+pipeline,awards with an institution state coverage at least 98%,True,0.9972097291422901,99.7% of awards with an institution state covered
+pipeline,awards on a scored CIP coverage at least 80%,True,0.8459649848749023,84.6% of awards on a scored CIP covered
+pipeline,"share of awards in exposed fields in [0.0, 1.0]",True,0.0,"0 values of share of awards in exposed fields outside [0.0, 1.0]"
+pipeline,nonnegative awards,True,0.0,0 negative values in awards
 pipeline,nonnegative Clearinghouse CIP family enrolment,True,0.0,0 negative values in Clearinghouse CIP family enrolment
+pipeline,Clearinghouse fields without a CIP mapping,True,0.0,0 labels unmapped: []
+pipeline,nonnegative enrolment,True,0.0,0 negative values in enrolment
+pipeline,"share of enrolment in exposed fields in [0.0, 1.0]",True,0.0,"0 values of share of enrolment in exposed fields outside [0.0, 1.0]"
 pipeline,Clearinghouse fields without a CIP mapping,True,0.0,0 labels unmapped: []
 pipeline,nonnegative enrolment,True,0.0,0 negative values in enrolment
 pipeline,"share of enrolment in exposed fields in [0.0, 1.0]",True,0.0,"0 values of share of enrolment in exposed fields outside [0.0, 1.0]"
