@@ -97,7 +97,7 @@ fixtures.
 | CPS gauge | `cps.py` | 55 Census months, January 2022 to August 2026 | October 2025 was not collected |
 | Job ads | `postings.py` | NLx aggregates, September 2015 to September 2025 | the paper's Appendix B code; each occupation-month lists its top fifty tasks |
 | State | `state.py`, `btos.py` | official BTOS through cycle 202619 | Anthropic state usage per worker |
-| Pipeline | `pipeline.py`, `ipeds.py`, `acs.py` | IPEDS 2023 to 2025, ACS 2024 national, Clearinghouse fall 2019 to 2024 | Clearinghouse by two-digit CIP family, undergraduate four-year |
+| Pipeline | `pipeline.py`, `ipeds.py`, `acs.py` | IPEDS 2023 to 2025, ACS 2024 national, Clearinghouse fall 2019 to 2024 | Clearinghouse by two-digit CIP family, undergraduate four-year; fields scored through the NCES crosswalk under the Eloundou and Felten measures |
 | Capacity | `capacity.py` | **in progress**: fixture (`flows_transition_matrix`, `flows_arrivals`) | not shown on the site; the flows matrix drops in on its schema once it is published |
 
 ## Units, checked at every step

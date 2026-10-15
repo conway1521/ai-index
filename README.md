@@ -89,7 +89,7 @@ repository, each checked against the sha256 recorded when its release was assemb
 | CPS gauge | `cps.py` | real: 55 CPS basic monthly files, January 2022 to August 2026 (October 2025 was not collected) | the last twelve months tested against reshuffled months |
 | Job ads | `postings.py` | real: NLx job-ad aggregates of Meisenbacher, Nestorov and Norlander (Zenodo), September 2015 to September 2025 | within-occupation exposure gradient by quarter against 2019, and the step at the release of language models |
 | State | `state.py`, `btos.py` | real: OEWS state files, BTOS biweekly cycles from November 2025 to September 2026, Anthropic state usage for three releases | BTOS averaged to the year |
-| Pipeline | `pipeline.py`, `ipeds.py`, `acs.py` | real: IPEDS completions 2023 to 2025, ACS 2024 national person files, the NCES CIP to SOC crosswalk, Clearinghouse enrollment by field family, fall 2019 to fall 2024 | fields scored by the occupations their graduates hold |
+| Pipeline | `pipeline.py`, `ipeds.py`, `acs.py` | real: IPEDS completions 2023 to 2025, ACS 2024 national person files, the NCES CIP to SOC crosswalk, Clearinghouse enrollment by field family, fall 2019 to fall 2024 | fields scored through the NCES CIP to SOC crosswalk, under the Eloundou and Felten measures; the ACS field-of-degree link is computed as a check |
 | Capacity | `capacity.py` | **in progress**: fixture (`flows_transition_matrix`, `flows_arrivals`) | not shown on the site; the flows matrix drops in on its schema once it is published |
 
 ## Units, checked at every step

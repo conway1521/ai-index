@@ -172,6 +172,8 @@ def build_pipeline(measures: pd.DataFrame, national: pd.DataFrame) -> dict:
     awards = pd.concat(frames, ignore_index=True)
     by_state = pipeline.completions_by_state(awards, inst, field_xw, "eloundou_beta")
     _write("pipeline_completions_by_state", by_state)
+    # the same split under the Felten measure, so the page can show whether "exposed fields" depends on the measure
+    _write("pipeline_completions_by_state_felten", pipeline.completions_by_state(awards, inst, field_xw, "felten_aioe"))
     nsc_path = config.RAW_DIR / "nsc" / "major_field_appendix.csv"
     grade = "real"
     ctee = sorted((config.RAW_DIR / "nsc").glob("CTEE*CIPGroupEnrollment*.xlsx"))
@@ -190,6 +192,7 @@ def build_pipeline(measures: pd.DataFrame, national: pd.DataFrame) -> dict:
     nsc = pd.read_csv(nsc_path)
     enrolment = pipeline.enrolment_by_exposure(nsc, field_xw, "eloundou_beta")
     _write("pipeline_enrolment_by_exposure", enrolment)
+    _write("pipeline_enrolment_by_exposure_felten", pipeline.enrolment_by_exposure(nsc, field_xw, "felten_aioe"))
     return {"field_crosswalk": field_xw, "field_acs": field_acs, "completions": by_state, "enrolment": enrolment}
 
 
@@ -498,9 +501,11 @@ _RESEARCH = {
     ],
     ("valley", 0): [
         _study("background", "hemelt"),
+        _study("method", "felten", "The second exposure measure the card can switch to: scores from AI applications linked to abilities."),
         _study("method", "eloundou", "The exposure measure used to score fields of study, jobs and tasks across this page."),
     ],
     ("valley", 1): [
+        _study("method", "felten", "The second exposure measure the card can switch to."),
         _study("different", "dallas", "Weaker demand for AI-exposed occupations led students at Texas universities to change what they study."),
         _study("method", "eloundou", "The exposure measure used to score each field family, through the jobs its graduates hold."),
     ],
@@ -649,6 +654,62 @@ def export_site(release: str) -> Path:
     firms_first_v, firms_now = float(firms_first["share_using_ai"]), float(firms_last["share_using_ai"])
     chatgpt = landing[(landing["platform"] == "openai") & (landing["release"] == "2026-06 (dollar allocation)")].sort_values("concentration")
 
+    ads_big = "Fell before ChatGPT" if fell_before and not asks_out else "Changed at ChatGPT's release" if asks_out else "No change at ChatGPT's release"
+    # job ads: all occupations, and only those whose monthly task list never reaches the cap of fifty
+    gq = pd.read_csv(tables / "postings_gradient_quarterly.csv").set_index("quarter")
+
+    def ads_variant(key, label_, col):
+        g_ = gq[f"{col}_coef"]
+        pre_, post_ = g_[g_.index < "2022Q4"], g_[g_.index >= "2022Q4"]
+        lq = pre_.idxmin()
+        low_ = f"the {ordinal[lq[-1]]} quarter of {lq[:4]}"
+        low_after_ = float(post_.min())
+        made_ = (float(g_.iloc[-1]) - low_after_) / -low_after_ if low_after_ < 0 else 0.0
+        before_ = float(pre_.min()) <= float(post_.mean())
+        note_ = ((f"From 2020 to {low_}, job ads in the same occupation asked less and less often for tasks AI can do. "
+                  f"ChatGPT's release in November 2022 brought no further drop" if before_ and not asks_out else
+                  f"Job ads changed at ChatGPT's release in November 2022 more than at almost any earlier month" if asks_out else
+                  "Job ads show no change at ChatGPT's release in November 2022")
+                 + (f", and by {last_when} ads had recovered {made_ * 100:.0f}% of the decline." if made_ >= 0.25 else ".")
+                 + (" This version keeps only occupations whose task lists are always complete, and in them the fall is deeper."
+                    if key == "complete" else ""))
+        se_ = gq[f"{col}_se"]
+        return {"key": key, "label": label_, "big": ("Fell before ChatGPT" if before_ and not asks_out else ads_big), "note": note_,
+                "series": series(list(g_.index), g_.to_numpy() * 100, "pp2", unit="share of ads, change since 2019 (points)",
+                                 band=((g_ - 1.96 * se_) * 100, (g_ + 1.96 * se_) * 100))}
+
+    # degrees and enrollment under each exposure measure
+    def degree_share(table):
+        b_ = pd.read_csv(tables / table)
+        b_ = b_[b_["award_level"] == 5].groupby("year")[["awards_exposed", "awards_unexposed"]].sum()
+        return b_["awards_exposed"] / b_.sum(axis=1)
+
+    def degree_variant(key, label_, table):
+        sh = degree_share(table)
+        y_, now_, prev_ = int(sh.index.max()), float(sh.iloc[-1]) * 100, float(sh.iloc[-2]) * 100
+        return {"key": key, "label": label_, "big": f"{now_:.1f}%",
+                "note": (f"{now_:.1f}% of {y_} bachelor's degrees went to the third of fields most exposed to AI on the {label_} measure, "
+                         f"{'up' if now_ >= prev_ else 'down'} from {prev_:.1f}% in {y_ - 1}."),
+                "series": series(list(sh.index), sh.to_numpy() * 100, "pct1", unit="% of bachelor's degrees")}
+
+    def enrol_variant(key, label_, table):
+        e_ = pd.read_csv(tables / table)
+        first_, last_ = e_.iloc[0], e_.iloc[-1]
+        return {"key": key, "label": label_, "big": f"{float(last_['share_exposed']) * 100:.1f}%",
+                "note": (f"{float(last_['share_exposed']) * 100:.1f}% of four-year undergraduates in {str(last_['term']).lower()} were "
+                         f"in the field families most exposed on the {label_} measure, "
+                         f"{'up' if last_['share_exposed'] >= first_['share_exposed'] else 'down'} from "
+                         f"{float(first_['share_exposed']) * 100:.1f}% in {str(first_['term']).lower()}."),
+                "series": series(e_["term"].str.replace("Fall ", ""), e_["share_exposed"] * 100, "pct1", unit="% of four-year undergraduates")}
+
+    ads_variants = [ads_variant("all", "All occupations", "all"), ads_variant("complete", "Complete task lists", "complete_lists")]
+    degree_variants = [degree_variant("eloundou", "Eloundou", "pipeline_completions_by_state.csv"),
+                       degree_variant("felten", "Felten", "pipeline_completions_by_state_felten.csv")]
+    enrol_variants = [enrol_variant("eloundou", "Eloundou", "pipeline_enrolment_by_exposure.csv"),
+                      enrol_variant("felten", "Felten", "pipeline_enrolment_by_exposure_felten.csv")]
+    felten_degrees = degree_share("pipeline_completions_by_state_felten.csv")
+    felten_enrol = pd.read_csv(tables / "pipeline_enrolment_by_exposure_felten.csv")
+
     def platform_variant(label_, frame):
         hi, lo = frame.iloc[-1], frame.iloc[0]
         ranked = frame.sort_values("concentration", ascending=False)
@@ -673,7 +734,6 @@ def export_site(release: str) -> Path:
     as_large = round(float(gtest["p_two_sided"]) * draws) if gtest is not None else 0
     pay_big = "Unusual change" if pay_out else "No unusual change"
     mix_big = (f"Largest shift since {since}" if qty_record else "Unusual shift" if qty_out else "No unusual shift")
-    ads_big = "Fell before ChatGPT" if fell_before and not asks_out else "Changed at ChatGPT's release" if asks_out else "No change at ChatGPT's release"
 
     views = {
         "bridge": {
@@ -797,22 +857,21 @@ def export_site(release: str) -> Path:
                                   "biggest shift in employment, as a multiple of the unusual level"),
                  "tables": ["outcomes_quantity_series_balanced.csv"]},
                 {"title": "Job ads for tasks AI can do", "big": ads_big,
-                 "note": ((f"From 2020 to {low_when}, job ads in the same occupation asked less and less often for tasks AI can do. "
-                           f"ChatGPT's release in November 2022 brought no further drop" if fell_before and not asks_out else
-                           f"Job ads changed at ChatGPT's release in November 2022 more than at almost any earlier month" if asks_out else
-                           "Job ads show no change at ChatGPT's release in November 2022")
-                          + (f", and by {last_when} ads had recovered {made_up * 100:.0f}% of the decline." if made_up >= 0.25 else ".")),
+                 "note": ads_variants[0]["note"],
                  "more": (f"The National Labor Exchange (NLx) data count how often ads in each occupation name each O*NET task. We check "
                           f"whether tasks AI can do lost ground to other tasks in the same occupation, and whether anything changed at "
                           f"ChatGPT's release. In {_words(int(asks['earlier_at_least']))} of the {_words(int(asks['earlier_windows']))} "
-                          f"earlier months, the same comparison showed a change at least as large as the one at the release."),
+                          f"earlier months, the same comparison showed a change at least as large as the one at the release. Each "
+                          f"occupation's ads list at most fifty tasks a month, so switch to complete task lists to see only the "
+                          f"occupations where that limit never binds."),
                  "tech": (f"From a working paper in progress by the author: the gradient of a task's share of its occupation's ads on the task's Eloundou "
-                          f"exposure, by quarter against 2019, so the comparison is within occupation by construction. The step at "
-                          f"the release is measured against the sixteen months before it and set against the same step placed at "
-                          f"each of {int(asks['earlier_windows'])} earlier months (p = {int(asks['earlier_at_least']) / int(asks['earlier_windows']):.2f}). "
-                          f"Occupation-months list at most fifty tasks, and the result holds on occupations whose lists are always complete."),
+                          f"exposure, by quarter against 2019, so the comparison is within occupation by construction, with 95% bands from "
+                          f"standard errors clustered by occupation. The step at the release is measured against the sixteen months before it "
+                          f"and set against the same step placed at each of {int(asks['earlier_windows'])} earlier months "
+                          f"(p = {int(asks['earlier_at_least']) / int(asks['earlier_windows']):.2f}, all occupations)."),
                  "src": "NLx job ads, September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander; Eloundou task measure",
-                 "series": series(list(grad.index), grad.to_numpy() * 100, "pp2", unit="share of ads, change since 2019 (points)"),
+                 "series": ads_variants[0]["series"],
+                 "variants": ads_variants,
                  "tables": ["postings_step_at_release.csv", "postings_gradient_quarterly.csv", "postings_release_bound.csv"]},
             ],
         },
@@ -827,25 +886,29 @@ def export_site(release: str) -> Path:
                          f"to AI, and young workers have lost ground in exposed jobs since 2022."),
             "items": [
                 {"title": "New degrees in exposed fields", "big": f"{degrees:.1f}%",
-                 "note": (f"{degrees:.1f}% of {year} bachelor's degrees went to the third of fields whose graduates hold the most "
-                          f"AI-exposed jobs" + (f", up from {before:.1f}% in {year - 1}." if before is not None else ".")),
-                 "more": ("Degrees by field come from the Education Department's IPEDS completions files. We score each field by the AI "
-                          "exposure of the jobs its graduates actually hold, using the Census Bureau's American Community Survey and the "
-                          "exposure measure of Eloundou, Manning, Mishkin and Rock (2024)."),
-                 "tech": ("Fields are six-digit CIP codes scored by the employment-weighted Eloundou exposure of the occupations "
-                          "ACS 2024 degree holders in each field actually work in, which measures where graduates go instead of where "
-                          "programs say they lead. Exposed fields are the top third of fields by that score."),
-                 "src": f"IPEDS completions, {year}; field exposure from ACS and the Eloundou task measure",
-                 "series": series(list(share.index), share.to_numpy() * 100, "pct1", unit="% of bachelor's degrees"),
-                 "tables": ["pipeline_completions_by_state.csv", "pipeline_field_exposure_crosswalk.csv"]},
+                 "note": degree_variants[0]["note"],
+                 "more": ("Degrees by field come from the Education Department's IPEDS completions files. Each field of study is scored "
+                          "by the AI exposure of the occupations it leads to, and the top third of fields count as exposed. The two "
+                          "measures disagree on direction: on Eloundou's, built for language models, the share has risen; on Felten's, "
+                          "built from earlier AI applications, it has fallen. Which fields count as exposed depends on the measure."),
+                 "tech": ("Fields are six-digit CIP codes scored by the employment-weighted exposure of the occupations the NCES "
+                          "CIP-to-SOC crosswalk links them to, which records where programs are meant to lead. An ACS field-of-degree "
+                          "version, from where graduates actually work, is computed in the build but not yet used here. Exposed fields "
+                          "are the top third of fields by score, recut for each measure."),
+                 "src": f"IPEDS completions, {year}; field exposure from the NCES crosswalk and the Eloundou or Felten measure",
+                 "series": degree_variants[0]["series"],
+                 "variants": degree_variants,
+                 "tables": ["pipeline_completions_by_state.csv", "pipeline_completions_by_state_felten.csv", "pipeline_field_exposure_crosswalk.csv"]},
                 {"title": "Enrollment in exposed fields", "big": f"{enrolled:.1f}%",
-                 "note": (f"{enrolled:.1f}% of four-year undergraduates in {str(e_last['term']).lower()} were in those fields, "
-                          f"{'up' if enrolled >= enrolled_first else 'down'} from {enrolled_first:.1f}% in {str(e_first['term']).lower()}. "
-                          f"Students choose fields years before they graduate, so a turn away from exposed fields would show up here first."),
-                 "more": "Enrollment by field comes from the National Student Clearinghouse and is scored the same way as degrees.",
-                 "src": f"National Student Clearinghouse, {e_first['term']} to {e_last['term']}; field exposure from ACS and the Eloundou task measure",
-                 "series": series(enrol["term"].str.replace("Fall ", ""), enrol["share_exposed"] * 100, "pct1", unit="% of four-year undergraduates"),
-                 "tables": ["pipeline_enrolment_by_exposure.csv", "nsc_cip_family_enrolment.csv"]},
+                 "note": enrol_variants[0]["note"],
+                 "more": ("Enrollment by field comes from the National Student Clearinghouse and is scored the same way as degrees. "
+                          "Students choose fields years before they graduate, so a turn away from exposed fields would show up here first."),
+                 "tech": ("Clearinghouse field families are two-digit CIP groups, each scored by the mean exposure of its six-digit "
+                          "fields; the exposed families are the top third, recut for each measure."),
+                 "src": f"National Student Clearinghouse, {e_first['term']} to {e_last['term']}; field exposure from the NCES crosswalk and the Eloundou or Felten measure",
+                 "series": enrol_variants[0]["series"],
+                 "variants": enrol_variants,
+                 "tables": ["pipeline_enrolment_by_exposure.csv", "pipeline_enrolment_by_exposure_felten.csv", "nsc_cip_family_enrolment.csv"]},
                 {"title": "Young workers in exposed jobs", "big": f"−{young:.0f}%",
                  "note": (f"Since 2022, workers aged 22 to 27 have lost ground in the jobs most exposed to AI, by {young:.0f}% compared "
                           f"with workers aged 35 to 54."
@@ -888,7 +951,7 @@ def export_site(release: str) -> Path:
                if fell_before and not asks_out else
                ", and job ads changed at ChatGPT's release more than at almost any earlier month. " if asks_out else
                ", and job ads show no change at ChatGPT's release. ")
-            + f'And <a href="#binoculars" data-view="valley">{degrees:.0f}% of new degrees</a> are in fields that lead to the jobs most exposed to AI.')
+            + f'And <a href="#binoculars" data-view="valley">{degrees:.0f}% of new degrees</a> are in fields that lead to the jobs most exposed to language models.')
 
     meaning = [
         (f"Use: Tasks people use Claude for are worth {wages}% of US pay, but the most-used few hundred are worth {core:.1f}%, "
@@ -898,8 +961,12 @@ def export_site(release: str) -> Path:
             "The mix of jobs has shifted, " if qty_out else "The mix of jobs is within its usual range, ")
          + ("and job ads moved away from tasks AI can do before ChatGPT came out." if fell_before else
             "and job ads show no change at ChatGPT's release.")),
-        (("Training: The share of degrees and enrollment in exposed fields has risen slightly, so students have not moved "
-          "away from them. " if (before is None or degrees >= before) and enrolled >= enrolled_first else
+        (("Training: On the measure built for language models, the share of degrees and enrollment in exposed fields has "
+          "risen slightly; on an earlier measure of AI exposure it has fallen, so whether students are moving away depends on how "
+          "exposure is measured. " if (before is None or degrees >= before) and enrolled >= enrolled_first
+          and float(felten_degrees.iloc[-1]) < float(felten_degrees.iloc[-2]) else
+          "Training: The share of degrees and enrollment in exposed fields has risen slightly on both exposure measures. "
+          if (before is None or degrees >= before) and enrolled >= enrolled_first else
           "Training: The share of degrees or enrollment in exposed fields has fallen. ")
          + f"Young workers' place in exposed jobs, against older workers', is {young:.0f}% lower than in 2022."),
     ]

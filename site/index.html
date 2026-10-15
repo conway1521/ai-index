@@ -319,7 +319,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 .chart .band{fill:var(--ink);opacity:.09;stroke:none}
 .chart .bar{fill:var(--ink)}
 .chart .lbl{fill:var(--ink-2)}
-.seg{display:inline-flex;margin-left:10px;border:1px solid var(--ink);vertical-align:middle}
+.seg{display:flex;width:max-content;margin:6px 0 0;border:1px solid var(--ink)}
 .seg button{font:inherit;font-size:13px;font-weight:400;background:transparent;color:var(--ink);border:0;padding:3px 10px;cursor:pointer;min-height:28px}
 .seg button+button{border-left:1px solid var(--ink)}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
@@ -387,7 +387,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     <li><a href="#city" data-view="city"><b>Jobs</b> (the city)</a><span class="why">whether it has arrived</span><span class="what">Whether pay, the mix of jobs and what job ads ask for have changed more than usual.</span></li>
     <li><a href="#binoculars" data-view="valley"><b>Training</b> (the binoculars)</a><span class="why">how the next workforce adapts</span><span class="what">What students choose to study, and whether young workers still get the jobs most exposed to AI.</span></li>
   </ul>
-  <p class="lede" id="lede">Tasks people use Claude for make up <a href="#bridge" data-view="bridge">23% of US wages</a>. <a href="#city" data-view="city">Pay hasn't changed more than usual</a>, and job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. And <a href="#binoculars" data-view="valley">42% of new degrees</a> are in fields that lead to the jobs most exposed to AI.</p>
+  <p class="lede" id="lede">Tasks people use Claude for make up <a href="#bridge" data-view="bridge">23% of US wages</a>. <a href="#city" data-view="city">Pay hasn't changed more than usual</a>, and job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. And <a href="#binoculars" data-view="valley">42% of new degrees</a> are in fields that lead to the jobs most exposed to language models.</p>
   <noscript><p class="sub">The drawing and the charts need JavaScript. The three headline findings are in the sentence above, the sources are listed at the foot of the page, and every table behind them is in the <a href="https://github.com/conway1521/ai-index">repository</a>.</p></noscript>
   <details class="meaning" id="meaning"><summary>What does this mean</summary><div id="meaning-body"></div></details>
   <nav class="indices" id="indices" aria-label="The three indices"></nav>
@@ -517,7 +517,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     <h4>Jobs (the city)</h4>
     <p><a href="https://www.bls.gov/oes/"><b>OEWS</b></a>, wages and employment by occupation, BLS, May 2012 to May 2025. <a href="https://www.onetcenter.org/database.html"><b>O*NET 30.3</b></a>, tasks, ratings and skills, Department of Labor. <a href="https://doi.org/10.5281/zenodo.22219027"><b>NLx job ads</b></a>, the tasks named in the ads of the National Labor Exchange, monthly from September 2015 to September 2025, in the aggregates of <a href="https://arxiv.org/abs/2510.01470">Meisenbacher, Nestorov and Norlander</a>. Occupation crosswalks from the Census Bureau, NCES and BLS.</p>
     <h4>Training (the binoculars)</h4>
-    <p><a href="https://nces.ed.gov/ipeds/"><b>IPEDS</b></a> completions by field and institution, NCES, 2023 to 2025. <a href="https://nscresearchcenter.org/current-term-enrollment-estimates/"><b>National Student Clearinghouse</b></a>, undergraduate enrollment at four-year institutions by field family, fall 2019 to fall 2024. <a href="https://www.census.gov/programs-surveys/acs"><b>ACS</b></a> 2024, field of degree against occupation, which shows where graduates of each field work. <a href="https://www.census.gov/programs-surveys/cps.html"><b>CPS</b></a> basic monthly, Census Bureau, January 2022 to August 2026. Exposure throughout is the task measure of <a href="https://doi.org/10.1126/science.adj0998">Eloundou, Manning, Mishkin and Rock (2024)</a>.</p>
+    <p><a href="https://nces.ed.gov/ipeds/"><b>IPEDS</b></a> completions by field and institution, NCES, 2023 to 2025. <a href="https://nscresearchcenter.org/current-term-enrollment-estimates/"><b>National Student Clearinghouse</b></a>, undergraduate enrollment at four-year institutions by field family, fall 2019 to fall 2024. The <a href="https://nces.ed.gov/ipeds/cipcode/Files/CIP2020_SOC2018_Crosswalk.xlsx"><b>NCES CIP-to-SOC crosswalk</b></a>, which links each field of study to the occupations it is meant to lead to. <a href="https://www.census.gov/programs-surveys/acs"><b>ACS</b></a> 2024, field of degree against occupation, computed as a check on the crosswalk. <a href="https://www.census.gov/programs-surveys/cps.html"><b>CPS</b></a> basic monthly, Census Bureau, January 2022 to August 2026. Exposure is the task measure of <a href="https://doi.org/10.1126/science.adj0998">Eloundou, Manning, Mishkin and Rock (2024)</a>, with the ability-based measure of <a href="https://doi.org/10.1002/smj.3286">Felten, Raj and Seamans (2021)</a> as the alternative on the degree and enrollment cards.</p>
   </section>
 
   <section class="about">
@@ -531,11 +531,11 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 
 <script type="application/json" id="readings">{
   "built": "15 October 2026",
-  "lede": "Tasks people use Claude for make up <a href=\"#bridge\" data-view=\"bridge\">23% of US wages<\/a>. <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual<\/a>, and job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees<\/a> are in fields that lead to the jobs most exposed to AI.",
+  "lede": "Tasks people use Claude for make up <a href=\"#bridge\" data-view=\"bridge\">23% of US wages<\/a>. <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual<\/a>, and job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees<\/a> are in fields that lead to the jobs most exposed to language models.",
   "meaning": [
     "Use: Tasks people use Claude for are worth 23% of US pay, but the most-used few hundred are worth 3.1%, and 24% of US firms now use AI.",
     "Jobs: AI hasn't shown up in pay. The mix of jobs has shifted more than usual, though chance can't yet be ruled out, and job ads moved away from tasks AI can do before ChatGPT came out.",
-    "Training: The share of degrees and enrollment in exposed fields has risen slightly, so students have not moved away from them. Young workers' place in exposed jobs, against older workers', is 16% lower than in 2022."
+    "Training: On the measure built for language models, the share of degrees and enrollment in exposed fields has risen slightly; on an earlier measure of AI exposure it has fallen, so whether students are moving away depends on how exposure is measured. Young workers' place in exposed jobs, against older workers', is 16% lower than in 2022."
   ],
   "notes": [
     "new data coming soon"
@@ -880,8 +880,8 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "title": "Job ads for tasks AI can do",
           "big": "Fell before ChatGPT",
           "note": "From 2020 to the third quarter of 2022, job ads in the same occupation asked less and less often for tasks AI can do. ChatGPT's release in November 2022 brought no further drop, and by the third quarter of 2025 ads had recovered 68% of the decline.",
-          "more": "The National Labor Exchange (NLx) data count how often ads in each occupation name each O*NET task. We check whether tasks AI can do lost ground to other tasks in the same occupation, and whether anything changed at ChatGPT's release. In 25 of the 55 earlier months, the same comparison showed a change at least as large as the one at the release.",
-          "tech": "From a working paper in progress by the author: the gradient of a task's share of its occupation's ads on the task's Eloundou exposure, by quarter against 2019, so the comparison is within occupation by construction. The step at the release is measured against the sixteen months before it and set against the same step placed at each of 55 earlier months (p = 0.45). Occupation-months list at most fifty tasks, and the result holds on occupations whose lists are always complete.",
+          "more": "The National Labor Exchange (NLx) data count how often ads in each occupation name each O*NET task. We check whether tasks AI can do lost ground to other tasks in the same occupation, and whether anything changed at ChatGPT's release. In 25 of the 55 earlier months, the same comparison showed a change at least as large as the one at the release. Each occupation's ads list at most fifty tasks a month, so switch to complete task lists to see only the occupations where that limit never binds.",
+          "tech": "From a working paper in progress by the author: the gradient of a task's share of its occupation's ads on the task's Eloundou exposure, by quarter against 2019, so the comparison is within occupation by construction, with 95% bands from standard errors clustered by occupation. The step at the release is measured against the sixteen months before it and set against the same step placed at each of 55 earlier months (p = 0.45, all occupations).",
           "src": "NLx job ads, September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander; Eloundou task measure",
           "series": {
             "x": [
@@ -937,8 +937,287 @@ body *{letter-spacing:0 !important;text-transform:none !important}
             "fmt": "pp2",
             "unit": "share of ads, change since 2019 (points)",
             "threshold": null,
-            "band": null
+            "band": [
+              [
+                -0.0682,
+                -0.1728,
+                -0.1853,
+                -0.2602,
+                -0.2024,
+                -0.2985,
+                -0.5671,
+                -0.6066,
+                -0.5242,
+                -0.6648,
+                -0.7387,
+                -0.5984,
+                -0.7216,
+                -0.6993,
+                -0.7767,
+                -0.8183,
+                -0.7143,
+                -0.7147,
+                -0.7069,
+                -0.6983,
+                -0.5517,
+                -0.4054,
+                -0.295
+              ],
+              [
+                0.0447,
+                -0.0306,
+                -0.0268,
+                -0.0735,
+                -0.0166,
+                -0.0739,
+                -0.2958,
+                -0.3228,
+                -0.2181,
+                -0.3907,
+                -0.4264,
+                -0.3122,
+                -0.4241,
+                -0.3902,
+                -0.4638,
+                -0.4758,
+                -0.3719,
+                -0.3698,
+                -0.3716,
+                -0.4116,
+                -0.245,
+                -0.1864,
+                -0.115
+              ]
+            ]
           },
+          "variants": [
+            {
+              "key": "all",
+              "label": "All occupations",
+              "big": "Fell before ChatGPT",
+              "note": "From 2020 to the third quarter of 2022, job ads in the same occupation asked less and less often for tasks AI can do. ChatGPT's release in November 2022 brought no further drop, and by the third quarter of 2025 ads had recovered 68% of the decline.",
+              "series": {
+                "x": [
+                  "2020Q1",
+                  "2020Q2",
+                  "2020Q3",
+                  "2020Q4",
+                  "2021Q1",
+                  "2021Q2",
+                  "2021Q3",
+                  "2021Q4",
+                  "2022Q1",
+                  "2022Q2",
+                  "2022Q3",
+                  "2022Q4",
+                  "2023Q1",
+                  "2023Q2",
+                  "2023Q3",
+                  "2023Q4",
+                  "2024Q1",
+                  "2024Q2",
+                  "2024Q3",
+                  "2024Q4",
+                  "2025Q1",
+                  "2025Q2",
+                  "2025Q3"
+                ],
+                "y": [
+                  -0.0118,
+                  -0.1017,
+                  -0.106,
+                  -0.1668,
+                  -0.1095,
+                  -0.1862,
+                  -0.4314,
+                  -0.4647,
+                  -0.3711,
+                  -0.5277,
+                  -0.5826,
+                  -0.4553,
+                  -0.5729,
+                  -0.5448,
+                  -0.6202,
+                  -0.6471,
+                  -0.5431,
+                  -0.5423,
+                  -0.5392,
+                  -0.5549,
+                  -0.3984,
+                  -0.2959,
+                  -0.205
+                ],
+                "fmt": "pp2",
+                "unit": "share of ads, change since 2019 (points)",
+                "threshold": null,
+                "band": [
+                  [
+                    -0.0682,
+                    -0.1728,
+                    -0.1853,
+                    -0.2602,
+                    -0.2024,
+                    -0.2985,
+                    -0.5671,
+                    -0.6066,
+                    -0.5242,
+                    -0.6648,
+                    -0.7387,
+                    -0.5984,
+                    -0.7216,
+                    -0.6993,
+                    -0.7767,
+                    -0.8183,
+                    -0.7143,
+                    -0.7147,
+                    -0.7069,
+                    -0.6983,
+                    -0.5517,
+                    -0.4054,
+                    -0.295
+                  ],
+                  [
+                    0.0447,
+                    -0.0306,
+                    -0.0268,
+                    -0.0735,
+                    -0.0166,
+                    -0.0739,
+                    -0.2958,
+                    -0.3228,
+                    -0.2181,
+                    -0.3907,
+                    -0.4264,
+                    -0.3122,
+                    -0.4241,
+                    -0.3902,
+                    -0.4638,
+                    -0.4758,
+                    -0.3719,
+                    -0.3698,
+                    -0.3716,
+                    -0.4116,
+                    -0.245,
+                    -0.1864,
+                    -0.115
+                  ]
+                ]
+              }
+            },
+            {
+              "key": "complete",
+              "label": "Complete task lists",
+              "big": "Fell before ChatGPT",
+              "note": "From 2020 to the third quarter of 2022, job ads in the same occupation asked less and less often for tasks AI can do. ChatGPT's release in November 2022 brought no further drop, and by the third quarter of 2025 ads had recovered 81% of the decline. This version keeps only occupations whose task lists are always complete, and in them the fall is deeper.",
+              "series": {
+                "x": [
+                  "2020Q1",
+                  "2020Q2",
+                  "2020Q3",
+                  "2020Q4",
+                  "2021Q1",
+                  "2021Q2",
+                  "2021Q3",
+                  "2021Q4",
+                  "2022Q1",
+                  "2022Q2",
+                  "2022Q3",
+                  "2022Q4",
+                  "2023Q1",
+                  "2023Q2",
+                  "2023Q3",
+                  "2023Q4",
+                  "2024Q1",
+                  "2024Q2",
+                  "2024Q3",
+                  "2024Q4",
+                  "2025Q1",
+                  "2025Q2",
+                  "2025Q3"
+                ],
+                "y": [
+                  -0.0682,
+                  -0.1943,
+                  -0.1829,
+                  -0.3775,
+                  -0.3016,
+                  -0.4272,
+                  -0.9252,
+                  -0.9725,
+                  -0.7773,
+                  -1.0881,
+                  -1.2237,
+                  -0.9225,
+                  -1.0526,
+                  -1.0705,
+                  -1.2541,
+                  -1.2717,
+                  -1.0903,
+                  -1.1724,
+                  -1.0865,
+                  -0.9899,
+                  -0.6122,
+                  -0.4634,
+                  -0.2457
+                ],
+                "fmt": "pp2",
+                "unit": "share of ads, change since 2019 (points)",
+                "threshold": null,
+                "band": [
+                  [
+                    -0.2039,
+                    -0.366,
+                    -0.3723,
+                    -0.6013,
+                    -0.5368,
+                    -0.7198,
+                    -1.2758,
+                    -1.3217,
+                    -1.1615,
+                    -1.44,
+                    -1.6351,
+                    -1.2972,
+                    -1.4515,
+                    -1.4773,
+                    -1.6523,
+                    -1.7088,
+                    -1.544,
+                    -1.6226,
+                    -1.5254,
+                    -1.3531,
+                    -1.0228,
+                    -0.7455,
+                    -0.4456
+                  ],
+                  [
+                    0.0676,
+                    -0.0226,
+                    0.0064,
+                    -0.1536,
+                    -0.0665,
+                    -0.1345,
+                    -0.5746,
+                    -0.6234,
+                    -0.3931,
+                    -0.7363,
+                    -0.8122,
+                    -0.5477,
+                    -0.6536,
+                    -0.6637,
+                    -0.8559,
+                    -0.8345,
+                    -0.6367,
+                    -0.7222,
+                    -0.6477,
+                    -0.6268,
+                    -0.2016,
+                    -0.1813,
+                    -0.0458
+                  ]
+                ]
+              }
+            }
+          ],
           "tables": [
             "postings_step_at_release.csv",
             "postings_gradient_quarterly.csv",
@@ -1198,10 +1477,10 @@ body *{letter-spacing:0 !important;text-transform:none !important}
         {
           "title": "New degrees in exposed fields",
           "big": "41.8%",
-          "note": "41.8% of 2025 bachelor's degrees went to the third of fields whose graduates hold the most AI-exposed jobs, up from 40.7% in 2024.",
-          "more": "Degrees by field come from the Education Department's IPEDS completions files. We score each field by the AI exposure of the jobs its graduates actually hold, using the Census Bureau's American Community Survey and the exposure measure of Eloundou, Manning, Mishkin and Rock (2024).",
-          "tech": "Fields are six-digit CIP codes scored by the employment-weighted Eloundou exposure of the occupations ACS 2024 degree holders in each field actually work in, which measures where graduates go instead of where programs say they lead. Exposed fields are the top third of fields by that score.",
-          "src": "IPEDS completions, 2025; field exposure from ACS and the Eloundou task measure",
+          "note": "41.8% of 2025 bachelor's degrees went to the third of fields most exposed to AI on the Eloundou measure, up from 40.7% in 2024.",
+          "more": "Degrees by field come from the Education Department's IPEDS completions files. Each field of study is scored by the AI exposure of the occupations it leads to, and the top third of fields count as exposed. The two measures disagree on direction: on Eloundou's, built for language models, the share has risen; on Felten's, built from earlier AI applications, it has fallen. Which fields count as exposed depends on the measure.",
+          "tech": "Fields are six-digit CIP codes scored by the employment-weighted exposure of the occupations the NCES CIP-to-SOC crosswalk links them to, which records where programs are meant to lead. An ACS field-of-degree version, from where graduates actually work, is computed in the build but not yet used here. Exposed fields are the top third of fields by score, recut for each measure.",
+          "src": "IPEDS completions, 2025; field exposure from the NCES crosswalk and the Eloundou or Felten measure",
           "series": {
             "x": [
               "2023",
@@ -1218,8 +1497,55 @@ body *{letter-spacing:0 !important;text-transform:none !important}
             "threshold": null,
             "band": null
           },
+          "variants": [
+            {
+              "key": "eloundou",
+              "label": "Eloundou",
+              "big": "41.8%",
+              "note": "41.8% of 2025 bachelor's degrees went to the third of fields most exposed to AI on the Eloundou measure, up from 40.7% in 2024.",
+              "series": {
+                "x": [
+                  "2023",
+                  "2024",
+                  "2025"
+                ],
+                "y": [
+                  40.3258,
+                  40.6788,
+                  41.7519
+                ],
+                "fmt": "pct1",
+                "unit": "% of bachelor's degrees",
+                "threshold": null,
+                "band": null
+              }
+            },
+            {
+              "key": "felten",
+              "label": "Felten",
+              "big": "31.8%",
+              "note": "31.8% of 2025 bachelor's degrees went to the third of fields most exposed to AI on the Felten measure, down from 32.1% in 2024.",
+              "series": {
+                "x": [
+                  "2023",
+                  "2024",
+                  "2025"
+                ],
+                "y": [
+                  32.5818,
+                  32.0953,
+                  31.8124
+                ],
+                "fmt": "pct1",
+                "unit": "% of bachelor's degrees",
+                "threshold": null,
+                "band": null
+              }
+            }
+          ],
           "tables": [
             "pipeline_completions_by_state.csv",
+            "pipeline_completions_by_state_felten.csv",
             "pipeline_field_exposure_crosswalk.csv"
           ],
           "view": "valley",
@@ -1232,6 +1558,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
             },
             {
               "stance": "method",
+              "cite": "Felten, Raj and Seamans (2021), Strategic Management Journal",
+              "url": "https://doi.org/10.1002/smj.3286",
+              "text": "The second exposure measure the card can switch to: scores from AI applications linked to abilities."
+            },
+            {
+              "stance": "method",
               "cite": "Eloundou, Manning, Mishkin and Rock (2024), Science",
               "url": "https://doi.org/10.1126/science.adj0998",
               "text": "The exposure measure used to score fields of study, jobs and tasks across this page."
@@ -1241,9 +1573,10 @@ body *{letter-spacing:0 !important;text-transform:none !important}
         {
           "title": "Enrollment in exposed fields",
           "big": "53.1%",
-          "note": "53.1% of four-year undergraduates in fall 2024 were in those fields, up from 52.4% in fall 2019. Students choose fields years before they graduate, so a turn away from exposed fields would show up here first.",
-          "more": "Enrollment by field comes from the National Student Clearinghouse and is scored the same way as degrees.",
-          "src": "National Student Clearinghouse, Fall 2019 to Fall 2024; field exposure from ACS and the Eloundou task measure",
+          "note": "53.1% of four-year undergraduates in fall 2024 were in the field families most exposed on the Eloundou measure, up from 52.4% in fall 2019.",
+          "more": "Enrollment by field comes from the National Student Clearinghouse and is scored the same way as degrees. Students choose fields years before they graduate, so a turn away from exposed fields would show up here first.",
+          "tech": "Clearinghouse field families are two-digit CIP groups, each scored by the mean exposure of its six-digit fields; the exposed families are the top third, recut for each measure.",
+          "src": "National Student Clearinghouse, Fall 2019 to Fall 2024; field exposure from the NCES crosswalk and the Eloundou or Felten measure",
           "series": {
             "x": [
               "2019",
@@ -1266,12 +1599,77 @@ body *{letter-spacing:0 !important;text-transform:none !important}
             "threshold": null,
             "band": null
           },
+          "variants": [
+            {
+              "key": "eloundou",
+              "label": "Eloundou",
+              "big": "53.1%",
+              "note": "53.1% of four-year undergraduates in fall 2024 were in the field families most exposed on the Eloundou measure, up from 52.4% in fall 2019.",
+              "series": {
+                "x": [
+                  "2019",
+                  "2020",
+                  "2021",
+                  "2022",
+                  "2023",
+                  "2024"
+                ],
+                "y": [
+                  52.3943,
+                  51.8346,
+                  51.6297,
+                  52.2467,
+                  52.971,
+                  53.1298
+                ],
+                "fmt": "pct1",
+                "unit": "% of four-year undergraduates",
+                "threshold": null,
+                "band": null
+              }
+            },
+            {
+              "key": "felten",
+              "label": "Felten",
+              "big": "21.0%",
+              "note": "21.0% of four-year undergraduates in fall 2024 were in the field families most exposed on the Felten measure, down from 22.8% in fall 2019.",
+              "series": {
+                "x": [
+                  "2019",
+                  "2020",
+                  "2021",
+                  "2022",
+                  "2023",
+                  "2024"
+                ],
+                "y": [
+                  22.7768,
+                  22.3315,
+                  21.9528,
+                  21.4637,
+                  21.3008,
+                  20.9891
+                ],
+                "fmt": "pct1",
+                "unit": "% of four-year undergraduates",
+                "threshold": null,
+                "band": null
+              }
+            }
+          ],
           "tables": [
             "pipeline_enrolment_by_exposure.csv",
+            "pipeline_enrolment_by_exposure_felten.csv",
             "nsc_cip_family_enrolment.csv"
           ],
           "view": "valley",
           "research": [
+            {
+              "stance": "method",
+              "cite": "Felten, Raj and Seamans (2021), Strategic Management Journal",
+              "url": "https://doi.org/10.1002/smj.3286",
+              "text": "The second exposure measure the card can switch to."
+            },
             {
               "stance": "different",
               "cite": "Dodini and Smith (2026), Federal Reserve Bank of Dallas",
@@ -2163,15 +2561,16 @@ body *{letter-spacing:0 !important;text-transform:none !important}
         + `<text x="${(X(b.value) + 5).toFixed(1)}" y="${y + 24}">${b.value.toFixed(1)}×</text>`; });
     return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(v.unit + ": " + v.bars.map(b => `${b.name} ${b.value.toFixed(1)}`).join(", "))}">${g}</svg>`;
   }
-  let PLATFORM = "claude";
+  const CHOICE = {};
+  const pick = it => it.variants ? (it.variants.find(x => x.key === CHOICE[it.title]) || it.variants[0]) : null;
   // a study named in a sentence links to it, from the build's list of names
   const linkify = t => (READ.links || []).reduce((s, l) => s.replace(new RegExp(l.pattern, "g"), m => `<a href="${esc(l.url)}">${m}</a>`), t);
   // a figure such as 23%, 2.5× or −16% is set large; a verdict in words is set at reading size
   const isFigure = t => /^[−+-]?[\d.,]+[%×]?$/.test(String(t).trim());
   function card(it){
-    const vr = it.variants ? (it.variants.find(x => x.key === PLATFORM) || it.variants[0]) : null;
-    const sr = it.series, p = sr ? plot(sr) : null, f = p && p.f, big = vr ? vr.big : it.big, note = vr ? vr.note : it.note;
-    const seg = vr ? `<span class="seg" role="group" aria-label="Platform">${it.variants.map(x => `<button type="button" data-platform="${x.key}" aria-pressed="${x.key === vr.key}">${esc(x.label)}</button>`).join("")}</span>` : "";
+    const vr = pick(it);
+    const sr = vr ? (vr.series || null) : it.series, p = sr ? plot(sr) : null, f = p && p.f, big = vr ? vr.big : it.big, note = vr ? vr.note : it.note;
+    const seg = vr ? `<span class="seg" role="group" aria-label="Show">${it.variants.map(x => `<button type="button" data-card="${esc(it.title)}" data-choice="${x.key}" aria-pressed="${x.key === vr.key}">${esc(x.label)}</button>`).join("")}</span>` : "";
     const cite = r => r.url ? `<a href="${esc(r.url)}">${esc(r.cite)}</a>` : `<span>${esc(r.cite)}</span>`;
     const key = sr && sr.threshold ? `<svg viewBox="0 0 24 8" width="24" height="8" aria-hidden="true"><line class="th" x1="0" x2="24" y1="4" y2="4"/></svg> unusual above the dashed line` : "";
     const R = it.research || [], of = k => R.filter(r => r.stance === k);
@@ -2189,7 +2588,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   function wire(host, list){
     host.querySelectorAll(".card").forEach((cardEl, k) => {
       const el = cardEl.querySelector(".chart:not(.bars)"); if (!el) return;
-      const it = list[k], sr = it.series, p = plot(sr), svg = el.querySelector("svg"), tip = el.querySelector(".tip");
+      const it = list[k], vr = pick(it), sr = vr && vr.series ? vr.series : it.series, p = plot(sr), svg = el.querySelector("svg"), tip = el.querySelector(".tip");
       const hx = svg.querySelector(".hx"), hd = svg.querySelector(".hd");
       let at = -1;
       const show = i => { at = Math.max(0, Math.min(p.n - 1, i)); const x = p.X(at), y = p.Y(sr.y[at]);
@@ -2213,9 +2612,10 @@ body *{letter-spacing:0 !important;text-transform:none !important}
       + `<div class="cards">${V[v].items.map(card).join("")}</div></div>`).join("");
     shown.forEach((v, k) => wire(host.children[k], V[v].items)); }
   // the platform switch: every card that compares platforms follows it, and the focus stays on the button pressed
-  $("#items").addEventListener("click", e => { const b = e.target.closest("[data-platform]"); if (!b) return;
-    PLATFORM = b.dataset.platform; renderItems(stage.dataset.view);
-    const again = $(`#items [data-platform="${PLATFORM}"]`); if (again) again.focus(); });
+  $("#items").addEventListener("click", e => { const b = e.target.closest("[data-choice]"); if (!b) return;
+    CHOICE[b.dataset.card] = b.dataset.choice; renderItems(stage.dataset.view);
+    const again = [...document.querySelectorAll("#items [data-choice]")].find(x => x.dataset.card === b.dataset.card && x.dataset.choice === b.dataset.choice);
+    if (again) again.focus(); });
   function tiles(){
     $("#indices").innerHTML = ORDER.map(v => { const V = READ.views[v], it = V.items[0];
       return `<button class="tile" type="button" data-view="${v}" aria-label="${esc(`${V.index}: ${it.title}, ${it.big}. Open ${VIEWNAME[v]}`)}"><div class="tx"><div class="ix">${esc(V.index)} <span>(${VIEWNAME[v]})</span></div>`

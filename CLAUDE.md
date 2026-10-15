@@ -50,7 +50,12 @@ The young-worker chart carries a band from the random-groups variance over the e
 groups (cps.rotation_se), and the Jobs index leads with job ads, its clearest result: the opening says pay has not moved
 and ads turned away from tasks AI can do before ChatGPT, the city's first card and tile are job
 ads, and the job-mix shift, which cannot yet be told from chance, stays on its own card. The page
-names no unpublished paper; the job-ad design is credited to a working paper in progress.
+names no unpublished paper; the job-ad design is credited to a working paper in progress. Three cards
+switch between sources: where use is heaviest (Claude, ChatGPT), job ads (all occupations,
+occupations whose task lists are always complete, both with 95% bands) and degrees and enrollment
+(Eloundou, Felten). Fields of study are scored through the NCES CIP to SOC crosswalk; the ACS
+field-of-degree link is computed but not yet used for the shares. On the Felten measure the share
+of degrees and enrollment in exposed fields falls where on Eloundou's it rises, and the page says so.
 
 ## Dependency
 
