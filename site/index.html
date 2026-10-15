@@ -512,6 +512,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
       <p>The page always shows the most recent data that exist, and every series grows longer with time. Each source gets updated when new releases appear, adding a new point to our series.</p>
       <p>A natural next layer would be data on what firms spend on AI, such as the Ramp AI Index, since it measures adoption where firms actually pay.</p>
       <p class="notes" id="notes"></p>
+      <svg class="strip" viewBox="0 0 900 96" role="img" aria-label="The latest data in each source"><line x1="20" y1="60" x2="880" y2="60" class="axis"/><g id="ticks"></g></svg>
     </div>
     <div class="cad">The Census Bureau publishes firm adoption every two weeks; OpenAI Signals and the Current Population Survey come out monthly; the Anthropic Economic Index updates with each release; and pay, jobs, degrees and enrollment update once a year.</div>
   </section>
@@ -540,6 +541,41 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   "lede": "<a href=\"#bridge\" data-view=\"bridge\">23% of US wages<\/a> are paid for tasks people also bring to AI models (Claude data). <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual<\/a>, and job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees<\/a> are in fields that lead to the jobs most exposed to language models.",
   "notes": [
     "new data coming soon"
+  ],
+  "latest": [
+    {
+      "label": "Enrollment",
+      "when": "Fall 2024"
+    },
+    {
+      "label": "Wages and jobs",
+      "when": "May 2025"
+    },
+    {
+      "label": "Degrees",
+      "when": "2025"
+    },
+    {
+      "label": "Job ads",
+      "when": "Sep 2025"
+    },
+    {
+      "label": "AI use",
+      "when": "May 2026"
+    },
+    {
+      "label": "Young workers",
+      "when": "Aug 2026"
+    },
+    {
+      "label": "Firms using AI",
+      "when": "Sep 2026"
+    },
+    {
+      "label": "Next wage tables",
+      "when": "Spring 2027",
+      "next": true
+    }
   ],
   "views": {
     "bridge": {
@@ -2637,7 +2673,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   const edgeL = $("#edge-left"), edgeR = $("#edge-right"), home = $("#btn-home");
   // The real page reads readings.json written by the build; the mockup carries the same numbers embedded.
   fetch("data/readings.json").then(r=>r.ok ? r.json() : null).then(j=>{ if (!j) return;
-    Object.assign(READ, j); top();
+    Object.assign(READ, j); top(); strip();
     $("#built").textContent = `Figures from the build of ${j.built}.`;
     go(stage.dataset.view, true); }).catch(()=>{});
   let timer = null;
@@ -3550,6 +3586,21 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   document.addEventListener("visibilitychange", ()=>{ if (document.hidden){ cues.forEach(clearTimeout); cues = []; } else if (!stage.classList.contains("asleep")) direct(stage.dataset.view, true); });
   if (params.get("event")){ setTimeout(()=>EVENTS[params.get("event")] && EVENTS[params.get("event")](), 2000); }
 
+  /* ---------- the strip: the latest data in each source, oldest first, and the next release ---------- */
+  function strip(){
+    const rel = READ.latest || [], ticks = $("#ticks"), svg = ticks.closest("svg"), narrow = innerWidth < 600;
+    ticks.replaceChildren(); svg.querySelector(".axis").style.display = narrow ? "none" : "";
+    // wide: one line of dots; narrow: rows of four, each with its own line, so the text stays readable
+    const per = narrow ? 4 : rel.length, W = narrow ? 400 : 900, rows = Math.ceil(rel.length / per), x0 = narrow ? 50 : 60, x1 = W - x0;
+    svg.setAttribute("viewBox", `0 0 ${W} ${narrow ? rows * 86 + 6 : 96}`);
+    rel.forEach((r, i) => { const row = Math.floor(i / per), k = i % per, cols = Math.min(per, rel.length - row * per);
+      const x = per > 1 ? x0 + (x1 - x0) * k / (per - 1) : W / 2, y = 60 + (narrow ? row * 86 - 8 : 0);
+      if (narrow && k === 0) el("line", {x1: x0 - 30, x2: x0 + (x1 - x0) * (cols - 1) / (per - 1) + 30, y1: y, y2: y, class: "axis"}, ticks);
+      el("circle", {cx:x, cy:y, r: r.next ? 5 : 4, class:"pt" + (r.next ? " next" : "")}, ticks);
+      const t = el("text", {x, y:y + 22, "text-anchor":"middle"}, ticks); t.textContent = r.when;
+      const u = el("text", {x, y:y - 16, "text-anchor":"middle", class:"lbl"}, ticks); u.textContent = r.label; }); }
+  addEventListener("resize", () => { clearTimeout(strip.t); strip.t = setTimeout(strip, 200); });
+  strip();
   top();
   go(fromHash(), true);
 })();

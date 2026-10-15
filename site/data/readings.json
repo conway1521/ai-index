@@ -4,6 +4,41 @@
   "notes": [
     "new data coming soon"
   ],
+  "latest": [
+    {
+      "label": "Enrollment",
+      "when": "Fall 2024"
+    },
+    {
+      "label": "Wages and jobs",
+      "when": "May 2025"
+    },
+    {
+      "label": "Degrees",
+      "when": "2025"
+    },
+    {
+      "label": "Job ads",
+      "when": "Sep 2025"
+    },
+    {
+      "label": "AI use",
+      "when": "May 2026"
+    },
+    {
+      "label": "Young workers",
+      "when": "Aug 2026"
+    },
+    {
+      "label": "Firms using AI",
+      "when": "Sep 2026"
+    },
+    {
+      "label": "Next wage tables",
+      "when": "Spring 2027",
+      "next": true
+    }
+  ],
   "views": {
     "bridge": {
       "index": "Use",

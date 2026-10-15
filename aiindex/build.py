@@ -979,6 +979,21 @@ def export_site(release: str) -> Path:
             + f'And <a href="#binoculars" data-view="valley">{degrees:.0f}% of new degrees</a> are in fields that lead to the jobs most exposed to language models.')
 
     notes = ["new data coming soon"]
+    # the latest data in each source, oldest first, for the strip of dots under the series text; the next wage tables close it
+    asked = pd.read_csv(tables / "postings_asked_exposure_monthly.csv")
+    ads_last = pd.Period(str(asked["period"].max()), "M")
+    newest_month = pd.Period(str(newest["release"]).split("(")[1].rstrip(")")[:7], "M")
+    latest_data = sorted([
+        ("Enrollment", str(e_last["term"]), pd.Period(f"{str(e_last['term'])[-4:]}-10", "M")),
+        ("Wages and jobs", f"May {int(pay['year'])}", pd.Period(f"{int(pay['year'])}-05", "M")),
+        ("Degrees", f"{year}", pd.Period(f"{year}-06", "M")),
+        ("Job ads", ads_last.strftime("%b %Y"), ads_last),
+        ("AI use", newest_month.strftime("%b %Y"), newest_month),
+        ("Young workers", pd.Period(str(g_last["period"]), "M").strftime("%b %Y"), pd.Period(str(g_last["period"]), "M")),
+        ("Firms using AI", firms_last["ref_end"].strftime("%b %Y"), pd.Period(firms_last["ref_end"], "M")),
+    ], key=lambda r: r[2])
+    latest_data = [{"label": l_, "when": w_} for l_, w_, _ in latest_data] + [
+        {"label": "Next wage tables", "when": f"Spring {int(pay['year']) + 2}", "next": True}]
 
     # the page reads as prose: lists inside a line are separated by semicolons, never by middle dots
     for view in views.values():
@@ -991,6 +1006,7 @@ def export_site(release: str) -> Path:
         "built": datetime.now(timezone.utc).strftime("%-d %B %Y"),
         "lede": lede,
         "notes": notes,
+        "latest": latest_data,
         "views": views,
         "links": _links(),
         "releases": [{"date": str(r), "reach": round(float(x), 3), "published_use": round(float(p), 3)}
