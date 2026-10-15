@@ -55,7 +55,11 @@ switch between sources: where use is heaviest (Claude, ChatGPT), job ads (all oc
 occupations whose task lists are always complete, both with 95% bands) and degrees and enrollment
 (Eloundou, Felten). Fields of study are scored through the NCES CIP to SOC crosswalk; the ACS
 field-of-degree link is computed but not yet used for the shares. On the Felten measure the share
-of degrees and enrollment in exposed fields falls where on Eloundou's it rises, and the page says so.
+of degrees and enrollment in exposed fields falls where on Eloundou's it rises, and the page says so. The Training
+view says what counts as exposed under each measure, computed by the build: the measures correlate
+at 0.7 across fields, computer science counts as exposed only on Eloundou's, and without it the
+Eloundou enrollment share falls too. The home view shows a short summary of each index with a link,
+and an index's three charts appear only when it is chosen.
 
 ## Dependency
 

@@ -938,10 +938,11 @@
     "valley": {
       "index": "Training",
       "index_line": "What students choose to study, and whether young workers still get the jobs most exposed to AI",
+      "exposed": "Eloundou and coauthors count a task as exposed if a language model could cut the time it takes by at least half; Felten and coauthors link earlier AI applications, such as image recognition, translation and speech recognition, to the abilities a job uses. The two broadly agree (their field scores correlate at 0.7), but computer science, engineering and the social sciences count as exposed only on Eloundou's measure, and education, health and law only on Felten's. Computer science enrollment grew 42% from fall 2019 to fall 2024; leave it out and the Eloundou share falls too, from 49.6% to 49.2%.",
       "why": "Students pick fields years before they work, and entry-level jobs hold many of the tasks AI can do, so the next generation of workers is where an early shift would appear.",
       "capline": "41.8% of new degrees and 53.1% of enrollment are in exposed fields; young workers down 16% in exposed jobs since 2022",
       "mark": "41.8% of new degrees are in exposed fields",
-      "headline": "42% of new degrees and 53% of four-year enrollment are in the fields most exposed to AI, and young workers have lost ground in exposed jobs since 2022.",
+      "headline": "42% of new degrees and 53% of four-year enrollment are in the fields most exposed to language models, though on an earlier measure of AI exposure those shares are lower and falling. Young workers have lost ground in exposed jobs since 2022.",
       "items": [
         {
           "title": "New degrees in exposed fields",
@@ -1430,6 +1431,10 @@
     {
       "pattern": "Meisenbacher, Nestorov and Norlander",
       "url": "https://arxiv.org/abs/2510.01470"
+    },
+    {
+      "pattern": "Felten(?:, Raj and Seamans| and coauthors)?",
+      "url": "https://doi.org/10.1002/smj.3286"
     }
   ],
   "releases": [

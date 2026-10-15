@@ -518,10 +518,11 @@ _RESEARCH = {
 }
 
 
-# Names in the page's sentences that are linked wherever they appear, as patterns and the study each points to.
+# Names in the page's sentences that link to their study, the first time each appears in a paragraph.
 _LINKS = [
     (r"Eloundou(?:, Manning, Mishkin and Rock \(2024\)| and coauthors)?", "eloundou"),
     (r"Meisenbacher, Nestorov and Norlander", "mnn"),
+    (r"Felten(?:, Raj and Seamans| and coauthors)?", "felten"),
 ]
 
 
@@ -709,6 +710,17 @@ def export_site(release: str) -> Path:
                       enrol_variant("felten", "Felten", "pipeline_enrolment_by_exposure_felten.csv")]
     felten_degrees = degree_share("pipeline_completions_by_state_felten.csv")
     felten_enrol = pd.read_csv(tables / "pipeline_enrolment_by_exposure_felten.csv")
+    # what counts as exposed: the fields the two measures disagree on, and the one family that drives the difference
+    fx_ = pd.read_csv(tables / "pipeline_field_exposure_crosswalk.csv", dtype={"cip_code": str})
+    nsc_ = pd.read_csv(tables / "nsc_cip_family_enrolment.csv", dtype={"cip2": str})
+    terms_ = sorted(nsc_["term"].unique(), key=lambda t: int(str(t)[-4:]))
+    cs_ = nsc_[nsc_["cip2"] == "11"].set_index("term")["enrolment"]
+    cs_growth = (float(cs_[terms_[-1]]) / float(cs_[terms_[0]]) - 1) * 100
+    kept_ = len(checks.ROWS)
+    no_cs = pipeline.enrolment_by_exposure(nsc_[nsc_["cip2"] != "11"], fx_, "eloundou_beta")
+    del checks.ROWS[kept_:]
+    no_cs_first, no_cs_last = float(no_cs.iloc[0]["share_exposed"]) * 100, float(no_cs.iloc[-1]["share_exposed"]) * 100
+    measure_corr = float(fx_[["eloundou_beta", "felten_aioe"]].corr().iloc[0, 1])
 
     def platform_variant(label_, frame):
         hi, lo = frame.iloc[-1], frame.iloc[0]
@@ -877,13 +889,23 @@ def export_site(release: str) -> Path:
         },
         "valley": {
             "index": "Training", "index_line": "What students choose to study, and whether young workers still get the jobs most exposed to AI",
+            "exposed": (f"Eloundou and coauthors count a task as exposed if a language model could cut the time it takes by at least "
+                        f"half; Felten and coauthors link earlier AI applications, such as image recognition, translation and speech "
+                        f"recognition, to the abilities a job uses. The two broadly agree (their field scores correlate at "
+                        f"{measure_corr:.1f}), but computer science, engineering and the social sciences count as exposed only on "
+                        f"Eloundou's measure, and education, health and law only on Felten's. Computer science enrollment grew "
+                        f"{cs_growth:.0f}% from {str(terms_[0]).lower()} to {str(terms_[-1]).lower()}; leave it out and the Eloundou share "
+                        f"{'falls' if no_cs_last < no_cs_first else 'rises'} too, from {no_cs_first:.1f}% to {no_cs_last:.1f}%."),
             "why": ("Students pick fields years before they work, and entry-level jobs hold many of the tasks AI can do, so the "
                     "next generation of workers is where an early shift would appear."),
             "capline": (f"{degrees:.1f}% of new degrees and {enrolled:.1f}% of enrollment are in exposed fields; "
                         f"young workers down {young:.0f}% in exposed jobs since 2022"),
             "mark": f"{degrees:.1f}% of new degrees are in exposed fields",
             "headline": (f"{degrees:.0f}% of new degrees and {enrolled:.0f}% of four-year enrollment are in the fields most exposed "
-                         f"to AI, and young workers have lost ground in exposed jobs since 2022."),
+                         f"to language models"
+                         + (", though on an earlier measure of AI exposure those shares are lower and falling"
+                            if float(felten_degrees.iloc[-1]) < float(felten_degrees.iloc[-2]) else "")
+                         + ". Young workers have lost ground in exposed jobs since 2022."),
             "items": [
                 {"title": "New degrees in exposed fields", "big": f"{degrees:.1f}%",
                  "note": degree_variants[0]["note"],

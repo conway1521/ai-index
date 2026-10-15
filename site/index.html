@@ -206,6 +206,7 @@ header.top{display:flex;align-items:baseline;justify-content:space-between;gap:1
 .from a{color:inherit}
 .reading h2{font-family:var(--display);font-weight:600;font-size:26px;margin:0 0 6px;line-height:1.15;text-wrap:balance}
 .reading .lens{color:var(--ink-2);margin:0;max-width:60ch}
+.reading .lens a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:var(--ink-3)}
 .figure{border-top:1px solid var(--ink);padding-top:10px}
 .figure .n{font-family:var(--display);font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
 .figure .n small{font-size:16px;color:var(--ink-3);margin-left:6px;font-family:var(--mono)}
@@ -316,6 +317,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 .card details .rel b,.card details .tech b,.reading .lens b{font-weight:600;color:var(--ink)}
 .card details .tech{font-size:14px}
 .card .res{margin:6px 0 0;font-size:14px;color:var(--ink-3)}
+.summaries{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:8px}
+.summary{border-top:1px solid var(--ink);padding-top:10px}
+.summary h3{font-size:18px;font-weight:600;margin:0 0 6px}
+.summary h3 a,.summary .open{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-color:var(--ink-3)}
+.summary p{margin:0 0 8px;font-size:16px;line-height:1.55;color:var(--ink-2)}
+.summary .open{font-size:15px;color:var(--ink)}
 .chart .band{fill:var(--ink);opacity:.09;stroke:none}
 .chart .bar{fill:var(--ink)}
 .chart .lbl{fill:var(--ink-2)}
@@ -364,7 +371,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   .wc{filter:none}
   .caption h1{font-size:16px}.caption p{display:none}
   .strap{font-size:13px}.tables dl{grid-template-columns:1fr}
-  .indices,.cards{grid-template-columns:1fr}.indices{gap:10px}
+  .indices,.cards,.summaries{grid-template-columns:1fr}.indices{gap:10px}
   .sub,.guide{font-size:15px;line-height:1.5}.lede{font-size:18px}
   .card .res{position:relative}.res .pop{position:static}.res .pop-list,.cards .card:nth-child(3n) .pop-list{left:0;right:auto;width:100%}
   .guide{grid-template-columns:1fr;gap:0}.guide li{display:block;margin:0 0 8px}.guide .why{margin-left:6px}.guide .what{display:block}
@@ -1469,10 +1476,11 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     "valley": {
       "index": "Training",
       "index_line": "What students choose to study, and whether young workers still get the jobs most exposed to AI",
+      "exposed": "Eloundou and coauthors count a task as exposed if a language model could cut the time it takes by at least half; Felten and coauthors link earlier AI applications, such as image recognition, translation and speech recognition, to the abilities a job uses. The two broadly agree (their field scores correlate at 0.7), but computer science, engineering and the social sciences count as exposed only on Eloundou's measure, and education, health and law only on Felten's. Computer science enrollment grew 42% from fall 2019 to fall 2024; leave it out and the Eloundou share falls too, from 49.6% to 49.2%.",
       "why": "Students pick fields years before they work, and entry-level jobs hold many of the tasks AI can do, so the next generation of workers is where an early shift would appear.",
       "capline": "41.8% of new degrees and 53.1% of enrollment are in exposed fields; young workers down 16% in exposed jobs since 2022",
       "mark": "41.8% of new degrees are in exposed fields",
-      "headline": "42% of new degrees and 53% of four-year enrollment are in the fields most exposed to AI, and young workers have lost ground in exposed jobs since 2022.",
+      "headline": "42% of new degrees and 53% of four-year enrollment are in the fields most exposed to language models, though on an earlier measure of AI exposure those shares are lower and falling. Young workers have lost ground in exposed jobs since 2022.",
       "items": [
         {
           "title": "New degrees in exposed fields",
@@ -1961,6 +1969,10 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     {
       "pattern": "Meisenbacher, Nestorov and Norlander",
       "url": "https://arxiv.org/abs/2510.01470"
+    },
+    {
+      "pattern": "Felten(?:, Raj and Seamans| and coauthors)?",
+      "url": "https://doi.org/10.1002/smj.3286"
     }
   ],
   "releases": [
@@ -2564,7 +2576,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   const CHOICE = {};
   const pick = it => it.variants ? (it.variants.find(x => x.key === CHOICE[it.title]) || it.variants[0]) : null;
   // a study named in a sentence links to it, from the build's list of names
-  const linkify = t => (READ.links || []).reduce((s, l) => s.replace(new RegExp(l.pattern, "g"), m => `<a href="${esc(l.url)}">${m}</a>`), t);
+  const linkify = t => (READ.links || []).reduce((s, l) => s.replace(new RegExp(l.pattern), m => `<a href="${esc(l.url)}">${m}</a>`), t);
   // a figure such as 23%, 2.5× or −16% is set large; a verdict in words is set at reading size
   const isFigure = t => /^[−+-]?[\d.,]+[%×]?$/.test(String(t).trim());
   function card(it){
@@ -2608,9 +2620,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   const ORDER = ["bridge", "city", "valley"];
   function renderItems(view){
     const V = READ.views, host = $("#items"), shown = view === "home" ? ORDER : [view];
-    host.innerHTML = shown.map(v => (view === "home" ? `<div class="group"><h3><a href="#${VIEWHASH[v]}" data-view="${v}">${esc(V[v].index)} (${VIEWNAME[v]})</a> <span>${esc(V[v].index_line)}</span></h3>` : `<div class="group">`)
-      + `<div class="cards">${V[v].items.map(card).join("")}</div></div>`).join("");
-    shown.forEach((v, k) => wire(host.children[k], V[v].items)); }
+    if (view === "home"){
+      host.innerHTML = `<div class="summaries">${ORDER.map(v => `<div class="summary"><h3><a href="#${VIEWHASH[v]}" data-view="${v}">${esc(V[v].index)} (${VIEWNAME[v]})</a></h3>`
+        + `<p>${esc(V[v].headline)}</p><p><a class="open" href="#${VIEWHASH[v]}" data-view="${v}">See the three charts</a></p></div>`).join("")}</div>`;
+      return; }
+    host.innerHTML = `<div class="group"><div class="cards">${V[view].items.map(card).join("")}</div></div>`;
+    wire(host.children[0], V[view].items); }
   // the platform switch: every card that compares platforms follows it, and the focus stays on the button pressed
   $("#items").addEventListener("click", e => { const b = e.target.closest("[data-choice]"); if (!b) return;
     CHOICE[b.dataset.card] = b.dataset.choice; renderItems(stage.dataset.view);
@@ -2661,8 +2676,9 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     marks();
     const V = READ.views, host = $("#items"), shown = view === "home" ? ORDER : [view];
     $("#r-title").textContent = view === "home" ? "The three indices" : `${V[view].index} (${VIEWNAME[view]})`;
-    $("#r-note").innerHTML = view === "home" ? "Each index stays in its own units, so the three are shown side by side and never added together." :
-      `<b>What it measures.</b> ${esc(V[view].index_line)}. <b>Why it matters.</b> ${esc(V[view].why || "")}`;
+    $("#r-note").innerHTML = view === "home" ? "Each index stays in its own units, so the three are shown side by side and never added together. Open one to see its three charts." :
+      `<b>What it measures.</b> ${esc(V[view].index_line)}. <b>Why it matters.</b> ${esc(V[view].why || "")}`
+      + (V[view].exposed ? ` <b>What counts as exposed.</b> ${linkify(esc(V[view].exposed))}` : "");
     renderItems(view); markTile(view);
     $("#r-from").textContent = "";
     $("#lede").innerHTML = view === "home" ? READ.lede : esc((READ.views[view] || {}).headline || "");
