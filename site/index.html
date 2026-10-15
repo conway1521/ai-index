@@ -297,6 +297,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 .chart svg{display:block;width:100%;height:auto;overflow:visible}
 .chart svg:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 .chart text{font-family:var(--body);font-size:12px;fill:var(--ink-3)}
+.tile .ref{font-size:12px;fill:var(--ink-3)}
 .chart .grid,.tile .grid{stroke:var(--hair);stroke-width:1}
 .chart .zero{stroke:var(--ink-3);stroke-width:1}
 .chart .line,.tile .line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
@@ -376,7 +377,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   .card .res{position:relative}.res .pop{position:static}.res .pop-list,.cards .card:nth-child(3n) .pop-list{left:0;right:auto;width:100%}
   .guide{grid-template-columns:1fr;gap:0}.guide li{display:block;margin:0 0 8px}.guide .why{margin-left:6px}.guide .what{display:block}
   .tile{display:grid;grid-template-columns:minmax(0,1fr) 96px;column-gap:12px;align-items:center}.tile .big{font-size:28px}
-  .tile svg{grid-column:2;margin:0}
+  .tile svg{grid-column:2;margin:0} .tile .ref{display:none}
 }
 /* on a narrow phone the guide keeps each index and why it matters; the tiles below say what each measures */
 @media (max-width:420px){ .guide .what{display:none} .guide li{margin:0 0 4px} }
@@ -396,7 +397,6 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   </ul>
   <p class="lede" id="lede">Tasks people use Claude for make up <a href="#bridge" data-view="bridge">23% of US wages</a>. <a href="#city" data-view="city">Pay hasn't changed more than usual</a>, and job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. And <a href="#binoculars" data-view="valley">42% of new degrees</a> are in fields that lead to the jobs most exposed to language models.</p>
   <noscript><p class="sub">The drawing and the charts need JavaScript. The three headline findings are in the sentence above, the sources are listed at the foot of the page, and every table behind them is in the <a href="https://github.com/conway1521/ai-index">repository</a>.</p></noscript>
-  <details class="meaning" id="meaning"><summary>What does this mean</summary><div id="meaning-body"></div></details>
   <nav class="indices" id="indices" aria-label="The three indices"></nav>
 
   <div class="frame">
@@ -512,7 +512,6 @@ body *{letter-spacing:0 !important;text-transform:none !important}
       <p>The page always shows the most recent data that exist, and every series grows longer with time. Each source gets updated when new releases appear, adding a new point to our series.</p>
       <p>A natural next layer would be data on what firms spend on AI, such as the Ramp AI Index, since it measures adoption where firms actually pay.</p>
       <p class="notes" id="notes"></p>
-      <svg class="strip" viewBox="0 0 900 96" role="img" aria-label="Releases on a timeline"><line x1="20" y1="60" x2="880" y2="60" class="axis"/><g id="ticks"></g></svg>
     </div>
     <div class="cad">The Census Bureau publishes firm adoption every two weeks; OpenAI Signals and the Current Population Survey come out monthly; the Anthropic Economic Index updates with each release; and pay, jobs, degrees and enrollment update once a year.</div>
   </section>
@@ -539,11 +538,6 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 <script type="application/json" id="readings">{
   "built": "15 October 2026",
   "lede": "Tasks people use Claude for make up <a href=\"#bridge\" data-view=\"bridge\">23% of US wages<\/a>. <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual<\/a>, and job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees<\/a> are in fields that lead to the jobs most exposed to language models.",
-  "meaning": [
-    "Use: Tasks people use Claude for are worth 23% of US pay, but the most-used few hundred are worth 3.1%, and 24% of US firms now use AI.",
-    "Jobs: AI hasn't shown up in pay. The mix of jobs has shifted more than usual, though chance can't yet be ruled out, and job ads moved away from tasks AI can do before ChatGPT came out.",
-    "Training: On the measure built for language models, the share of degrees and enrollment in exposed fields has risen slightly; on an earlier measure of AI exposure it has fallen, so whether students are moving away depends on how exposure is measured. Young workers' place in exposed jobs, against older workers', is 16% lower than in 2022."
-  ],
   "notes": [
     "new data coming soon"
   ],
@@ -2522,7 +2516,6 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   const VIEWNAME = { bridge:"the bridge", city:"the city", valley:"the binoculars" }, VIEWHASH = { bridge:"bridge", city:"city", valley:"binoculars" };
   // the opening sentence and what follows it; the lede is the build's own markup, its clauses linked to the views
   function top(){ $("#lede").innerHTML = READ.lede;
-    $("#meaning-body").replaceChildren(...READ.meaning.map(t => { const p = document.createElement("p"); p.textContent = t; return p; }));
     $("#notes").textContent = READ.notes.map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(". ") + "."; marks(); tiles(); }
   // The three indices. The build writes each card's title, figure, sentence and series; the page draws the line.
   const FMT = { pct0: y => `${Math.round(y)}%`, pct1: y => `${y.toFixed(1)}%`, x1: y => `${y.toFixed(1)}×`, num1: y => y.toFixed(1),
@@ -2549,7 +2542,8 @@ body *{letter-spacing:0 !important;text-transform:none !important}
       g += `<text x="0" y="12">${esc(sr.unit)}</text>`;
       g += `<text x="${X(0)}" y="${H - 4}" text-anchor="${n === 1 ? "middle" : "start"}">${esc(xl(sr.x[0]))}</text>`;
       if (n > 1) g += `<text x="${X(n - 1)}" y="${H - 4}" text-anchor="end">${esc(xl(sr.x[n - 1]))}</text>`;
-    } else if (lo < 0 && hi > 0) g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}"/>`;
+    } else if (sr.fmt === "pp2") g += `<line class="th" x1="${L}" x2="${W - R}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}"/><text class="ref" x="${((L + W - R) / 2).toFixed(1)}" y="${(Y(0) + 11).toFixed(1)}" text-anchor="middle">2019 level</text>`;
+    else if (lo < 0 && hi > 0) g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}"/>`;
     if (sr.band && !compact){ const [lo_, hi_] = sr.band;
       g += `<path class="band" d="${path(hi_)}${lo_.map((v, i) => `L${X(i).toFixed(1)},${Y(v).toFixed(1)}`).reverse().join("")}Z"/>`; }
     if (sr.threshold) g += `<path class="th" d="${path(sr.threshold)}"/>`;
@@ -3556,13 +3550,6 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   document.addEventListener("visibilitychange", ()=>{ if (document.hidden){ cues.forEach(clearTimeout); cues = []; } else if (!stage.classList.contains("asleep")) direct(stage.dataset.view, true); });
   if (params.get("event")){ setTimeout(()=>EVENTS[params.get("event")] && EVENTS[params.get("event")](), 2000); }
 
-  /* ---------- the release strip ---------- */
-  const rel = [["2025-08","AEI"],["2025-09","BTOS"],["2025-11","AEI"],["2026-02","AEI"],["2026-03","OEWS 2025"],["2026-05","AEI"],["2026-06","Signals"],["2026-09","build"],["next","next release"]];
-  const ticks = $("#ticks"), x0 = 40, x1 = 860, n = rel.length;
-  rel.forEach(([d,l], i)=>{ const x = x0 + (x1-x0)*i/(n-1), isNext = d==="next";
-    el("circle", {cx:x, cy:60, r: isNext?5:4, class:"pt"+(isNext?" next":"")}, ticks);
-    const t = el("text", {x, y:82, "text-anchor":"middle"}, ticks); t.textContent = d;
-    const u = el("text", {x, y:44, "text-anchor":"middle", class:"lbl"}, ticks); u.textContent = l; });
   top();
   go(fromHash(), true);
 })();

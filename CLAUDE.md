@@ -59,7 +59,9 @@ of degrees and enrollment in exposed fields falls where on Eloundou's it rises, 
 view says what counts as exposed under each measure, computed by the build: the measures correlate
 at 0.7 across fields, computer science counts as exposed only on Eloundou's, and without it the
 Eloundou enrollment share falls too. The home view shows a short summary of each index with a link,
-and an index's three charts appear only when it is chosen.
+and an index's three charts appear only when it is chosen. The "What does this mean" summary and the release
+timeline strip are gone, since the home summaries and the dated footer cover them, and the Jobs
+tile draws the 2019 level as a dashed line.
 
 ## Dependency
 

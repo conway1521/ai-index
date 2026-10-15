@@ -975,23 +975,6 @@ def export_site(release: str) -> Path:
                ", and job ads show no change at ChatGPT's release. ")
             + f'And <a href="#binoculars" data-view="valley">{degrees:.0f}% of new degrees</a> are in fields that lead to the jobs most exposed to language models.')
 
-    meaning = [
-        (f"Use: Tasks people use Claude for are worth {wages}% of US pay, but the most-used few hundred are worth {core:.1f}%, "
-         f"and {firms_now:.0f}% of US firms now use AI."),
-        ("Jobs: " + ("AI hasn't shown up in pay. " if not pay_out else "Pay has changed more than usual. ")
-         + ("The mix of jobs has shifted more than usual, though chance can't yet be ruled out, " if qty_out and odds and odds < 20 else
-            "The mix of jobs has shifted, " if qty_out else "The mix of jobs is within its usual range, ")
-         + ("and job ads moved away from tasks AI can do before ChatGPT came out." if fell_before else
-            "and job ads show no change at ChatGPT's release.")),
-        (("Training: On the measure built for language models, the share of degrees and enrollment in exposed fields has "
-          "risen slightly; on an earlier measure of AI exposure it has fallen, so whether students are moving away depends on how "
-          "exposure is measured. " if (before is None or degrees >= before) and enrolled >= enrolled_first
-          and float(felten_degrees.iloc[-1]) < float(felten_degrees.iloc[-2]) else
-          "Training: The share of degrees and enrollment in exposed fields has risen slightly on both exposure measures. "
-          if (before is None or degrees >= before) and enrolled >= enrolled_first else
-          "Training: The share of degrees or enrollment in exposed fields has fallen. ")
-         + f"Young workers' place in exposed jobs, against older workers', is {young:.0f}% lower than in 2022."),
-    ]
     notes = ["new data coming soon"]
 
     # the page reads as prose: lists inside a line are separated by semicolons, never by middle dots
@@ -1004,7 +987,6 @@ def export_site(release: str) -> Path:
     readings = {
         "built": datetime.now(timezone.utc).strftime("%-d %B %Y"),
         "lede": lede,
-        "meaning": meaning,
         "notes": notes,
         "views": views,
         "links": _links(),
