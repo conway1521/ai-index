@@ -1,5 +1,5 @@
 {
-  "built": "14 October 2026",
+  "built": "15 October 2026",
   "lede": "Tasks people use AI for make up <a href=\"#bridge\" data-view=\"bridge\">23% of US wages</a>. <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual</a>, but the mix of jobs has shifted more than at any time since 2013. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees</a> are in fields that lead to the jobs most exposed to AI.",
   "meaning": [
     "Use: AI use already covers tasks worth 23% of US pay, but most of it comes from a few hundred tasks.",
@@ -65,6 +65,12 @@
             },
             {
               "stance": "method",
+              "cite": "Handa and coauthors (2025), Anthropic",
+              "url": "https://arxiv.org/abs/2503.04761",
+              "text": "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."
+            },
+            {
+              "stance": "method",
               "cite": "Acemoglu and Autor (2011), Handbook of Labor Economics",
               "url": "https://doi.org/10.1016/S0169-7218(11)02410-5",
               "text": "The task framework, which is why use is measured task by task and weighted by what each task is paid."
@@ -115,6 +121,12 @@
               "cite": "Felten, Raj and Seamans (2021), Strategic Management Journal",
               "url": "https://doi.org/10.1002/smj.3286",
               "text": "Score exposure from abilities, one of several measures whose disagreements this page's research compares."
+            },
+            {
+              "stance": "method",
+              "cite": "Handa and coauthors (2025), Anthropic",
+              "url": "https://arxiv.org/abs/2503.04761",
+              "text": "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."
             }
           ]
         },
@@ -154,6 +166,12 @@
               "cite": "Acemoglu (2025), Economic Policy",
               "url": "https://doi.org/10.1093/epolic/eiae042",
               "text": "The gains from AI depend on the share of tasks it affects and the cost it saves on them, not on technical exposure alone."
+            },
+            {
+              "stance": "method",
+              "cite": "Handa and coauthors (2025), Anthropic",
+              "url": "https://arxiv.org/abs/2503.04761",
+              "text": "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."
             }
           ]
         }
@@ -322,6 +340,12 @@
               "cite": "Card (2009), American Economic Review",
               "url": "https://doi.org/10.1257/aer.99.2.1",
               "text": "Substitution between skill groups determines how a change in supply moves relative wages."
+            },
+            {
+              "stance": "method",
+              "cite": "Autor, Levy and Murnane (2003), Quarterly Journal of Economics",
+              "url": "https://doi.org/10.1162/003355303322552801",
+              "text": "Jobs as bundles of tasks and skills, which is how employment is assigned to the 25 skill groups."
             }
           ]
         },
@@ -452,7 +476,13 @@
               "stance": "method",
               "cite": "Meisenbacher, Nestorov and Norlander (2025), working paper and data",
               "url": "https://arxiv.org/abs/2510.01470",
-              "text": "Public aggregates of the National Labor Exchange: the tasks, skills and AI content of job ads by occupation."
+              "text": "The public aggregates of the National Labor Exchange this card reads: how often ads in each occupation name each O*NET task."
+            },
+            {
+              "stance": "method",
+              "cite": "Eloundou, Manning, Mishkin and Rock (2024), Science",
+              "url": "https://doi.org/10.1126/science.adj0998",
+              "text": "The exposure score given to each task."
             },
             {
               "stance": "method",
@@ -477,7 +507,7 @@
           "title": "New degrees in exposed fields",
           "big": "41.8%",
           "note": "41.8% of 2025 bachelor's degrees went to the third of fields whose graduates hold the most AI-exposed jobs, up from 40.7% in 2024.",
-          "more": "Degrees by field come from the Education Department's IPEDS completions files. We score each field by the AI exposure of the jobs its graduates actually hold, using the Census Bureau's American Community Survey and the exposure measure of Eloundou, Manning, Mishkin and Rock (2023).",
+          "more": "Degrees by field come from the Education Department's IPEDS completions files. We score each field by the AI exposure of the jobs its graduates actually hold, using the Census Bureau's American Community Survey and the exposure measure of Eloundou, Manning, Mishkin and Rock (2024).",
           "tech": "Fields are six-digit CIP codes scored by the employment-weighted Eloundou exposure of the occupations ACS 2024 degree holders in each field actually work in, which measures where graduates go instead of where programs say they lead. Exposed fields are the top third of fields by that score.",
           "src": "IPEDS completions, 2025; field exposure from ACS and the Eloundou task measure",
           "series": {
@@ -553,6 +583,12 @@
               "cite": "Dodini and Smith (2026), Federal Reserve Bank of Dallas",
               "url": "https://www.dallasfed.org/research/economics/2026/0901",
               "text": "Weaker demand for AI-exposed occupations led students at Texas universities to change what they study."
+            },
+            {
+              "stance": "method",
+              "cite": "Eloundou, Manning, Mishkin and Rock (2024), Science",
+              "url": "https://doi.org/10.1126/science.adj0998",
+              "text": "The exposure measure used to score each field family, through the jobs its graduates hold."
             }
           ]
         },
@@ -701,6 +737,12 @@
               "cite": "Dodini and Smith (2026), Federal Reserve Bank of Dallas",
               "url": "https://www.dallasfed.org/research/economics/2026/0901",
               "text": "The fall in openings for AI-exposed occupations hurt recent graduates of Texas universities."
+            },
+            {
+              "stance": "method",
+              "cite": "Eloundou, Manning, Mishkin and Rock (2024), Science",
+              "url": "https://doi.org/10.1126/science.adj0998",
+              "text": "The exposure measure that defines the most exposed third of jobs."
             }
           ]
         }
@@ -923,6 +965,16 @@
           "text": "Mismatch unemployment measures how far job seekers sit in different occupations from vacancies."
         }
       ]
+    }
+  ],
+  "links": [
+    {
+      "pattern": "Eloundou(?:, Manning, Mishkin and Rock \\(2024\\)| and coauthors)?",
+      "url": "https://doi.org/10.1126/science.adj0998"
+    },
+    {
+      "pattern": "Meisenbacher, Nestorov and Norlander",
+      "url": "https://arxiv.org/abs/2510.01470"
     }
   ],
   "releases": [

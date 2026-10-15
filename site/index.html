@@ -328,6 +328,14 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 .card details .tech{font-size:14px}
 .card .res{margin:6px 0 0;font-size:14px;color:var(--ink-3)}
 .card .res:empty{margin:0}
+.pop{position:relative;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;color:var(--ink-2)}
+.pop:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.pop-list{display:none;position:absolute;left:0;top:100%;z-index:6;width:min(340px,calc(100vw - 32px));background:var(--paper);border:1px solid var(--ink);padding:8px 12px;margin-top:4px}
+.pop-list::before{content:"";position:absolute;left:0;right:0;top:-8px;height:8px}
+.pop:hover .pop-list,.pop:focus-within .pop-list{display:block}
+.pop-list a{display:block;padding:4px 0;font-size:14px;line-height:1.4;color:var(--ink);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:var(--ink-3)}
+.cards .card:nth-child(3n) .pop-list{left:auto;right:0}
+.card a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:var(--ink-3)}
 .studies{list-style:none;margin:0 0 10px;padding:0}
 .studies li{font-size:14px;line-height:1.55;color:var(--ink-2);margin:0 0 8px}
 .studies .stance{display:inline-block;font-size:12px;border:1px solid var(--hair);padding:0 6px;margin-right:4px;color:var(--ink)}
@@ -361,6 +369,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   .vig{grid-template-columns:1fr}.strap{font-size:13px}.tables dl{grid-template-columns:1fr}
   .indices,.cards{grid-template-columns:1fr}.indices{gap:10px}
   .sub,.guide{font-size:15px;line-height:1.5}.lede{font-size:18px}
+  .card .res{position:relative}.res .pop{position:static}.res .pop-list,.cards .card:nth-child(3n) .pop-list{left:0;right:auto;width:100%}
   .guide{grid-template-columns:1fr;gap:0}.guide li{display:block;margin:0 0 8px}.guide .why{margin-left:6px}.guide .what{display:block}
   .tile{display:grid;grid-template-columns:minmax(0,1fr) 96px;column-gap:12px;align-items:center}.tile .big{font-size:28px}
   .tile svg{grid-column:2;margin:0}
@@ -514,8 +523,8 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     <h3>How we measured it</h3>
     <div id="source-list">
       <div data-key="labs" data-view="bridge"><h4>The bridge (Use)</h4><p class="how">The Anthropic Economic Index sorts conversations with Claude into the job tasks that O*NET lists for each occupation. We weight each task by what US workers earn doing it, from the latest BLS wage tables, and update the figures with each new release of the index, every few months. Only one platform&#x27;s data are used so far.</p><p class="src-text"><a href="https://huggingface.co/datasets/Anthropic/EconomicIndex"><b>Anthropic Economic Index</b></a>, usage by O*NET task with the automation and augmentation split, releases from September 2025 to the June 2026 monthly file. <a href="https://openai.com/signals/data-download/"><b>OpenAI Signals v2.0</b></a>, work-related messages by work activity, monthly to June 2026, allocated to tasks by dollars. Each platform sees only its own users, so the two are never averaged, and the cards show the Anthropic data.</p></div>
-      <div data-key="civic" data-view="city"><h4>The city (Jobs)</h4><p class="how">For each of 25 skill groups, we compare the change in pay, and in the share of employment, over the last three years with that group&#x27;s own history since 2013. A change counts as unusual only if it is bigger than nearly every earlier three-year period, which with the data since 2013 means the largest or close to it. Both are recalculated each spring, when BLS publishes new wage tables. For job ads, we measure how often ads in each occupation name each task, and check whether tasks AI can do lost ground at ChatGPT&#x27;s release more than at earlier months.</p><p class="src-text"><a href="https://www.bls.gov/oes/"><b>OEWS</b></a>, wages and employment by occupation, BLS, May 2012 to May 2025. <a href="https://www.census.gov/hfp/btos"><b>BTOS</b></a>, firms using AI, Census Bureau, biweekly cycles from November 2025 to September 2026. <a href="https://www.census.gov/programs-surveys/cps.html"><b>CPS</b></a> basic monthly, Census Bureau, January 2022 to August 2026. <a href="https://www.onetcenter.org/database.html"><b>O*NET 30.3</b></a>, tasks, ratings and skills, the Department of Labor. Crosswalks from the Census Bureau, NCES and BLS. <a href="https://doi.org/10.5281/zenodo.22219027"><b>NLx job ads</b></a>, the tasks named in the ads of the National Labor Exchange, monthly from September 2015 to September 2025, in the aggregates of Meisenbacher, Nestorov and Norlander.</p></div>
-      <div data-key="campus" data-view="valley"><h4>The binoculars (Training)</h4><p class="how">We score each field of study by the AI exposure of the jobs its graduates hold, using the Census Bureau&#x27;s American Community Survey and the exposure measure of Eloundou and coauthors. Degrees come from IPEDS and enrollment from the National Student Clearinghouse. Young workers come from the monthly Current Population Survey, with jobs scored the same way.</p><p class="src-text"><a href="https://nces.ed.gov/ipeds/"><b>IPEDS</b></a> completions by field and institution, NCES, 2023 to 2025. <a href="https://nscresearchcenter.org/current-term-enrollment-estimates/"><b>National Student Clearinghouse</b></a> undergraduate enrollment at four-year institutions by field family, fall 2019 to fall 2024. <a href="https://www.census.gov/programs-surveys/acs"><b>ACS</b></a> 2024 field of degree against occupation, the observed link from what people studied to what they do. Fields are scored by where their graduates work.</p></div>
+      <div data-key="civic" data-view="city"><h4>The city (Jobs)</h4><p class="how">For each of 25 skill groups, we compare the change in pay, and in the share of employment, over the last three years with that group&#x27;s own history since 2013. A change counts as unusual only if it is bigger than nearly every earlier three-year period, which with the data since 2013 means the largest or close to it. Both are recalculated each spring, when BLS publishes new wage tables. For job ads, we measure how often ads in each occupation name each task, and check whether tasks AI can do lost ground at ChatGPT&#x27;s release more than at earlier months.</p><p class="src-text"><a href="https://www.bls.gov/oes/"><b>OEWS</b></a>, wages and employment by occupation, BLS, May 2012 to May 2025. <a href="https://www.census.gov/hfp/btos"><b>BTOS</b></a>, firms using AI, Census Bureau, biweekly cycles from November 2025 to September 2026. <a href="https://www.census.gov/programs-surveys/cps.html"><b>CPS</b></a> basic monthly, Census Bureau, January 2022 to August 2026. <a href="https://www.onetcenter.org/database.html"><b>O*NET 30.3</b></a>, tasks, ratings and skills, the Department of Labor. Crosswalks from the Census Bureau, NCES and BLS. <a href="https://doi.org/10.5281/zenodo.22219027"><b>NLx job ads</b></a>, the tasks named in the ads of the National Labor Exchange, monthly from September 2015 to September 2025, in the aggregates of <a href="https://arxiv.org/abs/2510.01470">Meisenbacher, Nestorov and Norlander</a>.</p></div>
+      <div data-key="campus" data-view="valley"><h4>The binoculars (Training)</h4><p class="how">We score each field of study by the AI exposure of the jobs its graduates hold, using the Census Bureau&#x27;s American Community Survey and the exposure measure of <a href="https://doi.org/10.1126/science.adj0998">Eloundou and coauthors</a>. Degrees come from IPEDS and enrollment from the National Student Clearinghouse. Young workers come from the monthly Current Population Survey, with jobs scored the same way.</p><p class="src-text"><a href="https://nces.ed.gov/ipeds/"><b>IPEDS</b></a> completions by field and institution, NCES, 2023 to 2025. <a href="https://nscresearchcenter.org/current-term-enrollment-estimates/"><b>National Student Clearinghouse</b></a> undergraduate enrollment at four-year institutions by field family, fall 2019 to fall 2024. <a href="https://www.census.gov/programs-surveys/acs"><b>ACS</b></a> 2024 field of degree against occupation, the observed link from what people studied to what they do. Fields are scored by where their graduates work.</p></div>
     </div>
   </section>
 
@@ -530,12 +539,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     <p>The drawing is the view from the lighthouse at Point Bonita, at the mouth of the Golden Gate, looking across to the bridge and the city and, through the coin-operated binoculars, south down the peninsula to the campuses. The weather is the latest observation at San Francisco International Airport (station KSFO), published by the National Weather Service: its description and visibility set the sky and the fog, its wind sets how fast and which way they drift, and rain falls when the station reports it. The sun and the moon are placed for the time in San Francisco from the standard formulas for their positions, and the moon is drawn at its phase. The boats, planes, trains, whales and gulls are invented.</p>
   </section>
   <footer class="site-foot">
-    <p>Made by Alessandro Conway. The text, charts and tables on this page are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>; the data keep their publishers' terms. Code and tables are on <a href="https://github.com/conway1521/ai-index">GitHub</a>. Last updated <span id="updated">14 October 2026</span>.</p>
+    <p>Made by Alessandro Conway. The text, charts and tables on this page are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>; the data keep their publishers' terms. Code and tables are on <a href="https://github.com/conway1521/ai-index">GitHub</a>. Last updated <span id="updated">15 October 2026</span>.</p>
   </footer>
 </div>
 
 <script type="application/json" id="readings">{
-  "built": "14 October 2026",
+  "built": "15 October 2026",
   "lede": "Tasks people use AI for make up <a href=\"#bridge\" data-view=\"bridge\">23% of US wages<\/a>. <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual<\/a>, but the mix of jobs has shifted more than at any time since 2013. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees<\/a> are in fields that lead to the jobs most exposed to AI.",
   "meaning": [
     "Use: AI use already covers tasks worth 23% of US pay, but most of it comes from a few hundred tasks.",
@@ -601,6 +610,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
             },
             {
               "stance": "method",
+              "cite": "Handa and coauthors (2025), Anthropic",
+              "url": "https://arxiv.org/abs/2503.04761",
+              "text": "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."
+            },
+            {
+              "stance": "method",
               "cite": "Acemoglu and Autor (2011), Handbook of Labor Economics",
               "url": "https://doi.org/10.1016/S0169-7218(11)02410-5",
               "text": "The task framework, which is why use is measured task by task and weighted by what each task is paid."
@@ -651,6 +666,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               "cite": "Felten, Raj and Seamans (2021), Strategic Management Journal",
               "url": "https://doi.org/10.1002/smj.3286",
               "text": "Score exposure from abilities, one of several measures whose disagreements this page's research compares."
+            },
+            {
+              "stance": "method",
+              "cite": "Handa and coauthors (2025), Anthropic",
+              "url": "https://arxiv.org/abs/2503.04761",
+              "text": "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."
             }
           ]
         },
@@ -690,6 +711,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               "cite": "Acemoglu (2025), Economic Policy",
               "url": "https://doi.org/10.1093/epolic/eiae042",
               "text": "The gains from AI depend on the share of tasks it affects and the cost it saves on them, not on technical exposure alone."
+            },
+            {
+              "stance": "method",
+              "cite": "Handa and coauthors (2025), Anthropic",
+              "url": "https://arxiv.org/abs/2503.04761",
+              "text": "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."
             }
           ]
         }
@@ -858,6 +885,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               "cite": "Card (2009), American Economic Review",
               "url": "https://doi.org/10.1257/aer.99.2.1",
               "text": "Substitution between skill groups determines how a change in supply moves relative wages."
+            },
+            {
+              "stance": "method",
+              "cite": "Autor, Levy and Murnane (2003), Quarterly Journal of Economics",
+              "url": "https://doi.org/10.1162/003355303322552801",
+              "text": "Jobs as bundles of tasks and skills, which is how employment is assigned to the 25 skill groups."
             }
           ]
         },
@@ -988,7 +1021,13 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               "stance": "method",
               "cite": "Meisenbacher, Nestorov and Norlander (2025), working paper and data",
               "url": "https://arxiv.org/abs/2510.01470",
-              "text": "Public aggregates of the National Labor Exchange: the tasks, skills and AI content of job ads by occupation."
+              "text": "The public aggregates of the National Labor Exchange this card reads: how often ads in each occupation name each O*NET task."
+            },
+            {
+              "stance": "method",
+              "cite": "Eloundou, Manning, Mishkin and Rock (2024), Science",
+              "url": "https://doi.org/10.1126/science.adj0998",
+              "text": "The exposure score given to each task."
             },
             {
               "stance": "method",
@@ -1013,7 +1052,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "title": "New degrees in exposed fields",
           "big": "41.8%",
           "note": "41.8% of 2025 bachelor's degrees went to the third of fields whose graduates hold the most AI-exposed jobs, up from 40.7% in 2024.",
-          "more": "Degrees by field come from the Education Department's IPEDS completions files. We score each field by the AI exposure of the jobs its graduates actually hold, using the Census Bureau's American Community Survey and the exposure measure of Eloundou, Manning, Mishkin and Rock (2023).",
+          "more": "Degrees by field come from the Education Department's IPEDS completions files. We score each field by the AI exposure of the jobs its graduates actually hold, using the Census Bureau's American Community Survey and the exposure measure of Eloundou, Manning, Mishkin and Rock (2024).",
           "tech": "Fields are six-digit CIP codes scored by the employment-weighted Eloundou exposure of the occupations ACS 2024 degree holders in each field actually work in, which measures where graduates go instead of where programs say they lead. Exposed fields are the top third of fields by that score.",
           "src": "IPEDS completions, 2025; field exposure from ACS and the Eloundou task measure",
           "series": {
@@ -1089,6 +1128,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               "cite": "Dodini and Smith (2026), Federal Reserve Bank of Dallas",
               "url": "https://www.dallasfed.org/research/economics/2026/0901",
               "text": "Weaker demand for AI-exposed occupations led students at Texas universities to change what they study."
+            },
+            {
+              "stance": "method",
+              "cite": "Eloundou, Manning, Mishkin and Rock (2024), Science",
+              "url": "https://doi.org/10.1126/science.adj0998",
+              "text": "The exposure measure used to score each field family, through the jobs its graduates hold."
             }
           ]
         },
@@ -1237,6 +1282,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               "cite": "Dodini and Smith (2026), Federal Reserve Bank of Dallas",
               "url": "https://www.dallasfed.org/research/economics/2026/0901",
               "text": "The fall in openings for AI-exposed occupations hurt recent graduates of Texas universities."
+            },
+            {
+              "stance": "method",
+              "cite": "Eloundou, Manning, Mishkin and Rock (2024), Science",
+              "url": "https://doi.org/10.1126/science.adj0998",
+              "text": "The exposure measure that defines the most exposed third of jobs."
             }
           ]
         }
@@ -1459,6 +1510,16 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "text": "Mismatch unemployment measures how far job seekers sit in different occupations from vacancies."
         }
       ]
+    }
+  ],
+  "links": [
+    {
+      "pattern": "Eloundou(?:, Manning, Mishkin and Rock \\(2024\\)| and coauthors)?",
+      "url": "https://doi.org/10.1126/science.adj0998"
+    },
+    {
+      "pattern": "Meisenbacher, Nestorov and Norlander",
+      "url": "https://arxiv.org/abs/2510.01470"
     }
   ],
   "releases": [
@@ -2048,21 +2109,24 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     return { svg: `<svg viewBox="0 0 ${W} ${H}" ${compact ? 'aria-hidden="true"' : `role="img" tabindex="0" aria-label="${esc(label)}"`}>${g}</svg>`, X, Y, W, n, f };
   }
   const CHARTS = new WeakMap();
+  // a study named in a sentence links to it, from the build's list of names
+  const linkify = t => (READ.links || []).reduce((s, l) => s.replace(new RegExp(l.pattern, "g"), m => `<a href="${esc(l.url)}">${m}</a>`), t);
   // a figure such as 23%, 2.5× or −16% is set large; a verdict in words is set at reading size
   const isFigure = t => /^[−+-]?[\d.,]+[%×]?$/.test(String(t).trim());
   function card(it){
     const sr = it.series, p = sr ? plot(sr) : null, f = p && p.f;
     const key = sr && sr.threshold ? `<svg viewBox="0 0 24 8" width="24" height="8" aria-hidden="true"><line class="th" x1="0" x2="24" y1="4" y2="4"/></svg> unusual above the dashed line` : "";
-    const R = it.research || [], n = k => R.filter(r => r.stance === k).length, c = n("consistent"), d = n("different"), b = n("background") + n("method");
-    const tally = [c ? `consistent with ${c} ${c === 1 ? "study" : "studies"}` : "", d ? `${d} ${d === 1 ? "finds" : "find"} differently` : "",
-                   !c && !d && b ? `${b} related ${b === 1 ? "study" : "studies"}` : ""].filter(Boolean).join("; ");
+    const R = it.research || [], of = k => R.filter(r => r.stance === k);
+    const pop = (k, label) => { const L = of(k); return L.length ? `<span class="pop" tabindex="0">${label(L.length)}<span class="pop-list">${L.map(r => `<a href="${esc(r.url)}">${esc(r.cite)}</a>`).join("")}</span></span>` : ""; };
+    const tally = [pop("method", n => `builds on ${n} ${n === 1 ? "study" : "studies"}`), pop("consistent", n => `consistent with ${n}`),
+                   pop("different", n => `${n} ${n === 1 ? "finds" : "find"} differently`), pop("background", n => `${n} for background`)].filter(Boolean).join("; ");
     const STANCE = { consistent:"Consistent", different:"Finds differently", background:"Background", method:"Method" };
     const studies = R.length ? `<p class="rel"><b>Research.</b></p><ul class="studies">${R.map(r => `<li><span class="stance">${STANCE[r.stance]}</span> <a href="${esc(r.url)}">${esc(r.cite)}</a>. ${esc(r.text)}</li>`).join("")}</ul>` : "";
-    return `<div class="card"><div class="t">${esc(it.title)}</div><div class="big${isFigure(it.big) ? "" : " word"}">${esc(it.big)}</div><p class="note">${esc(it.note)}</p><p class="res">${tally ? `Research: ${tally}.` : ""}</p>`
+    return `<div class="card"><div class="t">${esc(it.title)}</div><div class="big${isFigure(it.big) ? "" : " word"}">${esc(it.big)}</div><p class="note">${linkify(esc(it.note))}</p><p class="res">${tally ? `Research: ${tally}.` : ""}</p>`
       + (p ? `<div class="chart">${p.svg}<div class="tip" hidden></div></div>` : "")
       + `<div class="key">${key}</div>`
-      + `<details><summary>How we know</summary>${it.more ? `<p>${esc(it.more)}</p>` : ""}${it.tech ? `<p class="tech"><b>Technical note.</b> ${esc(it.tech)}</p>` : ""}${studies}`
-      + `<p class="cite">${esc(it.src)}</p></details></div>`; }
+      + `<details><summary>How we know</summary>${it.more ? `<p>${linkify(esc(it.more))}</p>` : ""}${it.tech ? `<p class="tech"><b>Technical note.</b> ${linkify(esc(it.tech))}</p>` : ""}${studies}`
+      + `<p class="cite">${linkify(esc(it.src))}</p></details></div>`; }
   // hover or arrow keys show each point
   function wire(host, list){
     host.querySelectorAll(".chart").forEach((el, k) => {

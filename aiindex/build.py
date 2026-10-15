@@ -447,15 +447,18 @@ _RESEARCH = {
         _study("consistent", "handa", "In the first report on these data, about 36% of occupations used AI for at least a quarter of their tasks."),
         _study("background", "eloundou"),
         _study("background", "bls"),
+        _study("method", "handa", "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."),
         _study("method", "aa", "The task framework, which is why use is measured task by task and weighted by what each task is paid."),
     ],
     ("bridge", 1): [
         _study("consistent", "handa", "Software development and writing tasks make up nearly half of all use."),
         _study("background", "gmyrek"),
         _study("background", "felten", "Score exposure from abilities, one of several measures whose disagreements this page's research compares."),
+        _study("method", "handa", "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."),
     ],
     ("bridge", 2): [
         _study("background", "acemoglu25"),
+        _study("method", "handa", "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."),
     ],
     ("city", 0): [
         _study("consistent", "humlum"),
@@ -471,6 +474,7 @@ _RESEARCH = {
         _study("background", "hampole"),
         _study("background", "ar19"),
         _study("background", "card"),
+        _study("method", "alm", "Jobs as bundles of tasks and skills, which is how employment is assigned to the 25 skill groups."),
     ],
     ("city", 2): [
         _study("consistent", "rinz", "The same timing in commercial job-ad data: ads in more exposed occupations were declining before ChatGPT and "
@@ -486,7 +490,8 @@ _RESEARCH = {
         _study("background", "hk"),
         _study("background", "atalay"),
         _study("background", "tsvetkova"),
-        _study("method", "mnn"),
+        _study("method", "mnn", "The public aggregates of the National Labor Exchange this card reads: how often ads in each occupation name each O*NET task."),
+        _study("method", "eloundou", "The exposure score given to each task."),
         _study("method", "bbg"),
     ],
     ("valley", 0): [
@@ -495,13 +500,26 @@ _RESEARCH = {
     ],
     ("valley", 1): [
         _study("different", "dallas", "Weaker demand for AI-exposed occupations led students at Texas universities to change what they study."),
+        _study("method", "eloundou", "The exposure measure used to score each field family, through the jobs its graduates hold."),
     ],
     ("valley", 2): [
         _study("consistent", "canaries"),
         _study("consistent", "revelio26"),
         _study("consistent", "dallas", "The fall in openings for AI-exposed occupations hurt recent graduates of Texas universities."),
+        _study("method", "eloundou", "The exposure measure that defines the most exposed third of jobs."),
     ],
 }
+
+
+# Names in the page's sentences that are linked wherever they appear, as patterns and the study each points to.
+_LINKS = [
+    (r"Eloundou(?:, Manning, Mishkin and Rock \(2024\)| and coauthors)?", "eloundou"),
+    (r"Meisenbacher, Nestorov and Norlander", "mnn"),
+]
+
+
+def _links() -> list[dict]:
+    return [{"pattern": pattern, "url": _STUDIES[key][1]} for pattern, key in _LINKS]
 
 
 def _literature() -> list[dict]:
@@ -792,7 +810,7 @@ def export_site(release: str) -> Path:
                           f"AI-exposed jobs" + (f", up from {before:.1f}% in {year - 1}." if before is not None else ".")),
                  "more": ("Degrees by field come from the Education Department's IPEDS completions files. We score each field by the AI "
                           "exposure of the jobs its graduates actually hold, using the Census Bureau's American Community Survey and the "
-                          "exposure measure of Eloundou, Manning, Mishkin and Rock (2023)."),
+                          "exposure measure of Eloundou, Manning, Mishkin and Rock (2024)."),
                  "tech": ("Fields are six-digit CIP codes scored by the employment-weighted Eloundou exposure of the occupations "
                           "ACS 2024 degree holders in each field actually work in, which measures where graduates go instead of where "
                           "programs say they lead. Exposed fields are the top third of fields by that score."),
@@ -875,6 +893,7 @@ def export_site(release: str) -> Path:
         "notes": notes,
         "views": views,
         "literature": _literature(),
+        "links": _links(),
         "releases": [{"date": str(r), "reach": round(float(x), 3), "published_use": round(float(p), 3)}
                  for r, x, p in zip(anthropic["release"], anthropic["reach_share"], anthropic["published_use"])],
     }

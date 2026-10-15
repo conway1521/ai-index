@@ -25,6 +25,13 @@ UPDATED = re.compile(r'(<span id="updated">)(.*?)(</span>)', re.S)
 HOW = re.compile(r'(<div data-key="\w+" data-view="(\w+)"><h4>[^<]*</h4><p class="how">)(.*?)(</p>)', re.S)
 
 
+def linkify(text: str, links: list[dict]) -> str:
+    """Link each named study in escaped text, the same way the page does for the cards."""
+    for link in links:
+        text = re.sub(link["pattern"], lambda m: f'<a href="{escape(link["url"])}">{m.group(0)}</a>', text)
+    return text
+
+
 def _literature(themes: list[dict]) -> str:
     """The research list as plain HTML: a heading per theme and one line per study, linked."""
     out = []
@@ -45,7 +52,7 @@ def write(page=PAGE, readings=READINGS) -> None:
     html, n = LEDE.subn(lambda m: m.group(1) + lede + m.group(3), html, count=1)
     if n != 1:
         raise ValueError("the page has no lede paragraph to write into")
-    html, n = HOW.subn(lambda m: m.group(1) + escape(views[m.group(2)]["how"]) + m.group(4), html)
+    html, n = HOW.subn(lambda m: m.group(1) + linkify(escape(views[m.group(2)]["how"]), data.get("links", [])) + m.group(4), html)
     if n != len(views):
         raise ValueError(f"the page has {n} method paragraphs for {len(views)} views")
     html, n = LIT.subn(lambda m: m.group(1) + _literature(data.get("literature", [])) + m.group(3), html, count=1)
