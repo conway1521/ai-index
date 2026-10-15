@@ -214,6 +214,23 @@ def gauge(cells: pd.DataFrame, base: tuple[str, str] = ("2022-01", "2022-12"),
     return out
 
 
+def rotation_se(cells: pd.DataFrame, base: tuple[str, str] = ("2022-01", "2022-12"), pooling: int = 3) -> pd.DataFrame:
+    """Standard error of the gauge by the random-groups method over the eight CPS rotation groups.
+
+    Each month's sample is eight rotation groups of households, so the gauge is
+    recomputed eight times, each time leaving one group out, and the spread of
+    those eight readings gives the variance: (G - 1) / G times the sum of squared
+    deviations from their mean. This is the standard replicate approach for the
+    public-use file, which carries no design variables of its own.
+    """
+    groups = sorted(cells["HRMIS"].unique())
+    reps = pd.concat([gauge(cells[cells["HRMIS"] != g], base=base, pooling=pooling)
+                      .set_index("period")["young_relative_to_prime"].rename(g) for g in groups], axis=1)
+    n = reps.shape[1]
+    se = np.sqrt((n - 1) / n * reps.sub(reps.mean(axis=1), axis=0).pow(2).sum(axis=1))
+    return se.rename("se").reset_index()
+
+
 def reference_distribution(cells: pd.DataFrame, treated_from: str, draws: int = 500,
                            seed: int = config.SEED) -> pd.DataFrame:
     """Relabel post-period months at the rotation-group level.

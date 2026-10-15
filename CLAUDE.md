@@ -42,7 +42,12 @@ checked against the current published version; the page brings together public d
 theory on AI and work, and its footer carries the CC BY 4.0 licence and the build date. Since 15 October 2026 the data
 sources are one Sources section, by index, which opens as a closeable box from the header and
 footer; the method sits only under each card's How we know, and the coin on the binoculars no
-longer opens anything.
+longer opens anything. Since 15 October 2026 the Use index shows the share of wages in tasks people
+use Claude for (named, since it is one platform, with the mechanical part of its rise stated),
+firms using AI from the national BTOS with its 95% band, and where use is heaviest, which switches
+between Claude and ChatGPT; ChatGPT's reach is not shown because OpenAI publishes by work activity.
+The young-worker chart carries a band from the random-groups variance over the eight CPS rotation
+groups (cps.rotation_se), and the lede says the job-mix shift cannot yet be told from chance.
 
 ## Dependency
 

@@ -1,8 +1,8 @@
 {
   "built": "15 October 2026",
-  "lede": "Tasks people use AI for make up <a href=\"#bridge\" data-view=\"bridge\">23% of US wages</a>. <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual</a>, but the mix of jobs has shifted more than at any time since 2013. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees</a> are in fields that lead to the jobs most exposed to AI.",
+  "lede": "Tasks people use Claude for make up <a href=\"#bridge\" data-view=\"bridge\">23% of US wages</a>. <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual</a>. The mix of jobs has shifted more than at any time since 2013, though with only eleven periods to compare, chance can't yet be ruled out. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees</a> are in fields that lead to the jobs most exposed to AI.",
   "meaning": [
-    "Use: AI use already covers tasks worth 23% of US pay, but most of it comes from a few hundred tasks.",
+    "Use: Tasks people use Claude for are worth 23% of US pay, but the most-used few hundred are worth 3.1%, and 24% of US firms now use AI.",
     "Jobs: AI hasn't shown up in pay. The mix of jobs has shifted more than usual, though chance can't yet be ruled out, and job ads moved away from tasks AI can do before ChatGPT came out.",
     "Training: The share of degrees and enrollment in exposed fields has risen slightly, so students have not moved away from them. Young workers' place in exposed jobs, against older workers', is 16% lower than in 2022."
   ],
@@ -12,18 +12,18 @@
   "views": {
     "bridge": {
       "index": "Use",
-      "index_line": "How much of the country's paid work involves tasks people already use AI for",
-      "why": "If AI is going to change work, it will start with the tasks people already bring to it, so this index shows where change could come first.",
-      "capline": "23% of US wages are in tasks people use AI for; March 2026",
-      "mark": "23% of US wages are in tasks people use AI for",
-      "headline": "Tasks people use AI for make up 23% of US wages, and the heaviest use, relative to pay, is on complex problem solving skills.",
+      "index_line": "How much of the country's paid work involves tasks people already use AI for, and how many firms use it",
+      "why": "If AI is going to change work, it will start with the tasks people already bring to it and the firms that adopt it, so this index shows where change could come first.",
+      "capline": "23% of US wages are in tasks people use Claude for; 23.8% of firms use AI",
+      "mark": "23% of US wages are in tasks people use Claude for",
+      "headline": "Tasks people use Claude for make up 23% of US wages, 24% of US firms now use AI, and use relative to pay is heaviest on complex problem solving skills.",
       "items": [
         {
-          "title": "Share of US wages in tasks people use AI for",
+          "title": "Share of US wages in tasks people use Claude for",
           "big": "23%",
-          "note": "Up from 18% in September 2025. A task counts once people use Claude for it at all, so this shows how widely AI use has spread across paid work, but not how much of that work AI does.",
-          "more": "The Anthropic Economic Index sorts conversations with Claude into the job tasks the Labor Department lists for each occupation (O*NET). We add up what US workers earn on the tasks that appear, using the BLS wage tables. The June 2026 file leaves out rarely used tasks, so this figure uses March 2026, the most recent file that lists them all. Tasks people hand to Claude to do entirely account for 6% of US wages.",
-          "tech": "Each occupation's OEWS wage bill is split across its O*NET tasks by frequency-weighted task shares, so task values sum exactly to the occupation's bill. Reach is the share of the national wage bill in tasks with any published usage; delegated reach scales each task by the share of its usage classed as automation. Claude.ai users are a selected population, so this describes where one platform's use falls.",
+          "note": "Up from 18% in September 2025. A task counts once anyone uses Claude for it, so part of that rise comes from each release covering more tasks (2,051 then, 2,525 now). The tasks behind three quarters of all use, a measure that more coverage does not move, rose from 1.8% to 3.1% of US wages.",
+          "more": "The Anthropic Economic Index sorts conversations with Claude into the job tasks the Labor Department lists for each occupation (O*NET). We add up what US workers earn on the tasks that appear, using the BLS wage tables. The June 2026 file leaves out rarely used tasks, so this figure uses March 2026, the most recent file that lists them all. Tasks people hand to Claude to do entirely account for 6% of US wages. ChatGPT is not shown here: OpenAI publishes use by broad work activity, so every task under an activity would count and the figure would not be comparable.",
+          "tech": "Each occupation's OEWS wage bill is split across its O*NET tasks by frequency-weighted task shares, so task values sum exactly to the occupation's bill. Reach is the share of the national wage bill in tasks with any published usage, which rises mechanically with the number of tasks a release covers; the core, the smallest set of tasks covering 75% of usage (243 tasks in the latest file), does not. The published shares come without sampling errors, so no band is drawn. Claude.ai users are a selected population.",
           "src": "Anthropic Economic Index, March 2026; OEWS wages, May 2025",
           "series": {
             "x": [
@@ -38,7 +38,8 @@
             ],
             "fmt": "pct0",
             "unit": "% of US wages",
-            "threshold": null
+            "threshold": null,
+            "band": null
           },
           "tables": [
             "usage_reach.csv"
@@ -64,6 +65,12 @@
               "text": "Combines five exposure measures across 831 occupations and keeps what AI could do apart from what people use it for."
             },
             {
+              "stance": "background",
+              "cite": "Acemoglu (2025), Economic Policy",
+              "url": "https://doi.org/10.1093/epolic/eiae042",
+              "text": "The gains from AI depend on the share of tasks it affects and the cost it saves on them, not on technical exposure alone."
+            },
+            {
               "stance": "method",
               "cite": "Handa and coauthors (2025), Anthropic",
               "url": "https://arxiv.org/abs/2503.04761",
@@ -78,27 +85,225 @@
           ]
         },
         {
-          "title": "Where AI use is heaviest",
-          "big": "2.5×",
-          "note": "Complex problem solving skills account for 0.9% of AI use but only 0.3% of US wages, 2.5 times as much use as their share of pay. Physical abilities get the least, 0.3 times.",
-          "more": "We sort job tasks into 25 skill groups and compare each group's share of AI use with its share of US wages. A value above 1 means people use AI on that group's tasks more than its share of pay alone would lead you to expect.",
-          "tech": "Each task's labor is split across O*NET's 161 descriptors by the paper's gamma matrix, whose rows sum to one, and the descriptors roll up to 25 bundles, so neither usage nor wage dollars are lost in the mapping. The ratio is a bundle's share of usage over its share of the wage bill.",
-          "src": "Anthropic Economic Index, March 2026; O*NET 30.3",
+          "title": "Firms using AI",
+          "big": "23.8%",
+          "note": "23.8% of US businesses used AI in some part of their work in the two weeks to 6 September 2026, up from 17.3% in November 2025. The band shows the Census Bureau's 95% margin of error.",
+          "more": "The Census Bureau's Business Trends and Outlook Survey asks firms every two weeks whether they used AI in any of their business functions. The question took this wording in November 2025, so the series starts then; the earlier question, about AI in producing goods or services, measures something narrower and is not joined to it.",
+          "tech": "National estimates and standard errors as published, for the share answering yes; the band is the estimate plus or minus 1.96 standard errors. The survey counts firms, not workers or spending, so a small firm and a large one weigh the same.",
+          "src": "Census Bureau, Business Trends and Outlook Survey, November 2025 to September 2026",
           "series": {
             "x": [
-              "September 2025",
-              "January 2026",
-              "March 2026"
+              "2025-11-16",
+              "2025-11-30",
+              "2025-12-14",
+              "2025-12-28",
+              "2026-01-11",
+              "2026-01-25",
+              "2026-02-08",
+              "2026-02-22",
+              "2026-03-08",
+              "2026-03-22",
+              "2026-04-05",
+              "2026-04-19",
+              "2026-05-03",
+              "2026-05-17",
+              "2026-05-31",
+              "2026-06-14",
+              "2026-06-28",
+              "2026-07-12",
+              "2026-07-26",
+              "2026-08-09",
+              "2026-08-23",
+              "2026-09-06"
             ],
             "y": [
-              2.9179,
-              2.6082,
-              2.515
+              17.3,
+              17.2,
+              17.8,
+              17.7,
+              18.2,
+              18.9,
+              17.5,
+              18.2,
+              18.9,
+              19.1,
+              19.8,
+              19.8,
+              19.5,
+              20.6,
+              20.6,
+              20.6,
+              21.7,
+              21.5,
+              21.8,
+              22.4,
+              23.2,
+              23.8
             ],
-            "fmt": "x1",
-            "unit": "AI use relative to share of pay",
-            "threshold": null
+            "fmt": "pct1",
+            "unit": "% of US firms using AI",
+            "threshold": null,
+            "band": [
+              [
+                16.9472,
+                16.7492,
+                16.8788,
+                17.112,
+                17.7296,
+                18.1356,
+                16.716,
+                17.5728,
+                18.2728,
+                18.2768,
+                19.2316,
+                19.3296,
+                19.0296,
+                20.0316,
+                20.0708,
+                19.8356,
+                21.0924,
+                20.6768,
+                21.1532,
+                21.6944,
+                22.6512,
+                23.2904
+              ],
+              [
+                17.6528,
+                17.6508,
+                18.7212,
+                18.288,
+                18.6704,
+                19.6644,
+                18.284,
+                18.8272,
+                19.5272,
+                19.9232,
+                20.3684,
+                20.2704,
+                19.9704,
+                21.1684,
+                21.1292,
+                21.3644,
+                22.3076,
+                22.3232,
+                22.4468,
+                23.1056,
+                23.7488,
+                24.3096
+              ]
+            ]
           },
+          "tables": [
+            "adoption_btos_national.csv"
+          ],
+          "view": "bridge",
+          "research": [
+            {
+              "stance": "background",
+              "cite": "Liu and Webber (2026), Federal Reserve Board",
+              "url": "https://www.federalreserve.gov/econres/notes/feds-notes/ai-adoption-and-firms-job-posting-behavior-20260327.html",
+              "text": "Use this survey with job postings and find no reduction in postings at firms or industries that adopted more AI."
+            },
+            {
+              "stance": "background",
+              "cite": "Yale Budget Lab (2026)",
+              "url": "https://budgetlab.yale.edu/topic/artificial-intelligence",
+              "text": "Exposure measures broadly agree, less so among the most exposed jobs, and there are no significant employment or wage effects so far."
+            }
+          ]
+        },
+        {
+          "title": "Where AI use is heaviest",
+          "big": "2.5×",
+          "note": "Complex problem solving skills account for 0.9% of Claude use but only 0.3% of US wages, 2.5 times as much use as their share of pay. Physical abilities get the least, 0.3 times.",
+          "more": "We sort job tasks into 25 skill groups and compare each group's share of AI use with its share of US wages. A value above 1 means people use AI on that group's tasks more than its share of pay alone would lead you to expect. Switch between Claude and ChatGPT to compare the two platforms' users.",
+          "tech": "Each task's labor is split across O*NET's 161 descriptors by the paper's gamma matrix, whose rows sum to one, and the descriptors roll up to 25 bundles, so neither usage nor wage dollars are lost in the mapping. OpenAI publishes shares by intermediate work activity, allocated here to tasks in proportion to their wage value; allocating equally instead gives the same top three groups. Claude: March 2026. ChatGPT: June 2026.",
+          "src": "Anthropic Economic Index, March 2026; OpenAI Signals v2.0, June 2026; O*NET 30.3",
+          "variants": [
+            {
+              "key": "claude",
+              "label": "Claude",
+              "big": "2.5×",
+              "note": "Tasks that call for complex problem solving make up 0.9% of Claude use but only 0.3% of US wages, 2.5 times as much use as their share of pay. Tasks that call for physical strength and stamina get the least, 0.3 times.",
+              "bars": [
+                {
+                  "name": "Complex problem solving",
+                  "value": 2.515
+                },
+                {
+                  "name": "Judgment and systems analysis",
+                  "value": 1.991
+                },
+                {
+                  "name": "Analyzing information and making decisions",
+                  "value": 1.419
+                },
+                {
+                  "name": "Learning and critical thinking",
+                  "value": 1.208
+                },
+                {
+                  "name": "Reasoning and memory",
+                  "value": 1.2
+                },
+                {
+                  "name": "Communications and media knowledge",
+                  "value": 1.121
+                },
+                {
+                  "name": "Arts and humanities knowledge",
+                  "value": 1.091
+                },
+                {
+                  "name": "Reading, writing and math",
+                  "value": 1.067
+                }
+              ],
+              "unit": "use relative to share of pay (tick at 1×), top 8 of 25 groups"
+            },
+            {
+              "key": "chatgpt",
+              "label": "ChatGPT",
+              "big": "2.0×",
+              "note": "Tasks that call for judgment and systems analysis make up 1.3% of ChatGPT use but only 0.6% of US wages, 2.0 times as much use as their share of pay. Tasks that call for physical strength and stamina get the least, 0.3 times.",
+              "bars": [
+                {
+                  "name": "Judgment and systems analysis",
+                  "value": 2.026
+                },
+                {
+                  "name": "Complex problem solving",
+                  "value": 1.97
+                },
+                {
+                  "name": "Analyzing information and making decisions",
+                  "value": 1.836
+                },
+                {
+                  "name": "Reasoning and memory",
+                  "value": 1.202
+                },
+                {
+                  "name": "Reading, writing and math",
+                  "value": 1.149
+                },
+                {
+                  "name": "Communications and media knowledge",
+                  "value": 1.132
+                },
+                {
+                  "name": "Learning and critical thinking",
+                  "value": 1.128
+                },
+                {
+                  "name": "Arts and humanities knowledge",
+                  "value": 1.105
+                }
+              ],
+              "unit": "use relative to share of pay (tick at 1×), top 8 of 25 groups"
+            }
+          ],
           "tables": [
             "usage_landing.csv"
           ],
@@ -129,51 +334,6 @@
               "text": "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."
             }
           ]
-        },
-        {
-          "title": "Wages in the most-used tasks",
-          "big": "3.1%",
-          "note": "Three quarters of all AI use comes from just 243 tasks. Those tasks account for 3.1% of US wages, up from 1.8% in September 2025.",
-          "more": "Because no release leaves the most-used tasks out, this figure can be compared across every release, the June 2026 file included. Its rise means the work people use AI for most is moving toward tasks that make up more of total US pay.",
-          "tech": "The core is the smallest set of tasks covering 75% of usage in each release. The June 2026 file withholds tasks below a reporting threshold, which affects reach but not the core.",
-          "src": "Anthropic Economic Index, June 2026; OEWS wages, May 2025",
-          "series": {
-            "x": [
-              "September 2025",
-              "January 2026",
-              "March 2026",
-              "June 2026 (Apr)",
-              "June 2026 (May)"
-            ],
-            "y": [
-              1.7854,
-              2.1108,
-              2.5417,
-              3.9069,
-              3.131
-            ],
-            "fmt": "pct1",
-            "unit": "% of US wages",
-            "threshold": null
-          },
-          "tables": [
-            "usage_reach.csv"
-          ],
-          "view": "bridge",
-          "research": [
-            {
-              "stance": "background",
-              "cite": "Acemoglu (2025), Economic Policy",
-              "url": "https://doi.org/10.1093/epolic/eiae042",
-              "text": "The gains from AI depend on the share of tasks it affects and the cost it saves on them, not on technical exposure alone."
-            },
-            {
-              "stance": "method",
-              "cite": "Handa and coauthors (2025), Anthropic",
-              "url": "https://arxiv.org/abs/2503.04761",
-              "text": "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."
-            }
-          ]
         }
       ]
     },
@@ -183,7 +343,7 @@
       "why": "If AI were already reshaping work, it would show up here first: in what employers pay for different skills, in which kinds of jobs grow, and in the tasks job ads ask for.",
       "capline": "Pay: no unusual change. Job mix: largest shift since 2013. Job ads: fell before ChatGPT.",
       "mark": "Pay: no unusual change. Job mix: largest shift since 2013.",
-      "headline": "Pay hasn't changed more than usual, the mix of jobs has shifted more than at any time since 2013, and job ads turned away from tasks AI can do before ChatGPT came out.",
+      "headline": "Pay hasn't changed more than usual, the mix of jobs has shifted more than at any time since 2013 (though chance can't yet be ruled out), and job ads turned away from tasks AI can do before ChatGPT came out.",
       "items": [
         {
           "title": "Pay for different skills",
@@ -224,7 +384,8 @@
               1.0,
               1.0,
               1.0
-            ]
+            ],
+            "band": null
           },
           "tables": [
             "outcomes_pay_series_balanced.csv",
@@ -315,7 +476,8 @@
               1.0,
               1.0,
               1.0
-            ]
+            ],
+            "band": null
           },
           "tables": [
             "outcomes_quantity_series_balanced.csv"
@@ -408,7 +570,8 @@
             ],
             "fmt": "pp2",
             "unit": "share of ads, change since 2019 (points)",
-            "threshold": null
+            "threshold": null,
+            "band": null
           },
           "tables": [
             "postings_step_at_release.csv",
@@ -450,7 +613,7 @@
             {
               "stance": "different",
               "cite": "Revelio Labs (December 2025 newsletter)",
-              "url": "https://www.reveliolabs.com/news/",
+              "url": null,
               "text": "The share of AI-exposed tasks in job postings fell from 29% in early 2022 to 25.5% by early 2025, which Revelio reads as firms removing automatable duties from the jobs they post."
             },
             {
@@ -521,7 +684,8 @@
             ],
             "fmt": "pct1",
             "unit": "% of bachelor's degrees",
-            "threshold": null
+            "threshold": null,
+            "band": null
           },
           "tables": [
             "pipeline_completions_by_state.csv",
@@ -568,7 +732,8 @@
             ],
             "fmt": "pct1",
             "unit": "% of four-year undergraduates",
-            "threshold": null
+            "threshold": null,
+            "band": null
           },
           "tables": [
             "pipeline_enrolment_by_exposure.csv",
@@ -595,7 +760,7 @@
           "big": "−16%",
           "note": "Since 2022, workers aged 22 to 27 have lost ground in the jobs most exposed to AI, by 16% compared with workers aged 35 to 54.",
           "more": "From the Census Bureau's monthly Current Population Survey. For each age group we divide employment in the most exposed third of jobs by employment in all other jobs, then compare the young group's ratio with the older group's. Over the last 12 months the gap was 8.4 points wider than in the months before. In 1,000 random reorderings of the months, none produced a gap that large. The data start in January 2022, so they can't show whether the decline began before ChatGPT.",
-          "tech": "The gauge is (E_young,exposed / E_young,other) / (E_prime,exposed / E_prime,other), with composited CPS weights, exposed meaning the top third of occupations on the Eloundou measure, Census codes mapped to SOC with OEWS employment weights, and the series indexed to 2022. The permutation relabels which months count as the last twelve at the level of CPS rotation groups, so the overlap between adjacent months' samples is kept under the null.",
+          "tech": "The gauge is (E_young,exposed / E_young,other) / (E_prime,exposed / E_prime,other), with composited CPS weights, exposed meaning the top third of occupations on the Eloundou measure, Census codes mapped to SOC with OEWS employment weights, and the series indexed to 2022. The permutation relabels which months count as the last twelve at the level of CPS rotation groups, so the overlap between adjacent months' samples is kept under the null. The band is plus or minus 1.96 standard errors from the random-groups method over the eight rotation groups, recomputing the gauge with each group left out.",
           "src": "Current Population Survey, January 2022 to August 2026",
           "series": {
             "x": [
@@ -710,7 +875,119 @@
             ],
             "fmt": "pct0s",
             "unit": "% change since 2022, against ages 35 to 54",
-            "threshold": null
+            "threshold": null,
+            "band": [
+              [
+                -4.1673,
+                -4.4208,
+                -4.6923,
+                -6.872,
+                -5.917,
+                -4.7539,
+                -3.235,
+                -1.2396,
+                -2.4312,
+                -3.0978,
+                -4.9963,
+                -4.7088,
+                -6.6249,
+                -6.4601,
+                -6.6798,
+                -4.8851,
+                -6.1582,
+                -5.4453,
+                -7.5703,
+                -9.9445,
+                -11.5518,
+                -11.8283,
+                -11.5769,
+                -9.8168,
+                -7.0706,
+                -4.587,
+                -2.4708,
+                -2.0985,
+                -5.1513,
+                -6.3816,
+                -8.4604,
+                -10.521,
+                -11.7991,
+                -11.527,
+                -13.2084,
+                -12.2758,
+                -12.3475,
+                -12.2707,
+                -11.7041,
+                -9.8119,
+                -10.9816,
+                -8.9365,
+                -11.9221,
+                -13.1692,
+                -18.1544,
+                -16.6345,
+                -18.546,
+                -17.8046,
+                -17.0694,
+                -18.3224,
+                -15.9218,
+                -17.498,
+                -21.0386
+              ],
+              [
+                -0.3369,
+                1.587,
+                3.5365,
+                2.975,
+                2.22,
+                4.4296,
+                7.1891,
+                7.9609,
+                7.1279,
+                4.399,
+                2.6223,
+                0.0092,
+                2.1882,
+                3.3013,
+                1.8967,
+                0.1199,
+                1.3519,
+                4.3462,
+                3.9319,
+                0.7564,
+                -2.9864,
+                -5.4312,
+                -1.8389,
+                0.1474,
+                1.1955,
+                2.3182,
+                2.6144,
+                2.8912,
+                1.2062,
+                -1.8425,
+                -3.1408,
+                -3.0472,
+                -5.1764,
+                -5.7389,
+                -3.2625,
+                -0.2245,
+                -1.5125,
+                -3.0982,
+                -6.5484,
+                -4.7425,
+                -0.931,
+                -1.0112,
+                -4.3952,
+                -7.2233,
+                -8.2145,
+                -8.704,
+                -6.9814,
+                -6.9126,
+                -7.6026,
+                -8.1522,
+                -9.5217,
+                -9.7731,
+                -10.8689
+              ]
+            ]
           },
           "tables": [
             "cps_young_worker_gauge.csv",

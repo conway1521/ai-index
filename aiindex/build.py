@@ -137,6 +137,7 @@ def build_state(states: pd.DataFrame, measures: pd.DataFrame) -> dict:
     annual["state_abbr"] = annual["state_fips"].map({v: k for k, v in state.STATE_FIPS.items()})
     _write("state_adoption_btos", annual)
     _write("state_adoption_btos_biweekly", adoption)
+    _write("adoption_btos_national", btos.national_series())
     from . import aei
     usage_states = []
     for path in sorted(aei.AEI_DIR.rglob("aei_raw_claude_ai_*.csv")):
@@ -257,6 +258,10 @@ def build_cps(measures: pd.Series, employment: pd.Series) -> pd.DataFrame | None
     periods = sorted(cells["period"].unique())
     base = ("2022-01", "2022-12") if grade == "real" else (str(periods[0]), str(periods[min(2, len(periods) - 1)]))
     gauge = cps.gauge(cells, base=base, pooling=3 if grade == "real" else 2)
+    kept = len(checks.ROWS)
+    band = cps.rotation_se(cells, base=base, pooling=3 if grade == "real" else 2)
+    del checks.ROWS[kept:]
+    _write("cps_young_worker_se", band)
     _write("cps_young_worker_gauge", gauge)
     _write("cps_cells", cells.assign(period=cells["period"].astype(str)))
     if grade == "real" and len(periods) > 24:
@@ -401,7 +406,7 @@ _STUDIES = {
             "The decomposition into change within occupations and change in the mix of occupations."),
     "chen": ("Chen, Srinivasan and Zakerinia (2025), Harvard Business School", "https://www.library.hbs.edu/working-knowledge/enhance-or-eliminate-how-ai-will-likely-change-these-jobs", "ads",
              "Postings for structured, repetitive occupations fell 13% after ChatGPT's launch, while analytical, technical and creative roles rose 20%."),
-    "revelio25": ("Revelio Labs (December 2025 newsletter)", "https://www.reveliolabs.com/news/", "ads",
+    "revelio25": ("Revelio Labs (December 2025 newsletter)", None, "ads",
                   "The share of AI-exposed tasks in job postings fell from 29% in early 2022 to 25.5% by early 2025."),
     "revelio26": ("Revelio Labs AI Labor Market Tracker (August 2026)", "https://www.reveliolabs.com/news/ai-and-work/introduction-the-revelio-ai-labor-market-tracker", "effects",
                   "Employment in the most AI-exposed jobs is down against the least exposed since November 2022, by 19% for workers aged 22 to 25."),
@@ -443,18 +448,19 @@ _RESEARCH = {
         _study("consistent", "handa", "In the first report on these data, about 36% of occupations used AI for at least a quarter of their tasks."),
         _study("background", "eloundou"),
         _study("background", "bls"),
+        _study("background", "acemoglu25"),
         _study("method", "handa", "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."),
         _study("method", "aa", "The task framework, which is why use is measured task by task and weighted by what each task is paid."),
     ],
-    ("bridge", 1): [
+    ("bridge", 2): [
         _study("consistent", "handa", "Software development and writing tasks make up nearly half of all use."),
         _study("background", "gmyrek"),
         _study("background", "felten", "Score exposure from abilities, one of several measures whose disagreements this page's research compares."),
         _study("method", "handa", "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."),
     ],
-    ("bridge", 2): [
-        _study("background", "acemoglu25"),
-        _study("method", "handa", "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."),
+    ("bridge", 1): [
+        _study("background", "lw", "Use this survey with job postings and find no reduction in postings at firms or industries that adopted more AI."),
+        _study("background", "yale"),
     ],
     ("city", 0): [
         _study("consistent", "humlum"),
@@ -619,9 +625,10 @@ def export_site(release: str) -> Path:
 
     # The words on the page. Every sentence is written for a reader who has not seen the method: what moved, by how much,
     # and the one thing that limits it. The tests behind the city are described by what they compare, never by their units.
-    def series(x, y, fmt, threshold=None, unit=""):
+    def series(x, y, fmt, threshold=None, unit="", band=None):
         return {"x": [str(v) for v in x], "y": [round(float(v), 4) for v in y], "fmt": fmt, "unit": unit,
-                "threshold": None if threshold is None else [round(float(v), 4) for v in threshold]}
+                "threshold": None if threshold is None else [round(float(v), 4) for v in threshold],
+                "band": None if band is None else [[round(float(v), 4) for v in band[0]], [round(float(v), 4) for v in band[1]]]}
     def label(release):
         tag = str(release)
         return _published(tag) + (f" ({datetime.strptime(tag.split('(')[1][:7], '%Y-%m').strftime('%b')})"
@@ -634,6 +641,24 @@ def export_site(release: str) -> Path:
     top_path = landing[(landing["platform"] == "anthropic") & (landing["bundle"] == top["bundle"])
                        & landing["release"].isin(complete["release"])].sort_values("release")
     young_series = gauge.assign(v=(gauge["young_relative_to_prime"] - 1) * 100)
+    se_path = tables / "cps_young_worker_se.csv"
+    young_se = pd.read_csv(se_path).set_index("period")["se"] if se_path.exists() else None
+    firms = pd.read_csv(tables / "adoption_btos_national.csv", parse_dates=["ref_end"])
+    firms = firms[(firms["series"] == "ai_in_any_function") & firms["share_using_ai"].notna()].sort_values("ref_end")
+    firms_first, firms_last = firms.iloc[0], firms.iloc[-1]
+    firms_first_v, firms_now = float(firms_first["share_using_ai"]), float(firms_last["share_using_ai"])
+    chatgpt = landing[(landing["platform"] == "openai") & (landing["release"] == "2026-06 (dollar allocation)")].sort_values("concentration")
+
+    def platform_variant(label_, frame):
+        hi, lo = frame.iloc[-1], frame.iloc[0]
+        ranked = frame.sort_values("concentration", ascending=False)
+        return {"key": label_.lower(), "label": label_, "big": f"{hi['concentration']:.1f}×",
+                "note": (f"Tasks that call for {plain(hi['bundle_id'])} make up {pct(hi['usage_share_on_bundle'], 1)} of {label_} use "
+                         f"but only {pct(hi['wage_bill_share_on_bundle'], 1)} of US wages, {hi['concentration']:.1f} times as much use as "
+                         f"their share of pay. Tasks that call for {plain(lo['bundle_id'])} get the least, {lo['concentration']:.1f} times."),
+                "bars": [{"name": plain(b_id).capitalize(), "value": round(float(v), 3)}
+                         for b_id, v in zip(ranked["bundle_id"], ranked["concentration"])][:8],
+                "unit": "use relative to share of pay (tick at 1×), top 8 of 25 groups"}
     start, end = int(pay["year"]) - 3, int(pay["year"])
     earlier = int(pay["consecutive_relabellings"]) - 1
     windows = int(qty["consecutive_relabellings"])
@@ -652,52 +677,62 @@ def export_site(release: str) -> Path:
 
     views = {
         "bridge": {
-            "index": "Use", "index_line": "How much of the country's paid work involves tasks people already use AI for",
-            "why": ("If AI is going to change work, it will start with the tasks people already bring to it, so this index shows "
-                    "where change could come first."),
-            "capline": f"{wages}% of US wages are in tasks people use AI for; {_published(latest['release'])}",
-            "mark": f"{wages}% of US wages are in tasks people use AI for",
-            "headline": (f"Tasks people use AI for make up {wages}% of US wages, and the heaviest use, relative to pay, "
-                         f"is on {top_name}."),
+            "index": "Use", "index_line": "How much of the country's paid work involves tasks people already use AI for, and how many firms use it",
+            "why": ("If AI is going to change work, it will start with the tasks people already bring to it and the firms that adopt it, "
+                    "so this index shows where change could come first."),
+            "capline": f"{wages}% of US wages are in tasks people use Claude for; {firms_now:.1f}% of firms use AI",
+            "mark": f"{wages}% of US wages are in tasks people use Claude for",
+            "headline": (f"Tasks people use Claude for make up {wages}% of US wages, {firms_now:.0f}% of US firms now use AI, and "
+                         f"use relative to pay is heaviest on {top_name}."),
             "items": [
-                {"title": "Share of US wages in tasks people use AI for", "big": f"{wages}%",
-                 "note": (f"Up from {first_share}% in {_published(first['release'])}. A task counts once people use Claude for it at all, "
-                          f"so this shows how widely AI use has spread across paid work, but not how much of that work AI does."),
+                {"title": "Share of US wages in tasks people use Claude for", "big": f"{wages}%",
+                 "note": (f"Up from {first_share}% in {_published(first['release'])}. A task counts once anyone uses Claude for it, so part "
+                          f"of that rise comes from each release covering more tasks ({int(first['tasks_used']):,} then, "
+                          f"{int(latest['tasks_used']):,} now). The tasks behind three quarters of all use, a measure that more coverage "
+                          f"does not move, rose from {core_first:.1f}% to {core:.1f}% of US wages."),
                  "more": (f"The Anthropic Economic Index sorts conversations with Claude into the job tasks the Labor Department lists for "
                           f"each occupation (O*NET). We add up what US workers earn on the tasks that appear, using the BLS wage tables. "
                           f"The June 2026 file leaves out rarely used tasks, so this figure uses {_published(latest['release'])}, the most "
                           f"recent file that lists them all. Tasks people hand to Claude to do entirely account for "
-                          f"{round(float(split['delegated_share']) * 100)}% of US wages."),
+                          f"{round(float(split['delegated_share']) * 100)}% of US wages. ChatGPT is not shown here: OpenAI publishes use "
+                          f"by broad work activity, so every task under an activity would count and the figure would not be comparable."),
                  "tech": ("Each occupation's OEWS wage bill is split across its O*NET tasks by frequency-weighted task shares, so "
                           "task values sum exactly to the occupation's bill. Reach is the share of the national wage bill in tasks with "
-                          "any published usage; delegated reach scales each task by the share of its usage classed as automation. "
-                          "Claude.ai users are a selected population, so this describes where one platform's use falls."),
+                          "any published usage, which rises mechanically with the number of tasks a release covers; the core, the "
+                          f"smallest set of tasks covering 75% of usage ({tasks_core} tasks in the latest file), does not. The published "
+                          "shares come without sampling errors, so no band is drawn. Claude.ai users are a selected population."),
                  "src": f"Anthropic Economic Index, {_published(latest['release'])}; OEWS wages, May {int(pay['year'])}",
                  "series": series([label(r) for r in complete["release"]], complete["reach_share"] * 100, "pct0", unit="% of US wages"),
                  "tables": ["usage_reach.csv"]},
+                {"title": "Firms using AI", "big": f"{firms_now:.1f}%",
+                 "note": (f"{firms_now:.1f}% of US businesses used AI in some part of their work in the two weeks to "
+                          f"{firms_last['ref_end'].strftime('%-d %B %Y')}, up from {firms_first_v:.1f}% in "
+                          f"{firms_first['ref_end'].strftime('%B %Y')}. The band shows the Census Bureau's 95% margin of error."),
+                 "more": ("The Census Bureau's Business Trends and Outlook Survey asks firms every two weeks whether they used AI in any "
+                          "of their business functions. The question took this wording in November 2025, so the series starts then; the "
+                          "earlier question, about AI in producing goods or services, measures something narrower and is not joined to it."),
+                 "tech": ("National estimates and standard errors as published, for the share answering yes; the band is the estimate "
+                          "plus or minus 1.96 standard errors. The survey counts firms, not workers or spending, so a small firm and a large "
+                          "one weigh the same."),
+                 "src": f"Census Bureau, Business Trends and Outlook Survey, {firms_first['ref_end'].strftime('%B %Y')} to {firms_last['ref_end'].strftime('%B %Y')}",
+                 "series": series(firms["ref_end"].dt.strftime("%Y-%m-%d"), firms["share_using_ai"], "pct1", unit="% of US firms using AI",
+                                  band=(firms["share_using_ai"] - 1.96 * firms["se"], firms["share_using_ai"] + 1.96 * firms["se"])),
+                 "tables": ["adoption_btos_national.csv"]},
                 {"title": "Where AI use is heaviest", "big": f"{top['concentration']:.1f}×",
-                 "note": (f"{top_name.capitalize()} account for {pct(top['usage_share_on_bundle'], 1)} of AI use but only "
+                 "note": (f"{top_name.capitalize()} account for {pct(top['usage_share_on_bundle'], 1)} of Claude use but only "
                           f"{pct(top['wage_bill_share_on_bundle'], 1)} of US wages, {top['concentration']:.1f} times as much use as "
                           f"their share of pay. {low_name.capitalize()} get the least, {low['concentration']:.1f} times."),
                  "more": (f"We sort job tasks into 25 skill groups and compare each group's share of AI use with its share of US wages. "
-                          f"A value above 1 means people use AI on that group's tasks more than its share of pay alone would lead you to expect."),
+                          f"A value above 1 means people use AI on that group's tasks more than its share of pay alone would lead you to "
+                          f"expect. Switch between Claude and ChatGPT to compare the two platforms' users."),
                  "tech": ("Each task's labor is split across O*NET's 161 descriptors by the paper's gamma matrix, whose rows sum to "
                           "one, and the descriptors roll up to 25 bundles, so neither usage nor wage dollars are lost in the mapping. "
-                          "The ratio is a bundle's share of usage over its share of the wage bill."),
-                 "src": f"Anthropic Economic Index, {_published(latest['release'])}; O*NET {release}",
-                 "series": series([label(r) for r in top_path["release"]], top_path["concentration"], "x1", unit="AI use relative to share of pay"),
+                          "OpenAI publishes shares by intermediate work activity, allocated here to tasks in proportion to their wage "
+                          f"value; allocating equally instead gives the same top three groups. Claude: {_published(latest['release'])}. "
+                          "ChatGPT: June 2026."),
+                 "src": f"Anthropic Economic Index, {_published(latest['release'])}; OpenAI Signals v2.0, June 2026; O*NET {release}",
+                 "variants": [platform_variant("Claude", here), platform_variant("ChatGPT", chatgpt)],
                  "tables": ["usage_landing.csv"]},
-                {"title": "Wages in the most-used tasks", "big": f"{core:.1f}%",
-                 "note": (f"Three quarters of all AI use comes from just {tasks_core} tasks. Those tasks account for {core:.1f}% of US wages, "
-                          f"up from {core_first:.1f}% in {_published(anthropic.iloc[0]['release'])}."),
-                 "more": (f"Because no release leaves the most-used tasks out, this figure can be compared across every release, the June "
-                          f"2026 file included. Its rise means the work people use AI for most is moving toward tasks that make up "
-                          + ("more" if core > core_first else "less") + " of total US pay."),
-                 "tech": ("The core is the smallest set of tasks covering 75% of usage in each release. The June 2026 file "
-                          "withholds tasks below a reporting threshold, which affects reach but not the core."),
-                 "src": f"Anthropic Economic Index, {_published(newest['release'])}; OEWS wages, May {int(pay['year'])}",
-                 "series": series([label(r) for r in anthropic["release"]], anthropic["reach_share_three_quarters"] * 100, "pct1", unit="% of US wages"),
-                 "tables": ["usage_reach.csv"]},
             ],
         },
         "city": {
@@ -707,7 +742,7 @@ def export_site(release: str) -> Path:
             "capline": (f"Pay: {pay_big.lower()}. Job mix: {mix_big.lower()}. Job ads: {ads_big[0].lower() + ads_big[1:]}."),
             "mark": f"Pay: {pay_big.lower()}. Job mix: {mix_big.lower()}.",
             "headline": (("Pay has changed more than usual" if pay_out else "Pay hasn't changed more than usual")
-                         + (f", the mix of jobs has shifted more than at any time since {since}" if qty_record else
+                         + (f", the mix of jobs has shifted more than at any time since {since} (though chance can't yet be ruled out)" if qty_record else
                             ", the mix of jobs has shifted more than usual" if qty_out else "")
                          + (", and job ads turned away from tasks AI can do before ChatGPT came out." if fell_before else
                             ", and job ads show no change at ChatGPT's release.")),
@@ -825,9 +860,13 @@ def export_site(release: str) -> Path:
                           "weights, exposed meaning the top third of occupations on the Eloundou measure, Census codes mapped to SOC "
                           "with OEWS employment weights, and the series indexed to 2022. The permutation relabels which months count "
                           "as the last twelve at the level of CPS rotation groups, so the overlap between adjacent months' samples is "
-                          "kept under the null."),
+                          "kept under the null. The band is plus or minus 1.96 standard errors from the random-groups method over the "
+                          "eight rotation groups, recomputing the gauge with each group left out."),
                  "src": f"Current Population Survey, January 2022 to {g_when}",
-                 "series": series(young_series["period"], young_series["v"], "pct0s", unit="% change since 2022, against ages 35 to 54"),
+                 "series": series(young_series["period"], young_series["v"], "pct0s", unit="% change since 2022, against ages 35 to 54",
+                                  band=None if young_se is None else
+                                  (young_series["v"] - 196 * young_series["period"].map(young_se).fillna(0),
+                                   young_series["v"] + 196 * young_series["period"].map(young_se).fillna(0))),
                  "tables": ["cps_young_worker_gauge.csv"] + (["cps_young_worker_test.csv"] if gtest is not None else [])},
             ],
         },
@@ -838,15 +877,17 @@ def export_site(release: str) -> Path:
             entry["research"] = _RESEARCH.get((key, i), [])
 
     # the opening paragraph: one sentence per index, each linked to its view
-    lede = (f'Tasks people use AI for make up <a href="#bridge" data-view="bridge">{wages}% of US wages</a>. '
+    lede = (f'Tasks people use Claude for make up <a href="#bridge" data-view="bridge">{wages}% of US wages</a>. '
             + ('<a href="#city" data-view="city">Pay has changed more than usual</a>' if pay_out else
                '<a href="#city" data-view="city">Pay hasn\'t changed more than usual</a>')
-            + (f", but the mix of jobs has shifted more than at any time since {since}. " if qty_record else
+            + (f". The mix of jobs has shifted more than at any time since {since}, though with only {_words(windows)} periods to compare, "
+               f"chance can't yet be ruled out. " if qty_record else
                ", but the mix of jobs has shifted more than usual. " if qty_out else ". ")
             + f'And <a href="#binoculars" data-view="valley">{degrees:.0f}% of new degrees</a> are in fields that lead to the jobs most exposed to AI.')
 
     meaning = [
-        f"Use: AI use already covers tasks worth {wages}% of US pay, but most of it comes from a few hundred tasks.",
+        (f"Use: Tasks people use Claude for are worth {wages}% of US pay, but the most-used few hundred are worth {core:.1f}%, "
+         f"and {firms_now:.0f}% of US firms now use AI."),
         ("Jobs: " + ("AI hasn't shown up in pay. " if not pay_out else "Pay has changed more than usual. ")
          + ("The mix of jobs has shifted more than usual, though chance can't yet be ruled out, " if qty_out and odds and odds < 20 else
             "The mix of jobs has shifted, " if qty_out else "The mix of jobs is within its usual range, ")

@@ -316,6 +316,14 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 .card details .rel b,.card details .tech b,.reading .lens b{font-weight:600;color:var(--ink)}
 .card details .tech{font-size:14px}
 .card .res{margin:6px 0 0;font-size:14px;color:var(--ink-3)}
+.chart .band{fill:var(--ink);opacity:.09;stroke:none}
+.chart .bar{fill:var(--ink)}
+.chart .lbl{fill:var(--ink-2)}
+.seg{display:inline-flex;margin-left:10px;border:1px solid var(--ink);vertical-align:middle}
+.seg button{font:inherit;font-size:13px;font-weight:400;background:transparent;color:var(--ink);border:0;padding:3px 10px;cursor:pointer;min-height:28px}
+.seg button+button{border-left:1px solid var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.seg button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .card .res:empty{margin:0}
 .pop{position:relative;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;color:var(--ink-2)}
 .pop:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
@@ -377,7 +385,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     <li><a href="#city" data-view="city"><b>Jobs</b> (the city)</a><span class="why">whether it has arrived</span><span class="what">Whether pay, the mix of jobs and what job ads ask for have changed more than usual.</span></li>
     <li><a href="#binoculars" data-view="valley"><b>Training</b> (the binoculars)</a><span class="why">how the next workforce adapts</span><span class="what">What students choose to study, and whether young workers still get the jobs most exposed to AI.</span></li>
   </ul>
-  <p class="lede" id="lede">Tasks people use AI for make up <a href="#bridge" data-view="bridge">23% of US wages</a>. <a href="#city" data-view="city">Pay hasn't changed more than usual</a>, but the mix of jobs has shifted more than at any time since 2013. And <a href="#binoculars" data-view="valley">42% of new degrees</a> are in fields that lead to the jobs most exposed to AI.</p>
+  <p class="lede" id="lede">Tasks people use Claude for make up <a href="#bridge" data-view="bridge">23% of US wages</a>. <a href="#city" data-view="city">Pay hasn't changed more than usual</a>. The mix of jobs has shifted more than at any time since 2013, though with only eleven periods to compare, chance can't yet be ruled out. And <a href="#binoculars" data-view="valley">42% of new degrees</a> are in fields that lead to the jobs most exposed to AI.</p>
   <noscript><p class="sub">The drawing and the charts need JavaScript. The three headline findings are in the sentence above, the sources are listed at the foot of the page, and every table behind them is in the <a href="https://github.com/conway1521/ai-index">repository</a>.</p></noscript>
   <details class="meaning" id="meaning"><summary>What does this mean</summary><div id="meaning-body"></div></details>
   <nav class="indices" id="indices" aria-label="The three indices"></nav>
@@ -503,9 +511,9 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   <section class="sources" id="sources" aria-labelledby="sources-h">
     <h3 id="sources-h">Sources</h3>
     <h4>Use (the bridge)</h4>
-    <p><a href="https://huggingface.co/datasets/Anthropic/EconomicIndex"><b>Anthropic Economic Index</b></a>, use of Claude by O*NET task, with the split between automation and augmentation, releases from September 2025 to the June 2026 monthly file. <a href="https://openai.com/signals/data-download/"><b>OpenAI Signals v2.0</b></a>, work-related messages by work activity, monthly to June 2026; each platform sees only its own users, so the two are never averaged, and the cards show the Anthropic data. <a href="https://www.bls.gov/oes/"><b>OEWS</b></a>, wages and employment by occupation, BLS, May 2025.</p>
+    <p><a href="https://huggingface.co/datasets/Anthropic/EconomicIndex"><b>Anthropic Economic Index</b></a>, use of Claude by O*NET task, with the split between automation and augmentation, releases from September 2025 to the June 2026 monthly file. <a href="https://openai.com/signals/data-download/"><b>OpenAI Signals v2.0</b></a>, work-related messages by work activity, June 2026, shown beside Claude on the skill-group card; each platform sees only its own users, so the two are never averaged. <a href="https://www.census.gov/hfp/btos"><b>BTOS</b></a>, the share of US firms using AI, Census Bureau, biweekly from November 2025 to September 2026, with its published standard errors. <a href="https://www.bls.gov/oes/"><b>OEWS</b></a>, wages and employment by occupation, BLS, May 2025.</p>
     <h4>Jobs (the city)</h4>
-    <p><a href="https://www.bls.gov/oes/"><b>OEWS</b></a>, wages and employment by occupation, BLS, May 2012 to May 2025. <a href="https://www.onetcenter.org/database.html"><b>O*NET 30.3</b></a>, tasks, ratings and skills, Department of Labor. <a href="https://doi.org/10.5281/zenodo.22219027"><b>NLx job ads</b></a>, the tasks named in the ads of the National Labor Exchange, monthly from September 2015 to September 2025, in the aggregates of <a href="https://arxiv.org/abs/2510.01470">Meisenbacher, Nestorov and Norlander</a>. <a href="https://www.census.gov/hfp/btos"><b>BTOS</b></a>, firms using AI, Census Bureau, biweekly cycles from November 2025 to September 2026. Occupation crosswalks from the Census Bureau, NCES and BLS.</p>
+    <p><a href="https://www.bls.gov/oes/"><b>OEWS</b></a>, wages and employment by occupation, BLS, May 2012 to May 2025. <a href="https://www.onetcenter.org/database.html"><b>O*NET 30.3</b></a>, tasks, ratings and skills, Department of Labor. <a href="https://doi.org/10.5281/zenodo.22219027"><b>NLx job ads</b></a>, the tasks named in the ads of the National Labor Exchange, monthly from September 2015 to September 2025, in the aggregates of <a href="https://arxiv.org/abs/2510.01470">Meisenbacher, Nestorov and Norlander</a>. Occupation crosswalks from the Census Bureau, NCES and BLS.</p>
     <h4>Training (the binoculars)</h4>
     <p><a href="https://nces.ed.gov/ipeds/"><b>IPEDS</b></a> completions by field and institution, NCES, 2023 to 2025. <a href="https://nscresearchcenter.org/current-term-enrollment-estimates/"><b>National Student Clearinghouse</b></a>, undergraduate enrollment at four-year institutions by field family, fall 2019 to fall 2024. <a href="https://www.census.gov/programs-surveys/acs"><b>ACS</b></a> 2024, field of degree against occupation, which shows where graduates of each field work. <a href="https://www.census.gov/programs-surveys/cps.html"><b>CPS</b></a> basic monthly, Census Bureau, January 2022 to August 2026. Exposure throughout is the task measure of <a href="https://doi.org/10.1126/science.adj0998">Eloundou, Manning, Mishkin and Rock (2024)</a>.</p>
   </section>
@@ -521,9 +529,9 @@ body *{letter-spacing:0 !important;text-transform:none !important}
 
 <script type="application/json" id="readings">{
   "built": "15 October 2026",
-  "lede": "Tasks people use AI for make up <a href=\"#bridge\" data-view=\"bridge\">23% of US wages<\/a>. <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual<\/a>, but the mix of jobs has shifted more than at any time since 2013. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees<\/a> are in fields that lead to the jobs most exposed to AI.",
+  "lede": "Tasks people use Claude for make up <a href=\"#bridge\" data-view=\"bridge\">23% of US wages<\/a>. <a href=\"#city\" data-view=\"city\">Pay hasn't changed more than usual<\/a>. The mix of jobs has shifted more than at any time since 2013, though with only eleven periods to compare, chance can't yet be ruled out. And <a href=\"#binoculars\" data-view=\"valley\">42% of new degrees<\/a> are in fields that lead to the jobs most exposed to AI.",
   "meaning": [
-    "Use: AI use already covers tasks worth 23% of US pay, but most of it comes from a few hundred tasks.",
+    "Use: Tasks people use Claude for are worth 23% of US pay, but the most-used few hundred are worth 3.1%, and 24% of US firms now use AI.",
     "Jobs: AI hasn't shown up in pay. The mix of jobs has shifted more than usual, though chance can't yet be ruled out, and job ads moved away from tasks AI can do before ChatGPT came out.",
     "Training: The share of degrees and enrollment in exposed fields has risen slightly, so students have not moved away from them. Young workers' place in exposed jobs, against older workers', is 16% lower than in 2022."
   ],
@@ -533,18 +541,18 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   "views": {
     "bridge": {
       "index": "Use",
-      "index_line": "How much of the country's paid work involves tasks people already use AI for",
-      "why": "If AI is going to change work, it will start with the tasks people already bring to it, so this index shows where change could come first.",
-      "capline": "23% of US wages are in tasks people use AI for; March 2026",
-      "mark": "23% of US wages are in tasks people use AI for",
-      "headline": "Tasks people use AI for make up 23% of US wages, and the heaviest use, relative to pay, is on complex problem solving skills.",
+      "index_line": "How much of the country's paid work involves tasks people already use AI for, and how many firms use it",
+      "why": "If AI is going to change work, it will start with the tasks people already bring to it and the firms that adopt it, so this index shows where change could come first.",
+      "capline": "23% of US wages are in tasks people use Claude for; 23.8% of firms use AI",
+      "mark": "23% of US wages are in tasks people use Claude for",
+      "headline": "Tasks people use Claude for make up 23% of US wages, 24% of US firms now use AI, and use relative to pay is heaviest on complex problem solving skills.",
       "items": [
         {
-          "title": "Share of US wages in tasks people use AI for",
+          "title": "Share of US wages in tasks people use Claude for",
           "big": "23%",
-          "note": "Up from 18% in September 2025. A task counts once people use Claude for it at all, so this shows how widely AI use has spread across paid work, but not how much of that work AI does.",
-          "more": "The Anthropic Economic Index sorts conversations with Claude into the job tasks the Labor Department lists for each occupation (O*NET). We add up what US workers earn on the tasks that appear, using the BLS wage tables. The June 2026 file leaves out rarely used tasks, so this figure uses March 2026, the most recent file that lists them all. Tasks people hand to Claude to do entirely account for 6% of US wages.",
-          "tech": "Each occupation's OEWS wage bill is split across its O*NET tasks by frequency-weighted task shares, so task values sum exactly to the occupation's bill. Reach is the share of the national wage bill in tasks with any published usage; delegated reach scales each task by the share of its usage classed as automation. Claude.ai users are a selected population, so this describes where one platform's use falls.",
+          "note": "Up from 18% in September 2025. A task counts once anyone uses Claude for it, so part of that rise comes from each release covering more tasks (2,051 then, 2,525 now). The tasks behind three quarters of all use, a measure that more coverage does not move, rose from 1.8% to 3.1% of US wages.",
+          "more": "The Anthropic Economic Index sorts conversations with Claude into the job tasks the Labor Department lists for each occupation (O*NET). We add up what US workers earn on the tasks that appear, using the BLS wage tables. The June 2026 file leaves out rarely used tasks, so this figure uses March 2026, the most recent file that lists them all. Tasks people hand to Claude to do entirely account for 6% of US wages. ChatGPT is not shown here: OpenAI publishes use by broad work activity, so every task under an activity would count and the figure would not be comparable.",
+          "tech": "Each occupation's OEWS wage bill is split across its O*NET tasks by frequency-weighted task shares, so task values sum exactly to the occupation's bill. Reach is the share of the national wage bill in tasks with any published usage, which rises mechanically with the number of tasks a release covers; the core, the smallest set of tasks covering 75% of usage (243 tasks in the latest file), does not. The published shares come without sampling errors, so no band is drawn. Claude.ai users are a selected population.",
           "src": "Anthropic Economic Index, March 2026; OEWS wages, May 2025",
           "series": {
             "x": [
@@ -559,7 +567,8 @@ body *{letter-spacing:0 !important;text-transform:none !important}
             ],
             "fmt": "pct0",
             "unit": "% of US wages",
-            "threshold": null
+            "threshold": null,
+            "band": null
           },
           "tables": [
             "usage_reach.csv"
@@ -585,6 +594,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               "text": "Combines five exposure measures across 831 occupations and keeps what AI could do apart from what people use it for."
             },
             {
+              "stance": "background",
+              "cite": "Acemoglu (2025), Economic Policy",
+              "url": "https://doi.org/10.1093/epolic/eiae042",
+              "text": "The gains from AI depend on the share of tasks it affects and the cost it saves on them, not on technical exposure alone."
+            },
+            {
               "stance": "method",
               "cite": "Handa and coauthors (2025), Anthropic",
               "url": "https://arxiv.org/abs/2503.04761",
@@ -599,27 +614,225 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           ]
         },
         {
-          "title": "Where AI use is heaviest",
-          "big": "2.5×",
-          "note": "Complex problem solving skills account for 0.9% of AI use but only 0.3% of US wages, 2.5 times as much use as their share of pay. Physical abilities get the least, 0.3 times.",
-          "more": "We sort job tasks into 25 skill groups and compare each group's share of AI use with its share of US wages. A value above 1 means people use AI on that group's tasks more than its share of pay alone would lead you to expect.",
-          "tech": "Each task's labor is split across O*NET's 161 descriptors by the paper's gamma matrix, whose rows sum to one, and the descriptors roll up to 25 bundles, so neither usage nor wage dollars are lost in the mapping. The ratio is a bundle's share of usage over its share of the wage bill.",
-          "src": "Anthropic Economic Index, March 2026; O*NET 30.3",
+          "title": "Firms using AI",
+          "big": "23.8%",
+          "note": "23.8% of US businesses used AI in some part of their work in the two weeks to 6 September 2026, up from 17.3% in November 2025. The band shows the Census Bureau's 95% margin of error.",
+          "more": "The Census Bureau's Business Trends and Outlook Survey asks firms every two weeks whether they used AI in any of their business functions. The question took this wording in November 2025, so the series starts then; the earlier question, about AI in producing goods or services, measures something narrower and is not joined to it.",
+          "tech": "National estimates and standard errors as published, for the share answering yes; the band is the estimate plus or minus 1.96 standard errors. The survey counts firms, not workers or spending, so a small firm and a large one weigh the same.",
+          "src": "Census Bureau, Business Trends and Outlook Survey, November 2025 to September 2026",
           "series": {
             "x": [
-              "September 2025",
-              "January 2026",
-              "March 2026"
+              "2025-11-16",
+              "2025-11-30",
+              "2025-12-14",
+              "2025-12-28",
+              "2026-01-11",
+              "2026-01-25",
+              "2026-02-08",
+              "2026-02-22",
+              "2026-03-08",
+              "2026-03-22",
+              "2026-04-05",
+              "2026-04-19",
+              "2026-05-03",
+              "2026-05-17",
+              "2026-05-31",
+              "2026-06-14",
+              "2026-06-28",
+              "2026-07-12",
+              "2026-07-26",
+              "2026-08-09",
+              "2026-08-23",
+              "2026-09-06"
             ],
             "y": [
-              2.9179,
-              2.6082,
-              2.515
+              17.3,
+              17.2,
+              17.8,
+              17.7,
+              18.2,
+              18.9,
+              17.5,
+              18.2,
+              18.9,
+              19.1,
+              19.8,
+              19.8,
+              19.5,
+              20.6,
+              20.6,
+              20.6,
+              21.7,
+              21.5,
+              21.8,
+              22.4,
+              23.2,
+              23.8
             ],
-            "fmt": "x1",
-            "unit": "AI use relative to share of pay",
-            "threshold": null
+            "fmt": "pct1",
+            "unit": "% of US firms using AI",
+            "threshold": null,
+            "band": [
+              [
+                16.9472,
+                16.7492,
+                16.8788,
+                17.112,
+                17.7296,
+                18.1356,
+                16.716,
+                17.5728,
+                18.2728,
+                18.2768,
+                19.2316,
+                19.3296,
+                19.0296,
+                20.0316,
+                20.0708,
+                19.8356,
+                21.0924,
+                20.6768,
+                21.1532,
+                21.6944,
+                22.6512,
+                23.2904
+              ],
+              [
+                17.6528,
+                17.6508,
+                18.7212,
+                18.288,
+                18.6704,
+                19.6644,
+                18.284,
+                18.8272,
+                19.5272,
+                19.9232,
+                20.3684,
+                20.2704,
+                19.9704,
+                21.1684,
+                21.1292,
+                21.3644,
+                22.3076,
+                22.3232,
+                22.4468,
+                23.1056,
+                23.7488,
+                24.3096
+              ]
+            ]
           },
+          "tables": [
+            "adoption_btos_national.csv"
+          ],
+          "view": "bridge",
+          "research": [
+            {
+              "stance": "background",
+              "cite": "Liu and Webber (2026), Federal Reserve Board",
+              "url": "https://www.federalreserve.gov/econres/notes/feds-notes/ai-adoption-and-firms-job-posting-behavior-20260327.html",
+              "text": "Use this survey with job postings and find no reduction in postings at firms or industries that adopted more AI."
+            },
+            {
+              "stance": "background",
+              "cite": "Yale Budget Lab (2026)",
+              "url": "https://budgetlab.yale.edu/topic/artificial-intelligence",
+              "text": "Exposure measures broadly agree, less so among the most exposed jobs, and there are no significant employment or wage effects so far."
+            }
+          ]
+        },
+        {
+          "title": "Where AI use is heaviest",
+          "big": "2.5×",
+          "note": "Complex problem solving skills account for 0.9% of Claude use but only 0.3% of US wages, 2.5 times as much use as their share of pay. Physical abilities get the least, 0.3 times.",
+          "more": "We sort job tasks into 25 skill groups and compare each group's share of AI use with its share of US wages. A value above 1 means people use AI on that group's tasks more than its share of pay alone would lead you to expect. Switch between Claude and ChatGPT to compare the two platforms' users.",
+          "tech": "Each task's labor is split across O*NET's 161 descriptors by the paper's gamma matrix, whose rows sum to one, and the descriptors roll up to 25 bundles, so neither usage nor wage dollars are lost in the mapping. OpenAI publishes shares by intermediate work activity, allocated here to tasks in proportion to their wage value; allocating equally instead gives the same top three groups. Claude: March 2026. ChatGPT: June 2026.",
+          "src": "Anthropic Economic Index, March 2026; OpenAI Signals v2.0, June 2026; O*NET 30.3",
+          "variants": [
+            {
+              "key": "claude",
+              "label": "Claude",
+              "big": "2.5×",
+              "note": "Tasks that call for complex problem solving make up 0.9% of Claude use but only 0.3% of US wages, 2.5 times as much use as their share of pay. Tasks that call for physical strength and stamina get the least, 0.3 times.",
+              "bars": [
+                {
+                  "name": "Complex problem solving",
+                  "value": 2.515
+                },
+                {
+                  "name": "Judgment and systems analysis",
+                  "value": 1.991
+                },
+                {
+                  "name": "Analyzing information and making decisions",
+                  "value": 1.419
+                },
+                {
+                  "name": "Learning and critical thinking",
+                  "value": 1.208
+                },
+                {
+                  "name": "Reasoning and memory",
+                  "value": 1.2
+                },
+                {
+                  "name": "Communications and media knowledge",
+                  "value": 1.121
+                },
+                {
+                  "name": "Arts and humanities knowledge",
+                  "value": 1.091
+                },
+                {
+                  "name": "Reading, writing and math",
+                  "value": 1.067
+                }
+              ],
+              "unit": "use relative to share of pay (tick at 1×), top 8 of 25 groups"
+            },
+            {
+              "key": "chatgpt",
+              "label": "ChatGPT",
+              "big": "2.0×",
+              "note": "Tasks that call for judgment and systems analysis make up 1.3% of ChatGPT use but only 0.6% of US wages, 2.0 times as much use as their share of pay. Tasks that call for physical strength and stamina get the least, 0.3 times.",
+              "bars": [
+                {
+                  "name": "Judgment and systems analysis",
+                  "value": 2.026
+                },
+                {
+                  "name": "Complex problem solving",
+                  "value": 1.97
+                },
+                {
+                  "name": "Analyzing information and making decisions",
+                  "value": 1.836
+                },
+                {
+                  "name": "Reasoning and memory",
+                  "value": 1.202
+                },
+                {
+                  "name": "Reading, writing and math",
+                  "value": 1.149
+                },
+                {
+                  "name": "Communications and media knowledge",
+                  "value": 1.132
+                },
+                {
+                  "name": "Learning and critical thinking",
+                  "value": 1.128
+                },
+                {
+                  "name": "Arts and humanities knowledge",
+                  "value": 1.105
+                }
+              ],
+              "unit": "use relative to share of pay (tick at 1×), top 8 of 25 groups"
+            }
+          ],
           "tables": [
             "usage_landing.csv"
           ],
@@ -650,51 +863,6 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               "text": "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."
             }
           ]
-        },
-        {
-          "title": "Wages in the most-used tasks",
-          "big": "3.1%",
-          "note": "Three quarters of all AI use comes from just 243 tasks. Those tasks account for 3.1% of US wages, up from 1.8% in September 2025.",
-          "more": "Because no release leaves the most-used tasks out, this figure can be compared across every release, the June 2026 file included. Its rise means the work people use AI for most is moving toward tasks that make up more of total US pay.",
-          "tech": "The core is the smallest set of tasks covering 75% of usage in each release. The June 2026 file withholds tasks below a reporting threshold, which affects reach but not the core.",
-          "src": "Anthropic Economic Index, June 2026; OEWS wages, May 2025",
-          "series": {
-            "x": [
-              "September 2025",
-              "January 2026",
-              "March 2026",
-              "June 2026 (Apr)",
-              "June 2026 (May)"
-            ],
-            "y": [
-              1.7854,
-              2.1108,
-              2.5417,
-              3.9069,
-              3.131
-            ],
-            "fmt": "pct1",
-            "unit": "% of US wages",
-            "threshold": null
-          },
-          "tables": [
-            "usage_reach.csv"
-          ],
-          "view": "bridge",
-          "research": [
-            {
-              "stance": "background",
-              "cite": "Acemoglu (2025), Economic Policy",
-              "url": "https://doi.org/10.1093/epolic/eiae042",
-              "text": "The gains from AI depend on the share of tasks it affects and the cost it saves on them, not on technical exposure alone."
-            },
-            {
-              "stance": "method",
-              "cite": "Handa and coauthors (2025), Anthropic",
-              "url": "https://arxiv.org/abs/2503.04761",
-              "text": "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."
-            }
-          ]
         }
       ]
     },
@@ -704,7 +872,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
       "why": "If AI were already reshaping work, it would show up here first: in what employers pay for different skills, in which kinds of jobs grow, and in the tasks job ads ask for.",
       "capline": "Pay: no unusual change. Job mix: largest shift since 2013. Job ads: fell before ChatGPT.",
       "mark": "Pay: no unusual change. Job mix: largest shift since 2013.",
-      "headline": "Pay hasn't changed more than usual, the mix of jobs has shifted more than at any time since 2013, and job ads turned away from tasks AI can do before ChatGPT came out.",
+      "headline": "Pay hasn't changed more than usual, the mix of jobs has shifted more than at any time since 2013 (though chance can't yet be ruled out), and job ads turned away from tasks AI can do before ChatGPT came out.",
       "items": [
         {
           "title": "Pay for different skills",
@@ -745,7 +913,8 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               1.0,
               1.0,
               1.0
-            ]
+            ],
+            "band": null
           },
           "tables": [
             "outcomes_pay_series_balanced.csv",
@@ -836,7 +1005,8 @@ body *{letter-spacing:0 !important;text-transform:none !important}
               1.0,
               1.0,
               1.0
-            ]
+            ],
+            "band": null
           },
           "tables": [
             "outcomes_quantity_series_balanced.csv"
@@ -929,7 +1099,8 @@ body *{letter-spacing:0 !important;text-transform:none !important}
             ],
             "fmt": "pp2",
             "unit": "share of ads, change since 2019 (points)",
-            "threshold": null
+            "threshold": null,
+            "band": null
           },
           "tables": [
             "postings_step_at_release.csv",
@@ -971,7 +1142,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
             {
               "stance": "different",
               "cite": "Revelio Labs (December 2025 newsletter)",
-              "url": "https://www.reveliolabs.com/news/",
+              "url": null,
               "text": "The share of AI-exposed tasks in job postings fell from 29% in early 2022 to 25.5% by early 2025, which Revelio reads as firms removing automatable duties from the jobs they post."
             },
             {
@@ -1042,7 +1213,8 @@ body *{letter-spacing:0 !important;text-transform:none !important}
             ],
             "fmt": "pct1",
             "unit": "% of bachelor's degrees",
-            "threshold": null
+            "threshold": null,
+            "band": null
           },
           "tables": [
             "pipeline_completions_by_state.csv",
@@ -1089,7 +1261,8 @@ body *{letter-spacing:0 !important;text-transform:none !important}
             ],
             "fmt": "pct1",
             "unit": "% of four-year undergraduates",
-            "threshold": null
+            "threshold": null,
+            "band": null
           },
           "tables": [
             "pipeline_enrolment_by_exposure.csv",
@@ -1116,7 +1289,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
           "big": "−16%",
           "note": "Since 2022, workers aged 22 to 27 have lost ground in the jobs most exposed to AI, by 16% compared with workers aged 35 to 54.",
           "more": "From the Census Bureau's monthly Current Population Survey. For each age group we divide employment in the most exposed third of jobs by employment in all other jobs, then compare the young group's ratio with the older group's. Over the last 12 months the gap was 8.4 points wider than in the months before. In 1,000 random reorderings of the months, none produced a gap that large. The data start in January 2022, so they can't show whether the decline began before ChatGPT.",
-          "tech": "The gauge is (E_young,exposed / E_young,other) / (E_prime,exposed / E_prime,other), with composited CPS weights, exposed meaning the top third of occupations on the Eloundou measure, Census codes mapped to SOC with OEWS employment weights, and the series indexed to 2022. The permutation relabels which months count as the last twelve at the level of CPS rotation groups, so the overlap between adjacent months' samples is kept under the null.",
+          "tech": "The gauge is (E_young,exposed / E_young,other) / (E_prime,exposed / E_prime,other), with composited CPS weights, exposed meaning the top third of occupations on the Eloundou measure, Census codes mapped to SOC with OEWS employment weights, and the series indexed to 2022. The permutation relabels which months count as the last twelve at the level of CPS rotation groups, so the overlap between adjacent months' samples is kept under the null. The band is plus or minus 1.96 standard errors from the random-groups method over the eight rotation groups, recomputing the gauge with each group left out.",
           "src": "Current Population Survey, January 2022 to August 2026",
           "series": {
             "x": [
@@ -1231,7 +1404,119 @@ body *{letter-spacing:0 !important;text-transform:none !important}
             ],
             "fmt": "pct0s",
             "unit": "% change since 2022, against ages 35 to 54",
-            "threshold": null
+            "threshold": null,
+            "band": [
+              [
+                -4.1673,
+                -4.4208,
+                -4.6923,
+                -6.872,
+                -5.917,
+                -4.7539,
+                -3.235,
+                -1.2396,
+                -2.4312,
+                -3.0978,
+                -4.9963,
+                -4.7088,
+                -6.6249,
+                -6.4601,
+                -6.6798,
+                -4.8851,
+                -6.1582,
+                -5.4453,
+                -7.5703,
+                -9.9445,
+                -11.5518,
+                -11.8283,
+                -11.5769,
+                -9.8168,
+                -7.0706,
+                -4.587,
+                -2.4708,
+                -2.0985,
+                -5.1513,
+                -6.3816,
+                -8.4604,
+                -10.521,
+                -11.7991,
+                -11.527,
+                -13.2084,
+                -12.2758,
+                -12.3475,
+                -12.2707,
+                -11.7041,
+                -9.8119,
+                -10.9816,
+                -8.9365,
+                -11.9221,
+                -13.1692,
+                -18.1544,
+                -16.6345,
+                -18.546,
+                -17.8046,
+                -17.0694,
+                -18.3224,
+                -15.9218,
+                -17.498,
+                -21.0386
+              ],
+              [
+                -0.3369,
+                1.587,
+                3.5365,
+                2.975,
+                2.22,
+                4.4296,
+                7.1891,
+                7.9609,
+                7.1279,
+                4.399,
+                2.6223,
+                0.0092,
+                2.1882,
+                3.3013,
+                1.8967,
+                0.1199,
+                1.3519,
+                4.3462,
+                3.9319,
+                0.7564,
+                -2.9864,
+                -5.4312,
+                -1.8389,
+                0.1474,
+                1.1955,
+                2.3182,
+                2.6144,
+                2.8912,
+                1.2062,
+                -1.8425,
+                -3.1408,
+                -3.0472,
+                -5.1764,
+                -5.7389,
+                -3.2625,
+                -0.2245,
+                -1.5125,
+                -3.0982,
+                -6.5484,
+                -4.7425,
+                -0.931,
+                -1.0112,
+                -4.3952,
+                -7.2233,
+                -8.2145,
+                -8.704,
+                -6.9814,
+                -6.9126,
+                -7.6026,
+                -8.1522,
+                -9.5217,
+                -9.7731,
+                -10.8689
+              ]
+            ]
           },
           "tables": [
             "cps_young_worker_gauge.csv",
@@ -1831,12 +2116,12 @@ body *{letter-spacing:0 !important;text-transform:none !important}
   const FMT = { pct0: y => `${Math.round(y)}%`, pct1: y => `${y.toFixed(1)}%`, x1: y => `${y.toFixed(1)}×`, num1: y => y.toFixed(1),
     pp2: y => (y < -0.005 ? "−" : "") + Math.abs(y).toFixed(2), pct0s: y => (y >= 0.5 ? "+" : y <= -0.5 ? "−" : "") + Math.abs(Math.round(y)) + "%" };
   const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  const xl = x => /^\d{4}-\d{2}$/.test(x) ? `${MON[+x.slice(5) - 1]} ${x.slice(0, 4)}` : /^\d{4}Q\d$/.test(x) ? `${x.slice(0, 4)} Q${x[5]}` : x;
+  const xl = x => /^\d{4}-\d{2}-\d{2}$/.test(x) ? `${+x.slice(8)} ${MON[+x.slice(5, 7) - 1]} ${x.slice(0, 4)}` : /^\d{4}-\d{2}$/.test(x) ? `${MON[+x.slice(5) - 1]} ${x.slice(0, 4)}` : /^\d{4}Q\d$/.test(x) ? `${x.slice(0, 4)} Q${x[5]}` : x;
   function nice(span){ const e = Math.pow(10, Math.floor(Math.log10(span))), f = span / e; return (f < 1.5 ? 1 : f < 3.5 ? 2 : f < 7.5 ? 5 : 10) * e; }
   // one line in ink on hairline guides; a dashed line where a test sets the level that would count as unusual
   function plot(sr, compact){
     const W = 320, H = compact ? 40 : 150, L = compact ? 3 : 44, R = compact ? 6 : 8, T = compact ? 6 : 24, B = compact ? 6 : 24;
-    const f = FMT[sr.fmt] || (y => String(y)), ys = sr.y.concat(sr.threshold || []);
+    const f = FMT[sr.fmt] || (y => String(y)), ys = sr.y.concat(sr.threshold || [], ...(!compact && sr.band ? sr.band : []));
     let lo = Math.min(...ys), hi = Math.max(...ys);
     if (lo < 0 || sr.fmt === "pp2" || sr.fmt === "pct0s"){ lo = Math.min(lo, 0); hi = Math.max(hi, 0); }
     if (sr.fmt === "num1") lo = 0;
@@ -1853,6 +2138,8 @@ body *{letter-spacing:0 !important;text-transform:none !important}
       g += `<text x="${X(0)}" y="${H - 4}" text-anchor="${n === 1 ? "middle" : "start"}">${esc(xl(sr.x[0]))}</text>`;
       if (n > 1) g += `<text x="${X(n - 1)}" y="${H - 4}" text-anchor="end">${esc(xl(sr.x[n - 1]))}</text>`;
     } else if (lo < 0 && hi > 0) g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(0).toFixed(1)}" y2="${Y(0).toFixed(1)}"/>`;
+    if (sr.band && !compact){ const [lo_, hi_] = sr.band;
+      g += `<path class="band" d="${path(hi_)}${lo_.map((v, i) => `L${X(i).toFixed(1)},${Y(v).toFixed(1)}`).reverse().join("")}Z"/>`; }
     if (sr.threshold) g += `<path class="th" d="${path(sr.threshold)}"/>`;
     g += `<path class="line" d="${path(sr.y)}"/>`;
     if (!compact && n <= 8) g += sr.y.slice(0, -1).map((v, i) => `<circle class="dot" r="3" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}"/>`).join("");
@@ -1862,34 +2149,52 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     return { svg: `<svg viewBox="0 0 ${W} ${H}" ${compact ? 'aria-hidden="true"' : `role="img" tabindex="0" aria-label="${esc(label)}"`}>${g}</svg>`, X, Y, W, n, f };
   }
   const CHARTS = new WeakMap();
+  // skill groups ranked by use relative to pay, with a hairline at 1, where use matches the group's share of pay
+  function bars(v){
+    const W = 320, rowH = 30, T = 22, R = 40, H = T + v.bars.length * rowH, max = Math.max(...v.bars.map(b => b.value), 1.2);
+    const X = x => x * (W - R) / max;
+    let g = `<text x="0" y="12">${esc(v.unit)}</text>`;
+    v.bars.forEach((b, i) => { const y = T + i * rowH;
+      g += `<text class="lbl" x="0" y="${y + 12}">${esc(b.name)}</text>`
+        + `<line class="zero" x1="${X(1).toFixed(1)}" x2="${X(1).toFixed(1)}" y1="${y + 14}" y2="${y + 26}"/>`
+        + `<rect class="bar" x="0" y="${y + 16}" width="${X(b.value).toFixed(1)}" height="8" rx="2"/>`
+        + `<text x="${(X(b.value) + 5).toFixed(1)}" y="${y + 24}">${b.value.toFixed(1)}×</text>`; });
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(v.unit + ": " + v.bars.map(b => `${b.name} ${b.value.toFixed(1)}`).join(", "))}">${g}</svg>`;
+  }
+  let PLATFORM = "claude";
   // a study named in a sentence links to it, from the build's list of names
   const linkify = t => (READ.links || []).reduce((s, l) => s.replace(new RegExp(l.pattern, "g"), m => `<a href="${esc(l.url)}">${m}</a>`), t);
   // a figure such as 23%, 2.5× or −16% is set large; a verdict in words is set at reading size
   const isFigure = t => /^[−+-]?[\d.,]+[%×]?$/.test(String(t).trim());
   function card(it){
-    const sr = it.series, p = sr ? plot(sr) : null, f = p && p.f;
+    const vr = it.variants ? (it.variants.find(x => x.key === PLATFORM) || it.variants[0]) : null;
+    const sr = it.series, p = sr ? plot(sr) : null, f = p && p.f, big = vr ? vr.big : it.big, note = vr ? vr.note : it.note;
+    const seg = vr ? `<span class="seg" role="group" aria-label="Platform">${it.variants.map(x => `<button type="button" data-platform="${x.key}" aria-pressed="${x.key === vr.key}">${esc(x.label)}</button>`).join("")}</span>` : "";
+    const cite = r => r.url ? `<a href="${esc(r.url)}">${esc(r.cite)}</a>` : `<span>${esc(r.cite)}</span>`;
     const key = sr && sr.threshold ? `<svg viewBox="0 0 24 8" width="24" height="8" aria-hidden="true"><line class="th" x1="0" x2="24" y1="4" y2="4"/></svg> unusual above the dashed line` : "";
     const R = it.research || [], of = k => R.filter(r => r.stance === k);
-    const pop = (k, label) => { const L = of(k); return L.length ? `<span class="pop" tabindex="0">${label(L.length)}<span class="pop-list">${L.map(r => `<a href="${esc(r.url)}">${esc(r.cite)}</a>`).join("")}</span></span>` : ""; };
+    const pop = (k, label) => { const L = of(k); return L.length ? `<span class="pop" tabindex="0">${label(L.length)}<span class="pop-list">${L.map(cite).join("")}</span></span>` : ""; };
     const tally = [pop("method", n => `builds on ${n} ${n === 1 ? "study" : "studies"}`), pop("consistent", n => `consistent with ${n}`),
                    pop("different", n => `${n} ${n === 1 ? "finds" : "find"} differently`), pop("background", n => `${n} for background`)].filter(Boolean).join("; ");
     const STANCE = { consistent:"Consistent", different:"Finds differently", background:"Background", method:"Method" };
-    const studies = R.length ? `<p class="rel"><b>Research.</b></p><ul class="studies">${R.map(r => `<li><span class="stance">${STANCE[r.stance]}</span> <a href="${esc(r.url)}">${esc(r.cite)}</a>. ${esc(r.text)}</li>`).join("")}</ul>` : "";
-    return `<div class="card"><div class="t">${esc(it.title)}</div><div class="big${isFigure(it.big) ? "" : " word"}">${esc(it.big)}</div><p class="note">${linkify(esc(it.note))}</p><p class="res">${tally ? `Research: ${tally}.` : ""}</p>`
-      + (p ? `<div class="chart">${p.svg}<div class="tip" hidden></div></div>` : "")
+    const studies = R.length ? `<p class="rel"><b>Research.</b></p><ul class="studies">${R.map(r => `<li><span class="stance">${STANCE[r.stance]}</span> ${cite(r)}. ${esc(r.text)}</li>`).join("")}</ul>` : "";
+    return `<div class="card"><div class="t">${esc(it.title)}${seg}</div><div class="big${isFigure(big) ? "" : " word"}">${esc(big)}</div><p class="note">${linkify(esc(note))}</p><p class="res">${tally ? `Research: ${tally}.` : ""}</p>`
+      + (p ? `<div class="chart">${p.svg}<div class="tip" hidden></div></div>` : vr ? `<div class="chart bars">${bars(vr)}</div>` : "")
       + `<div class="key">${key}</div>`
       + `<details><summary>How we know</summary>${it.more ? `<p>${linkify(esc(it.more))}</p>` : ""}${it.tech ? `<p class="tech"><b>Technical note.</b> ${linkify(esc(it.tech))}</p>` : ""}${studies}`
       + `<p class="cite">${linkify(esc(it.src))}</p></details></div>`; }
   // hover or arrow keys show each point
   function wire(host, list){
-    host.querySelectorAll(".chart").forEach((el, k) => {
+    host.querySelectorAll(".card").forEach((cardEl, k) => {
+      const el = cardEl.querySelector(".chart:not(.bars)"); if (!el) return;
       const it = list[k], sr = it.series, p = plot(sr), svg = el.querySelector("svg"), tip = el.querySelector(".tip");
       const hx = svg.querySelector(".hx"), hd = svg.querySelector(".hd");
       let at = -1;
       const show = i => { at = Math.max(0, Math.min(p.n - 1, i)); const x = p.X(at), y = p.Y(sr.y[at]);
         hx.setAttribute("x1", x); hx.setAttribute("x2", x); hx.setAttribute("visibility", "visible");
         hd.setAttribute("cx", x); hd.setAttribute("cy", y); hd.setAttribute("visibility", "visible");
-        tip.innerHTML = `${esc(xl(sr.x[at]))}: <b>${esc(p.f(sr.y[at]))}</b>` + (sr.threshold ? ` <span>(unusual above ${esc(p.f(sr.threshold[at]))})</span>` : "");
+        tip.innerHTML = `${esc(xl(sr.x[at]))}: <b>${esc(p.f(sr.y[at]))}</b>` + (sr.threshold ? ` <span>(unusual above ${esc(p.f(sr.threshold[at]))})</span>` : "")
+          + (sr.band ? ` <span>(95% range ${esc(p.f(sr.band[0][at]))} to ${esc(p.f(sr.band[1][at]))})</span>` : "");
         const scale = svg.getBoundingClientRect().width / p.W, left = Math.max(60, Math.min(el.clientWidth - 60, x * scale));
         tip.style.left = left + "px"; tip.style.top = (y * scale - 8) + "px"; tip.hidden = false; };
       const hide = () => { at = -1; tip.hidden = true; hx.setAttribute("visibility", "hidden"); hd.setAttribute("visibility", "hidden"); };
@@ -1900,6 +2205,15 @@ body *{letter-spacing:0 !important;text-transform:none !important}
       svg.addEventListener("keydown", e => { if (e.key === "ArrowLeft" || e.key === "ArrowRight"){ e.preventDefault(); show((at < 0 ? p.n - 1 : at) + (e.key === "ArrowLeft" ? -1 : 1)); } else if (e.key === "Escape") hide(); });
     }); }
   const ORDER = ["bridge", "city", "valley"];
+  function renderItems(view){
+    const V = READ.views, host = $("#items"), shown = view === "home" ? ORDER : [view];
+    host.innerHTML = shown.map(v => (view === "home" ? `<div class="group"><h3><a href="#${VIEWHASH[v]}" data-view="${v}">${esc(V[v].index)} (${VIEWNAME[v]})</a> <span>${esc(V[v].index_line)}</span></h3>` : `<div class="group">`)
+      + `<div class="cards">${V[v].items.map(card).join("")}</div></div>`).join("");
+    shown.forEach((v, k) => wire(host.children[k], V[v].items)); }
+  // the platform switch: every card that compares platforms follows it, and the focus stays on the button pressed
+  $("#items").addEventListener("click", e => { const b = e.target.closest("[data-platform]"); if (!b) return;
+    PLATFORM = b.dataset.platform; renderItems(stage.dataset.view);
+    const again = $(`#items [data-platform="${PLATFORM}"]`); if (again) again.focus(); });
   function tiles(){
     $("#indices").innerHTML = ORDER.map(v => { const V = READ.views[v], it = V.items[0];
       return `<button class="tile" type="button" data-view="${v}" aria-label="${esc(`${V.index}: ${it.title}, ${it.big}. Open ${VIEWNAME[v]}`)}"><div class="tx"><div class="ix">${esc(V.index)} <span>(${VIEWNAME[v]})</span></div>`
@@ -1947,9 +2261,7 @@ body *{letter-spacing:0 !important;text-transform:none !important}
     $("#r-title").textContent = view === "home" ? "The three indices" : `${V[view].index} (${VIEWNAME[view]})`;
     $("#r-note").innerHTML = view === "home" ? "Each index stays in its own units, so the three are shown side by side and never added together." :
       `<b>What it measures.</b> ${esc(V[view].index_line)}. <b>Why it matters.</b> ${esc(V[view].why || "")}`;
-    host.innerHTML = shown.map(v => (view === "home" ? `<div class="group"><h3><a href="#${VIEWHASH[v]}" data-view="${v}">${esc(V[v].index)} (${VIEWNAME[v]})</a> <span>${esc(V[v].index_line)}</span></h3>` : `<div class="group">`)
-      + `<div class="cards">${V[v].items.map(card).join("")}</div></div>`).join("");
-    shown.forEach((v, k) => wire(host.children[k], V[v].items)); markTile(view);
+    renderItems(view); markTile(view);
     $("#r-from").textContent = "";
     $("#lede").innerHTML = view === "home" ? READ.lede : esc((READ.views[view] || {}).headline || "");
     edgeL.hidden = !r.left; edgeR.hidden = !r.right; home.hidden = (view==="home");
