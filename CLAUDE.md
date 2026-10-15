@@ -30,17 +30,19 @@ indices side by side and never added together, use, jobs and training, each a ti
 and three cards below it; every card has a title, one figure, a sentence and its series over time,
 with the test threshold drawn where there is one, and the full sentence, paragraph, source and values
 under "How we know". Each place in the drawing names its index in parentheses: the bridge (Use),
-the city (Jobs) and the binoculars (Training). "How we measured it" shows each view's method with
-its sources, and the build writes it, the opening findings and the readings into the page as text
-through aiindex/site_static.py. The page uses one typeface and has no weather or fog switches.
+the city (Jobs) and the binoculars (Training). The build writes the opening findings, the footer date and the
+readings into the page as text through aiindex/site_static.py. The page uses one typeface and has no weather or fog switches.
 Since 15 October 2026 every sentence on the page is plain language: the tests behind the
 city are described by what they compare (seven of ten earlier periods moved as much; a 1 in
 11 chance), never by test statistics or "standard errors", and cards whose finding connects
 to published work carry a "Related research" line in How we know, drawn from the papers the
 working papers cite. Since 15 October 2026 each card lists published research with its stance
-(consistent, finds differently, background) and a link, from the tables `_STUDIES` and `_RESEARCH` in build.py (stances: consistent, finds differently, background, method), with the full list printed under "Research this page draws on",
+(consistent, finds differently, background) and a link, from the tables `_STUDIES` and `_RESEARCH` in build.py (stances: consistent, finds differently, background, method),
 checked against the current published version; the page brings together public data, research and
-theory on AI and work, and its footer carries the CC BY 4.0 licence and the build date.
+theory on AI and work, and its footer carries the CC BY 4.0 licence and the build date. Since 15 October 2026 the data
+sources are one Sources section, by index, which opens as a closeable box from the header and
+footer; the method sits only under each card's How we know, and the coin on the binoculars no
+longer opens anything.
 
 ## Dependency
 

@@ -175,8 +175,7 @@
             }
           ]
         }
-      ],
-      "how": "The Anthropic Economic Index sorts conversations with Claude into the job tasks that O*NET lists for each occupation. We weight each task by what US workers earn doing it, from the latest BLS wage tables, and update the figures with each new release of the index, every few months. Only one platform's data are used so far."
+      ]
     },
     "city": {
       "index": "Jobs",
@@ -492,8 +491,7 @@
             }
           ]
         }
-      ],
-      "how": "For each of 25 skill groups, we compare the change in pay, and in the share of employment, over the last three years with that group's own history since 2013. A change counts as unusual only if it is bigger than nearly every earlier three-year period, which with the data since 2013 means the largest or close to it. Both are recalculated each spring, when BLS publishes new wage tables. For job ads, we measure how often ads in each occupation name each task, and check whether tasks AI can do lost ground at ChatGPT's release more than at earlier months."
+      ]
     },
     "valley": {
       "index": "Training",
@@ -746,227 +744,9 @@
             }
           ]
         }
-      ],
-      "how": "We score each field of study by the AI exposure of the jobs its graduates hold, using the Census Bureau's American Community Survey and the exposure measure of Eloundou and coauthors. Degrees come from IPEDS and enrollment from the National Student Clearinghouse. Young workers come from the monthly Current Population Survey, with jobs scored the same way."
+      ]
     }
   },
-  "literature": [
-    {
-      "theme": "Tasks and technology",
-      "studies": [
-        {
-          "cite": "Autor, Levy and Murnane (2003), Quarterly Journal of Economics",
-          "url": "https://doi.org/10.1162/003355303322552801",
-          "text": "Jobs are bundles of tasks, and technology substitutes for some and complements others."
-        },
-        {
-          "cite": "Acemoglu and Autor (2011), Handbook of Labor Economics",
-          "url": "https://doi.org/10.1016/S0169-7218(11)02410-5",
-          "text": "The task framework became the standard account of how technology moves wages and employment."
-        },
-        {
-          "cite": "Acemoglu and Restrepo (2018), American Economic Review",
-          "url": "https://doi.org/10.1257/aer.20160696",
-          "text": "Automation displaces labor from tasks while productivity gains and new tasks bring it back."
-        },
-        {
-          "cite": "Acemoglu and Restrepo (2019), Journal of Economic Perspectives",
-          "url": "https://doi.org/10.1257/jep.33.2.3",
-          "text": "An exposed task can lose labor without its occupation shrinking, because new tasks reinstate work."
-        },
-        {
-          "cite": "Acemoglu and Restrepo (2022), Econometrica",
-          "url": "https://doi.org/10.3982/ECTA19815",
-          "text": "Automation of tasks accounts for much of the rise in US wage inequality."
-        },
-        {
-          "cite": "Acemoglu (2025), Economic Policy",
-          "url": "https://doi.org/10.1093/epolic/eiae042",
-          "text": "The gains from AI depend on the share of tasks it affects and the cost it saves on them, not on technical exposure alone."
-        },
-        {
-          "cite": "Katz and Murphy (1992), Quarterly Journal of Economics",
-          "url": "https://doi.org/10.2307/2118323",
-          "text": "Skill prices can be read off relative wages and relative supplies."
-        }
-      ]
-    },
-    {
-      "theme": "Measuring exposure to AI",
-      "studies": [
-        {
-          "cite": "Felten, Raj and Seamans (2021), Strategic Management Journal",
-          "url": "https://doi.org/10.1002/smj.3286",
-          "text": "Score exposure by linking AI applications to the abilities each occupation uses."
-        },
-        {
-          "cite": "Webb (2020), working paper",
-          "url": "https://www.michaelwebb.co/webb_ai.pdf",
-          "text": "Scores exposure by the overlap between patent text and task descriptions."
-        },
-        {
-          "cite": "Brynjolfsson, Mitchell and Rock (2018), AEA Papers and Proceedings",
-          "url": "https://doi.org/10.1257/pandp.20181019",
-          "text": "Rate tasks for how suitable they are for machine learning."
-        },
-        {
-          "cite": "Eloundou, Manning, Mishkin and Rock (2024), Science",
-          "url": "https://doi.org/10.1126/science.adj0998",
-          "text": "Rate tasks for what language models can do; counting complementary software, just over 46% of jobs have more than half their tasks exposed."
-        },
-        {
-          "cite": "Handa and coauthors (2025), Anthropic",
-          "url": "https://arxiv.org/abs/2503.04761",
-          "text": "Measure observed use from millions of Claude conversations sorted into O*NET tasks."
-        },
-        {
-          "cite": "Bureau of Labor Statistics (2026), AI exposure categories",
-          "url": "https://www.bls.gov/emp/publications/ai-exposure-categories.htm",
-          "text": "Combines five exposure measures across 831 occupations and keeps what AI could do apart from what people use it for."
-        },
-        {
-          "cite": "Yale Budget Lab (2026)",
-          "url": "https://budgetlab.yale.edu/topic/artificial-intelligence",
-          "text": "Exposure measures broadly agree, less so among the most exposed jobs, and there are no significant employment or wage effects so far."
-        },
-        {
-          "cite": "Gmyrek, Berg and Bescond (2025), Polish Journal of Economics",
-          "url": "https://econpapers.repec.org/article/sghgosnar/y_3a2025_3ai_3a3_3ap_3a6-30.htm",
-          "text": "Worldwide, clerical work is the only broad group highly exposed, and augmentation is more likely than automation."
-        }
-      ]
-    },
-    {
-      "theme": "What job ads show",
-      "studies": [
-        {
-          "cite": "Hershbein and Kahn (2018), American Economic Review",
-          "url": "https://doi.org/10.1257/aer.20161570",
-          "text": "Skill requirements in job ads rose within firms and occupations after the Great Recession."
-        },
-        {
-          "cite": "Atalay, Phongthiengtham, Sotelo and Tannenbaum (2020), AEJ: Applied Economics",
-          "url": "https://doi.org/10.1257/app.20190070",
-          "text": "Newspaper ads show the task content of occupations changing over half a century."
-        },
-        {
-          "cite": "Deming and Noray (2020), Quarterly Journal of Economics",
-          "url": "https://doi.org/10.1093/qje/qjaa021",
-          "text": "Skill requirements change fastest in technical jobs."
-        },
-        {
-          "cite": "Hemelt, Hershbein, Martin and Stange (2023), Labour Economics",
-          "url": "https://www.iza.org/publications/dp/14964",
-          "text": "Link college majors to the skills employers ask for, using nearly all online job ads."
-        },
-        {
-          "cite": "Meisenbacher, Nestorov and Norlander (2025), working paper and data",
-          "url": "https://arxiv.org/abs/2510.01470",
-          "text": "Public aggregates of the National Labor Exchange: the tasks, skills and AI content of job ads by occupation."
-        },
-        {
-          "cite": "Berman, Bound and Griliches (1994), Quarterly Journal of Economics",
-          "url": "https://doi.org/10.2307/2118467",
-          "text": "The decomposition into change within occupations and change in the mix of occupations."
-        },
-        {
-          "cite": "Chen, Srinivasan and Zakerinia (2025), Harvard Business School",
-          "url": "https://www.library.hbs.edu/working-knowledge/enhance-or-eliminate-how-ai-will-likely-change-these-jobs",
-          "text": "Postings for structured, repetitive occupations fell 13% after ChatGPT's launch, while analytical, technical and creative roles rose 20%."
-        },
-        {
-          "cite": "Revelio Labs (December 2025 newsletter)",
-          "url": "https://www.reveliolabs.com/news/",
-          "text": "The share of AI-exposed tasks in job postings fell from 29% in early 2022 to 25.5% by early 2025."
-        },
-        {
-          "cite": "Dodini and Smith (2026), Federal Reserve Bank of Dallas",
-          "url": "https://www.dallasfed.org/research/economics/2026/0901",
-          "text": "Job openings fell after ChatGPT in occupations whose tasks AI can automate, mostly in Texas, with effects on recent graduates and students."
-        },
-        {
-          "cite": "Liu and Webber (2026), Federal Reserve Board",
-          "url": "https://www.federalreserve.gov/econres/notes/feds-notes/ai-adoption-and-firms-job-posting-behavior-20260327.html",
-          "text": "No reduction in job postings at firms or industries that adopted more AI."
-        },
-        {
-          "cite": "Engberg and coauthors (2026), Applied Economics Letters",
-          "url": "https://ratio.se/publikationer/artificial-intelligence-hiring-and-employment-job-postings-evidence-from-sweden-2",
-          "text": "Swedish establishments more exposed to AI hired more, including for roles that do not use AI."
-        },
-        {
-          "cite": "Štefánik, Lyócsa and Bilka (2023), Social Science Computer Review",
-          "url": "https://doi.org/10.1177/08944393221085705",
-          "text": "Counts of online job ads improve forecasts of vacancies, employment and unemployment."
-        },
-        {
-          "cite": "Tsvetkova and coauthors (2024), OECD",
-          "url": "https://doi.org/10.1787/c17cae09-en",
-          "text": "Online postings match official statistics less well by occupation and sector than by region."
-        }
-      ]
-    },
-    {
-      "theme": "Early effects of AI on work",
-      "studies": [
-        {
-          "cite": "Revelio Labs AI Labor Market Tracker (August 2026)",
-          "url": "https://www.reveliolabs.com/news/ai-and-work/introduction-the-revelio-ai-labor-market-tracker",
-          "text": "Employment in the most AI-exposed jobs is down against the least exposed since November 2022, by 19% for workers aged 22 to 25."
-        },
-        {
-          "cite": "Rinz (2026), Federal Reserve Bank of Cleveland",
-          "url": "https://doi.org/10.26509/frbc-wp-202624",
-          "text": "Postings in more exposed occupations declined before ChatGPT and leveled off after it; small earnings losses for incumbents from late 2024."
-        },
-        {
-          "cite": "Humlum and Vestergaard (2025), NBER Working Paper 33777",
-          "url": "https://www.nber.org/papers/w33777",
-          "text": "Small effects of AI chatbots on earnings and hours among exposed workers in Denmark."
-        },
-        {
-          "cite": "Brynjolfsson, Chandar and Chen (2026 revision), Stanford Digital Economy Lab",
-          "url": "https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recent-employment-effects-of-artificial-intelligence/",
-          "text": "Employment of workers aged 22 to 25 in the most AI-exposed occupations is 19% below where it would be had it kept pace with less-exposed peers."
-        },
-        {
-          "cite": "Hampole, Papanikolaou, Schmidt and Seegmiller (2025), NBER Working Paper 33509",
-          "url": "https://www.nber.org/papers/w33509",
-          "text": "Occupations whose tasks are more exposed to AI see lower demand afterward; overall employment effects are modest."
-        }
-      ]
-    },
-    {
-      "theme": "How work is organized",
-      "studies": [
-        {
-          "cite": "Freund and Mann (2026), Minneapolis Fed Institute Working Paper 114",
-          "url": "https://doi.org/10.21034/iwp.114",
-          "text": "Occupations bundle tasks and automating one shifts weight to the rest: gains at moderate exposure, losses in the most exposed jobs."
-        },
-        {
-          "cite": "Krusell, Ohanian, Ríos-Rull and Violante (2000), Econometrica",
-          "url": "https://doi.org/10.1111/1468-0262.00150",
-          "text": "Capital complements skilled labor, so cheaper equipment raises the skill premium."
-        },
-        {
-          "cite": "Card (2009), American Economic Review",
-          "url": "https://doi.org/10.1257/aer.99.2.1",
-          "text": "Substitution between skill groups determines how a change in supply moves relative wages."
-        }
-      ]
-    },
-    {
-      "theme": "Matching workers and jobs",
-      "studies": [
-        {
-          "cite": "Şahin, Song, Topa and Violante (2014), American Economic Review",
-          "url": "https://doi.org/10.1257/aer.104.11.3529",
-          "text": "Mismatch unemployment measures how far job seekers sit in different occupations from vacancies."
-        }
-      ]
-    }
-  ],
   "links": [
     {
       "pattern": "Eloundou(?:, Manning, Mishkin and Rock \\(2024\\)| and coauthors)?",

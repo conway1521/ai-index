@@ -355,7 +355,7 @@ _PLAIN = {
 
 # Published work the page draws on, one entry per study, with the link checked against the current version. Each card
 # names the studies that bear on it and how: consistent with its reading, finding differently, background to it, or the
-# method or data it is built on. The full list is printed on the page, grouped by the question each line of work asks.
+# method or data it is built on.
 _STUDIES = {
     "alm": ("Autor, Levy and Murnane (2003), Quarterly Journal of Economics", "https://doi.org/10.1162/003355303322552801", "tasks",
             "Jobs are bundles of tasks, and technology substitutes for some and complements others."),
@@ -433,10 +433,6 @@ _STUDIES = {
     "sahin": ("Şahin, Song, Topa and Violante (2014), American Economic Review", "https://doi.org/10.1257/aer.104.11.3529", "matching",
               "Mismatch unemployment measures how far job seekers sit in different occupations from vacancies."),
 }
-_THEMES = [("tasks", "Tasks and technology"), ("exposure", "Measuring exposure to AI"), ("ads", "What job ads show"),
-           ("effects", "Early effects of AI on work"), ("organization", "How work is organized"), ("matching", "Matching workers and jobs")]
-
-
 def _study(stance: str, key: str, text: str | None = None) -> dict:
     cite, url, _, summary = _STUDIES[key]
     return {"stance": stance, "cite": cite, "url": url, "text": text or summary}
@@ -521,10 +517,6 @@ _LINKS = [
 def _links() -> list[dict]:
     return [{"pattern": pattern, "url": _STUDIES[key][1]} for pattern, key in _LINKS]
 
-
-def _literature() -> list[dict]:
-    return [{"theme": title, "studies": [{"cite": c, "url": u, "text": t} for c, u, th, t in _STUDIES.values() if th == key]}
-            for key, title in _THEMES]
 
 def _words(n: int) -> str:
     """Small counts in words, as they read in a sentence; larger ones as numerals."""
@@ -707,9 +699,6 @@ def export_site(release: str) -> Path:
                  "series": series([label(r) for r in anthropic["release"]], anthropic["reach_share_three_quarters"] * 100, "pct1", unit="% of US wages"),
                  "tables": ["usage_reach.csv"]},
             ],
-            "how": ("The Anthropic Economic Index sorts conversations with Claude into the job tasks that O*NET lists for each occupation. "
-                    "We weight each task by what US workers earn doing it, from the latest BLS wage tables, and update the figures with "
-                    "each new release of the index, every few months. Only one platform's data are used so far."),
         },
         "city": {
             "index": "Jobs", "index_line": "Whether pay, the mix of jobs and what job ads ask for have changed more than usual",
@@ -789,11 +778,6 @@ def export_site(release: str) -> Path:
                  "series": series(list(grad.index), grad.to_numpy() * 100, "pp2", unit="share of ads, change since 2019 (points)"),
                  "tables": ["postings_step_at_release.csv", "postings_gradient_quarterly.csv", "postings_release_bound.csv"]},
             ],
-            "how": (f"For each of 25 skill groups, we compare the change in pay, and in the share of employment, over the last three "
-                    f"years with that group's own history since {since}. A change counts as unusual only if it is bigger than "
-                    f"nearly every earlier three-year period, which with the data since {since} means the largest or close to it. Both are recalculated each spring, when BLS publishes new wage "
-                    f"tables. For job ads, we measure how often ads in each occupation name each task, and check whether tasks AI can "
-                    f"do lost ground at ChatGPT's release more than at earlier months."),
         },
         "valley": {
             "index": "Training", "index_line": "What students choose to study, and whether young workers still get the jobs most exposed to AI",
@@ -846,10 +830,6 @@ def export_site(release: str) -> Path:
                  "series": series(young_series["period"], young_series["v"], "pct0s", unit="% change since 2022, against ages 35 to 54"),
                  "tables": ["cps_young_worker_gauge.csv"] + (["cps_young_worker_test.csv"] if gtest is not None else [])},
             ],
-            "how": ("We score each field of study by the AI exposure of the jobs its graduates hold, using the Census Bureau's American "
-                    "Community Survey and the exposure measure of Eloundou and coauthors. Degrees come from IPEDS and enrollment from "
-                    "the National Student Clearinghouse. Young workers come from the monthly Current Population Survey, with jobs "
-                    "scored the same way."),
         },
     }
     for key, view in views.items():
@@ -892,7 +872,6 @@ def export_site(release: str) -> Path:
         "meaning": meaning,
         "notes": notes,
         "views": views,
-        "literature": _literature(),
         "links": _links(),
         "releases": [{"date": str(r), "reach": round(float(x), 3), "published_use": round(float(p), 3)}
                  for r, x, p in zip(anthropic["release"], anthropic["reach_share"], anthropic["published_use"])],
