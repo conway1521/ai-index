@@ -206,6 +206,9 @@ btos,"unique key ['state', 'series', 'cycle']",True,0.0,"0 duplicate rows on ['s
 state,state abbreviations without a FIPS code,True,1.0,['XX']
 state,"BTOS share using AI in [0.0, 100.0]",True,0.0,"0 values of BTOS share using AI outside [0.0, 100.0]"
 state,"unique key ['state_fips', 'year']",True,0.0,"0 duplicate rows on ['state_fips', 'year']"
+btos,"share using AI in [0.0, 100.0]",True,0.0,"0 values of share using AI outside [0.0, 100.0]"
+btos,cycles with a reference date coverage at least 99%,True,1.0,100.0% of cycles with a reference date covered
+btos,"unique key ['question id', 'series', 'cycle']",True,0.0,"0 duplicate rows on ['question id', 'series', 'cycle']"
 aei,state usage shares sum to one 2025-09-15 within 2% of expected,True,9.606147934659859e-06,"actual 0.99999 against expected 1, gap 0.00%"
 aei,state usage shares sum to one 2026-01-15 within 2% of expected,True,0.0,"actual 1 against expected 1, gap 0.00%"
 aei,state usage shares sum to one 2026-03-24 within 2% of expected,True,0.0028420844350909302,"actual 1.00284 against expected 1, gap 0.28%"
