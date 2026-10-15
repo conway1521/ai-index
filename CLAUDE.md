@@ -47,7 +47,10 @@ use Claude for (named, since it is one platform, with the mechanical part of its
 firms using AI from the national BTOS with its 95% band, and where use is heaviest, which switches
 between Claude and ChatGPT; ChatGPT's reach is not shown because OpenAI publishes by work activity.
 The young-worker chart carries a band from the random-groups variance over the eight CPS rotation
-groups (cps.rotation_se), and the lede says the job-mix shift cannot yet be told from chance.
+groups (cps.rotation_se), and the Jobs index leads with job ads, its clearest result: the opening says pay has not moved
+and ads turned away from tasks AI can do before ChatGPT, the city's first card and tile are job
+ads, and the job-mix shift, which cannot yet be told from chance, stays on its own card. The page
+names no unpublished paper; the job-ad design is credited to a working paper in progress.
 
 ## Dependency
 

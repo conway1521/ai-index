@@ -455,14 +455,14 @@ _RESEARCH = {
     ("bridge", 2): [
         _study("consistent", "handa", "Software development and writing tasks make up nearly half of all use."),
         _study("background", "gmyrek"),
-        _study("background", "felten", "Score exposure from abilities, one of several measures whose disagreements this page's research compares."),
+        _study("background", "felten", "Score exposure from abilities, an alternative to the task measure used on this page."),
         _study("method", "handa", "Describe how the Anthropic Economic Index sorts conversations into O*NET tasks, the data this card is built on."),
     ],
     ("bridge", 1): [
         _study("background", "lw", "Use this survey with job postings and find no reduction in postings at firms or industries that adopted more AI."),
         _study("background", "yale"),
     ],
-    ("city", 0): [
+    ("city", 1): [
         _study("consistent", "humlum"),
         _study("consistent", "yale", "Finds no statistically or economically significant employment or wage effects of AI so far."),
         _study("consistent", "rinz", "A small fall in real earnings, under 1%, for workers who stayed in more exposed US jobs from the second half of "
@@ -472,13 +472,13 @@ _RESEARCH = {
         _study("method", "km", "Skill prices read off relative wages, the approach behind pay by skill group."),
         _study("method", "alm"),
     ],
-    ("city", 1): [
+    ("city", 2): [
         _study("background", "hampole"),
         _study("background", "ar19"),
         _study("background", "card"),
         _study("method", "alm", "Jobs as bundles of tasks and skills, which is how employment is assigned to the 25 skill groups."),
     ],
-    ("city", 2): [
+    ("city", 0): [
         _study("consistent", "rinz", "The same timing in commercial job-ad data: ads in more exposed occupations were declining before ChatGPT and "
                "leveled off after it."),
         _study("consistent", "lw"),
@@ -725,7 +725,7 @@ def export_site(release: str) -> Path:
                  "more": (f"We sort job tasks into 25 skill groups and compare each group's share of AI use with its share of US wages. "
                           f"A value above 1 means people use AI on that group's tasks more than its share of pay alone would lead you to "
                           f"expect. Switch between Claude and ChatGPT to compare the two platforms' users."),
-                 "tech": ("Each task's labor is split across O*NET's 161 descriptors by the paper's gamma matrix, whose rows sum to "
+                 "tech": ("Each task's labor is split across O*NET's 161 descriptors by a task-to-skill matrix built from O*NET, whose rows sum to "
                           "one, and the descriptors roll up to 25 bundles, so neither usage nor wage dollars are lost in the mapping. "
                           "OpenAI publishes shares by intermediate work activity, allocated here to tasks in proportion to their wage "
                           f"value; allocating equally instead gives the same top three groups. Claude: {_published(latest['release'])}. "
@@ -739,13 +739,15 @@ def export_site(release: str) -> Path:
             "index": "Jobs", "index_line": "Whether pay, the mix of jobs and what job ads ask for have changed more than usual",
             "why": ("If AI were already reshaping work, it would show up here first: in what employers pay for different skills, "
                     "in which kinds of jobs grow, and in the tasks job ads ask for."),
-            "capline": (f"Pay: {pay_big.lower()}. Job mix: {mix_big.lower()}. Job ads: {ads_big[0].lower() + ads_big[1:]}."),
-            "mark": f"Pay: {pay_big.lower()}. Job mix: {mix_big.lower()}.",
-            "headline": (("Pay has changed more than usual" if pay_out else "Pay hasn't changed more than usual")
-                         + (f", the mix of jobs has shifted more than at any time since {since} (though chance can't yet be ruled out)" if qty_record else
-                            ", the mix of jobs has shifted more than usual" if qty_out else "")
-                         + (", and job ads turned away from tasks AI can do before ChatGPT came out." if fell_before else
-                            ", and job ads show no change at ChatGPT's release.")),
+            "capline": (f"Job ads: {ads_big[0].lower() + ads_big[1:]}. Pay: {pay_big.lower()}. Job mix: {mix_big.lower()}."),
+            "mark": f"Job ads: {ads_big[0].lower() + ads_big[1:]}. Pay: {pay_big.lower()}.",
+            "headline": (("Job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. "
+                          if fell_before and not asks_out else
+                          "Job ads changed at ChatGPT's release more than at almost any earlier month. " if asks_out else
+                          "Job ads show no change at ChatGPT's release. ")
+                         + ("Pay has changed more than usual" if pay_out else "Pay hasn't changed more than usual")
+                         + (f", and the mix of jobs has shifted more than at any time since {since}, though chance can't yet be ruled out."
+                            if qty_record else ", and the mix of jobs has shifted more than usual." if qty_out else ".")),
             "items": [
                 {"title": "Pay for different skills", "big": pay_big,
                  "note": ((f"If AI were changing what employers pay for, pay for some skills would be moving faster than usual. "
@@ -804,7 +806,7 @@ def export_site(release: str) -> Path:
                           f"whether tasks AI can do lost ground to other tasks in the same occupation, and whether anything changed at "
                           f"ChatGPT's release. In {_words(int(asks['earlier_at_least']))} of the {_words(int(asks['earlier_windows']))} "
                           f"earlier months, the same comparison showed a change at least as large as the one at the release."),
-                 "tech": (f"The paper's Appendix B: the gradient of a task's share of its occupation's ads on the task's Eloundou "
+                 "tech": (f"From a working paper in progress by the author: the gradient of a task's share of its occupation's ads on the task's Eloundou "
                           f"exposure, by quarter against 2019, so the comparison is within occupation by construction. The step at "
                           f"the release is measured against the sixteen months before it and set against the same step placed at "
                           f"each of {int(asks['earlier_windows'])} earlier months (p = {int(asks['earlier_at_least']) / int(asks['earlier_windows']):.2f}). "
@@ -871,6 +873,8 @@ def export_site(release: str) -> Path:
             ],
         },
     }
+    # the city leads with job ads, its clearest result, then pay and the mix of jobs
+    views["city"]["items"] = [views["city"]["items"][i] for i in (2, 0, 1)]
     for key, view in views.items():
         for i, entry in enumerate(view["items"]):
             entry["view"] = key
@@ -880,9 +884,10 @@ def export_site(release: str) -> Path:
     lede = (f'Tasks people use Claude for make up <a href="#bridge" data-view="bridge">{wages}% of US wages</a>. '
             + ('<a href="#city" data-view="city">Pay has changed more than usual</a>' if pay_out else
                '<a href="#city" data-view="city">Pay hasn\'t changed more than usual</a>')
-            + (f". The mix of jobs has shifted more than at any time since {since}, though with only {_words(windows)} periods to compare, "
-               f"chance can't yet be ruled out. " if qty_record else
-               ", but the mix of jobs has shifted more than usual. " if qty_out else ". ")
+            + (", and job ads turned away from tasks AI can do from 2020 to 2022, before ChatGPT, with no further drop at its release. "
+               if fell_before and not asks_out else
+               ", and job ads changed at ChatGPT's release more than at almost any earlier month. " if asks_out else
+               ", and job ads show no change at ChatGPT's release. ")
             + f'And <a href="#binoculars" data-view="valley">{degrees:.0f}% of new degrees</a> are in fields that lead to the jobs most exposed to AI.')
 
     meaning = [
